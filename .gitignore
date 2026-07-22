@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.playwright-mcp/
+.screenshots/
+*.log
+.env
+/tmp-gen/
