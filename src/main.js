@@ -6,8 +6,8 @@ import { createModelCharacter, updateModelCharacter } from './model-character.js
 import { createVRMCharacter, updateVRMCharacter } from './vrm-character.js';
 import { createPostFX } from './postfx.js';
 
-// Flat authoring mode — get assets + character solid first, wrap to sphere later.
-const SKY = 0xb6e0ef;
+// Flat authoring stage — fix character + town assets first, wrap to sphere later.
+const SKY = 0x6eb6de;
 
 const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -21,35 +21,45 @@ renderer.setClearColor(SKY, 1);
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(SKY, 40, 95);
+scene.fog = new THREE.Fog(SKY, 45, 110);
 
+// Hero shot (spec §3): stand south of plaza looking north toward hospital axis.
+const HERO_SPAWN = { x: 0, y: 0, z: 6 };
 const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 250);
-camera.position.set(0, 3.2, 9);
+// Behind the hunter, looking north (−Z) at association / hospital / cafe.
+camera.position.set(2.5, 5.5, 16);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.enablePan = false;
 controls.minDistance = 2.5;
-controls.maxDistance = 28;
+controls.maxDistance = 48;
 controls.minPolarAngle = 0.12;
 controls.maxPolarAngle = Math.PI * 0.48;
-controls.target.set(0, 1.0, 0);
+controls.target.set(2, 3.0, -6);
 
-const sun = new THREE.DirectionalLight(0xfff6e8, 2.1);
-sun.position.set(10, 18, 8);
+const sun = new THREE.DirectionalLight(0xfff6e8, 2.15);
+sun.position.set(12, 20, 10);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 sun.shadow.bias = -0.00025;
 sun.shadow.normalBias = 0.04;
 sun.shadow.radius = 3;
-Object.assign(sun.shadow.camera, { left: -45, right: 45, top: 45, bottom: -45, near: 1, far: 90 });
+Object.assign(sun.shadow.camera, {
+  left: -48,
+  right: 48,
+  top: 48,
+  bottom: -48,
+  near: 1,
+  far: 100,
+});
 scene.add(sun);
 scene.add(sun.target);
 
 scene.add(new THREE.HemisphereLight(0xd8f2ff, 0xb8d48a, 1.2));
-const fill = new THREE.DirectionalLight(0xd0e8ff, 0.65);
-fill.position.set(-6, 5, -3);
+const fill = new THREE.DirectionalLight(0xd0e8ff, 0.6);
+fill.position.set(-8, 6, -4);
 scene.add(fill);
 
 const loader = new THREE.TextureLoader();
@@ -85,7 +95,7 @@ let character;
 let postfx;
 let targetYaw = 0;
 const params = {
-  walkSpeed: 3.2,
+  walkSpeed: 3.4,
   thickness: 1.15,
   depthBias: 0.0018,
   normalBias: 0.55,
@@ -110,13 +120,11 @@ function move(dt) {
     const step = params.walkSpeed * dt;
     character.group.position.x += moveDir.x * step;
     character.group.position.z += moveDir.z * step;
-    // keep camera relative offset while following
     camera.position.x += moveDir.x * step;
     camera.position.z += moveDir.z * step;
     targetYaw = Math.atan2(moveDir.x, moveDir.z);
     moving = true;
   }
-  // feet stay on the flat ground
   character.group.position.y = 0;
 
   let d = targetYaw - character.group.rotation.y;
@@ -126,7 +134,7 @@ function move(dt) {
 }
 
 function buildGUI() {
-  const gui = new GUI({ title: 'Flat stage' });
+  const gui = new GUI({ title: 'Linkon slice' });
   gui.add(params, 'walkSpeed', 0.5, 8, 0.1).name('walk speed');
   const fo = gui.addFolder('outline');
   fo.add(params, 'thickness', 0, 3, 0.05).onChange((v) => (postfx.outline.uThickness.value = v));
@@ -154,20 +162,39 @@ addEventListener('resize', () => {
 });
 
 const clock = new THREE.Clock();
+let prevCamAzimuth = 0;
+let camAzimuthInited = false;
 function animate() {
   const dt = Math.min(clock.getDelta(), 0.05);
   const t = clock.elapsedTime;
   const moving = move(dt);
-  (character.isVRM ? updateVRMCharacter : updateModelCharacter)(character, t, moving, dt);
 
   const p = character.group.position;
   camTarget.set(p.x, p.y + 1.05, p.z);
   controls.target.lerp(camTarget, 1 - Math.exp(-dt * 10));
-  // sun follows the play area so shadows stay sharp
-  sun.position.set(p.x + 10, 18, p.z + 8);
+  sun.position.set(p.x + 12, 20, p.z + 10);
   sun.target.position.set(p.x, 0, p.z);
   sun.target.updateMatrixWorld();
   controls.update();
+
+  // After controls settle: orbit yaw delta → hair wind.
+  const az = controls.getAzimuthalAngle();
+  let orbitDelta = 0;
+  if (camAzimuthInited) {
+    orbitDelta = az - prevCamAzimuth;
+    orbitDelta = Math.atan2(Math.sin(orbitDelta), Math.cos(orbitDelta));
+  } else {
+    camAzimuthInited = true;
+  }
+  prevCamAzimuth = az;
+  orbitDelta = THREE.MathUtils.clamp(orbitDelta, -0.35, 0.35);
+
+  if (character.isVRM) {
+    updateVRMCharacter(character, t, moving, dt, { orbitDelta });
+  } else {
+    updateModelCharacter(character, t, moving, dt);
+  }
+
   postfx.render();
   requestAnimationFrame(animate);
 }
@@ -181,7 +208,10 @@ function animate() {
     console.warn('[character] no VRM found, using placeholder robot:', e.message);
     character = await createModelCharacter();
   }
-  character.group.position.set(0, 0, 0);
+  character.group.position.set(HERO_SPAWN.x, HERO_SPAWN.y, HERO_SPAWN.z);
+  // Three.js default forward is −Z (toward hospital / north landmarks).
+  character.group.rotation.y = 0;
+  targetYaw = 0;
   character.group.scale.setScalar(1);
   scene.add(character.group);
 

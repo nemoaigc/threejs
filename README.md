@@ -5,6 +5,8 @@ A Three.js + Vite study that reproduces the *rendering technique* of
 planet, drawn with **ink outlines** and a **posterized / dithered** comic finish.
 
 > Status: ~40% of abeto's polish. Same techniques, much less content. See "Gap" below.
+>
+> **Content direction (flat-first):** [docs/SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md](docs/SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md) — Linkon-slice scene brief (buildings, character, animation, poly budget, layout rules). Tech deep-dive: [docs/HOW_IT_WORKS.zh.md](docs/HOW_IT_WORKS.zh.md).
 
 ```bash
 npm install

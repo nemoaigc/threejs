@@ -89,6 +89,10 @@
 **补齐路线图:** 真模型+贴图 · 给 VRM 套 Mixamo 动捕走路 · surface-ID 描边 · 更多生态/道具种类
 · 资源压缩。
 
+**当前内容规格（平面优先 · 恋与深空主题切片）:** 见同目录
+[SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md](./SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md)
+——人物 / 建筑 / 动作 / 面数预算 / 声明式布局纪律；**平面 DoD 通过后再包球**。
+
 ## 参考(开源)
 
 - 描边(最接近 abeto):https://github.com/OmarShehata/webgl-outlines

@@ -3,9 +3,17 @@ import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { createNoise3D } from 'simplex-noise';
 import groundUrl from './assets/ground.png';
+import { LINKON_SLICE_P0 } from './layouts/linkon-slice-p0.js';
 
-export const PLANET_RADIUS = 2.15;
+// Toy planet large enough for a readable town pad, small enough to read as a globe.
+export const PLANET_RADIUS = 2.6;
 export const OCEAN_RADIUS = PLANET_RADIUS;
+
+// Flat-authoring units → sphere. Buildings keep flat bottoms (local Y-up, sole at 0);
+// only the *plant adapter* changes between plane and planet.
+// Town authored ~±36m; map that to ~±55° of arc so it sits on the upper hemisphere.
+export const TOWN_PROP_SCALE = 0.12;
+export const TOWN_FLAT_TO_ARC = 0.038;
 
 const noise3 = createNoise3D();
 
@@ -405,6 +413,49 @@ function addRedCross(g, x, y, z, size = 0.55) {
   g.add(hx, hy);
 }
 
+/** Framed windows — glass + sill + thin mullion (reads sharper under outline). */
+function addFramedWindows(g, {
+  w, h, d, rows, cols,
+  y0 = 0.2, yStep = 0.22, xSpread = 0.78,
+  glass = 0x8eb8d0, paneW = 0.11, paneH = 0.13,
+  frame = 0xe8e4dc, zFace = null,
+} = {}) {
+  const z = zFace ?? d / 2 + 0.02;
+  const fw = w * paneW;
+  const fh = h * paneH;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = ((c + 0.5) / cols - 0.5) * w * xSpread;
+      const y = h * (y0 + r * yStep);
+      boxAt(g, fw * 1.18, fh * 1.18, 0.035, x, y, z, frame);
+      boxAt(g, fw, fh, 0.04, x, y, z + 0.015, glass);
+      // sill lip
+      boxAt(g, fw * 1.25, 0.04, 0.08, x, y - fh * 0.55, z + 0.03, frame);
+      // mullion cross
+      boxAt(g, 0.03, fh * 0.9, 0.02, x, y, z + 0.03, frame);
+      boxAt(g, fw * 0.9, 0.03, 0.02, x, y, z + 0.03, frame);
+    }
+  }
+}
+
+function addPlinth(g, w, d, h = 0.35, color = 0xc8c0b4) {
+  boxAt(g, w * 1.06, h, d * 1.06, 0, h / 2, 0, color);
+}
+
+function addRoofCap(g, w, d, y, color = 0x6a7a88, thick = 0.18) {
+  boxAt(g, w * 1.08, thick, d * 1.1, 0, y + thick / 2, 0, color);
+  // thin eave lip
+  boxAt(g, w * 1.14, thick * 0.35, d * 1.16, 0, y + thick * 0.15, 0, color);
+}
+
+function addDoorFrame(g, x, y, z, dw, dh, frame = 0xd8d0c4, door = 0x3d3530, glass = null) {
+  boxAt(g, dw * 1.12, dh * 1.06, 0.06, x, y, z, frame);
+  boxAt(g, dw, dh, 0.05, x, y, z + 0.02, door);
+  if (glass != null) {
+    boxAt(g, dw * 0.55, dh * 0.35, 0.04, x, y + dh * 0.18, z + 0.05, glass);
+  }
+}
+
 // —— 民居：坡顶小院 ——
 function createResidence() {
   const g = new THREE.Group();
@@ -566,58 +617,294 @@ function createPostOffice() {
   return finishProp(g);
 }
 
-// —— 医院：大、白、翼楼、门廊、红十字顶饰 —— 绝不是小卖部
+// —— 医院（阿克索向）：大、白、翼楼、门廊、红十字 —— 绝不是小卖部
 function createHospital() {
   const g = new THREE.Group();
-  // main block (3 floors)
-  const mw = 7.5;
-  const md = 3.2;
-  const mh = 3.4;
-  boxAt(g, mw, mh, md, 0, mh / 2, 0, 0xf4f2ec);
-  // side wings (lower)
-  const ww = 2.8;
-  const wh = 2.4;
-  const wd = 2.6;
-  boxAt(g, ww, wh, wd, -mw * 0.55, wh / 2, 0.2, 0xefeae0);
-  boxAt(g, ww, wh, wd, mw * 0.55, wh / 2, 0.2, 0xefeae0);
-  // flat roofs + green edge (90s clinic look)
-  boxAt(g, mw * 1.04, 0.14, md * 1.08, 0, mh + 0.07, 0, 0x6a9a7a);
-  boxAt(g, ww * 1.05, 0.12, wd * 1.08, -mw * 0.55, wh + 0.06, 0.2, 0x6a9a7a);
-  boxAt(g, ww * 1.05, 0.12, wd * 1.08, mw * 0.55, wh + 0.06, 0.2, 0x6a9a7a);
-  // entrance canopy / porte-cochère
-  boxAt(g, 2.4, 0.12, 1.6, 0, 1.55, md / 2 + 0.7, 0xe8e4dc);
-  for (const sx of [-0.95, 0.95]) {
-    boxAt(g, 0.14, 1.55, 0.14, sx, 0.78, md / 2 + 1.2, 0xd0ccc4);
+  const mw = 9.5;
+  const md = 4.2;
+  const mh = 4.8;
+  addPlinth(g, mw + 1.2, md + 0.6, 0.32, 0xd8d2c8);
+  boxAt(g, mw, mh, md, 0, 0.32 + mh / 2, 0, 0xf2f0ea);
+  const ww = 3.5;
+  const wh = 3.4;
+  const wd = 3.3;
+  boxAt(g, ww, wh, wd, -mw * 0.52, 0.32 + wh / 2, 0.12, 0xefeae0);
+  boxAt(g, ww, wh, wd, mw * 0.52, 0.32 + wh / 2, 0.12, 0xefeae0);
+  addRoofCap(g, mw, md, 0.32 + mh, 0x8aa0a8, 0.16);
+  addRoofCap(g, ww, wd, 0.32 + wh, 0x8aa0a8, 0.12);
+  // floor belt lines
+  for (let i = 1; i <= 3; i++) {
+    boxAt(g, mw * 1.01, 0.06, 0.08, 0, 0.32 + mh * (i / 4), md / 2 + 0.01, 0xe0dcd4);
   }
-  // steps
-  boxAt(g, 2.2, 0.12, 0.9, 0, 0.06, md / 2 + 0.55, 0xcfc8bc);
-  // glass curtain entrance
-  boxAt(g, 1.5, 1.3, 0.08, 0, 0.85, md / 2 + 0.04, 0x9ecce0);
-  // ward windows — main facade
-  addWindowGrid(g, {
-    w: mw, h: mh, d: md, rows: 3, cols: 6,
-    y0: 0.22, yStep: 0.26, paneW: 0.09, paneH: 0.12, glass: 0x8ebfd4,
+  // porte-cochère
+  boxAt(g, 3.6, 0.16, 2.2, 0, 2.0, md / 2 + 0.95, 0xe8e4dc);
+  boxAt(g, 3.7, 0.08, 2.3, 0, 2.1, md / 2 + 0.95, 0xd0ccc4);
+  for (const sx of [-1.35, 1.35]) {
+    boxAt(g, 0.2, 2.0, 0.2, sx, 1.0, md / 2 + 1.65, 0xd8d4cc);
+    boxAt(g, 0.28, 0.12, 0.28, sx, 0.12, md / 2 + 1.65, 0xc8c4bc);
+  }
+  // steps + rail
+  boxAt(g, 3.0, 0.14, 1.1, 0, 0.12, md / 2 + 0.7, 0xcfc8bc);
+  boxAt(g, 3.0, 0.1, 0.7, 0, 0.22, md / 2 + 0.45, 0xcfc8bc);
+  addDoorFrame(g, 0, 1.15, md / 2 + 0.04, 1.7, 1.7, 0xe8e4dc, 0x9ecce0, 0xb8dce8);
+  addFramedWindows(g, {
+    w: mw, h: mh, d: md, rows: 4, cols: 7,
+    y0: 0.18, yStep: 0.2, paneW: 0.075, paneH: 0.1,
+    glass: 0x8ebfd4, frame: 0xe8e4dc,
+    zFace: md / 2 + 0.03,
   });
-  // wing facades (offset in X)
-  for (const wx of [-mw * 0.55, mw * 0.55]) {
-    for (let r = 0; r < 2; r++) {
+  // wing facades (manual X offset — framed helper is group-centered)
+  for (const wx of [-mw * 0.52, mw * 0.52]) {
+    for (let r = 0; r < 3; r++) {
       for (let c = 0; c < 3; c++) {
         const x = wx + ((c + 0.5) / 3 - 0.5) * ww * 0.7;
-        const y = wh * (0.32 + r * 0.32);
-        boxAt(g, ww * 0.16, wh * 0.16, 0.04, x, y, 0.2 + wd / 2 + 0.02, 0x8ebfd4);
+        const y = 0.32 + wh * (0.28 + r * 0.26);
+        const z = 0.12 + wd / 2 + 0.03;
+        boxAt(g, 0.55, 0.48, 0.03, x, y, z, 0xe8e4dc);
+        boxAt(g, 0.42, 0.36, 0.04, x, y, z + 0.015, 0x8ebfd4);
       }
     }
   }
-  // rooftop red cross (big, readable silhouette)
-  addRedCross(g, 0, mh + 0.55, 0, 0.9);
-  // facade cross above entrance
-  addRedCross(g, 0, mh * 0.78, md / 2 + 0.08, 0.65);
-  // ambulance bay stripe on ground
-  boxAt(g, 1.8, 0.03, 3.0, mw * 0.35, 0.02, md / 2 + 1.5, 0xd94a3d);
-  // chimney / boiler stack behind
-  const stack = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.25, 2.2, 8), makeToon(0xb0a89c));
-  stack.position.set(-mw * 0.2, mh + 0.9, -md * 0.2);
+  // facade cross plaque
+  boxAt(g, 1.4, 1.1, 0.08, 0, 0.32 + mh * 0.78, md / 2 + 0.06, 0xffffff);
+  addRedCross(g, 0, 0.32 + mh * 0.78, md / 2 + 0.12, 0.75);
+  addRedCross(g, 0, 0.32 + mh + 0.75, 0, 1.1);
+  // ambulance bay
+  boxAt(g, 2.4, 0.04, 3.6, mw * 0.35, 0.04, md / 2 + 1.8, 0xd94a3d);
+  boxAt(g, 2.0, 0.03, 3.2, mw * 0.35, 0.05, md / 2 + 1.8, 0xf2f0ea);
+  const stack = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.28, 2.8, 8), makeToon(0xb0a89c));
+  stack.position.set(-mw * 0.2, 0.32 + mh + 1.1, -md * 0.2);
   g.add(stack);
+  boxAt(g, 0.5, 0.15, 0.5, -mw * 0.2, 0.32 + mh + 2.4, -md * 0.2, 0x8a8078);
+  return finishProp(g);
+}
+
+// —— 猎人协会门脸：青蓝体量 + 门廊 + 竖旗 + 轻通讯碟 ——
+function createHunterHq() {
+  const g = new THREE.Group();
+  const w = 9.5;
+  const d = 7.0;
+  const h = 15.5;
+  addPlinth(g, w, d, 0.4, 0x4a6578);
+  boxAt(g, w, h, d, 0, 0.4 + h / 2, 0, 0x5b7c99);
+  // vertical fins
+  for (const sx of [-w * 0.42, -w * 0.28, w * 0.28, w * 0.42]) {
+    boxAt(g, 0.22, h * 0.94, 0.1, sx, 0.4 + h * 0.5, d / 2 + 0.05, 0xa8c4d8);
+  }
+  addRoofCap(g, w, d, 0.4 + h, 0x3d5a72, 0.28);
+  // white cornice band under roof
+  boxAt(g, w * 1.02, 0.35, 0.18, 0, 0.4 + h * 0.92, d / 2 + 0.06, 0xe8f0ff);
+  // mid belt
+  boxAt(g, w * 1.01, 0.22, 0.12, 0, 0.4 + h * 0.48, d / 2 + 0.04, 0xa8c4d8);
+  // portico
+  boxAt(g, 5.6, 0.24, 2.6, 0, 3.7, d / 2 + 1.1, 0xa8c4d8);
+  boxAt(g, 5.8, 0.1, 2.8, 0, 3.85, d / 2 + 1.1, 0xe8f0ff);
+  for (const sx of [-2.0, 0, 2.0]) {
+    boxAt(g, 0.32, 3.5, 0.32, sx, 1.85, d / 2 + 1.9, 0x7a9bb8);
+    boxAt(g, 0.42, 0.18, 0.42, sx, 0.15, d / 2 + 1.9, 0x4a6578);
+  }
+  addDoorFrame(g, 0, 1.7, d / 2 + 0.05, 2.2, 2.5, 0x2a4058, 0x1a2838, 0x8eb8d0);
+  addFramedWindows(g, {
+    w, h, d, rows: 5, cols: 5,
+    y0: 0.12, yStep: 0.155, paneW: 0.09, paneH: 0.09,
+    glass: 0x8eb8d0, frame: 0xa8c4d8,
+    zFace: d / 2 + 0.04,
+  });
+  // steps
+  boxAt(g, 5.0, 0.14, 1.2, 0, 0.12, d / 2 + 0.7, 0x8a9aab);
+  boxAt(g, 4.6, 0.12, 0.8, 0, 0.24, d / 2 + 0.45, 0x8a9aab);
+  // twin flags
+  for (const sx of [-w * 0.22, w * 0.22]) {
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 4.5, 6), makeToon(0x8a9098));
+    pole.position.set(sx, 0.4 + h + 1.9, d * 0.15);
+    g.add(pole);
+    boxAt(g, 1.2, 0.7, 0.05, sx + 0.6, 0.4 + h + 3.6, d * 0.15, 0xe8f0ff);
+    boxAt(g, 0.4, 0.7, 0.06, sx + 0.22, 0.4 + h + 3.6, d * 0.15 + 0.02, 0x3d8ec9);
+  }
+  // rooftop dish
+  const dish = new THREE.Mesh(
+    new THREE.SphereGeometry(0.75, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.5),
+    makeToon(0xc8d4e0),
+  );
+  dish.position.set(0, 0.4 + h + 0.5, -d * 0.15);
+  dish.rotation.x = Math.PI;
+  g.add(dish);
+  boxAt(g, 0.12, 1.3, 0.12, 0, 0.4 + h + 1.15, -d * 0.15, 0x8a9098);
+  // entrance sign plaque
+  boxAt(g, 2.8, 0.55, 0.1, 0, 0.4 + h * 0.78, d / 2 + 0.12, 0x2a4058);
+  boxAt(g, 2.4, 0.35, 0.08, 0, 0.4 + h * 0.78, d / 2 + 0.16, 0xe8f0ff);
+  return finishProp(g);
+}
+
+// —— 猫咖：奶油体 + 条纹雨棚 + 猫耳招牌 ——
+function createMeowCafe() {
+  const g = new THREE.Group();
+  const w = 5.8;
+  const d = 4.6;
+  const h = 5.8;
+  addPlinth(g, w, d, 0.22, 0xd4b896);
+  boxAt(g, w, h, d, 0, 0.22 + h / 2, 0, 0xf5e6d3);
+  addRoofCap(g, w, d, 0.22 + h, 0xc4a882, 0.18);
+  // second-floor stringcourse
+  boxAt(g, w * 1.02, 0.12, 0.1, 0, 0.22 + h * 0.55, d / 2 + 0.03, 0xe8d4bc);
+  addStripedAwning(g, w * 0.95, (0.22 + h) * 0.55, d, [0xf2a0b0, 0xf5f0e6]);
+  // big shop window with frame + cross
+  boxAt(g, w * 0.62, h * 0.4, 0.06, -w * 0.08, 0.22 + h * 0.32, d / 2 + 0.03, 0x8b5e3c);
+  boxAt(g, w * 0.55, h * 0.34, 0.05, -w * 0.08, 0.22 + h * 0.32, d / 2 + 0.05, 0xb8dcec);
+  boxAt(g, 0.04, h * 0.32, 0.03, -w * 0.08, 0.22 + h * 0.32, d / 2 + 0.07, 0x8b5e3c);
+  boxAt(g, w * 0.5, 0.04, 0.03, -w * 0.08, 0.22 + h * 0.32, d / 2 + 0.07, 0x8b5e3c);
+  // warm light
+  boxAt(g, w * 0.4, h * 0.18, 0.03, -w * 0.08, 0.22 + h * 0.3, d / 2 + 0.08, 0xffe8b0);
+  // door
+  addDoorFrame(g, w * 0.32, 0.22 + h * 0.28, d / 2 + 0.03, 0.75, h * 0.48, 0x8b5e3c, 0x6a4030, 0xd4e8f0);
+  // hanging sign + cat ears
+  boxAt(g, 0.08, 0.7, 0.08, 0, 0.22 + h * 0.72, d / 2 + 0.55, 0x5a4030);
+  boxAt(g, 1.5, 0.85, 0.1, 0, 0.22 + h * 0.85, d / 2 + 0.55, 0x5a4030);
+  boxAt(g, 1.25, 0.65, 0.08, 0, 0.22 + h * 0.85, d / 2 + 0.6, 0xf2a0b0);
+  // paw pad
+  boxAt(g, 0.28, 0.22, 0.05, 0, 0.22 + h * 0.82, d / 2 + 0.66, 0xffffff);
+  const earMat = makeToon(0xf2a0b0);
+  for (const sx of [-0.4, 0.4]) {
+    const ear = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.4, 4), earMat);
+    ear.position.set(sx, 0.22 + h * 0.85 + 0.55, d / 2 + 0.6);
+    g.add(ear);
+  }
+  addFramedWindows(g, {
+    w, h, d, rows: 1, cols: 3,
+    y0: 0.72, yStep: 0.2, paneW: 0.12, paneH: 0.12,
+    glass: 0xa8c8d8, frame: 0xd4b896,
+    zFace: d / 2 + 0.03,
+  });
+  // outdoor bench
+  boxAt(g, 1.6, 0.12, 0.4, -w * 0.15, 0.4, d / 2 + 0.85, 0xc4a070);
+  boxAt(g, 0.12, 0.35, 0.12, -w * 0.15 - 0.6, 0.22, d / 2 + 0.85, 0x8b5e3c);
+  boxAt(g, 0.12, 0.35, 0.12, -w * 0.15 + 0.6, 0.22, d / 2 + 0.85, 0x8b5e3c);
+  // planter
+  boxAt(g, 0.55, 0.35, 0.45, w * 0.35, 0.28, d / 2 + 0.9, 0xc4a070);
+  boxAt(g, 0.45, 0.2, 0.35, w * 0.35, 0.5, d / 2 + 0.9, 0x5bb87a);
+  return finishProp(g);
+}
+
+// —— 远景天际塔剪影（低面数但带窗带节奏）——
+function createSkylineTower(variant = 0) {
+  const g = new THREE.Group();
+  const configs = [
+    { w: 6.5, d: 6.5, h: 34, top: 'spire' },
+    { w: 5.5, d: 5.5, h: 28, top: 'step' },
+    { w: 7.5, d: 5.5, h: 38, top: 'antenna' },
+  ];
+  const c = configs[variant % configs.length];
+  addPlinth(g, c.w, c.d, 0.5, 0x556678);
+  boxAt(g, c.w, c.h, c.d, 0, 0.5 + c.h / 2, 0, 0x6a7a8c);
+  // dark floor bands + glass strips (cheap “curtain wall” read)
+  const floors = Math.floor(c.h / 3.2);
+  for (let i = 0; i < floors; i++) {
+    const y = 0.5 + 2.2 + i * 3.0;
+    boxAt(g, c.w * 1.01, 0.2, c.d * 1.01, 0, y, 0, 0x556678);
+    boxAt(g, c.w * 0.92, 1.4, 0.06, 0, y + 0.9, c.d / 2 + 0.02, 0x7a9ab0);
+  }
+  if (c.top === 'spire') {
+    boxAt(g, c.w * 0.5, c.h * 0.1, c.d * 0.5, 0, 0.5 + c.h + c.h * 0.05, 0, 0x7a8a9c);
+    const spire = new THREE.Mesh(new THREE.ConeGeometry(0.4, 3.5, 6), makeToon(0x8a9aac));
+    spire.position.y = 0.5 + c.h + c.h * 0.16;
+    g.add(spire);
+  } else if (c.top === 'step') {
+    boxAt(g, c.w * 0.72, c.h * 0.09, c.d * 0.72, 0, 0.5 + c.h + c.h * 0.04, 0, 0x7a8a9c);
+    boxAt(g, c.w * 0.42, c.h * 0.07, c.d * 0.42, 0, 0.5 + c.h + c.h * 0.11, 0, 0x8a9aac);
+  } else {
+    boxAt(g, 0.22, 5.0, 0.22, 0, 0.5 + c.h + 2.4, 0, 0x8a9aac);
+    boxAt(g, 1.4, 0.35, 0.35, 0, 0.5 + c.h + 4.2, 0, 0xa0b0c0);
+  }
+  return finishProp(g);
+}
+
+function createPlazaPad(size = 14) {
+  const g = new THREE.Group();
+  const m = new THREE.Mesh(new THREE.BoxGeometry(size, 0.06, size), makeToon(0xc9c2b4));
+  m.position.y = 0.03;
+  m.receiveShadow = true;
+  m.castShadow = false;
+  m.userData.noOutline = true;
+  g.add(m);
+  // subtle cross walk rings
+  boxAt(g, size * 0.7, 0.02, 0.35, 0, 0.055, 0, 0xb8b0a0);
+  boxAt(g, 0.35, 0.02, size * 0.7, 0, 0.055, 0, 0xb8b0a0);
+  g.userData.noOutline = true;
+  g.traverse((o) => {
+    o.userData.noOutline = true;
+  });
+  return g;
+}
+
+function createObelisk() {
+  const g = new THREE.Group();
+  boxAt(g, 1.0, 0.25, 1.0, 0, 0.12, 0, 0xa8b0b8);
+  boxAt(g, 0.55, 3.2, 0.55, 0, 1.85, 0, 0xc8d4dc);
+  const tip = new THREE.Mesh(new THREE.ConeGeometry(0.4, 0.7, 4), makeToon(0xe8f4ff));
+  tip.position.y = 3.85;
+  g.add(tip);
+  // soft cyan band
+  boxAt(g, 0.6, 0.2, 0.6, 0, 2.4, 0, 0x7ec8e8);
+  return finishProp(g);
+}
+
+function createHunterBoard() {
+  const g = new THREE.Group();
+  boxAt(g, 0.12, 2.1, 0.12, -0.4, 1.05, 0, 0x6a7078);
+  boxAt(g, 0.12, 2.1, 0.12, 0.4, 1.05, 0, 0x6a7078);
+  boxAt(g, 1.2, 1.1, 0.08, 0, 1.55, 0, 0x3d5a72);
+  boxAt(g, 1.0, 0.85, 0.05, 0, 1.55, 0.05, 0xa8c4d8);
+  boxAt(g, 0.7, 0.18, 0.06, 0, 2.2, 0.06, 0xe8f0ff);
+  return finishProp(g);
+}
+
+function createApartmentSilhouette() {
+  const g = new THREE.Group();
+  const w = 9.5;
+  const d = 6.5;
+  const h = 14;
+  boxAt(g, w, h, d, 0, h / 2, 0, 0xc8d0d8);
+  boxAt(g, w * 1.04, 0.3, d * 1.04, 0, h + 0.12, 0, 0x7a8a98);
+  for (let f = 0; f < 5; f++) {
+    const y = 1.6 + f * 2.4;
+    boxAt(g, w * 0.92, 0.12, 0.25, 0, y, d / 2 + 0.1, 0xb0b8c0);
+    for (let c = 0; c < 4; c++) {
+      const x = ((c + 0.5) / 4 - 0.5) * w * 0.75;
+      boxAt(g, 0.9, 1.1, 0.05, x, y + 0.7, d / 2 + 0.04, 0x88a8c0);
+    }
+  }
+  return finishProp(g);
+}
+
+function createBoutiqueShop() {
+  const g = new THREE.Group();
+  const w = 3.8;
+  const d = 3.6;
+  const h = 4.4;
+  addPlinth(g, w, d, 0.18, 0xc8b8d0);
+  boxAt(g, w, h, d, 0, 0.18 + h / 2, 0, 0xe8d8f0);
+  addRoofCap(g, w, d, 0.18 + h, 0x9a7ab0, 0.14);
+  addStripedAwning(g, w, (0.18 + h) * 0.55, d, [0x9a7ab0, 0xf5f0e6]);
+  boxAt(g, w * 0.7, h * 0.38, 0.05, -0.05, 0.18 + h * 0.34, d / 2 + 0.03, 0x7a5a90);
+  boxAt(g, w * 0.6, h * 0.32, 0.05, -0.05, 0.18 + h * 0.34, d / 2 + 0.05, 0xb8dcec);
+  addDoorFrame(g, w * 0.28, 0.18 + h * 0.28, d / 2 + 0.03, 0.55, h * 0.48, 0x5a4030, 0x4a3020, 0xd0e8f0);
+  boxAt(g, 0.95, 0.5, 0.08, -w * 0.12, 0.18 + h * 0.72, d / 2 + 0.25, 0x6a4080);
+  return finishProp(g);
+}
+
+function createConvenienceShop() {
+  const g = new THREE.Group();
+  const w = 4.2;
+  const d = 3.6;
+  const h = 4.0;
+  addPlinth(g, w, d, 0.18, 0xc8d4c0);
+  boxAt(g, w, h, d, 0, 0.18 + h / 2, 0, 0xeef4e6);
+  addRoofCap(g, w, d, 0.18 + h, 0x5bb87a, 0.14);
+  addStripedAwning(g, w, (0.18 + h) * 0.55, d, [0x5bb87a, 0xf5f0e6]);
+  boxAt(g, w * 0.72, h * 0.4, 0.05, -0.1, 0.18 + h * 0.36, d / 2 + 0.03, 0x3d7a50);
+  boxAt(g, w * 0.62, h * 0.34, 0.05, -0.1, 0.18 + h * 0.36, d / 2 + 0.05, 0xb8dcec);
+  addDoorFrame(g, w * 0.3, 0.18 + h * 0.28, d / 2 + 0.03, 0.55, h * 0.5, 0x3d5a40, 0x2a4030, 0xc8e0d0);
+  boxAt(g, 1.2, 0.4, 0.08, 0, 0.18 + h * 0.78, d / 2 + 0.22, 0xe8b84a);
   return finishProp(g);
 }
 
@@ -808,30 +1095,30 @@ function createBush() {
 
 function createClouds() {
   const group = new THREE.Group();
-  const mat = makeToon(0xffffff);
+  const mat = makeToon(0xf2f8fc);
   mat.transparent = true;
-  mat.opacity = 0.95;
+  mat.opacity = 0.94;
   mat.depthWrite = false;
 
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 22; i++) {
     const cloud = new THREE.Group();
-    const n = 3 + (i % 3);
+    const n = 4 + (i % 4);
     for (let j = 0; j < n; j++) {
-      const r = 0.18 + Math.random() * 0.22;
+      const r = 0.22 + Math.random() * 0.28;
       const puff = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 8), mat);
-      puff.position.set((j - n * 0.5) * 0.22 + Math.random() * 0.06, Math.random() * 0.08, (Math.random() - 0.5) * 0.12);
-      puff.scale.y = 0.55 + Math.random() * 0.2;
+      puff.position.set((j - n * 0.5) * 0.26 + Math.random() * 0.08, Math.random() * 0.1, (Math.random() - 0.5) * 0.16);
+      puff.scale.y = 0.5 + Math.random() * 0.22;
       cloud.add(puff);
     }
     const dir = new THREE.Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).normalize();
-    // bias clouds toward equator / upper hemisphere for nicer silhouette
-    dir.y = Math.abs(dir.y) * 0.55 + 0.25;
+    // more clouds around mid-latitudes for silhouette against blue sky
+    dir.y = Math.abs(dir.y) * 0.45 + 0.2;
     dir.normalize();
-    const radius = PLANET_RADIUS * (1.55 + Math.random() * 0.35);
+    const radius = PLANET_RADIUS * (1.65 + Math.random() * 0.45);
     cloud.position.copy(dir).multiplyScalar(radius);
     orientTo(cloud, dir);
     cloud.rotateY(Math.random() * Math.PI * 2);
-    cloud.scale.setScalar(0.7 + Math.random() * 0.9);
+    cloud.scale.setScalar(0.85 + Math.random() * 1.1);
     cloud.userData.noOutline = true;
     cloud.traverse((o) => {
       o.castShadow = false;
@@ -847,17 +1134,20 @@ function createClouds() {
 // ---- sky --------------------------------------------------------------------
 
 function createSky() {
-  const geo = new THREE.SphereGeometry(60, 40, 28);
+  // Clear cel blue — zenith must read blue, not washed white
+  const geo = new THREE.SphereGeometry(80, 48, 32);
   const mat = new THREE.ShaderMaterial({
     side: THREE.BackSide,
     depthWrite: false,
     fog: false,
     uniforms: {
-      uZenith: { value: new THREE.Color(0x8ec8e8) },
-      uHorizon: { value: new THREE.Color(0xeaf7f8) },
-      uGround: { value: new THREE.Color(0xd8f0dc) },
-      uSunDir: { value: new THREE.Vector3(0.45, 0.75, 0.35).normalize() },
-      uSunColor: { value: new THREE.Color(0xfff6d8) },
+      uZenith: { value: new THREE.Color(0x4a9fd4) },
+      uMid: { value: new THREE.Color(0x7ec4e8) },
+      uHorizon: { value: new THREE.Color(0xb8dff0) },
+      uGround: { value: new THREE.Color(0xa8d4c0) },
+      uSunDir: { value: new THREE.Vector3(0.42, 0.72, 0.38).normalize() },
+      uSunColor: { value: new THREE.Color(0xfff0c8) },
+      uCloud: { value: new THREE.Color(0xe8f4fc) },
     },
     vertexShader: /* glsl */ `
       varying vec3 vDir;
@@ -867,28 +1157,71 @@ function createSky() {
       }`,
     fragmentShader: /* glsl */ `
       varying vec3 vDir;
-      uniform vec3 uZenith, uHorizon, uGround, uSunDir, uSunColor;
+      uniform vec3 uZenith, uMid, uHorizon, uGround, uSunDir, uSunColor, uCloud;
+      // cheap hash for soft cloud bands (fills empty sky without mesh clouds alone)
+      float hash(vec2 p){
+        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+      }
+      float noise(vec2 p){
+        vec2 i = floor(p); vec2 f = fract(p);
+        float a = hash(i);
+        float b = hash(i + vec2(1.0, 0.0));
+        float c = hash(i + vec2(0.0, 1.0));
+        float d = hash(i + vec2(1.0, 1.0));
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+      }
+      float fbm(vec2 p){
+        float v = 0.0; float a = 0.5;
+        for (int i = 0; i < 4; i++) { v += a * noise(p); p *= 2.05; a *= 0.5; }
+        return v;
+      }
       void main(){
         vec3 d = normalize(vDir);
         float h = d.y;
-        vec3 col = mix(uHorizon, uZenith, smoothstep(-0.05, 0.75, h));
-        col = mix(uGround, col, smoothstep(-0.55, 0.05, h));
-        // soft sun disc + bloom glow
-        float sun = pow(max(dot(d, uSunDir), 0.0), 180.0);
-        float glow = pow(max(dot(d, uSunDir), 0.0), 8.0) * 0.22;
-        col += uSunColor * (sun * 1.4 + glow);
-        // gentle horizon haze
-        col = mix(col, uHorizon, exp(-max(h, 0.0) * 3.5) * 0.18);
+        // three-stop blue gradient — stays blue from zenith through mid sky
+        vec3 col = mix(uHorizon, uMid, smoothstep(-0.02, 0.35, h));
+        col = mix(col, uZenith, smoothstep(0.25, 0.95, h));
+        col = mix(uGround, col, smoothstep(-0.5, 0.08, h));
+
+        // soft painted cloud bands (upper half only)
+        if (h > 0.05) {
+          vec2 cuv = vec2(atan(d.z, d.x) * 1.2, h * 3.2);
+          float c = fbm(cuv * 1.8 + 2.4);
+          c = smoothstep(0.48, 0.72, c) * smoothstep(0.05, 0.35, h) * smoothstep(0.95, 0.45, h);
+          col = mix(col, uCloud, c * 0.55);
+        }
+
+        // small sun disc — limited glow so sky doesn't bleach white
+        float nd = max(dot(d, uSunDir), 0.0);
+        float sun = pow(nd, 220.0);
+        float glow = pow(nd, 14.0) * 0.12;
+        col += uSunColor * (sun * 0.9 + glow);
+
+        // keep a touch of cool haze only near horizon (not white wash)
+        col = mix(col, uHorizon, exp(-max(h, 0.0) * 4.0) * 0.12);
         gl_FragColor = vec4(col, 1.0);
       }`,
   });
   const mesh = new THREE.Mesh(geo, mat);
   mesh.frustumCulled = false;
   mesh.userData.noOutline = true;
+  mesh.renderOrder = -1000;
   return mesh;
 }
 
-// ---- scattering helpers -----------------------------------------------------
+// ---- surface plant adapters (flat bottoms stay flat; only placement changes) -
+//
+// Asset contract for every prop (procedural + glTF wrapper):
+//   • local +Y is "up"
+//   • the sole / foundation sits at local y = 0
+//   • footprint is centered on XZ ≈ 0
+//
+// plantOnFlat  → identity up, y from bbox
+// plantOnPlanet → orient +Y to surface normal, sink by sphere curvature under footprint
+//
+// Town layout is authored once in flat (x, z) metres, then the active adapter
+// projects those coordinates onto the current surface.
 
 const _tangent = new THREE.Vector3();
 const _bitangent = new THREE.Vector3();
@@ -896,19 +1229,60 @@ const _sampleDir = new THREE.Vector3();
 const _box = new THREE.Box3();
 const _size = new THREE.Vector3();
 const _center = new THREE.Vector3();
+const _dir = new THREE.Vector3();
+const _qYaw = new THREE.Quaternion();
+const _qOrient = new THREE.Quaternion();
+// Town centre = north pole so the walk pad and plaza meet at spawn.
+const _townOrigin = new THREE.Vector3(0, 1, 0);
+const _townEast = new THREE.Vector3(1, 0, 0);
+const _townNorth = new THREE.Vector3(0, 0, -1);
 
-// lowest terrain height under a circular footprint on the sphere
-function footprintMinHeight(dir, radius, samples = 10) {
+function townFrame() {
+  return { origin: _townOrigin, east: _townEast, north: _townNorth };
+}
+
+/** Safe curve bury for a flat sole of radius halfW on a sphere of radius h. */
+function curveBury(h, halfW) {
+  // Never let halfW exceed ~35% of radius — long roads must be segmented, not NaN'd.
+  const r = Math.min(Math.max(halfW, 0), h * 0.35);
+  return h - Math.sqrt(Math.max(h * h - r * r, 0));
+}
+
+/** Flat town (x,z) → unit direction on the sphere (great-circle offset from town origin). */
+export function flatToDir(x, z, out = _dir) {
+  const { origin, east, north } = townFrame();
+  const arc = Math.hypot(x, z) * TOWN_FLAT_TO_ARC;
+  if (arc < 1e-8) return out.copy(origin);
+  const ang = arc / PLANET_RADIUS;
+  const cos = Math.cos(ang);
+  const sin = Math.sin(ang);
+  const ux = x / Math.hypot(x, z);
+  const uz = z / Math.hypot(x, z);
+  // move from origin toward (ux*east + uz*north)
+  out
+    .copy(origin)
+    .multiplyScalar(cos)
+    .addScaledVector(east, ux * sin)
+    .addScaledVector(north, uz * sin)
+    .normalize();
+  return out;
+}
+
+function surfaceBasis(dir, east = _tangent, north = _bitangent) {
+  east.set(0, 1, 0).cross(dir);
+  if (east.lengthSq() < 1e-8) east.set(1, 0, 0).cross(dir);
+  east.normalize();
+  north.crossVectors(dir, east).normalize();
+  return { east, north };
+}
+
+/** Lowest terrain height under a circular footprint (prevents corner float). */
+function footprintMinHeight(dir, radius, samples = 12) {
   let minH = terrainHeight(dir);
   if (radius < 1e-4) return minH;
-  // stable tangent basis around surface normal `dir`
-  _tangent.set(0, 1, 0).cross(dir);
-  if (_tangent.lengthSq() < 1e-6) _tangent.set(1, 0, 0).cross(dir);
-  _tangent.normalize();
-  _bitangent.crossVectors(dir, _tangent).normalize();
+  surfaceBasis(dir);
   for (let i = 0; i < samples; i++) {
     const a = (i / samples) * Math.PI * 2;
-    // angular offset ≈ arc length / radius
     const ang = radius / Math.max(PLANET_RADIUS, 0.01);
     _sampleDir
       .copy(dir)
@@ -920,11 +1294,85 @@ function footprintMinHeight(dir, radius, samples = 10) {
   return minH;
 }
 
+/**
+ * Measure sole after scale+yaw (before world orient). Props should already be feet-at-0;
+ * we still read bbox so glTF / future assets stay safe.
+ */
+function measureSole(obj) {
+  obj.position.set(0, 0, 0);
+  obj.rotation.set(0, 0, 0);
+  obj.updateMatrixWorld(true);
+  _box.setFromObject(obj);
+  _box.getSize(_size);
+  return {
+    soleY: _box.min.y,
+    halfW: 0.5 * Math.hypot(_size.x, _size.z),
+  };
+}
+
+/** Flat ground: yaw only, sole on y=0. */
+export function plantOnFlat(obj, x, z, yaw = 0, scale = 1, { sink = 0.012 } = {}) {
+  obj.scale.set(1, 1, 1);
+  if (scale !== 1) obj.scale.multiplyScalar(scale);
+  obj.rotation.set(0, yaw, 0);
+  obj.position.set(0, 0, 0);
+  obj.updateMatrixWorld(true);
+  _box.setFromObject(obj);
+  obj.position.set(x, -_box.min.y - sink, z);
+  return obj;
+}
+
+/**
+ * Sphere ground: same (x,z,yaw) authoring space as flat.
+ * Flat-bottom buildings stay rigid boxes — we do NOT bend meshes.
+ * Flexibility = how deep we bury the flat sole into the curved dirt
+ * (curveSink from footprint width + optional extraSink).
+ */
+export function plantOnPlanet(
+  obj,
+  x,
+  z,
+  yaw = 0,
+  scale = 1,
+  { propScale = TOWN_PROP_SCALE, extraSink = 0.018, minElev = 0.02 } = {},
+) {
+  const dir = flatToDir(x, z, new THREE.Vector3());
+  const s = propScale * scale;
+  obj.scale.setScalar(s);
+  obj.position.set(0, 0, 0);
+  obj.rotation.set(0, 0, 0);
+  obj.quaternion.identity();
+
+  // measure sole while still Y-up (flat-bottom contract)
+  obj.updateMatrixWorld(true);
+  _box.setFromObject(obj);
+  _box.getSize(_size);
+  const soleY = _box.min.y;
+  const halfW = 0.5 * Math.hypot(_size.x, _size.z);
+
+  // local +Y → surface radial, then yaw around local up
+  _qOrient.setFromUnitVectors(_up, dir);
+  _qYaw.setFromAxisAngle(_up, yaw);
+  obj.quaternion.copy(_qOrient).multiply(_qYaw);
+
+  // footprint sample uses a capped radius so huge assets don't explode
+  const sampleR = Math.min(Math.max(halfW * 0.9, 0.03), PLANET_RADIUS * 0.25);
+  const h = footprintMinHeight(dir, sampleR, 12);
+  const elev = h - OCEAN_RADIUS;
+  const wetPenalty = elev < minElev * PLANET_RADIUS ? (minElev * PLANET_RADIUS - elev) * 0.4 : 0;
+
+  // soleY / halfW already include prop scale (from world bbox)
+  const bury = extraSink + curveBury(h, halfW) + Math.max(0, -soleY) + wetPenalty;
+  obj.position.copy(dir).multiplyScalar(Math.max(h - bury, OCEAN_RADIUS * 0.92));
+  return obj;
+}
+
+/** Random scatter on sphere (forests / rocks — not the authored town grid). */
 function scatterOnPlanet(
   group,
   factory,
   count,
-  { minElev = 0.03, scale = [0.85, 1.2], extraSink = 0.025, maxSlope = 0.55 } = {},
+  { minElev = 0.03, scale = [0.85, 1.2], extraSink = 0.025, maxSlope = 0.55, propScale = 1 } = {},
 ) {
   const dir = new THREE.Vector3();
   let placed = 0;
@@ -934,44 +1382,52 @@ function scatterOnPlanet(
     dir.set(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
     if (dir.lengthSq() < 0.02) continue;
     dir.normalize();
-    // keep a clear pad at the north pole (character spawn)
-    if (dir.y > 0.9) continue;
+    if (dir.y > 0.92) continue; // clear north-pole walk pad
+    // keep clear of town disc
+    if (dir.dot(_townOrigin) > 0.72) continue;
+
     const hCenter = terrainHeight(dir);
     if (hCenter - OCEAN_RADIUS < minElev * PLANET_RADIUS) continue;
 
     const obj = typeof factory === 'function' ? factory() : factory.clone(true);
-    const s = scale[0] + Math.random() * (scale[1] - scale[0]);
+    const s = (scale[0] + Math.random() * (scale[1] - scale[0])) * propScale;
+    obj.scale.set(1, 1, 1);
     obj.scale.multiplyScalar(s);
-    orientTo(obj, dir);
-    obj.rotateY(Math.random() * Math.PI * 2);
-
-    // measure sole after orientation (local Y up along normal)
+    obj.rotation.set(0, 0, 0);
     obj.position.set(0, 0, 0);
     obj.updateMatrixWorld(true);
     _box.setFromObject(obj);
     _box.getSize(_size);
     const halfW = 0.5 * Math.hypot(_size.x, _size.z);
-    const soleY = _box.min.y; // should be ~0 for our templates
+    const soleY = _box.min.y;
 
-    // slope gate using terrain gradient
-    _tangent.set(0, 1, 0).cross(dir);
-    if (_tangent.lengthSq() < 1e-6) _tangent.set(1, 0, 0).cross(dir);
-    _tangent.normalize();
+    surfaceBasis(dir);
     const h1 = terrainHeight(_sampleDir.copy(dir).addScaledVector(_tangent, 0.05).normalize());
     if (Math.abs(h1 - hCenter) / 0.05 > maxSlope) continue;
 
     const h = footprintMinHeight(dir, Math.max(halfW * 0.95, 0.04), 14);
     if (h - OCEAN_RADIUS < minElev * PLANET_RADIUS * 0.6) continue;
 
-    const curveSink = h - Math.sqrt(Math.max(h * h - halfW * halfW, 0));
-    // bury the sole slightly into the dirt so no light leaks under
-    const bury = extraSink + curveSink + Math.max(0, -soleY) + halfW * 0.04;
-    obj.position.copy(dir).multiplyScalar(h - bury);
+    _qOrient.setFromUnitVectors(_up, dir);
+    _qYaw.setFromAxisAngle(_up, Math.random() * Math.PI * 2);
+    obj.quaternion.copy(_qOrient).multiply(_qYaw);
 
+    const bury = extraSink + curveBury(h, halfW) + Math.max(0, -soleY);
+    obj.position.copy(dir).multiplyScalar(Math.max(h - bury, OCEAN_RADIUS * 0.92));
     group.add(obj);
     placed++;
   }
   return placed;
+}
+
+/** Build a plant(fn) that parents into `group`. mode: 'flat' | 'planet'. */
+export function makePlant(group, mode = 'flat', opts = {}) {
+  return (obj, x, z, yaw = 0, scale = 1) => {
+    if (mode === 'planet') plantOnPlanet(obj, x, z, yaw, scale, opts);
+    else plantOnFlat(obj, x, z, yaw, scale, opts);
+    group.add(obj);
+    return obj;
+  };
 }
 
 // ---- glTF templates ---------------------------------------------------------
@@ -995,92 +1451,184 @@ async function loadTemplate(url, targetHeight) {
 
 // ---- assemble ---------------------------------------------------------------
 
-export async function createWorld(scene, loader) {
-  const planetGroup = new THREE.Group();
-
-  const groundTex = await loader.loadAsync(groundUrl);
-  groundTex.colorSpace = THREE.SRGBColorSpace;
-  groundTex.wrapS = groundTex.wrapT = THREE.RepeatWrapping;
-  groundTex.magFilter = THREE.LinearFilter;
-  groundTex.minFilter = THREE.LinearMipmapLinearFilter;
-  groundTex.generateMipmaps = true;
-  groundTex.anisotropy = 16;
-
-  planetGroup.add(createPlanet(groundTex));
-  planetGroup.add(createOcean());
-
-  // proportions vs character (~0.75 tall after scale): trees tall, houses mid
-  const [trees, houses] = await Promise.all([
+async function loadTownAssets() {
+  // Authoring scale: buildings are ~1.5–9m tall; glTF matched to that.
+  // plantOnPlanet multiplies TOWN_PROP_SCALE so the same assets fit the sphere.
+  const [trees, gltfHouses] = await Promise.all([
     Promise.all(
       ['common', 'pine', 'birch', 'maple', 'twisted', 'common2'].map((n) =>
-        loadTemplate(`${BASE}models/tree-${n}.glb`, 0.95),
+        loadTemplate(`${BASE}models/tree-${n}.glb`, 3.2),
       ),
     ),
-    Promise.all(['0', '1', '2', '3'].map((n) => loadTemplate(`${BASE}models/house-${n}.glb`, 0.58))),
+    Promise.all(['0', '1', '2', '3'].map((n) => loadTemplate(`${BASE}models/house-${n}.glb`, 2.2))),
   ]);
-
-  const pick = (arr) => () => arr[Math.floor(Math.random() * arr.length)].clone(true);
-
-  // houses need flatter ground + deeper bury (wide footprint on a tiny sphere)
-  scatterOnPlanet(planetGroup, pick(houses), 9, {
-    minElev: 0.06,
-    scale: [0.75, 1.0],
-    extraSink: 0.04,
-    maxSlope: 0.35,
-  });
-  scatterOnPlanet(planetGroup, pick(trees), 24, {
-    minElev: 0.05,
-    scale: [0.75, 1.15],
-    extraSink: 0.03,
-    maxSlope: 0.5,
-  });
-  scatterOnPlanet(planetGroup, createRock, 18, {
-    minElev: 0.0,
-    scale: [0.55, 1.25],
-    extraSink: 0.035,
-    maxSlope: 0.85,
-  });
-  scatterOnPlanet(planetGroup, createBush, 26, {
-    minElev: 0.03,
-    scale: [0.65, 1.1],
-    extraSink: 0.025,
-    maxSlope: 0.6,
-  });
-
-  const clouds = createClouds();
-  planetGroup.add(clouds);
-
-  scene.add(planetGroup);
-
-  const sky = createSky();
-  scene.add(sky);
-
-  return { planetGroup, sky, clouds };
+  return {
+    treePick: () => trees[Math.floor(Math.random() * trees.length)].clone(true),
+    gltfHouse: () => gltfHouses[Math.floor(Math.random() * gltfHouses.length)].clone(true),
+  };
 }
 
-// plant any object so its lowest point sits on y=0 (flat ground)
-function plantOnFlat(obj, x, z, yaw = 0, scale = 1) {
-  obj.position.set(0, 0, 0);
-  obj.rotation.set(0, 0, 0);
-  obj.scale.setScalar(1);
-  if (scale !== 1) obj.scale.multiplyScalar(scale);
-  obj.rotation.y = yaw;
-  obj.updateMatrixWorld(true);
-  _box.setFromObject(obj);
-  obj.position.set(x, -_box.min.y - 0.012, z);
-  return obj;
+function placeStreetRow(plant, factories, { x0, z, count, spacing, faceYaw = 0, jitter = 0.15 }) {
+  for (let i = 0; i < count; i++) {
+    const factory = factories[i % factories.length];
+    const obj = typeof factory === 'function' ? factory() : factory.clone(true);
+    const x = x0 + i * spacing + rnd(-jitter, jitter);
+    const zz = z + rnd(-jitter * 0.5, jitter * 0.5);
+    plant(obj, x, zz, faceYaw, rnd(0.92, 1.08));
+  }
 }
 
-function scatterFlat(group, factory, count, { minR = 5, maxR = 28, scale = [0.85, 1.2] } = {}) {
+function scatterAround(plant, factory, count, { minR = 5, maxR = 28, scale = [0.85, 1.2] } = {}) {
   for (let i = 0; i < count; i++) {
     const a = Math.random() * Math.PI * 2;
     const t = Math.sqrt(Math.random());
     const r = minR + t * (maxR - minR);
     const obj = typeof factory === 'function' ? factory() : factory.clone(true);
     const s = scale[0] + Math.random() * (scale[1] - scale[0]);
-    plantOnFlat(obj, Math.cos(a) * r, Math.sin(a) * r, Math.random() * Math.PI * 2, s);
-    group.add(obj);
+    plant(obj, Math.cos(a) * r, Math.sin(a) * r, Math.random() * Math.PI * 2, s);
   }
+}
+
+/**
+ * Build a mesh from a declarative placeable `type`.
+ * Layout data lives in src/layouts/* — change coords there, not scatter math.
+ */
+function buildByType(type, place, assets) {
+  switch (type) {
+    case 'plaza':
+      return createPlazaPad(place.footprintWxD?.[0] ?? LINKON_SLICE_P0.meta.plazaSize);
+    case 'obelisk':
+      return createObelisk();
+    case 'hunterHq':
+      return createHunterHq();
+    case 'hospital':
+      return createHospital();
+    case 'cafe':
+      return createMeowCafe();
+    case 'shopBoutique':
+      return createBoutiqueShop();
+    case 'shopConvenience':
+      return createConvenienceShop();
+    case 'busStop':
+      return createBusStop();
+    case 'hunterBoard':
+      return createHunterBoard();
+    case 'skylineTower':
+      return createSkylineTower(place.variant ?? 0);
+    case 'apartmentSilhouette':
+      return createApartmentSilhouette();
+    case 'streetLight':
+      return createStreetLight();
+    case 'tree':
+      return assets?.treePick ? assets.treePick() : createBush();
+    default:
+      console.warn(`[layout] unknown type: ${type}`);
+      return null;
+  }
+}
+
+/**
+ * Declarative town: roads + places from a layout table.
+ * `plant(obj, x, z, yaw, scale)` is flat or planet adapter from makePlant().
+ * No random dense building scatter — that caused the "everything piled at center" look.
+ */
+function populateFromLayout(plant, layout, assets = {}, { maxR = 55 } = {}) {
+  const inRange = (x, z) => Math.hypot(x, z) <= maxR;
+
+  for (const road of layout.roads ?? []) {
+    if (!inRange(road.x0, road.z0) && !inRange(road.x1, road.z1)) continue;
+    plantRoadLine(plant, {
+      x0: road.x0,
+      z0: road.z0,
+      x1: road.x1,
+      z1: road.z1,
+      width: road.width ?? 5.2,
+      step: road.step ?? 5,
+    });
+  }
+
+  for (const place of layout.places ?? []) {
+    if (!inRange(place.x, place.z)) continue;
+    // Keep plaza free of tall masses even if a bad row sneaks into the table.
+    if (
+      place.type !== 'plaza' &&
+      place.type !== 'obelisk' &&
+      place.type !== 'streetLight' &&
+      place.type !== 'hunterBoard' &&
+      (place.heightHint === 'L' || place.heightHint === 'XL') &&
+      Math.hypot(place.x, place.z) < 8
+    ) {
+      console.warn(`[layout] skipped tall place too close to plaza: ${place.id}`);
+      continue;
+    }
+    const obj = buildByType(place.type, place, assets);
+    if (!obj) continue;
+    const scale = place.scale ?? 1;
+    plant(obj, place.x, place.z, place.yaw ?? 0, scale);
+  }
+}
+
+/** @deprecated dense 90s town — kept only as reference; prefer populateFromLayout */
+function populateTown(plant, { treePick, gltfHouse }, { density = 1, maxR = 55 } = {}) {
+  populateFromLayout(plant, LINKON_SLICE_P0, { treePick, gltfHouse }, { maxR });
+  if (density < 0.5) return;
+  // Optional light vegetation outside landmarks only (still sparse, no housing blocks).
+  scatterAround(plant, createBush, Math.round(6 * density), {
+    minR: 20,
+    maxR: Math.min(maxR, 34),
+    scale: [0.7, 1.1],
+  });
+}
+
+/** Short road tile (sole at y=0). Long roads must be built from tiles — a 90m slab breaks the sphere. */
+function createRoadTile(length, width, color = ROAD) {
+  const g = new THREE.Group();
+  const m = new THREE.Mesh(new THREE.BoxGeometry(length, 0.05, width), makeToon(color));
+  m.position.y = 0.025;
+  m.receiveShadow = true;
+  m.castShadow = false;
+  m.userData.noOutline = true;
+  g.add(m);
+  g.userData.noOutline = true;
+  g.traverse((o) => {
+    o.userData.noOutline = true;
+  });
+  return g;
+}
+
+/** Segment a long road into short flat tiles so each sole can bury into the sphere. */
+function plantRoadLine(plant, { x0, z0, x1, z1, width = 5.2, step = 5.5, color = ROAD }) {
+  const dx = x1 - x0;
+  const dz = z1 - z0;
+  const len = Math.hypot(dx, dz);
+  if (len < 1e-4) return;
+  const yaw = Math.atan2(dx, dz); // tile local Z along the road? Box is length on X
+  // Our tile length is along local X; face so local X follows the line.
+  const faceYaw = Math.atan2(dz, dx);
+  const n = Math.max(1, Math.ceil(len / step));
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const x = x0 + dx * t;
+    const z = z0 + dz * t;
+    // keep a small clear pad at plaza centre for the character
+    if (Math.hypot(x, z) < 3.2) continue;
+    plant(createRoadTile(step * 1.05, width, color), x, z, faceYaw, 1);
+  }
+}
+
+function populateRoads(plant) {
+  // main cross — segmented
+  plantRoadLine(plant, { x0: -34, z0: 0, x1: 34, z1: 0, width: 5.2, step: 5 });
+  plantRoadLine(plant, { x0: 0, z0: -34, x1: 0, z1: 34, width: 5.2, step: 5 });
+  // side streets
+  for (const z of [-18, 18]) {
+    plantRoadLine(plant, { x0: -28, z0: z, x1: 28, z1: z, width: 3.4, step: 5 });
+  }
+  for (const x of [-18, 18]) {
+    plantRoadLine(plant, { x0: x, z0: -24, x1: x, z1: 24, width: 3.4, step: 5 });
+  }
+  // plaza ring of sidewalk tiles
+  plant(createRoadTile(12, 12, SIDEWALK), 0, 0, 0, 1);
 }
 
 function makeRoadPlane(w, d, color = ROAD) {
@@ -1092,19 +1640,7 @@ function makeRoadPlane(w, d, color = ROAD) {
   return m;
 }
 
-// place a row of buildings facing +Z (toward street), along local X
-function placeStreetRow(group, factories, { x0, z, count, spacing, faceYaw = 0, jitter = 0.15 }) {
-  for (let i = 0; i < count; i++) {
-    const factory = factories[i % factories.length];
-    const obj = typeof factory === 'function' ? factory() : factory.clone(true);
-    const x = x0 + i * spacing + rnd(-jitter, jitter);
-    const zz = z + rnd(-jitter * 0.5, jitter * 0.5);
-    plantOnFlat(obj, x, zz, faceYaw, rnd(0.92, 1.08));
-    group.add(obj);
-  }
-}
-
-// 《完美的一天》感：90 年代末小镇街区 —— 十字主街 + 住宅巷 + 学校/厂/市集
+// Linkon hunter-slice: flat authoring stage — declarative layout, plant = flat
 export async function createFlatWorld(scene, loader) {
   const groundTex = await loader.loadAsync(groundUrl);
   groundTex.colorSpace = THREE.SRGBColorSpace;
@@ -1141,16 +1677,16 @@ export async function createFlatWorld(scene, loader) {
   cloudMat.transparent = true;
   cloudMat.opacity = 0.92;
   cloudMat.depthWrite = false;
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 18; i++) {
     const cloud = new THREE.Group();
     const n = 3 + (i % 3);
     for (let j = 0; j < n; j++) {
-      const puff = new THREE.Mesh(new THREE.SphereGeometry(0.6 + Math.random() * 0.5, 10, 8), cloudMat);
-      puff.position.set((j - n * 0.5) * 0.75, Math.random() * 0.2, (Math.random() - 0.5) * 0.4);
+      const puff = new THREE.Mesh(new THREE.SphereGeometry(0.7 + Math.random() * 0.6, 10, 8), cloudMat);
+      puff.position.set((j - n * 0.5) * 0.8, Math.random() * 0.25, (Math.random() - 0.5) * 0.45);
       puff.scale.y = 0.5;
       cloud.add(puff);
     }
-    cloud.position.set((Math.random() - 0.5) * 90, 10 + Math.random() * 5, (Math.random() - 0.5) * 90);
+    cloud.position.set((Math.random() - 0.5) * 100, 12 + Math.random() * 6, (Math.random() - 0.5) * 100);
     cloud.userData.noOutline = true;
     cloud.traverse((o) => {
       o.castShadow = false;
@@ -1164,241 +1700,81 @@ export async function createFlatWorld(scene, loader) {
   const group = new THREE.Group();
   scene.add(group);
 
-  // ---- roads: cross main streets + ring sidewalks ----
-  const roads = new THREE.Group();
-  roads.userData.noOutline = true;
-  // E-W main street
-  const roadEW = makeRoadPlane(90, 5.5);
-  roadEW.position.set(0, 0.008, 0);
-  roads.add(roadEW);
-  // N-S main street
-  const roadNS = makeRoadPlane(5.5, 90);
-  roadNS.position.set(0, 0.009, 0);
-  roads.add(roadNS);
-  // side streets
-  for (const z of [-18, 18, -32, 32]) {
-    const r = makeRoadPlane(70, 3.6);
-    r.position.set(0, 0.008, z);
-    roads.add(r);
-  }
-  for (const x of [-18, 18, -32, 32]) {
-    const r = makeRoadPlane(3.6, 50);
-    r.position.set(x, 0.008, 0);
-    roads.add(r);
-  }
-  // plaza at center (schoolyard / 广场)
-  const plaza = makeRoadPlane(14, 14, SIDEWALK);
-  plaza.position.set(0, 0.01, 0);
-  roads.add(plaza);
-  // road dashes
-  for (let i = -40; i <= 40; i += 3.5) {
-    if (Math.abs(i) < 6) continue;
-    const dash = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 0.18), makeToon(0xe8e0d0));
-    dash.rotation.x = -Math.PI / 2;
-    dash.position.set(i, 0.012, 0);
-    dash.userData.noOutline = true;
-    roads.add(dash);
-    const dash2 = new THREE.Mesh(new THREE.PlaneGeometry(0.18, 1.4), makeToon(0xe8e0d0));
-    dash2.rotation.x = -Math.PI / 2;
-    dash2.position.set(0, 0.012, i);
-    dash2.userData.noOutline = true;
-    roads.add(dash2);
-  }
-  scene.add(roads);
+  const assets = await loadTownAssets();
+  const plant = makePlant(group, 'flat');
+  // Roads + landmarks from the same table (segmented tiles, sole@y=0).
+  populateFromLayout(plant, LINKON_SLICE_P0, assets, {
+    maxR: LINKON_SLICE_P0.meta.playableHalfExtent + 8,
+  });
 
-  // ---- load glTF accents (mix with procedural for variety) ----
-  const [trees, gltfHouses] = await Promise.all([
-    Promise.all(
-      ['common', 'pine', 'birch', 'maple', 'twisted', 'common2'].map((n) =>
-        loadTemplate(`${BASE}models/tree-${n}.glb`, 3.2),
-      ),
-    ),
-    Promise.all(['0', '1', '2', '3'].map((n) => loadTemplate(`${BASE}models/house-${n}.glb`, 2.2))),
-  ]);
-  const treePick = () => trees[Math.floor(Math.random() * trees.length)].clone(true);
-  const gltfHouse = () => gltfHouses[Math.floor(Math.random() * gltfHouses.length)].clone(true);
-
-  // ---- civic landmarks: each gets its own plot & correct facing ----
-  // 小学：南侧，面向广场
-  {
-    const school = createSchool();
-    plantOnFlat(school, 0, -14, 0, 1);
-    group.add(school);
-  }
-  // 医院：东北角大地块（体量大，不进商业街）
-  {
-    const hospital = createHospital();
-    plantOnFlat(hospital, 22, 20, Math.PI, 1);
-    group.add(hospital);
-  }
-  // 邮电局：西主街转角
-  {
-    const post = createPostOffice();
-    plantOnFlat(post, -14, 6.5, Math.PI, 1);
-    group.add(post);
-  }
-  // 铝厂：西南远郊
-  {
-    const factory = createFactory();
-    plantOnFlat(factory, -32, -30, Math.PI * 0.15, 1);
-    group.add(factory);
-  }
-  {
-    const tower = createWaterTower();
-    plantOnFlat(tower, 34, -28, 0, 1);
-    group.add(tower);
-  }
-  {
-    const bus = createBusStop();
-    plantOnFlat(bus, 9, 3.4, Math.PI, 1);
-    group.add(bus);
-  }
-  {
-    const bus2 = createBusStop();
-    plantOnFlat(bus2, -10, -3.4, 0, 1);
-    group.add(bus2);
-  }
-
-  // ---- street shops only (real small commerce, never hospital/post) ----
-  // E-W north strip (face south)
-  const shopsN = [
-    createStore, createSnackShop, createBarber, createVideoHall,
-    createStore, createKiosk, createBarber, createSnackShop,
-    createVideoHall, createStore, createKiosk, createBarber,
-  ];
-  placeStreetRow(group, shopsN, { x0: -30, z: 5.4, count: 12, spacing: 4.4, faceYaw: Math.PI, jitter: 0.15 });
-
-  // E-W south strip (face north) — leave gap for school frontage
-  const shopsS = [
-    createStore, createSnackShop, createKiosk, createVideoHall,
-    createBarber, createStore, createSnackShop, createVideoHall,
-    createBarber, createStore,
-  ];
-  placeStreetRow(group, shopsS, { x0: -26, z: -5.4, count: 5, spacing: 4.5, faceYaw: 0, jitter: 0.15 });
-  placeStreetRow(group, shopsS, { x0: 8, z: -5.4, count: 5, spacing: 4.5, faceYaw: 0, jitter: 0.15 });
-
-  // N-S street shops
-  {
-    const kinds = [createStore, createSnackShop, createBarber, createKiosk, createVideoHall, createStore, createBarber, createSnackShop];
-    kinds.forEach((f, i) => {
-      // skip school zone on south arm
-      const z = -22 + i * 4.5;
-      if (z > -18 && z < -6) return;
-      const obj = f();
-      plantOnFlat(obj, -5.4, z, Math.PI / 2, rnd(0.95, 1.06));
-      group.add(obj);
-    });
-    kinds.forEach((f, i) => {
-      const z = -20 + i * 4.4;
-      if (z > -18 && z < -6) return;
-      const obj = f();
-      plantOnFlat(obj, 5.4, z, -Math.PI / 2, rnd(0.95, 1.06));
-      group.add(obj);
-    });
-    // north arm of N-S
-    kinds.forEach((f, i) => {
-      if (i > 4) return;
-      const obj = f();
-      plantOnFlat(obj, -5.4, 8 + i * 4.4, Math.PI / 2, rnd(0.95, 1.06));
-      group.add(obj);
-    });
-    kinds.forEach((f, i) => {
-      if (i > 4) return;
-      const obj = f();
-      plantOnFlat(obj, 5.4, 10 + i * 4.4, -Math.PI / 2, rnd(0.95, 1.06));
-      group.add(obj);
-    });
-  }
-
-  // residential blocks — keep clear of hospital (22,20), school, factory, post
-  const resFactories = [createResidence, createApartment, gltfHouse, createResidence, createApartment];
-  const blocks = [
-    { cx: -18, cz: 18, face: Math.PI },
-    { cx: 14, cz: -22, face: 0 },
-    { cx: -18, cz: -22, face: 0 },
-    { cx: 30, cz: 6, face: -Math.PI / 2 },
-    { cx: -30, cz: 12, face: Math.PI / 2 },
-    { cx: 28, cz: -16, face: -Math.PI / 2 },
-    { cx: -28, cz: -12, face: Math.PI / 2 },
-    { cx: 12, cz: 30, face: Math.PI }, // north of hospital road
-  ];
-  const keepClear = (x, z) => {
-    if (Math.hypot(x, z) < 10) return true; // plaza
-    if (Math.abs(x) < 4.2 && Math.abs(z) < 42) return true; // N-S road
-    if (Math.abs(z) < 3.8 && Math.abs(x) < 42) return true; // E-W road
-    if (Math.hypot(x - 22, z - 20) < 12) return true; // hospital campus
-    if (Math.hypot(x - 0, z + 14) < 10) return true; // school yard
-    if (Math.hypot(x + 14, z - 6.5) < 5) return true; // post office
-    if (Math.hypot(x + 32, z + 30) < 10) return true; // factory
-    return false;
+  return {
+    ground,
+    group,
+    sky,
+    clouds,
+    mode: 'flat',
+    layout: LINKON_SLICE_P0,
   };
-  for (const b of blocks) {
-    for (let row = 0; row < 3; row++) {
-      for (let col = 0; col < 4; col++) {
-        if (Math.random() < 0.12) continue;
-        const f = resFactories[(row * 3 + col) % resFactories.length];
-        const obj = f();
-        const x = b.cx + (col - 1.5) * 4.2 + rnd(-0.3, 0.3);
-        const z = b.cz + (row - 1) * 4.5 + rnd(-0.25, 0.25);
-        if (keepClear(x, z)) continue;
-        plantOnFlat(obj, x, z, b.face + rnd(-0.08, 0.08), rnd(0.9, 1.12));
-        group.add(obj);
-      }
-    }
-  }
+}
 
-  // market square (east of center)
-  for (let i = 0; i < 10; i++) {
-    const stall = createMarketStall();
-    const col = i % 5;
-    const row = Math.floor(i / 5);
-    plantOnFlat(stall, 12 + col * 2.4, 10 + row * 2.6, Math.PI + rnd(-0.1, 0.1), rnd(0.9, 1.1));
-    group.add(stall);
-  }
+/**
+ * Planet mode: same town layout + flat-bottom buildings, planted with plantOnPlanet.
+ * Character walk rotates the planet group under a fixed north-pole pad.
+ */
+export async function createWorld(scene, loader) {
+  const planetGroup = new THREE.Group();
 
-  // street furniture
-  for (let i = -36; i <= 36; i += 8) {
-    if (Math.abs(i) < 5) continue;
-    const light1 = createStreetLight();
-    plantOnFlat(light1, i, 2.6, 0, 1);
-    group.add(light1);
-    const light2 = createStreetLight();
-    plantOnFlat(light2, i, -2.6, Math.PI, 1);
-    group.add(light2);
-  }
-  for (let i = -30; i <= 30; i += 10) {
-    if (Math.abs(i) < 6) continue;
-    const light = createStreetLight();
-    plantOnFlat(light, 2.6, i, Math.PI / 2, 1);
-    group.add(light);
-  }
-  for (let i = 0; i < 6; i++) {
-    const booth = createPhoneBooth();
-    plantOnFlat(booth, rnd(-30, 30), rnd(-30, 30) > 0 ? 3.5 : -3.5, rnd(0, Math.PI * 2), 1);
-    group.add(booth);
-  }
-  for (let i = 0; i < 5; i++) {
-    const board = createBillboard();
-    plantOnFlat(board, rnd(-35, 35), rnd(-35, 35), rnd(0, Math.PI * 2), rnd(0.9, 1.15));
-    group.add(board);
-  }
+  const groundTex = await loader.loadAsync(groundUrl);
+  groundTex.colorSpace = THREE.SRGBColorSpace;
+  groundTex.wrapS = groundTex.wrapT = THREE.RepeatWrapping;
+  groundTex.magFilter = THREE.LinearFilter;
+  groundTex.minFilter = THREE.LinearMipmapLinearFilter;
+  groundTex.generateMipmaps = true;
+  groundTex.anisotropy = 16;
 
-  // trees lining streets + fill neighborhoods
-  for (let i = -40; i <= 40; i += 5.5) {
-    if (Math.abs(i) < 7) continue;
-    for (const side of [4.2, -4.2]) {
-      if (Math.random() < 0.25) continue;
-      const t = treePick();
-      plantOnFlat(t, i + rnd(-0.4, 0.4), side + rnd(-0.2, 0.2), rnd(0, Math.PI * 2), rnd(0.75, 1.05));
-      group.add(t);
-    }
-  }
-  scatterFlat(group, treePick, 40, { minR: 20, maxR: 55, scale: [0.7, 1.15] });
-  scatterFlat(group, createBush, 36, { minR: 8, maxR: 48, scale: [0.8, 1.4] });
-  scatterFlat(group, createRock, 16, { minR: 25, maxR: 55, scale: [0.7, 1.3] });
+  planetGroup.add(createPlanet(groundTex));
+  planetGroup.add(createOcean());
 
-  // outer ring of glTF houses for soft skyline
-  scatterFlat(group, gltfHouse, 14, { minR: 36, maxR: 52, scale: [0.85, 1.15] });
+  const townGroup = new THREE.Group();
+  planetGroup.add(townGroup);
 
-  return { ground, group, sky, clouds, roads };
+  const assets = await loadTownAssets();
+  // Same declarative layout as flat; plantOnPlanet sinks flat soles into the curve.
+  const plant = makePlant(townGroup, 'planet', {
+    propScale: TOWN_PROP_SCALE,
+    extraSink: 0.016,
+    minElev: 0.01,
+  });
+  populateFromLayout(plant, LINKON_SLICE_P0, assets, { maxR: 30 });
+
+  // Sparse non-town props only — never scatter buildings onto the sphere.
+  scatterOnPlanet(planetGroup, assets.treePick, 10, {
+    minElev: 0.04,
+    scale: [0.5, 0.9],
+    extraSink: 0.025,
+    maxSlope: 0.5,
+    propScale: TOWN_PROP_SCALE,
+  });
+  scatterOnPlanet(planetGroup, createRock, 12, {
+    minElev: 0.0,
+    scale: [0.45, 1.1],
+    extraSink: 0.025,
+    maxSlope: 0.85,
+  });
+  scatterOnPlanet(planetGroup, createBush, 14, {
+    minElev: 0.02,
+    scale: [0.55, 1.0],
+    extraSink: 0.018,
+    maxSlope: 0.65,
+  });
+
+  const clouds = createClouds();
+  planetGroup.add(clouds);
+  scene.add(planetGroup);
+
+  const sky = createSky();
+  sky.scale.setScalar(1.15);
+  scene.add(sky);
+
+  return { planetGroup, townGroup, sky, clouds, mode: 'planet' };
 }
