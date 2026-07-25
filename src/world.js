@@ -1794,12 +1794,22 @@ function buildByType(type, place, assets) {
       return createPlazaPad(place.footprintWxD?.[0] ?? MUSHOKU_SLICE_P0.meta.plazaSize);
     case 'well':
       return createWell();
-    case 'adventurersGuild':
-      return createHeroBuilding('adventurersGuild') || createAdventurersGuild();
-    case 'temple':
-      return createHeroBuilding('temple') || createTemple();
-    case 'inn':
-      return createHeroBuilding('inn') || createInn();
+    case 'adventurersGuild': {
+      // No legacy fallback — if hero fails we want a loud error, not silent old boxes
+      const h = createHeroBuilding('adventurersGuild');
+      if (!h) throw new Error('[layout] hero adventurersGuild failed');
+      return h;
+    }
+    case 'temple': {
+      const h = createHeroBuilding('temple');
+      if (!h) throw new Error('[layout] hero temple failed');
+      return h;
+    }
+    case 'inn': {
+      const h = createHeroBuilding('inn');
+      if (!h) throw new Error('[layout] hero inn failed');
+      return h;
+    }
     case 'shopMagic':
       return createMagicShop();
     case 'shopSmithy':

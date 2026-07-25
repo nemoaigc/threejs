@@ -265,6 +265,28 @@ function hideBoot() {
       window.__scene = scene;
       // Quick proof the new hero factories are live (console + optional HUD).
       console.info('[boot] heroes:', window.__heroes);
+      console.info('[boot] hero mode: photo-facade (ref_main.png on landmark faces)');
+      // On-screen proof so we never wonder if old boxes are still live
+      let badge = document.getElementById('hero-badge');
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.id = 'hero-badge';
+        Object.assign(badge.style, {
+          position: 'fixed',
+          top: '12px',
+          left: '12px',
+          zIndex: '30',
+          padding: '8px 12px',
+          borderRadius: '8px',
+          background: 'rgba(20,40,20,0.82)',
+          color: '#b8f0c0',
+          font: '12px/1.4 ui-monospace, monospace',
+          pointerEvents: 'none',
+        });
+        document.body.appendChild(badge);
+      }
+      const n = window.__heroes?.length ?? 0;
+      badge.textContent = `HEROES photo-facade ×${n}  (guild/temple/inn)`;
     }
 
     buildGUI();
