@@ -48,13 +48,13 @@ export const MUSHOKU_SLICE_P0 = {
       priority: 'P0',
     },
 
-    // C landmarks — north view cone from hero spawn (0, 6) looking −Z
+    // C landmarks — north of hero (spawn z≈6 looking −Z). yaw≈0 → facade +Z faces camera.
     {
       id: 'landmark.adventurers_guild',
       type: 'adventurersGuild',
-      x: -16,
-      z: -12,
-      yaw: 0.55, // face plaza / southeast
+      x: -11,
+      z: -10,
+      yaw: 0.12, // almost face camera; slight angle for 3/4 volume
       footprintWxD: [10, 8],
       heightHint: 'L',
       zone: 'C',
@@ -63,9 +63,9 @@ export const MUSHOKU_SLICE_P0 = {
     {
       id: 'landmark.temple',
       type: 'temple',
-      x: 6,
-      z: -22,
-      yaw: 0.15, // long facade readable from plaza
+      x: 2,
+      z: -16,
+      yaw: 0.05, // center-north, spire reads from hero shot
       footprintWxD: [16, 10],
       heightHint: 'L',
       zone: 'C',
@@ -74,9 +74,9 @@ export const MUSHOKU_SLICE_P0 = {
     {
       id: 'landmark.inn',
       type: 'inn',
-      x: 14,
-      z: -8,
-      yaw: -0.4, // face plaza / southwest
+      x: 11,
+      z: -9,
+      yaw: -0.1,
       footprintWxD: [6, 5],
       heightHint: 'S',
       zone: 'A',

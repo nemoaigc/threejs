@@ -1831,6 +1831,7 @@ function buildByType(type, place, assets) {
  */
 function populateFromLayout(plant, layout, assets = {}, { maxR = 55 } = {}) {
   const inRange = (x, z) => Math.hypot(x, z) <= maxR;
+  const plantedHeroes = [];
 
   for (const road of layout.roads ?? []) {
     if (!inRange(road.x0, road.z0) && !inRange(road.x1, road.z1)) continue;
@@ -1860,8 +1861,18 @@ function populateFromLayout(plant, layout, assets = {}, { maxR = 55 } = {}) {
     }
     const obj = buildByType(place.type, place, assets);
     if (!obj) continue;
+    if (obj.name?.startsWith('hero.')) {
+      plantedHeroes.push({ id: place.id, type: place.type, name: obj.name, x: place.x, z: place.z });
+    }
     const scale = place.scale ?? 1;
     plant(obj, place.x, place.z, place.yaw ?? 0, scale);
+  }
+
+  if (plantedHeroes.length) {
+    console.info('[layout] hero buildings planted:', plantedHeroes);
+    if (typeof window !== 'undefined') window.__heroes = plantedHeroes;
+  } else {
+    console.warn('[layout] no hero.* buildings planted — still on legacy builders?');
   }
 }
 

@@ -97,20 +97,20 @@ export function createTempleHero() {
     );
   }
 
-  // Gold sun emblem (NOT a cross) — identity
-  const sunY = baseY + mh * 0.42;
+  // Gold sun emblem (NOT a cross) — oversized identity marker
+  const sunY = baseY + mh * 0.48;
   const sun = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.75, 0.75, 0.12, 24),
-    makeGlow(GOLD, 0xffd060, 0.5),
+    new THREE.CylinderGeometry(1.15, 1.15, 0.16, 24),
+    makeGlow(GOLD, 0xffd060, 0.75),
   );
   sun.rotation.x = Math.PI / 2;
-  sun.position.set(0, sunY, faceZ + 0.12);
+  sun.position.set(0, sunY, faceZ + 0.14);
   g.add(sun);
   for (let i = 0; i < 12; i++) {
     const a = (i / 12) * Math.PI * 2;
     box(
-      g, 0.14, 0.55, 0.08,
-      Math.cos(a) * 1.15, sunY + Math.sin(a) * 1.15, faceZ + 0.12,
+      g, 0.22, 0.95, 0.1,
+      Math.cos(a) * 1.75, sunY + Math.sin(a) * 1.75, faceZ + 0.14,
       GOLD,
     );
   }

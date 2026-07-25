@@ -27,20 +27,21 @@ const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(SKY, 55, 130);
 
 // Hero shot (spec §3): stand south of plaza looking north toward temple axis.
-const HERO_SPAWN = { x: 0, y: 0, z: 6 };
+const HERO_SPAWN = { x: 0, y: 0, z: 8 };
 const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 250);
 // Behind the adventurer, looking north (−Z) at guild / temple / inn.
-camera.position.set(2.5, 5.5, 16);
+camera.position.set(0, 6.5, 22);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.enablePan = false;
 controls.minDistance = 2.5;
-controls.maxDistance = 48;
+controls.maxDistance = 60;
 controls.minPolarAngle = 0.12;
 controls.maxPolarAngle = Math.PI * 0.48;
-controls.target.set(2, 3.0, -6);
+// Frame the three heroes: guild (−11,−10) · temple (2,−16) · inn (11,−9)
+controls.target.set(0, 4.5, -10);
 
 // Stronger key, softer fill — punchier cel bands (X consensus: lighting is half the look)
 const sun = new THREE.DirectionalLight(0xfff2dc, 2.45);
@@ -261,6 +262,9 @@ function hideBoot() {
       window.__character = character;
       window.__camera = camera;
       window.__controls = controls;
+      window.__scene = scene;
+      // Quick proof the new hero factories are live (console + optional HUD).
+      console.info('[boot] heroes:', window.__heroes);
     }
 
     buildGUI();

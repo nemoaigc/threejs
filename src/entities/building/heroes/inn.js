@@ -54,9 +54,9 @@ export function createInnHero() {
   box(g, 0.85, 2.4, 0.85, w * 0.28, baseY + h + 1.5, -d * 0.12, STONE);
   box(g, 0.55, 0.45, 0.55, w * 0.28, baseY + h + 2.9, -d * 0.12, 0x6a6058);
 
-  // —— Ground tavern bay (identity: warm glow) ——
-  box(g, w * 0.55, h * 0.38, 0.55, w * 0.12, baseY + h * 0.28, d / 2 + 0.28, WOOD);
-  glowBox(g, w * 0.48, h * 0.32, 0.12, w * 0.12, baseY + h * 0.28, d / 2 + 0.55, GLOW, 0xffc060, 0.85);
+  // —— Ground tavern bay (identity: strong warm glow) ——
+  box(g, w * 0.62, h * 0.42, 0.6, w * 0.08, baseY + h * 0.3, d / 2 + 0.3, WOOD);
+  glowBox(g, w * 0.55, h * 0.36, 0.14, w * 0.08, baseY + h * 0.3, d / 2 + 0.6, GLOW, 0xffb040, 1.1);
   // diamond mullions
   box(g, 0.06, h * 0.3, 0.04, w * 0.12, baseY + h * 0.28, d / 2 + 0.62, WOOD_DARK);
   box(g, w * 0.42, 0.06, 0.04, w * 0.12, baseY + h * 0.28, d / 2 + 0.62, WOOD_DARK);
@@ -83,19 +83,18 @@ export function createInnHero() {
     box(g, 0.22, 0.9, 0.06, x + 0.52, baseY + h * 0.72, fz + 0.06, WOOD);
   }
 
-  // —— Hanging mug sign (identity) ——
-  const signZ = d / 2 + 0.9;
-  const signX = -w * 0.42;
-  // bracket
-  box(g, 0.12, 0.12, 1.1, signX, baseY + h * 0.62, signZ - 0.2, 0x3a3530);
-  box(g, 0.1, 0.7, 0.1, signX, baseY + h * 0.55, signZ + 0.35, 0x3a3530);
-  // board
-  box(g, 1.5, 1.15, 0.14, signX, baseY + h * 0.42, signZ + 0.45, WOOD_DARK);
-  box(g, 1.3, 0.95, 0.12, signX, baseY + h * 0.42, signZ + 0.55, ACCENT);
+  // —— Hanging mug sign (identity) — large enough to read from plaza ——
+  const signZ = d / 2 + 1.35;
+  const signX = -w * 0.05;
+  const signY = baseY + h * 0.72;
+  box(g, 0.14, 0.14, 1.6, signX, signY + 0.9, signZ - 0.3, 0x3a3530);
+  box(g, 0.12, 1.0, 0.12, signX, signY + 0.4, signZ + 0.5, 0x3a3530);
+  box(g, 2.2, 1.7, 0.16, signX, signY, signZ + 0.65, WOOD_DARK);
+  box(g, 1.95, 1.45, 0.14, signX, signY, signZ + 0.78, ACCENT);
   // mug silhouette
-  box(g, 0.45, 0.5, 0.08, signX - 0.05, baseY + h * 0.42, signZ + 0.64, 0x1a1010);
-  box(g, 0.15, 0.28, 0.06, signX + 0.28, baseY + h * 0.42, signZ + 0.64, 0x1a1010);
-  box(g, 0.5, 0.1, 0.06, signX - 0.05, baseY + h * 0.55, signZ + 0.64, 0x1a1010);
+  box(g, 0.7, 0.75, 0.1, signX - 0.1, signY, signZ + 0.9, 0x1a1010);
+  box(g, 0.22, 0.42, 0.08, signX + 0.4, signY, signZ + 0.9, 0x1a1010);
+  box(g, 0.75, 0.14, 0.08, signX - 0.1, signY + 0.35, signZ + 0.9, 0x1a1010);
 
   // Flower box
   box(g, 1.0, 0.28, 0.4, -w * 0.05, baseY + 1.0, d / 2 + 0.55, WOOD);

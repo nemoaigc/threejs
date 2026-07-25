@@ -109,26 +109,24 @@ export function createAdventurersGuildHero() {
   // door arch beam
   box(g, 2.8, 0.28, 0.18, 0, baseY + 3.05, d / 2 + 0.1, WOOD);
 
-  // —— HUGE hanging guild sign (identity #1) ——
-  const signZ = d / 2 + 2.15;
-  box(g, 0.16, 1.5, 0.16, 0, baseY + stoneH + 1.2, signZ, WOOD_DARK);
-  // arm
-  box(g, 0.18, 0.18, 2.2, 0, baseY + stoneH + timberH * 0.55, signZ - 0.4, WOOD);
-  // board
-  box(g, 3.9, 2.0, 0.18, 0, baseY + stoneH + timberH * 0.55, signZ + 0.35, WOOD_DARK);
-  box(g, 3.5, 1.65, 0.14, 0, baseY + stoneH + timberH * 0.55, signZ + 0.48, GREEN);
-  // gold crossed swords (two boxes X)
-  const sx0 = baseY + stoneH + timberH * 0.55;
-  const swordA = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.22, 0.1), makeToon(GOLD));
-  swordA.position.set(0, sx0, signZ + 0.58);
+  // —— HUGE hanging guild sign (identity #1) — oversized for distance read ——
+  const signZ = d / 2 + 2.4;
+  const signY = baseY + stoneH + timberH * 0.62;
+  box(g, 0.2, 1.8, 0.2, 0, baseY + stoneH + 1.4, signZ - 0.2, WOOD_DARK);
+  box(g, 0.22, 0.22, 2.6, 0, signY + 1.1, signZ - 0.5, WOOD);
+  // board — larger than building windows so camera can't miss it
+  box(g, 5.2, 2.8, 0.22, 0, signY, signZ + 0.4, WOOD_DARK);
+  box(g, 4.7, 2.4, 0.18, 0, signY, signZ + 0.55, GREEN);
+  // gold crossed swords
+  const swordA = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.32, 0.12), makeToon(GOLD));
+  swordA.position.set(0, signY, signZ + 0.68);
   swordA.rotation.z = 0.7;
   g.add(swordA);
   const swordB = swordA.clone();
   swordB.rotation.z = -0.7;
   g.add(swordB);
-  // hilts
-  box(g, 0.55, 0.18, 0.1, -0.55, sx0 + 0.55, signZ + 0.58, GOLD);
-  box(g, 0.55, 0.18, 0.1, 0.55, sx0 - 0.55, signZ + 0.58, GOLD);
+  box(g, 0.7, 0.24, 0.12, -0.75, signY + 0.75, signZ + 0.68, GOLD);
+  box(g, 0.7, 0.24, 0.12, 0.75, signY - 0.75, signZ + 0.68, GOLD);
 
   // —— Quest board (identity #2) ——
   const qbX = w * 0.38;
