@@ -456,22 +456,30 @@ function addSunSymbol(g, x, y, z, size = 0.7) {
   }
 }
 
-/** Simple gable (two pitched slabs) for timber-fantasy roofs. */
+/** Solid triangular-prism gable roof (not two floating slabs). */
 function addGableRoof(g, w, d, y, color = 0xb85a48, rise = 1.1) {
-  const mat = makeToon(color);
-  // Wider eaves so roofs read as silhouettes, not flat lids
-  const slabL = new THREE.Mesh(new THREE.BoxGeometry(w * 1.22, 0.16, d * 0.78), mat);
-  slabL.position.set(0, y + rise * 0.45, -d * 0.2);
-  slabL.rotation.x = 0.52;
-  g.add(slabL);
-  const slabR = new THREE.Mesh(new THREE.BoxGeometry(w * 1.22, 0.16, d * 0.78), mat);
-  slabR.position.set(0, y + rise * 0.45, d * 0.2);
-  slabR.rotation.x = -0.52;
-  g.add(slabR);
-  // ridge beam + darker underside lip for depth under toon
-  boxAt(g, w * 1.24, 0.14, 0.18, 0, y + rise * 0.88, 0, color);
-  boxAt(g, w * 1.18, 0.08, 0.1, 0, y + rise * 0.12, d * 0.48, 0x4a3028);
-  boxAt(g, w * 1.18, 0.08, 0.1, 0, y + rise * 0.12, -d * 0.48, 0x4a3028);
+  const overhang = 0.28;
+  const hw = w * 0.5 + overhang;
+  const hd = d * 0.5 + overhang;
+  const v = [
+    -hw, 0, -hd, hw, 0, -hd, hw, 0, hd, -hw, 0, hd,
+    -hw, rise, 0, hw, rise, 0,
+  ];
+  const idx = [
+    0, 1, 5, 0, 5, 4,
+    3, 4, 5, 3, 5, 2,
+    0, 4, 3,
+    1, 2, 5,
+    0, 3, 2, 0, 2, 1,
+  ];
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  const mesh = new THREE.Mesh(geo, makeToon(color));
+  mesh.position.y = y;
+  g.add(mesh);
+  boxAt(g, w + overhang * 2, 0.1, 0.16, 0, y + rise + 0.04, 0, color);
 }
 
 /** Framed windows — glass + sill + thin mullion (reads sharper under outline). */

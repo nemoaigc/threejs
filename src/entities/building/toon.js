@@ -1,5 +1,5 @@
 /**
- * Shared cel materials for buildings (no dependency on world.js → no cycles).
+ * Shared cel materials + solid building primitives for hero assets.
  */
 import * as THREE from 'three';
 
@@ -52,36 +52,86 @@ export function glowBox(g, w, h, d, x, y, z, color, emissive, intensity = 0.65) 
   return box(g, w, h, d, x, y, z, color, makeGlow(color, emissive, intensity));
 }
 
-/** Front-facing triangular gable (iconic roof silhouette from hero camera). */
-export function frontGable(g, width, rise, depth, y, z, color) {
-  const shape = new THREE.Shape();
-  shape.moveTo(-width * 0.5, 0);
-  shape.lineTo(width * 0.5, 0);
-  shape.lineTo(0, rise);
-  shape.closePath();
-  const geo = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: false });
-  // Shape is XY; extrude +Z. Center depth.
+/**
+ * SOLID gable roof — one triangular prism, not two floating slabs.
+ * Ridge runs along +X (left–right). Peak height = `rise` above base y.
+ * Overhang slightly past wall w/d.
+ */
+export function solidGableRoof(g, w, d, y, color, rise = 2.0, overhang = 0.35) {
+  const hw = w * 0.5 + overhang;
+  const hd = d * 0.5 + overhang;
+  // 6 verts: bottom 4 eave corners + 2 ridge ends
+  // Bottom: (-hw,0,-hd) (hw,0,-hd) (hw,0,hd) (-hw,0,hd)
+  // Ridge:  ( -hw,rise,0) (hw,rise,0)
+  const v = [
+    -hw, 0, -hd, // 0 back-left eave
+    hw, 0, -hd, // 1 back-right eave
+    hw, 0, hd, // 2 front-right eave
+    -hw, 0, hd, // 3 front-left eave
+    -hw, rise, 0, // 4 ridge left
+    hw, rise, 0, // 5 ridge right
+  ];
+  const idx = [
+    // back slope
+    0, 1, 5, 0, 5, 4,
+    // front slope
+    3, 4, 5, 3, 5, 2,
+    // left gable
+    0, 4, 3,
+    // right gable
+    1, 2, 5,
+    // underside (so no hole if seen from below)
+    0, 3, 2, 0, 2, 1,
+  ];
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
   const mesh = new THREE.Mesh(geo, makeToon(color));
-  mesh.position.set(0, y, z - depth * 0.5);
+  mesh.position.y = y;
+  g.add(mesh);
+  // ridge cap
+  box(g, w + overhang * 2 + 0.1, 0.12, 0.18, 0, y + rise + 0.04, 0, color);
+  return mesh;
+}
+
+/** Hip / four-slope simple roof (for small shops) — solid pyramid frustum-ish. */
+export function solidHipRoof(g, w, d, y, color, rise = 1.4, overhang = 0.25) {
+  const hw = w * 0.5 + overhang;
+  const hd = d * 0.5 + overhang;
+  const v = [
+    -hw, 0, -hd,
+    hw, 0, -hd,
+    hw, 0, hd,
+    -hw, 0, hd,
+    0, rise, 0,
+  ];
+  const idx = [
+    0, 1, 4,
+    1, 2, 4,
+    2, 3, 4,
+    3, 0, 4,
+    0, 3, 2, 0, 2, 1,
+  ];
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  const mesh = new THREE.Mesh(geo, makeToon(color));
+  mesh.position.y = y;
   g.add(mesh);
   return mesh;
 }
 
-/** Two-slope gable roof along X (ridge left–right). */
-export function gableRoof(g, w, d, y, color, rise = 1.6) {
-  const mat = makeToon(color);
-  const slabL = new THREE.Mesh(new THREE.BoxGeometry(w * 1.18, 0.18, d * 0.72), mat);
-  slabL.position.set(0, y + rise * 0.42, -d * 0.18);
-  slabL.rotation.x = 0.55;
-  g.add(slabL);
-  const slabR = new THREE.Mesh(new THREE.BoxGeometry(w * 1.18, 0.18, d * 0.72), mat);
-  slabR.position.set(0, y + rise * 0.42, d * 0.18);
-  slabR.rotation.x = -0.55;
-  g.add(slabR);
-  box(g, w * 1.2, 0.14, 0.2, 0, y + rise * 0.82, 0, color);
-  // dark eave lips
-  box(g, w * 1.14, 0.1, 0.12, 0, y + 0.08, d * 0.48, 0x4a3028);
-  box(g, w * 1.14, 0.1, 0.12, 0, y + 0.08, -d * 0.48, 0x4a3028);
+/** Cone spire for temples / towers. */
+export function solidCone(g, radius, height, x, y, z, color, segments = 8) {
+  const mesh = new THREE.Mesh(
+    new THREE.ConeGeometry(radius, height, segments),
+    makeToon(color),
+  );
+  mesh.position.set(x, y + height / 2, z);
+  g.add(mesh);
+  return mesh;
 }
 
 export function barrel(g, x, y, z, s = 1) {
@@ -101,4 +151,34 @@ export function crate(g, x, y, z, sx = 0.55, sy = 0.45, sz = 0.5) {
   box(g, sx, sy, sz, x, y + sy / 2, z, 0xa07848);
   box(g, sx * 1.02, 0.04, sz * 1.02, x, y + sy * 0.08, z, 0x6a5030);
   box(g, sx * 1.02, 0.04, sz * 1.02, x, y + sy * 0.92, z, 0x6a5030);
+}
+
+// Keep old name as alias → solid (world.js legacy may call gableRoof)
+export const gableRoof = solidGableRoof;
+export function frontGable(g, width, rise, depth, y, z, color) {
+  // solid triangular wall, not a thin extrude flake
+  const hw = width * 0.5;
+  const v = [
+    -hw, 0, 0,
+    hw, 0, 0,
+    0, rise, 0,
+    -hw, 0, -depth,
+    hw, 0, -depth,
+    0, rise, -depth,
+  ];
+  const idx = [
+    0, 1, 2,
+    3, 5, 4,
+    0, 2, 5, 0, 5, 3,
+    1, 4, 5, 1, 5, 2,
+    0, 3, 4, 0, 4, 1,
+  ];
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  const mesh = new THREE.Mesh(geo, makeToon(color));
+  mesh.position.set(0, y, z);
+  g.add(mesh);
+  return mesh;
 }

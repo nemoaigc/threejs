@@ -22,7 +22,7 @@ export function createHeroBuilding(type) {
   const g = fn();
   if (g) {
     g.userData.heroMode = 'procedural-3d';
-    g.userData.heroVersion = 'solid-v2';
+    g.userData.heroVersion = 'solid-v3-solidRoof';
   }
   return g;
 }

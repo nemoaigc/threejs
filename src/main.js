@@ -265,7 +265,7 @@ function hideBoot() {
       window.__scene = scene;
       // Quick proof the new hero factories are live (console + optional HUD).
       console.info('[boot] heroes:', window.__heroes);
-      console.info('[boot] hero mode: procedural-3d solid-v2 (not photo planes)');
+      console.info('[boot] hero mode: solid-v3 solidGableRoof (still hand-built, not img2threejs)');
       let badge = document.getElementById('hero-badge');
       if (!badge) {
         badge = document.createElement('div');
@@ -285,9 +285,7 @@ function hideBoot() {
         document.body.appendChild(badge);
       }
       const n = window.__heroes?.length ?? 0;
-      const names = (window.__heroes || []).map((h) => h.name).join(', ');
-      badge.textContent = `HEROES 3D solid-v2 ×${n}\n${names || '(none)'}`;
-      badge.style.whiteSpace = 'pre-line';
+      badge.innerHTML = `HEROES solid-v3 ×${n}<br/><a href="/hero-preview.html" style="color:#9fd0ff">单独预览模型 →</a>`;
     }
 
     buildGUI();

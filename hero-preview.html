@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hero models preview · solid-v3</title>
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #6a7a88; }
+      canvas { display: block; }
+      #labels {
+        position: fixed;
+        left: 14px;
+        bottom: 14px;
+        z-index: 10;
+        color: #e8f0f8;
+        font: 13px/1.5 ui-sans-serif, system-ui, sans-serif;
+        background: rgba(10, 16, 24, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        padding: 12px 14px;
+        max-width: 420px;
+        pointer-events: none;
+      }
+      #labels b { color: #9fd0ff; }
+      #back {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 10;
+        color: #dff;
+        font: 13px ui-sans-serif, system-ui, sans-serif;
+        background: rgba(10, 16, 24, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        padding: 8px 12px;
+        text-decoration: none;
+      }
+      #back:hover { background: rgba(30, 50, 70, 0.9); }
+    </style>
+  </head>
+  <body>
+    <a id="back" href="/">← 回村庄</a>
+    <div id="labels">加载中…</div>
+    <script type="module" src="/src/hero-preview.js"></script>
+  </body>
+</html>
