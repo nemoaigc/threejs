@@ -3,7 +3,7 @@ import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { createNoise3D } from 'simplex-noise';
 import groundUrl from './assets/ground.png';
-import { LINKON_SLICE_P0 } from './layouts/linkon-slice-p0.js';
+import { MUSHOKU_SLICE_P0 } from './layouts/mushoku-slice-p0.js';
 
 // Toy planet large enough for a readable town pad, small enough to read as a globe.
 export const PLANET_RADIUS = 2.6;
@@ -42,19 +42,31 @@ export function terrainHeight(dir) {
 
 // ---- shared toon look -------------------------------------------------------
 
-function makeGradientMap(steps = 4) {
+function makeGradientMap(steps = 5) {
   const data = new Uint8Array(steps);
-  // bright cel bands — shadows stay pastel, never muddy grey
-  for (let i = 0; i < steps; i++) data[i] = Math.round(140 + (i / (steps - 1)) * 115);
+  // Punchier cel: darker shadow band + bright key — avoids washed flat grey
+  // steps≈5 → ~72, 118, 168, 214, 250
+  for (let i = 0; i < steps; i++) {
+    const t = i / (steps - 1);
+    data[i] = Math.round(72 + t * t * 40 + t * 138);
+  }
   const tex = new THREE.DataTexture(data, steps, 1, THREE.RedFormat);
   tex.minFilter = tex.magFilter = THREE.NearestFilter;
   tex.needsUpdate = true;
   return tex;
 }
-export const gradientMap = makeGradientMap(4);
+export const gradientMap = makeGradientMap(5);
 
 export function makeToon(color, opts = {}) {
   return new THREE.MeshToonMaterial({ color, gradientMap, ...opts });
+}
+
+/** Warm emissive toon (tavern windows, forge, lanterns, stained glass). */
+function makeGlow(color, emissive, intensity = 0.55) {
+  return makeToon(color, {
+    emissive: new THREE.Color(emissive),
+    emissiveIntensity: intensity,
+  });
 }
 
 // convert PBR glTF materials → toon while keeping albedo / alpha cutout
@@ -363,11 +375,38 @@ function finishProp(g) {
   return g;
 }
 
-function boxAt(g, w, h, d, x, y, z, color) {
-  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), makeToon(color));
+function boxAt(g, w, h, d, x, y, z, color, matOpts = null) {
+  const mat = matOpts
+    ? (matOpts.isMaterial ? matOpts : makeToon(color, matOpts))
+    : makeToon(color);
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
   m.position.set(x, y, z);
   g.add(m);
   return m;
+}
+
+/** Soft self-lit pane — reads as warm interior under cel + grade. */
+function glowBox(g, w, h, d, x, y, z, color = 0xffe8b0, emissive = 0xffc878, intensity = 0.65) {
+  return boxAt(g, w, h, d, x, y, z, color, makeGlow(color, emissive, intensity));
+}
+
+/** Barrel / crate micro-props for density near landmarks. */
+function addBarrel(g, x, y, z, scale = 1) {
+  const WOOD = 0x8b5e3c;
+  const BAND = 0x5a5048;
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.28 * scale, 0.32 * scale, 0.55 * scale, 10), makeToon(WOOD));
+  body.position.set(x, y + 0.28 * scale, z);
+  g.add(body);
+  boxAt(g, 0.58 * scale, 0.05 * scale, 0.58 * scale, x, y + 0.12 * scale, z, BAND);
+  boxAt(g, 0.58 * scale, 0.05 * scale, 0.58 * scale, x, y + 0.42 * scale, z, BAND);
+}
+
+function addCrate(g, x, y, z, sx = 0.55, sy = 0.45, sz = 0.5) {
+  const WOOD = 0xa07848;
+  const DARK = 0x6a5030;
+  boxAt(g, sx, sy, sz, x, y + sy / 2, z, WOOD);
+  boxAt(g, sx * 1.02, 0.04, sz * 1.02, x, y + sy * 0.08, z, DARK);
+  boxAt(g, sx * 1.02, 0.04, sz * 1.02, x, y + sy * 0.92, z, DARK);
 }
 
 function addWindowGrid(g, {
@@ -404,13 +443,34 @@ function addStripedAwning(g, w, h, d, colors = [0xd94a3d, 0xf0f0f0]) {
   }
 }
 
-function addRedCross(g, x, y, z, size = 0.55) {
-  const mat = makeToon(0xd94a3d);
-  const hx = new THREE.Mesh(new THREE.BoxGeometry(size, size * 0.28, 0.08), mat);
-  const hy = new THREE.Mesh(new THREE.BoxGeometry(size * 0.28, size, 0.08), mat);
-  hx.position.set(x, y, z);
-  hy.position.set(x, y, z);
-  g.add(hx, hy);
+/** Fantasy sun disc (Millis-adjacent feel) — not a modern medical cross. */
+function addSunSymbol(g, x, y, z, size = 0.7) {
+  const disc = new THREE.Mesh(new THREE.CylinderGeometry(size * 0.38, size * 0.38, 0.08, 16), makeToon(0xe8b84a));
+  disc.rotation.x = Math.PI / 2;
+  disc.position.set(x, y, z);
+  g.add(disc);
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2;
+    boxAt(g, size * 0.12, size * 0.42, 0.06, x + Math.cos(a) * size * 0.55, y + Math.sin(a) * size * 0.55, z, 0xd4a84a);
+  }
+}
+
+/** Simple gable (two pitched slabs) for timber-fantasy roofs. */
+function addGableRoof(g, w, d, y, color = 0xb85a48, rise = 1.1) {
+  const mat = makeToon(color);
+  // Wider eaves so roofs read as silhouettes, not flat lids
+  const slabL = new THREE.Mesh(new THREE.BoxGeometry(w * 1.22, 0.16, d * 0.78), mat);
+  slabL.position.set(0, y + rise * 0.45, -d * 0.2);
+  slabL.rotation.x = 0.52;
+  g.add(slabL);
+  const slabR = new THREE.Mesh(new THREE.BoxGeometry(w * 1.22, 0.16, d * 0.78), mat);
+  slabR.position.set(0, y + rise * 0.45, d * 0.2);
+  slabR.rotation.x = -0.52;
+  g.add(slabR);
+  // ridge beam + darker underside lip for depth under toon
+  boxAt(g, w * 1.24, 0.14, 0.18, 0, y + rise * 0.88, 0, color);
+  boxAt(g, w * 1.18, 0.08, 0.1, 0, y + rise * 0.12, d * 0.48, 0x4a3028);
+  boxAt(g, w * 1.18, 0.08, 0.1, 0, y + rise * 0.12, -d * 0.48, 0x4a3028);
 }
 
 /** Framed windows — glass + sill + thin mullion (reads sharper under outline). */
@@ -453,6 +513,33 @@ function addDoorFrame(g, x, y, z, dw, dh, frame = 0xd8d0c4, door = 0x3d3530, gla
   boxAt(g, dw, dh, 0.05, x, y, z + 0.02, door);
   if (glass != null) {
     boxAt(g, dw * 0.55, dh * 0.35, 0.04, x, y + dh * 0.18, z + 0.05, glass);
+  }
+}
+
+/** Horizontal ribbon windows — institutional / curtain-wall read (cheap, sharp under outline). */
+function addRibbonFloors(g, {
+  w, d, floors, storyH, y0, zFace,
+  glass = 0x8ebfd4, band = 0xe0dcd4, glassH = 0.55, inset = 0.92,
+} = {}) {
+  const z = zFace ?? d / 2 + 0.03;
+  for (let i = 0; i < floors; i++) {
+    const y = y0 + i * storyH;
+    boxAt(g, w * 1.01, 0.1, 0.08, 0, y, z, band);
+    boxAt(g, w * inset, glassH, 0.05, 0, y + storyH * 0.42, z + 0.01, glass);
+    // thin mullions
+    const cols = Math.max(4, Math.round(w / 1.6));
+    for (let c = 1; c < cols; c++) {
+      const x = ((c / cols) - 0.5) * w * inset;
+      boxAt(g, 0.06, glassH * 0.92, 0.04, x, y + storyH * 0.42, z + 0.03, band);
+    }
+  }
+}
+
+/** Pair of columns under a canopy / portico. */
+function addColumns(g, xs, yBottom, height, z, size = 0.28, color = 0xd8d4cc) {
+  for (const x of xs) {
+    boxAt(g, size, height, size, x, yBottom + height / 2, z, color);
+    boxAt(g, size * 1.35, 0.12, size * 1.35, x, yBottom + 0.06, z, color);
   }
 }
 
@@ -617,218 +704,338 @@ function createPostOffice() {
   return finishProp(g);
 }
 
-// —— 医院（阿克索向）：大、白、翼楼、门廊、红十字 —— 绝不是小卖部
-function createHospital() {
+// —— 神殿 / 教堂：石质中殿 + 钟楼尖顶 + 彩窗 + 太阳徽 —— 绝不是小卖部
+// Spec: footprint ~16×10, height L (~14–18m). Shops are ~4m — temple must dwarf them.
+function createTemple() {
   const g = new THREE.Group();
-  const mw = 9.5;
-  const md = 4.2;
-  const mh = 4.8;
-  addPlinth(g, mw + 1.2, md + 0.6, 0.32, 0xd8d2c8);
-  boxAt(g, mw, mh, md, 0, 0.32 + mh / 2, 0, 0xf2f0ea);
-  const ww = 3.5;
-  const wh = 3.4;
-  const wd = 3.3;
-  boxAt(g, ww, wh, wd, -mw * 0.52, 0.32 + wh / 2, 0.12, 0xefeae0);
-  boxAt(g, ww, wh, wd, mw * 0.52, 0.32 + wh / 2, 0.12, 0xefeae0);
-  addRoofCap(g, mw, md, 0.32 + mh, 0x8aa0a8, 0.16);
-  addRoofCap(g, ww, wd, 0.32 + wh, 0x8aa0a8, 0.12);
-  // floor belt lines
-  for (let i = 1; i <= 3; i++) {
-    boxAt(g, mw * 1.01, 0.06, 0.08, 0, 0.32 + mh * (i / 4), md / 2 + 0.01, 0xe0dcd4);
-  }
-  // porte-cochère
-  boxAt(g, 3.6, 0.16, 2.2, 0, 2.0, md / 2 + 0.95, 0xe8e4dc);
-  boxAt(g, 3.7, 0.08, 2.3, 0, 2.1, md / 2 + 0.95, 0xd0ccc4);
-  for (const sx of [-1.35, 1.35]) {
-    boxAt(g, 0.2, 2.0, 0.2, sx, 1.0, md / 2 + 1.65, 0xd8d4cc);
-    boxAt(g, 0.28, 0.12, 0.28, sx, 0.12, md / 2 + 1.65, 0xc8c4bc);
-  }
-  // steps + rail
-  boxAt(g, 3.0, 0.14, 1.1, 0, 0.12, md / 2 + 0.7, 0xcfc8bc);
-  boxAt(g, 3.0, 0.1, 0.7, 0, 0.22, md / 2 + 0.45, 0xcfc8bc);
-  addDoorFrame(g, 0, 1.15, md / 2 + 0.04, 1.7, 1.7, 0xe8e4dc, 0x9ecce0, 0xb8dce8);
-  addFramedWindows(g, {
-    w: mw, h: mh, d: md, rows: 4, cols: 7,
-    y0: 0.18, yStep: 0.2, paneW: 0.075, paneH: 0.1,
-    glass: 0x8ebfd4, frame: 0xe8e4dc,
-    zFace: md / 2 + 0.03,
-  });
-  // wing facades (manual X offset — framed helper is group-centered)
-  for (const wx of [-mw * 0.52, mw * 0.52]) {
-    for (let r = 0; r < 3; r++) {
-      for (let c = 0; c < 3; c++) {
-        const x = wx + ((c + 0.5) / 3 - 0.5) * ww * 0.7;
-        const y = 0.32 + wh * (0.28 + r * 0.26);
-        const z = 0.12 + wd / 2 + 0.03;
-        boxAt(g, 0.55, 0.48, 0.03, x, y, z, 0xe8e4dc);
-        boxAt(g, 0.42, 0.36, 0.04, x, y, z + 0.015, 0x8ebfd4);
-      }
-    }
-  }
-  // facade cross plaque
-  boxAt(g, 1.4, 1.1, 0.08, 0, 0.32 + mh * 0.78, md / 2 + 0.06, 0xffffff);
-  addRedCross(g, 0, 0.32 + mh * 0.78, md / 2 + 0.12, 0.75);
-  addRedCross(g, 0, 0.32 + mh + 0.75, 0, 1.1);
-  // ambulance bay
-  boxAt(g, 2.4, 0.04, 3.6, mw * 0.35, 0.04, md / 2 + 1.8, 0xd94a3d);
-  boxAt(g, 2.0, 0.03, 3.2, mw * 0.35, 0.05, md / 2 + 1.8, 0xf2f0ea);
-  const stack = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.28, 2.8, 8), makeToon(0xb0a89c));
-  stack.position.set(-mw * 0.2, 0.32 + mh + 1.1, -md * 0.2);
-  g.add(stack);
-  boxAt(g, 0.5, 0.15, 0.5, -mw * 0.2, 0.32 + mh + 2.4, -md * 0.2, 0x8a8078);
-  return finishProp(g);
-}
+  const STONE = 0xf7efe0;
+  const STONE_WARM = 0xeadcc4;
+  const TRIM = 0xd8c4a0;
+  const ROOF = 0x4a5560;
+  const WOOD = 0x7a4a2c;
+  const PLINTH = 0xb8ac98;
+  const STAIN = [0xd45a6e, 0x3a78c8, 0xf0b840, 0x4ab87a, 0x8a52c0];
 
-// —— 猎人协会门脸：青蓝体量 + 门廊 + 竖旗 + 轻通讯碟 ——
-function createHunterHq() {
-  const g = new THREE.Group();
-  const w = 9.5;
-  const d = 7.0;
-  const h = 15.5;
-  addPlinth(g, w, d, 0.4, 0x4a6578);
-  boxAt(g, w, h, d, 0, 0.4 + h / 2, 0, 0x5b7c99);
-  // vertical fins
-  for (const sx of [-w * 0.42, -w * 0.28, w * 0.28, w * 0.42]) {
-    boxAt(g, 0.22, h * 0.94, 0.1, sx, 0.4 + h * 0.5, d / 2 + 0.05, 0xa8c4d8);
+  const mw = 12.5;
+  const md = 7.0;
+  const mh = 11.5;
+  const plinthH = 0.5;
+  const baseY = plinthH;
+
+  addPlinth(g, mw + 1.8, md + 1.4, plinthH, PLINTH);
+
+  // Nave — tall white/stone body + cornice belt for silhouette
+  boxAt(g, mw, mh, md, 0, baseY + mh / 2, 0, STONE);
+  boxAt(g, mw * 1.04, 0.35, 0.22, 0, baseY + mh * 0.88, md / 2 + 0.06, TRIM);
+  addGableRoof(g, mw, md, baseY + mh, ROOF, 2.4);
+
+  // Side aisles (lower)
+  const aw = 3.6;
+  const ad = 5.2;
+  const ah = mh * 0.62;
+  for (const sx of [-1, 1]) {
+    const x = sx * (mw * 0.5 + aw * 0.42);
+    boxAt(g, aw, ah, ad, x, baseY + ah / 2, 0.2, STONE_WARM);
+    addGableRoof(g, aw, ad, baseY + ah, ROOF, 1.2);
   }
-  addRoofCap(g, w, d, 0.4 + h, 0x3d5a72, 0.28);
-  // white cornice band under roof
-  boxAt(g, w * 1.02, 0.35, 0.18, 0, 0.4 + h * 0.92, d / 2 + 0.06, 0xe8f0ff);
-  // mid belt
-  boxAt(g, w * 1.01, 0.22, 0.12, 0, 0.4 + h * 0.48, d / 2 + 0.04, 0xa8c4d8);
-  // portico
-  boxAt(g, 5.6, 0.24, 2.6, 0, 3.7, d / 2 + 1.1, 0xa8c4d8);
-  boxAt(g, 5.8, 0.1, 2.8, 0, 3.85, d / 2 + 1.1, 0xe8f0ff);
-  for (const sx of [-2.0, 0, 2.0]) {
-    boxAt(g, 0.32, 3.5, 0.32, sx, 1.85, d / 2 + 1.9, 0x7a9bb8);
-    boxAt(g, 0.42, 0.18, 0.42, sx, 0.15, d / 2 + 1.9, 0x4a6578);
+
+  // Apse / rear chapel
+  boxAt(g, mw * 0.55, mh * 0.75, 3.4, 0, baseY + mh * 0.38, -md * 0.55 - 1.0, STONE_WARM);
+  addGableRoof(g, mw * 0.55, 3.4, baseY + mh * 0.75, ROOF, 1.0);
+
+  // Stained-glass rose + lancet windows on facade (emissive = "lit from inside")
+  const faceZ = md / 2 + 0.04;
+  for (let i = 0; i < 5; i++) {
+    const x = ((i + 0.5) / 5 - 0.5) * mw * 0.78;
+    const col = STAIN[i % STAIN.length];
+    boxAt(g, 1.15, 3.4, 0.08, x, baseY + 5.2, faceZ, TRIM);
+    glowBox(g, 0.95, 3.1, 0.06, x, baseY + 5.2, faceZ + 0.04, col, col, 0.45);
+    boxAt(g, 0.04, 2.9, 0.03, x, baseY + 5.2, faceZ + 0.06, TRIM);
+    boxAt(g, 0.85, 0.04, 0.03, x, baseY + 5.2, faceZ + 0.06, TRIM);
   }
-  addDoorFrame(g, 0, 1.7, d / 2 + 0.05, 2.2, 2.5, 0x2a4058, 0x1a2838, 0x8eb8d0);
-  addFramedWindows(g, {
-    w, h, d, rows: 5, cols: 5,
-    y0: 0.12, yStep: 0.155, paneW: 0.09, paneH: 0.09,
-    glass: 0x8eb8d0, frame: 0xa8c4d8,
-    zFace: d / 2 + 0.04,
-  });
-  // steps
-  boxAt(g, 5.0, 0.14, 1.2, 0, 0.12, d / 2 + 0.7, 0x8a9aab);
-  boxAt(g, 4.6, 0.12, 0.8, 0, 0.24, d / 2 + 0.45, 0x8a9aab);
-  // twin flags
-  for (const sx of [-w * 0.22, w * 0.22]) {
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 4.5, 6), makeToon(0x8a9098));
-    pole.position.set(sx, 0.4 + h + 1.9, d * 0.15);
-    g.add(pole);
-    boxAt(g, 1.2, 0.7, 0.05, sx + 0.6, 0.4 + h + 3.6, d * 0.15, 0xe8f0ff);
-    boxAt(g, 0.4, 0.7, 0.06, sx + 0.22, 0.4 + h + 3.6, d * 0.15 + 0.02, 0x3d8ec9);
-  }
-  // rooftop dish
-  const dish = new THREE.Mesh(
-    new THREE.SphereGeometry(0.75, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.5),
-    makeToon(0xc8d4e0),
+  // Rose window
+  const rose = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.35, 1.35, 0.1, 20),
+    makeGlow(0x4a7ab8, 0x6aa0e8, 0.5),
   );
-  dish.position.set(0, 0.4 + h + 0.5, -d * 0.15);
-  dish.rotation.x = Math.PI;
-  g.add(dish);
-  boxAt(g, 0.12, 1.3, 0.12, 0, 0.4 + h + 1.15, -d * 0.15, 0x8a9098);
-  // entrance sign plaque
-  boxAt(g, 2.8, 0.55, 0.1, 0, 0.4 + h * 0.78, d / 2 + 0.12, 0x2a4058);
-  boxAt(g, 2.4, 0.35, 0.08, 0, 0.4 + h * 0.78, d / 2 + 0.16, 0xe8f0ff);
-  return finishProp(g);
-}
+  rose.rotation.x = Math.PI / 2;
+  rose.position.set(0, baseY + mh * 0.72, faceZ + 0.05);
+  g.add(rose);
+  boxAt(g, 0.12, 2.4, 0.06, 0, baseY + mh * 0.72, faceZ + 0.1, TRIM);
+  boxAt(g, 2.4, 0.12, 0.06, 0, baseY + mh * 0.72, faceZ + 0.1, TRIM);
 
-// —— 猫咖：奶油体 + 条纹雨棚 + 猫耳招牌 ——
-function createMeowCafe() {
-  const g = new THREE.Group();
-  const w = 5.8;
-  const d = 4.6;
-  const h = 5.8;
-  addPlinth(g, w, d, 0.22, 0xd4b896);
-  boxAt(g, w, h, d, 0, 0.22 + h / 2, 0, 0xf5e6d3);
-  addRoofCap(g, w, d, 0.22 + h, 0xc4a882, 0.18);
-  // second-floor stringcourse
-  boxAt(g, w * 1.02, 0.12, 0.1, 0, 0.22 + h * 0.55, d / 2 + 0.03, 0xe8d4bc);
-  addStripedAwning(g, w * 0.95, (0.22 + h) * 0.55, d, [0xf2a0b0, 0xf5f0e6]);
-  // big shop window with frame + cross
-  boxAt(g, w * 0.62, h * 0.4, 0.06, -w * 0.08, 0.22 + h * 0.32, d / 2 + 0.03, 0x8b5e3c);
-  boxAt(g, w * 0.55, h * 0.34, 0.05, -w * 0.08, 0.22 + h * 0.32, d / 2 + 0.05, 0xb8dcec);
-  boxAt(g, 0.04, h * 0.32, 0.03, -w * 0.08, 0.22 + h * 0.32, d / 2 + 0.07, 0x8b5e3c);
-  boxAt(g, w * 0.5, 0.04, 0.03, -w * 0.08, 0.22 + h * 0.32, d / 2 + 0.07, 0x8b5e3c);
-  // warm light
-  boxAt(g, w * 0.4, h * 0.18, 0.03, -w * 0.08, 0.22 + h * 0.3, d / 2 + 0.08, 0xffe8b0);
-  // door
-  addDoorFrame(g, w * 0.32, 0.22 + h * 0.28, d / 2 + 0.03, 0.75, h * 0.48, 0x8b5e3c, 0x6a4030, 0xd4e8f0);
-  // hanging sign + cat ears
-  boxAt(g, 0.08, 0.7, 0.08, 0, 0.22 + h * 0.72, d / 2 + 0.55, 0x5a4030);
-  boxAt(g, 1.5, 0.85, 0.1, 0, 0.22 + h * 0.85, d / 2 + 0.55, 0x5a4030);
-  boxAt(g, 1.25, 0.65, 0.08, 0, 0.22 + h * 0.85, d / 2 + 0.6, 0xf2a0b0);
-  // paw pad
-  boxAt(g, 0.28, 0.22, 0.05, 0, 0.22 + h * 0.82, d / 2 + 0.66, 0xffffff);
-  const earMat = makeToon(0xf2a0b0);
-  for (const sx of [-0.4, 0.4]) {
-    const ear = new THREE.Mesh(new THREE.ConeGeometry(0.24, 0.4, 4), earMat);
-    ear.position.set(sx, 0.22 + h * 0.85 + 0.55, d / 2 + 0.6);
-    g.add(ear);
+  // Portico — stone columns + timber lintel
+  const pz = md / 2 + 2.0;
+  boxAt(g, 7.0, 0.28, 3.2, 0, baseY + 4.2, pz, TRIM);
+  boxAt(g, 7.2, 0.12, 3.4, 0, baseY + 4.4, pz, WOOD);
+  addColumns(g, [-2.4, -0.8, 0.8, 2.4], baseY, 4.0, pz + 1.1, 0.38, STONE);
+
+  // Steps + grand double door
+  boxAt(g, 5.8, 0.18, 1.5, 0, 0.16, md / 2 + 0.85, PLINTH);
+  boxAt(g, 5.2, 0.14, 1.0, 0, 0.3, md / 2 + 0.55, PLINTH);
+  addDoorFrame(g, -0.7, baseY + 1.7, md / 2 + 0.05, 1.2, 2.8, WOOD, 0x5a3a28, 0xd4e0f0);
+  addDoorFrame(g, 0.7, baseY + 1.7, md / 2 + 0.05, 1.2, 2.8, WOOD, 0x5a3a28, 0xd4e0f0);
+
+  // Facade sun plaque (gold punch)
+  boxAt(g, 2.4, 2.0, 0.1, 0, baseY + mh * 0.42, faceZ + 0.08, 0xfff8e8);
+  addSunSymbol(g, 0, baseY + mh * 0.42, faceZ + 0.18, 0.95);
+  // gold emissive core so Millis sun reads at distance
+  glowBox(g, 0.55, 0.55, 0.06, 0, baseY + mh * 0.42, faceZ + 0.22, 0xf0c050, 0xffd060, 0.4);
+
+  // Bell steeple (left front corner of nave)
+  const sx = -mw * 0.28;
+  const steepleBase = baseY + mh;
+  boxAt(g, 3.2, 5.5, 3.2, sx, steepleBase + 2.75, md * 0.15, STONE);
+  boxAt(g, 2.6, 1.2, 2.6, sx, steepleBase + 6.0, md * 0.15, TRIM);
+  // open bell chamber
+  boxAt(g, 1.6, 1.4, 0.08, sx, steepleBase + 6.0, md * 0.15 + 1.35, 0x3a3530);
+  const bell = new THREE.Mesh(new THREE.SphereGeometry(0.55, 10, 8), makeToon(0xe0b040));
+  bell.position.set(sx, steepleBase + 5.7, md * 0.15);
+  g.add(bell);
+  const spire = new THREE.Mesh(new THREE.ConeGeometry(1.6, 4.2, 8), makeToon(ROOF));
+  spire.position.set(sx, steepleBase + 8.6, md * 0.15);
+  g.add(spire);
+  boxAt(g, 0.12, 1.4, 0.12, sx, steepleBase + 11.0, md * 0.15, 0xc8b080);
+  addSunSymbol(g, sx, steepleBase + 11.7, md * 0.15, 0.35);
+
+  // Side buttress ribs
+  for (const bx of [-mw * 0.48, mw * 0.48]) {
+    boxAt(g, 0.7, mh * 0.85, 1.4, bx, baseY + mh * 0.42, md * 0.1, STONE_WARM);
   }
-  addFramedWindows(g, {
-    w, h, d, rows: 1, cols: 3,
-    y0: 0.72, yStep: 0.2, paneW: 0.12, paneH: 0.12,
-    glass: 0xa8c8d8, frame: 0xd4b896,
-    zFace: d / 2 + 0.03,
-  });
-  // outdoor bench
-  boxAt(g, 1.6, 0.12, 0.4, -w * 0.15, 0.4, d / 2 + 0.85, 0xc4a070);
-  boxAt(g, 0.12, 0.35, 0.12, -w * 0.15 - 0.6, 0.22, d / 2 + 0.85, 0x8b5e3c);
-  boxAt(g, 0.12, 0.35, 0.12, -w * 0.15 + 0.6, 0.22, d / 2 + 0.85, 0x8b5e3c);
-  // planter
-  boxAt(g, 0.55, 0.35, 0.45, w * 0.35, 0.28, d / 2 + 0.9, 0xc4a070);
-  boxAt(g, 0.45, 0.2, 0.35, w * 0.35, 0.5, d / 2 + 0.9, 0x5bb87a);
+
+  // Courtyard micro-props — density without cluttering plaza
+  addCrate(g, mw * 0.38, 0, md / 2 + 2.8, 0.6, 0.5, 0.55);
+  addBarrel(g, -mw * 0.42, 0, md / 2 + 2.5, 1.05);
+
   return finishProp(g);
 }
 
-// —— 远景天际塔剪影（低面数但带窗带节奏）——
-function createSkylineTower(variant = 0) {
+// —— 冒险者公会：木石大厅 + 大招牌 + 告示板 + 双开门 ——
+function createAdventurersGuild() {
+  const g = new THREE.Group();
+  const WOOD = 0x8b5e3c;
+  const WOOD_DARK = 0x4a2e1c;
+  const PLASTER = 0xf6ecda;
+  const STONE = 0xb8ac98;
+  const ACCENT = 0x6a2030; // burgundy — stronger than washed brick
+  const GREEN = 0x2f5a38;
+  const ROOF = 0xc24a38;
+  const GLASS = 0x9ec8a0;
+
+  // footprint ~10×8, height L (~12m timber hall)
+  const w = 9.6;
+  const d = 7.2;
+  const h = 11.2;
+  const plinthH = 0.55;
+  const baseY = plinthH;
+
+  addPlinth(g, w + 0.8, d + 0.6, plinthH, STONE);
+  // Stone ground storey
+  boxAt(g, w, h * 0.42, d, 0, baseY + h * 0.21, 0, STONE);
+  // Timber / plaster upper
+  boxAt(g, w * 0.98, h * 0.58, d * 0.96, 0, baseY + h * 0.42 + h * 0.29, 0, PLASTER);
+  // Timber frame beams (thicker = readable under outline)
+  for (const sx of [-w * 0.42, 0, w * 0.42]) {
+    boxAt(g, 0.32, h * 0.58, 0.16, sx, baseY + h * 0.71, d / 2 + 0.04, WOOD);
+  }
+  boxAt(g, w * 1.0, 0.26, 0.16, 0, baseY + h * 0.42, d / 2 + 0.05, WOOD);
+  boxAt(g, w * 1.0, 0.2, 0.14, 0, baseY + h * 0.72, d / 2 + 0.05, WOOD);
+  // diagonal brace — half-timber read
+  boxAt(g, 0.18, h * 0.28, 0.12, -w * 0.22, baseY + h * 0.58, d / 2 + 0.05, WOOD);
+  boxAt(g, 0.18, h * 0.28, 0.12, w * 0.22, baseY + h * 0.58, d / 2 + 0.05, WOOD);
+
+  addGableRoof(g, w, d, baseY + h, ROOF, 2.2);
+
+  // Upper windows — warm interior glow
+  for (let col = 0; col < 4; col++) {
+    const x = ((col + 0.5) / 4 - 0.5) * w * 0.72;
+    boxAt(g, 1.1, 1.5, 0.06, x, baseY + h * 0.62, d / 2 + 0.04, WOOD);
+    glowBox(g, 0.9, 1.25, 0.05, x, baseY + h * 0.62, d / 2 + 0.08, GLASS, 0xffe0a0, 0.35);
+  }
+
+  // Portico — timber posts + deep canopy
+  const pz = d / 2 + 1.4;
+  boxAt(g, 6.4, 0.28, 2.8, 0, baseY + 3.8, pz, WOOD);
+  boxAt(g, 6.6, 0.12, 3.0, 0, baseY + 4.0, pz, ACCENT);
+  addColumns(g, [-2.1, 0, 2.1], baseY, 3.65, pz + 1.0, 0.32, WOOD_DARK);
+
+  // Steps + double door
+  boxAt(g, 5.2, 0.16, 1.3, 0, 0.14, d / 2 + 0.7, STONE);
+  boxAt(g, 4.6, 0.14, 0.85, 0, 0.28, d / 2 + 0.45, STONE);
+  addDoorFrame(g, -0.65, baseY + 1.7, d / 2 + 0.05, 1.15, 2.7, WOOD_DARK, 0x3a2818, GLASS);
+  addDoorFrame(g, 0.65, baseY + 1.7, d / 2 + 0.05, 1.15, 2.7, WOOD_DARK, 0x3a2818, GLASS);
+
+  // Big hanging guild signboard — high-contrast so it reads from plaza
+  boxAt(g, 0.14, 1.4, 0.14, 0, baseY + h * 0.55, d / 2 + 1.7, WOOD_DARK);
+  boxAt(g, 3.8, 1.7, 0.16, 0, baseY + h * 0.74, d / 2 + 1.7, WOOD_DARK);
+  boxAt(g, 3.4, 1.35, 0.12, 0, baseY + h * 0.74, d / 2 + 1.8, GREEN);
+  boxAt(g, 2.8, 0.4, 0.1, 0, baseY + h * 0.82, d / 2 + 1.88, 0xfff0d0);
+  // crossed-sword hint (lighter metal)
+  boxAt(g, 1.9, 0.14, 0.07, 0, baseY + h * 0.68, d / 2 + 1.88, 0xe8d8a8);
+  boxAt(g, 0.14, 1.25, 0.07, 0, baseY + h * 0.68, d / 2 + 1.88, 0xe8d8a8);
+  // small gold rivets / badge
+  glowBox(g, 0.35, 0.35, 0.06, 0, baseY + h * 0.74, d / 2 + 1.92, 0xe8c050, 0xffd060, 0.35);
+
+  // Burgundy banners on posts
+  for (const sx of [-w * 0.35, w * 0.35]) {
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 4.5, 6), makeToon(WOOD));
+    pole.position.set(sx, baseY + h + 2.0, d * 0.1);
+    g.add(pole);
+    boxAt(g, 1.15, 1.55, 0.06, sx + 0.55, baseY + h + 3.2, d * 0.1, ACCENT);
+    boxAt(g, 0.9, 0.18, 0.05, sx + 0.55, baseY + h + 3.85, d * 0.1, 0xe8c050);
+  }
+
+  // Outdoor notice board (guild signature)
+  boxAt(g, 0.1, 1.8, 0.1, w * 0.42, 0.95, d / 2 + 2.2, WOOD);
+  boxAt(g, 0.1, 1.8, 0.1, w * 0.42 + 1.3, 0.95, d / 2 + 2.2, WOOD);
+  boxAt(g, 1.5, 1.2, 0.08, w * 0.42 + 0.65, 1.35, d / 2 + 2.2, WOOD_DARK);
+  boxAt(g, 0.45, 0.5, 0.04, w * 0.42 + 0.35, 1.45, d / 2 + 2.26, 0xf0e8d0);
+  boxAt(g, 0.4, 0.45, 0.04, w * 0.42 + 0.95, 1.25, d / 2 + 2.26, 0xe8d8b8);
+  boxAt(g, 0.5, 0.28, 0.04, w * 0.42 + 0.65, 1.7, d / 2 + 2.26, 0xd4a84a);
+
+  // Chimney + warm hearth hint on side
+  boxAt(g, 1.0, 2.4, 1.0, -w * 0.3, baseY + h + 2.0, -d * 0.2, STONE);
+  glowBox(g, 0.55, 0.7, 0.08, -w * 0.48, baseY + 1.4, 0.2, 0xe07040, 0xff8040, 0.4);
+
+  // Yard clutter — crates / barrels sell "adventurer hub"
+  addCrate(g, -w * 0.4, 0, d / 2 + 2.6, 0.7, 0.55, 0.6);
+  addCrate(g, -w * 0.4 + 0.75, 0, d / 2 + 2.45, 0.5, 0.4, 0.48);
+  addBarrel(g, w * 0.38, 0, d / 2 + 2.55, 1.1);
+  addBarrel(g, w * 0.52, 0, d / 2 + 2.3, 0.9);
+
+  return finishProp(g);
+}
+
+// —— 旅馆 / 旅店：暖木 + 悬挂招牌 + 底楼酒馆窗 ——
+function createInn() {
+  const g = new THREE.Group();
+  const WALL = 0xf6ecda;
+  const WOOD = 0x8b5e3c;
+  const WOOD_DARK = 0x4a2e1c;
+  const ROOF = 0xc24a38;
+  const GLOW = 0xffe8b0;
+  const PLINTH = 0xd4b896;
+  const ACCENT = 0x8a2030;
+
+  const w = 5.8;
+  const d = 4.8;
+  const h = 7.2;
+  const plinthH = 0.25;
+  const baseY = plinthH;
+
+  addPlinth(g, w, d, plinthH, PLINTH);
+  boxAt(g, w, h, d, 0, baseY + h / 2, 0, WALL);
+  // Timber banding
+  boxAt(g, w * 1.02, 0.2, 0.14, 0, baseY + h * 0.48, d / 2 + 0.04, WOOD);
+  boxAt(g, 0.26, h * 0.95, 0.14, -w * 0.45, baseY + h * 0.5, d / 2 + 0.04, WOOD);
+  boxAt(g, 0.26, h * 0.95, 0.14, w * 0.45, baseY + h * 0.5, d / 2 + 0.04, WOOD);
+  // mid cross beam
+  boxAt(g, w * 0.85, 0.12, 0.1, 0, baseY + h * 0.72, d / 2 + 0.04, WOOD);
+  addGableRoof(g, w, d, baseY + h, ROOF, 1.6);
+
+  // Ground tavern bay — warm emissive glow (hero detail)
+  boxAt(g, w * 0.7, h * 0.32, 0.45, -0.15, baseY + h * 0.26, d / 2 + 0.18, WOOD);
+  glowBox(g, w * 0.6, h * 0.26, 0.1, -0.15, baseY + h * 0.26, d / 2 + 0.42, GLOW, 0xffc060, 0.75);
+  boxAt(g, 0.05, h * 0.24, 0.04, -0.15, baseY + h * 0.26, d / 2 + 0.48, WOOD_DARK);
+  boxAt(g, w * 0.5, 0.05, 0.04, -0.15, baseY + h * 0.26, d / 2 + 0.48, WOOD_DARK);
+  // second mullion for window panes
+  boxAt(g, 0.05, h * 0.24, 0.04, -0.15 - w * 0.15, baseY + h * 0.26, d / 2 + 0.48, WOOD_DARK);
+  boxAt(g, 0.05, h * 0.24, 0.04, -0.15 + w * 0.15, baseY + h * 0.26, d / 2 + 0.48, WOOD_DARK);
+
+  // Striped tavern awning
+  addStripedAwning(g, w * 0.95, baseY + h * 0.48, d + 0.35, [ACCENT, 0xf5f0e6]);
+
+  // Door
+  addDoorFrame(g, w * 0.32, baseY + h * 0.24, d / 2 + 0.03, 0.85, h * 0.38, WOOD, WOOD_DARK, 0xd4e8f0);
+
+  // Upper guest windows — soft warm glow
+  for (let c = 0; c < 3; c++) {
+    const x = ((c + 0.5) / 3 - 0.5) * w * 0.7;
+    const y = baseY + h * 0.7;
+    const z = d / 2 + 0.03;
+    boxAt(g, 0.85, 0.95, 0.05, x, y, z, WOOD);
+    glowBox(g, 0.7, 0.75, 0.04, x, y, z + 0.03, 0xc8e0f0, 0xffe0b0, 0.4);
+    boxAt(g, 0.04, 0.7, 0.03, x, y, z + 0.05, WOOD);
+    boxAt(g, 0.65, 0.04, 0.03, x, y, z + 0.05, WOOD);
+  }
+
+  // Hanging inn sign (mug silhouette) — punchier red
+  boxAt(g, 0.1, 0.9, 0.1, 0, baseY + h * 0.62, d / 2 + 0.75, WOOD_DARK);
+  boxAt(g, 1.7, 1.25, 0.14, 0, baseY + h * 0.84, d / 2 + 0.75, WOOD_DARK);
+  boxAt(g, 1.45, 1.0, 0.12, 0, baseY + h * 0.84, d / 2 + 0.84, ACCENT);
+  boxAt(g, 0.4, 0.5, 0.07, -0.18, baseY + h * 0.84, d / 2 + 0.92, 0xfff0d0);
+  boxAt(g, 0.14, 0.6, 0.06, 0.28, baseY + h * 0.84, d / 2 + 0.92, 0xfff0d0);
+
+  // Bench + planter
+  boxAt(g, 1.7, 0.12, 0.42, -w * 0.2, 0.42, d / 2 + 1.05, 0xc4a070);
+  boxAt(g, 0.12, 0.38, 0.12, -w * 0.2 - 0.65, 0.24, d / 2 + 1.05, WOOD);
+  boxAt(g, 0.12, 0.38, 0.12, -w * 0.2 + 0.65, 0.24, d / 2 + 1.05, WOOD);
+  boxAt(g, 0.55, 0.35, 0.45, w * 0.35, 0.28, d / 2 + 1.1, WOOD);
+  boxAt(g, 0.45, 0.2, 0.35, w * 0.35, 0.52, d / 2 + 1.1, 0x4ab86a);
+  addBarrel(g, -w * 0.42, 0, d / 2 + 1.15, 0.85);
+
+  // Chimney
+  boxAt(g, 0.55, 1.4, 0.55, w * 0.28, baseY + h + 1.0, -d * 0.15, 0xa89078);
+
+  return finishProp(g);
+}
+
+// —— 远景城堡 / 城塞剪影 ——
+function createSkylineKeep(variant = 0) {
   const g = new THREE.Group();
   const configs = [
-    { w: 6.5, d: 6.5, h: 34, top: 'spire' },
-    { w: 5.5, d: 5.5, h: 28, top: 'step' },
-    { w: 7.5, d: 5.5, h: 38, top: 'antenna' },
+    { w: 7.0, d: 6.5, h: 22, top: 'keep' },
+    { w: 5.5, d: 5.5, h: 18, top: 'tower' },
+    { w: 8.0, d: 5.5, h: 26, top: 'wall' },
   ];
   const c = configs[variant % configs.length];
-  addPlinth(g, c.w, c.d, 0.5, 0x556678);
-  boxAt(g, c.w, c.h, c.d, 0, 0.5 + c.h / 2, 0, 0x6a7a8c);
-  // dark floor bands + glass strips (cheap “curtain wall” read)
-  const floors = Math.floor(c.h / 3.2);
-  for (let i = 0; i < floors; i++) {
-    const y = 0.5 + 2.2 + i * 3.0;
-    boxAt(g, c.w * 1.01, 0.2, c.d * 1.01, 0, y, 0, 0x556678);
-    boxAt(g, c.w * 0.92, 1.4, 0.06, 0, y + 0.9, c.d / 2 + 0.02, 0x7a9ab0);
+  const STONE = 0xa89880;
+  const DARK = 0x8a7a68;
+  const ROOF = 0x6a5040;
+  addPlinth(g, c.w, c.d, 0.5, DARK);
+  boxAt(g, c.w, c.h, c.d, 0, 0.5 + c.h / 2, 0, STONE);
+  // battlement teeth
+  const teeth = Math.max(4, Math.round(c.w / 1.4));
+  for (let i = 0; i < teeth; i++) {
+    const x = ((i + 0.5) / teeth - 0.5) * c.w * 0.92;
+    boxAt(g, c.w / teeth * 0.55, 1.4, 0.7, x, 0.5 + c.h + 0.7, c.d / 2 - 0.15, STONE);
   }
-  if (c.top === 'spire') {
-    boxAt(g, c.w * 0.5, c.h * 0.1, c.d * 0.5, 0, 0.5 + c.h + c.h * 0.05, 0, 0x7a8a9c);
-    const spire = new THREE.Mesh(new THREE.ConeGeometry(0.4, 3.5, 6), makeToon(0x8a9aac));
-    spire.position.y = 0.5 + c.h + c.h * 0.16;
-    g.add(spire);
-  } else if (c.top === 'step') {
-    boxAt(g, c.w * 0.72, c.h * 0.09, c.d * 0.72, 0, 0.5 + c.h + c.h * 0.04, 0, 0x7a8a9c);
-    boxAt(g, c.w * 0.42, c.h * 0.07, c.d * 0.42, 0, 0.5 + c.h + c.h * 0.11, 0, 0x8a9aac);
+  // arrow-slit windows
+  const floors = Math.floor(c.h / 4.5);
+  for (let i = 0; i < floors; i++) {
+    const y = 2.5 + i * 4.2;
+    for (const x of [-c.w * 0.28, c.w * 0.28]) {
+      boxAt(g, 0.35, 1.6, 0.08, x, y, c.d / 2 + 0.03, 0x3a3530);
+    }
+  }
+  if (c.top === 'keep') {
+    boxAt(g, c.w * 0.45, c.h * 0.35, c.d * 0.45, -c.w * 0.2, 0.5 + c.h + c.h * 0.15, 0, DARK);
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(c.w * 0.28, 4.5, 6), makeToon(ROOF));
+    cone.position.set(-c.w * 0.2, 0.5 + c.h + c.h * 0.35 + 1.5, 0);
+    g.add(cone);
+  } else if (c.top === 'tower') {
+    boxAt(g, c.w * 0.55, c.h * 0.22, c.d * 0.55, 0, 0.5 + c.h + c.h * 0.1, 0, DARK);
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(c.w * 0.35, 5.0, 8), makeToon(ROOF));
+    cone.position.y = 0.5 + c.h + c.h * 0.22 + 2.2;
+    g.add(cone);
   } else {
-    boxAt(g, 0.22, 5.0, 0.22, 0, 0.5 + c.h + 2.4, 0, 0x8a9aac);
-    boxAt(g, 1.4, 0.35, 0.35, 0, 0.5 + c.h + 4.2, 0, 0xa0b0c0);
+    boxAt(g, c.w * 1.1, 2.2, 1.2, 0, 0.5 + c.h * 0.55, c.d / 2 + 0.4, DARK);
+    boxAt(g, 2.2, c.h * 0.4, 2.2, c.w * 0.45, 0.5 + c.h * 0.7, -c.d * 0.1, STONE);
   }
   return finishProp(g);
 }
 
 function createPlazaPad(size = 14) {
   const g = new THREE.Group();
-  const m = new THREE.Mesh(new THREE.BoxGeometry(size, 0.06, size), makeToon(0xc9c2b4));
+  const m = new THREE.Mesh(new THREE.BoxGeometry(size, 0.06, size), makeToon(0xc9b89a));
   m.position.y = 0.03;
   m.receiveShadow = true;
   m.castShadow = false;
   m.userData.noOutline = true;
   g.add(m);
-  // subtle cross walk rings
-  boxAt(g, size * 0.7, 0.02, 0.35, 0, 0.055, 0, 0xb8b0a0);
-  boxAt(g, 0.35, 0.02, size * 0.7, 0, 0.055, 0, 0xb8b0a0);
+  // packed-earth cross paths
+  boxAt(g, size * 0.7, 0.02, 0.4, 0, 0.055, 0, 0xb0a088);
+  boxAt(g, 0.4, 0.02, size * 0.7, 0, 0.055, 0, 0xb0a088);
   g.userData.noOutline = true;
   g.traverse((o) => {
     o.userData.noOutline = true;
@@ -836,75 +1043,146 @@ function createPlazaPad(size = 14) {
   return g;
 }
 
-function createObelisk() {
+/** Village well / simple magic-circle plinth for plaza. */
+function createWell() {
   const g = new THREE.Group();
-  boxAt(g, 1.0, 0.25, 1.0, 0, 0.12, 0, 0xa8b0b8);
-  boxAt(g, 0.55, 3.2, 0.55, 0, 1.85, 0, 0xc8d4dc);
-  const tip = new THREE.Mesh(new THREE.ConeGeometry(0.4, 0.7, 4), makeToon(0xe8f4ff));
-  tip.position.y = 3.85;
-  g.add(tip);
-  // soft cyan band
-  boxAt(g, 0.6, 0.2, 0.6, 0, 2.4, 0, 0x7ec8e8);
+  const STONE = 0xa89880;
+  const WOOD = 0x8b5e3c;
+  // base ring
+  const ring = new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.15, 0.85, 14), makeToon(STONE));
+  ring.position.y = 0.42;
+  g.add(ring);
+  const inner = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.2, 12), makeToon(0x4a6a78));
+  inner.position.y = 0.78;
+  g.add(inner);
+  // posts + roof
+  for (const sx of [-0.7, 0.7]) {
+    boxAt(g, 0.12, 1.6, 0.12, sx, 1.55, 0, WOOD);
+  }
+  boxAt(g, 1.8, 0.1, 1.1, 0, 2.4, 0, 0xb85a48);
+  // crank beam
+  boxAt(g, 1.5, 0.08, 0.08, 0, 2.15, 0, WOOD);
+  const bucket = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.28, 8), makeToon(WOOD));
+  bucket.position.set(0, 1.55, 0.35);
+  g.add(bucket);
+  // faint magic-circle ring on ground
+  const circle = new THREE.Mesh(new THREE.TorusGeometry(1.55, 0.05, 6, 24), makeToon(0x7ec8e8));
+  circle.rotation.x = Math.PI / 2;
+  circle.position.y = 0.04;
+  g.add(circle);
   return finishProp(g);
 }
 
-function createHunterBoard() {
+function createQuestBoard() {
   const g = new THREE.Group();
-  boxAt(g, 0.12, 2.1, 0.12, -0.4, 1.05, 0, 0x6a7078);
-  boxAt(g, 0.12, 2.1, 0.12, 0.4, 1.05, 0, 0x6a7078);
-  boxAt(g, 1.2, 1.1, 0.08, 0, 1.55, 0, 0x3d5a72);
-  boxAt(g, 1.0, 0.85, 0.05, 0, 1.55, 0.05, 0xa8c4d8);
-  boxAt(g, 0.7, 0.18, 0.06, 0, 2.2, 0.06, 0xe8f0ff);
+  const WOOD = 0x8b5e3c;
+  const DARK = 0x5a3a28;
+  boxAt(g, 0.12, 2.1, 0.12, -0.45, 1.05, 0, WOOD);
+  boxAt(g, 0.12, 2.1, 0.12, 0.45, 1.05, 0, WOOD);
+  boxAt(g, 1.3, 1.2, 0.1, 0, 1.55, 0, DARK);
+  boxAt(g, 0.4, 0.45, 0.05, -0.28, 1.65, 0.06, 0xf0e8d0);
+  boxAt(g, 0.35, 0.4, 0.05, 0.3, 1.4, 0.06, 0xe8d8b8);
+  boxAt(g, 0.5, 0.25, 0.05, 0, 1.85, 0.06, 0xd4c4a0);
+  boxAt(g, 0.9, 0.2, 0.06, 0, 2.25, 0.06, 0x3d5a40);
   return finishProp(g);
 }
 
-function createApartmentSilhouette() {
+function createCottageSilhouette() {
   const g = new THREE.Group();
-  const w = 9.5;
-  const d = 6.5;
-  const h = 14;
-  boxAt(g, w, h, d, 0, h / 2, 0, 0xc8d0d8);
-  boxAt(g, w * 1.04, 0.3, d * 1.04, 0, h + 0.12, 0, 0x7a8a98);
-  for (let f = 0; f < 5; f++) {
-    const y = 1.6 + f * 2.4;
-    boxAt(g, w * 0.92, 0.12, 0.25, 0, y, d / 2 + 0.1, 0xb0b8c0);
+  const w = 9.0;
+  const d = 6.0;
+  const h = 8.5;
+  const WALL = 0xe8dcc8;
+  const WOOD = 0x8b5e3c;
+  const ROOF = 0xb85a48;
+  boxAt(g, w, h, d, 0, h / 2, 0, WALL);
+  addGableRoof(g, w, d, h, ROOF, 2.0);
+  // timber frame hint
+  for (const sx of [-w * 0.35, 0, w * 0.35]) {
+    boxAt(g, 0.25, h * 0.9, 0.12, sx, h * 0.5, d / 2 + 0.04, WOOD);
+  }
+  for (let f = 0; f < 3; f++) {
+    const y = 1.8 + f * 2.2;
     for (let c = 0; c < 4; c++) {
-      const x = ((c + 0.5) / 4 - 0.5) * w * 0.75;
-      boxAt(g, 0.9, 1.1, 0.05, x, y + 0.7, d / 2 + 0.04, 0x88a8c0);
+      const x = ((c + 0.5) / 4 - 0.5) * w * 0.7;
+      boxAt(g, 0.85, 1.0, 0.05, x, y, d / 2 + 0.04, 0x88a8b0);
     }
   }
   return finishProp(g);
 }
 
-function createBoutiqueShop() {
+function createMagicShop() {
   const g = new THREE.Group();
   const w = 3.8;
   const d = 3.6;
-  const h = 4.4;
+  const h = 5.2;
+  const WALL = 0xe8dcf0;
+  const WOOD = 0x8b5e3c;
+  const ACCENT = 0x6a4080;
+  const ROOF = 0x5a4070;
   addPlinth(g, w, d, 0.18, 0xc8b8d0);
-  boxAt(g, w, h, d, 0, 0.18 + h / 2, 0, 0xe8d8f0);
-  addRoofCap(g, w, d, 0.18 + h, 0x9a7ab0, 0.14);
-  addStripedAwning(g, w, (0.18 + h) * 0.55, d, [0x9a7ab0, 0xf5f0e6]);
-  boxAt(g, w * 0.7, h * 0.38, 0.05, -0.05, 0.18 + h * 0.34, d / 2 + 0.03, 0x7a5a90);
-  boxAt(g, w * 0.6, h * 0.32, 0.05, -0.05, 0.18 + h * 0.34, d / 2 + 0.05, 0xb8dcec);
-  addDoorFrame(g, w * 0.28, 0.18 + h * 0.28, d / 2 + 0.03, 0.55, h * 0.48, 0x5a4030, 0x4a3020, 0xd0e8f0);
-  boxAt(g, 0.95, 0.5, 0.08, -w * 0.12, 0.18 + h * 0.72, d / 2 + 0.25, 0x6a4080);
+  boxAt(g, w, h, d, 0, 0.18 + h / 2, 0, WALL);
+  addGableRoof(g, w, d, 0.18 + h, ROOF, 1.8);
+  // pointed dormer tip
+  const tip = new THREE.Mesh(new THREE.ConeGeometry(0.55, 1.4, 6), makeToon(ACCENT));
+  tip.position.set(0, 0.18 + h + 2.4, 0);
+  g.add(tip);
+  // crystal orb — soft magic glow
+  const orb = new THREE.Mesh(
+    new THREE.SphereGeometry(0.28, 10, 8),
+    makeGlow(0x7ec8e8, 0xa0e0ff, 0.65),
+  );
+  orb.position.set(0, 0.18 + h + 3.3, 0);
+  g.add(orb);
+  addStripedAwning(g, w, (0.18 + h) * 0.5, d, [ACCENT, 0xf5f0e6]);
+  boxAt(g, w * 0.65, h * 0.32, 0.05, -0.05, 0.18 + h * 0.3, d / 2 + 0.03, WOOD);
+  glowBox(g, w * 0.55, h * 0.26, 0.05, -0.05, 0.18 + h * 0.3, d / 2 + 0.05, 0xb8a0e0, 0xd0b0ff, 0.45);
+  addDoorFrame(g, w * 0.28, 0.18 + h * 0.26, d / 2 + 0.03, 0.55, h * 0.42, WOOD, 0x4a3020, 0xd0e0f8);
+  boxAt(g, 1.1, 0.55, 0.1, -w * 0.1, 0.18 + h * 0.72, d / 2 + 0.3, ACCENT);
+  // crystal orb already on roof — boost glow
   return finishProp(g);
 }
 
-function createConvenienceShop() {
+function createSmithy() {
   const g = new THREE.Group();
-  const w = 4.2;
+  const w = 4.4;
+  const d = 3.8;
+  const h = 4.2;
+  const WALL = 0xc8b8a0;
+  const WOOD = 0x5a3a28;
+  const ROOF = 0x6a6060;
+  addPlinth(g, w, d, 0.2, 0xa89880);
+  boxAt(g, w, h, d, 0, 0.2 + h / 2, 0, WALL);
+  addGableRoof(g, w, d, 0.2 + h, ROOF, 1.3);
+  // open forge mouth — hot emissive
+  boxAt(g, w * 0.45, h * 0.4, 0.08, -0.3, 0.2 + h * 0.32, d / 2 + 0.04, WOOD);
+  glowBox(g, w * 0.35, h * 0.3, 0.06, -0.3, 0.2 + h * 0.32, d / 2 + 0.08, 0xe07040, 0xff6020, 0.85);
+  addDoorFrame(g, w * 0.32, 0.2 + h * 0.28, d / 2 + 0.03, 0.7, h * 0.48, WOOD, 0x3a2818, null);
+  // chimney stack
+  boxAt(g, 0.9, 2.8, 0.9, w * 0.25, 0.2 + h + 1.2, -d * 0.15, 0x8a8078);
+  boxAt(g, 1.1, 0.25, 1.1, w * 0.25, 0.2 + h + 2.6, -d * 0.15, 0x5a5048);
+  // hanging horseshoe / tool sign
+  boxAt(g, 0.9, 0.55, 0.08, 0, 0.2 + h * 0.78, d / 2 + 0.35, 0x8a9098);
+  addCrate(g, w * 0.35, 0, d / 2 + 0.9, 0.5, 0.4, 0.45);
+  return finishProp(g);
+}
+
+function createGeneralShop() {
+  const g = new THREE.Group();
+  const w = 3.9;
   const d = 3.6;
   const h = 4.0;
-  addPlinth(g, w, d, 0.18, 0xc8d4c0);
-  boxAt(g, w, h, d, 0, 0.18 + h / 2, 0, 0xeef4e6);
-  addRoofCap(g, w, d, 0.18 + h, 0x5bb87a, 0.14);
-  addStripedAwning(g, w, (0.18 + h) * 0.55, d, [0x5bb87a, 0xf5f0e6]);
-  boxAt(g, w * 0.72, h * 0.4, 0.05, -0.1, 0.18 + h * 0.36, d / 2 + 0.03, 0x3d7a50);
-  boxAt(g, w * 0.62, h * 0.34, 0.05, -0.1, 0.18 + h * 0.36, d / 2 + 0.05, 0xb8dcec);
-  addDoorFrame(g, w * 0.3, 0.18 + h * 0.28, d / 2 + 0.03, 0.55, h * 0.5, 0x3d5a40, 0x2a4030, 0xc8e0d0);
-  boxAt(g, 1.2, 0.4, 0.08, 0, 0.18 + h * 0.78, d / 2 + 0.22, 0xe8b84a);
+  const WALL = 0xf6ecda;
+  const WOOD = 0x8b5e3c;
+  const ROOF = 0xc24a38;
+  addPlinth(g, w, d, 0.18, 0xd4c4a8);
+  boxAt(g, w, h, d, 0, 0.18 + h / 2, 0, WALL);
+  addGableRoof(g, w, d, 0.18 + h, ROOF, 1.2);
+  addStripedAwning(g, w, (0.18 + h) * 0.52, d, [0x3d5a40, 0xf5f0e6]);
+  boxAt(g, w * 0.7, h * 0.36, 0.05, -0.08, 0.18 + h * 0.34, d / 2 + 0.03, WOOD);
+  glowBox(g, w * 0.6, h * 0.3, 0.05, -0.08, 0.18 + h * 0.34, d / 2 + 0.05, 0xb8d0c0, 0xffe8c0, 0.3);
+  addDoorFrame(g, w * 0.3, 0.18 + h * 0.28, d / 2 + 0.03, 0.55, h * 0.48, WOOD, 0x4a3020, 0xd0e8f0);
+  boxAt(g, 1.15, 0.45, 0.08, 0, 0.18 + h * 0.78, d / 2 + 0.25, 0xf0b840);
   return finishProp(g);
 }
 
@@ -1039,24 +1317,39 @@ function createWaterTower() {
   return finishProp(g);
 }
 
-function createBusStop() {
+function createCarriageStop() {
   const g = new THREE.Group();
-  boxAt(g, 2.6, 0.1, 1.0, 0, 1.55, 0, 0x3d8ec9);
-  for (const x of [-1.15, 1.15]) boxAt(g, 0.1, 1.55, 0.1, x, 0.78, -0.35, 0x8a8a8a);
-  boxAt(g, 1.8, 0.1, 0.45, 0, 0.48, 0.1, 0xc4a882);
-  boxAt(g, 0.55, 0.8, 0.06, 1.45, 1.15, 0.15, 0x3d8ec9);
+  const WOOD = 0x8b5e3c;
+  const ROOF = 0xb85a48;
+  // timber posts + shingle shelter
+  for (const x of [-1.2, 1.2]) boxAt(g, 0.12, 1.7, 0.12, x, 0.85, -0.25, WOOD);
+  boxAt(g, 2.8, 0.12, 1.3, 0, 1.75, 0, ROOF);
+  boxAt(g, 2.9, 0.06, 1.4, 0, 1.85, 0, 0x6a5040);
+  // bench
+  boxAt(g, 1.9, 0.1, 0.45, 0, 0.5, 0.15, WOOD);
+  boxAt(g, 0.1, 0.45, 0.1, -0.85, 0.28, 0.15, WOOD);
+  boxAt(g, 0.1, 0.45, 0.1, 0.85, 0.28, 0.15, WOOD);
+  // roadside post / hitching rail
+  boxAt(g, 0.12, 1.1, 0.12, 1.55, 0.55, 0.2, WOOD);
+  boxAt(g, 0.45, 0.35, 0.06, 1.55, 1.15, 0.25, 0x3d5a40);
   return finishProp(g);
 }
 
 function createStreetLight() {
   const g = new THREE.Group();
-  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 2.8, 6), makeToon(0x6a6a6a));
-  pole.position.y = 1.4;
+  const WOOD = 0x6a5040;
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 2.9, 6), makeToon(WOOD));
+  pole.position.y = 1.45;
   g.add(pole);
-  boxAt(g, 0.55, 0.06, 0.06, 0.22, 2.7, 0, 0x6a6a6a);
-  const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 8), makeToon(0xfff0c0));
-  lamp.position.set(0.48, 2.6, 0);
+  // lantern housing + emissive core
+  boxAt(g, 0.35, 0.45, 0.35, 0, 2.85, 0, 0x5a4030);
+  const lamp = new THREE.Mesh(
+    new THREE.SphereGeometry(0.14, 8, 8),
+    makeGlow(0xffe8a0, 0xffc060, 0.7),
+  );
+  lamp.position.set(0, 2.85, 0);
   g.add(lamp);
+  boxAt(g, 0.42, 0.06, 0.42, 0, 3.12, 0, WOOD);
   return finishProp(g);
 }
 
@@ -1141,13 +1434,14 @@ function createSky() {
     depthWrite: false,
     fog: false,
     uniforms: {
-      uZenith: { value: new THREE.Color(0x4a9fd4) },
-      uMid: { value: new THREE.Color(0x7ec4e8) },
-      uHorizon: { value: new THREE.Color(0xb8dff0) },
-      uGround: { value: new THREE.Color(0xa8d4c0) },
+      // Deeper blues — less washed near zenith (anti washed-out)
+      uZenith: { value: new THREE.Color(0x2f84c8) },
+      uMid: { value: new THREE.Color(0x5eb0e0) },
+      uHorizon: { value: new THREE.Color(0xa8d8f0) },
+      uGround: { value: new THREE.Color(0x90c8a8) },
       uSunDir: { value: new THREE.Vector3(0.42, 0.72, 0.38).normalize() },
       uSunColor: { value: new THREE.Color(0xfff0c8) },
-      uCloud: { value: new THREE.Color(0xe8f4fc) },
+      uCloud: { value: new THREE.Color(0xf2f8fc) },
     },
     vertexShader: /* glsl */ `
       varying vec3 vDir;
@@ -1496,27 +1790,29 @@ function scatterAround(plant, factory, count, { minR = 5, maxR = 28, scale = [0.
 function buildByType(type, place, assets) {
   switch (type) {
     case 'plaza':
-      return createPlazaPad(place.footprintWxD?.[0] ?? LINKON_SLICE_P0.meta.plazaSize);
-    case 'obelisk':
-      return createObelisk();
-    case 'hunterHq':
-      return createHunterHq();
-    case 'hospital':
-      return createHospital();
-    case 'cafe':
-      return createMeowCafe();
-    case 'shopBoutique':
-      return createBoutiqueShop();
-    case 'shopConvenience':
-      return createConvenienceShop();
-    case 'busStop':
-      return createBusStop();
-    case 'hunterBoard':
-      return createHunterBoard();
-    case 'skylineTower':
-      return createSkylineTower(place.variant ?? 0);
-    case 'apartmentSilhouette':
-      return createApartmentSilhouette();
+      return createPlazaPad(place.footprintWxD?.[0] ?? MUSHOKU_SLICE_P0.meta.plazaSize);
+    case 'well':
+      return createWell();
+    case 'adventurersGuild':
+      return createAdventurersGuild();
+    case 'temple':
+      return createTemple();
+    case 'inn':
+      return createInn();
+    case 'shopMagic':
+      return createMagicShop();
+    case 'shopSmithy':
+      return createSmithy();
+    case 'shopGeneral':
+      return createGeneralShop();
+    case 'carriageStop':
+      return createCarriageStop();
+    case 'questBoard':
+      return createQuestBoard();
+    case 'skylineKeep':
+      return createSkylineKeep(place.variant ?? 0);
+    case 'cottageSilhouette':
+      return createCottageSilhouette();
     case 'streetLight':
       return createStreetLight();
     case 'tree':
@@ -1552,9 +1848,9 @@ function populateFromLayout(plant, layout, assets = {}, { maxR = 55 } = {}) {
     // Keep plaza free of tall masses even if a bad row sneaks into the table.
     if (
       place.type !== 'plaza' &&
-      place.type !== 'obelisk' &&
+      place.type !== 'well' &&
       place.type !== 'streetLight' &&
-      place.type !== 'hunterBoard' &&
+      place.type !== 'questBoard' &&
       (place.heightHint === 'L' || place.heightHint === 'XL') &&
       Math.hypot(place.x, place.z) < 8
     ) {
@@ -1570,7 +1866,7 @@ function populateFromLayout(plant, layout, assets = {}, { maxR = 55 } = {}) {
 
 /** @deprecated dense 90s town — kept only as reference; prefer populateFromLayout */
 function populateTown(plant, { treePick, gltfHouse }, { density = 1, maxR = 55 } = {}) {
-  populateFromLayout(plant, LINKON_SLICE_P0, { treePick, gltfHouse }, { maxR });
+  populateFromLayout(plant, MUSHOKU_SLICE_P0, { treePick, gltfHouse }, { maxR });
   if (density < 0.5) return;
   // Optional light vegetation outside landmarks only (still sparse, no housing blocks).
   scatterAround(plant, createBush, Math.round(6 * density), {
@@ -1640,7 +1936,7 @@ function makeRoadPlane(w, d, color = ROAD) {
   return m;
 }
 
-// Linkon hunter-slice: flat authoring stage — declarative layout, plant = flat
+// Mushoku village-slice: flat authoring stage — declarative layout, plant = flat
 export async function createFlatWorld(scene, loader) {
   const groundTex = await loader.loadAsync(groundUrl);
   groundTex.colorSpace = THREE.SRGBColorSpace;
@@ -1651,15 +1947,17 @@ export async function createFlatWorld(scene, loader) {
   groundTex.generateMipmaps = true;
   groundTex.anisotropy = 16;
 
-  const groundMat = makeToon(0x7ec85a);
+  const groundMat = makeToon(0x6bc24a);
   groundMat.map = groundTex;
   groundMat.onBeforeCompile = (sh) => {
     sh.fragmentShader = sh.fragmentShader.replace(
       '#include <map_fragment>',
       `#include <map_fragment>
        #ifdef USE_MAP
-         vec3 grass = vec3(0.52, 0.74, 0.40);
-         diffuseColor.rgb = mix(grass, diffuseColor.rgb * vec3(0.9, 1.05, 0.75) + 0.1, 0.24);
+         // Punchier meadow green — avoid muddy olive wash
+         vec3 grass = vec3(0.42, 0.68, 0.32);
+         diffuseColor.rgb = mix(grass, diffuseColor.rgb * vec3(0.85, 1.08, 0.72) + 0.06, 0.28);
+         diffuseColor.rgb = mix(diffuseColor.rgb, grass, 0.12);
        #endif`,
     );
   };
@@ -1703,8 +2001,8 @@ export async function createFlatWorld(scene, loader) {
   const assets = await loadTownAssets();
   const plant = makePlant(group, 'flat');
   // Roads + landmarks from the same table (segmented tiles, sole@y=0).
-  populateFromLayout(plant, LINKON_SLICE_P0, assets, {
-    maxR: LINKON_SLICE_P0.meta.playableHalfExtent + 8,
+  populateFromLayout(plant, MUSHOKU_SLICE_P0, assets, {
+    maxR: MUSHOKU_SLICE_P0.meta.playableHalfExtent + 8,
   });
 
   return {
@@ -1713,7 +2011,7 @@ export async function createFlatWorld(scene, loader) {
     sky,
     clouds,
     mode: 'flat',
-    layout: LINKON_SLICE_P0,
+    layout: MUSHOKU_SLICE_P0,
   };
 }
 
@@ -1745,7 +2043,7 @@ export async function createWorld(scene, loader) {
     extraSink: 0.016,
     minElev: 0.01,
   });
-  populateFromLayout(plant, LINKON_SLICE_P0, assets, { maxR: 30 });
+  populateFromLayout(plant, MUSHOKU_SLICE_P0, assets, { maxR: 30 });
 
   // Sparse non-town props only — never scatter buildings onto the sphere.
   scatterOnPlanet(planetGroup, assets.treePick, 10, {

@@ -106,28 +106,30 @@ const OutlineShader = {
       // thinner lines in the distance
       edge *= 1.0 - smoothstep(0.45, 0.92, dC) * 0.4;
 
-      // soft ink, not pure black — keeps the frame airy
-      vec3 ink = mix(uOutlineColor, base.rgb * vec3(0.35, 0.32, 0.38), 0.12);
+      // darker ink for anime-street silhouette punch
+      vec3 ink = mix(uOutlineColor, base.rgb * vec3(0.22, 0.2, 0.26), 0.08);
       gl_FragColor = vec4(mix(base.rgb, ink, edge), base.a);
     }`,
 };
 
-// clean cel grade: soft bands, almost no dither/grain, lifted blacks
+// Cel grade: punchier contrast + saturation, light warm village bias, soft posterize
 const GradeShader = {
   uniforms: {
     tDiffuse: { value: null },
-    uLevels: { value: 10.0 },
-    uDither: { value: 0.06 },
-    uSaturation: { value: 1.05 },
+    uLevels: { value: 9.0 },
+    uDither: { value: 0.08 },
+    uSaturation: { value: 1.22 },
     uGrain: { value: 0.0 },
-    uLift: { value: 0.06 },
-    uContrast: { value: 1.04 },
+    uLift: { value: 0.02 },
+    uContrast: { value: 1.12 },
+    uWarm: { value: 0.04 },
+    uVignette: { value: 0.18 },
   },
   vertexShader: OutlineShader.vertexShader,
   fragmentShader: /* glsl */ `
     varying vec2 vUv;
     uniform sampler2D tDiffuse;
-    uniform float uLevels, uDither, uSaturation, uGrain, uLift, uContrast;
+    uniform float uLevels, uDither, uSaturation, uGrain, uLift, uContrast, uWarm, uVignette;
 
     // stable ordered dither (no crawling grain)
     float bayer4(vec2 p){
@@ -147,7 +149,7 @@ const GradeShader = {
       vec3 c = texture2D(tDiffuse, vUv).rgb;
       c = max(c, 0.0);
 
-      // lift crushed shadows before banding
+      // mild lift only — washed-out was mostly over-lift
       c = c * (1.0 - uLift) + uLift;
       c = (c - 0.5) * uContrast + 0.5;
 
@@ -159,12 +161,22 @@ const GradeShader = {
       float lv = max(uLevels, 2.0);
       vec3 hard = floor(c * lv + 0.5) / lv;
       vec3 soft = floor(c * lv) / lv + 0.5 / lv;
-      vec3 q = mix(c, mix(soft, hard, 0.55), 0.55);
+      vec3 q = mix(c, mix(soft, hard, 0.55), 0.58);
 
       float l = dot(q, vec3(0.2126, 0.7152, 0.0722));
       q = mix(vec3(l), q, uSaturation);
 
-      // keep highlights clean white, no warm mud cast
+      // slight warm wood/fantasy bias on midtones (not highlights)
+      float mid = smoothstep(0.12, 0.55, l) * (1.0 - smoothstep(0.65, 0.95, l));
+      q.r += uWarm * 0.9 * mid;
+      q.g += uWarm * 0.25 * mid;
+      q.b -= uWarm * 0.35 * mid;
+
+      // soft vignette — frames the shot, cheap polish
+      vec2 vc = vUv - 0.5;
+      float vig = 1.0 - dot(vc, vc) * (uVignette * 2.4);
+      q *= clamp(vig, 0.72, 1.0);
+
       q = clamp(q, 0.0, 1.0);
       gl_FragColor = vec4(q, 1.0);
     }`,

@@ -6,7 +6,9 @@ planet, drawn with **ink outlines** and a **posterized / dithered** comic finish
 
 > Status: ~40% of abeto's polish. Same techniques, much less content. See "Gap" below.
 >
-> **Content direction (flat-first):** [docs/SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md](docs/SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md) — Linkon-slice scene brief (buildings, character, animation, poly budget, layout rules). Tech deep-dive: [docs/HOW_IT_WORKS.zh.md](docs/HOW_IT_WORKS.zh.md).
+> **Content direction (flat-first):** [docs/SCENE_SPEC_MUSHOKU.zh.md](docs/SCENE_SPEC_MUSHOKU.zh.md) — Mushoku Tensei village-slice (Buena/Roa feel).  
+> **Content pipeline (add actors / animals / buildings):** [docs/CONTENT_PIPELINE.zh.md](docs/CONTENT_PIPELINE.zh.md) — catalog + Entity contract.  
+> **Research / provenance (abeto reverse notes, VRM shortcut, lost early sessions):** [docs/HOW_IT_WORKS.zh.md](docs/HOW_IT_WORKS.zh.md) §5 — treat docs as source of truth, not deleted chats.
 
 ```bash
 npm install
@@ -31,16 +33,13 @@ Five pieces. Each maps to one file.
   the hills. (abeto does true surface-walking with `three-mesh-bvh` collision; this is the
   cheap equivalent.)
 
-### 2. The character — `src/vrm-character.js`
-- A **VRM** anime avatar (made in VRoid Studio) loaded with
-  [`@pixiv/three-vrm`](https://github.com/pixiv/three-vrm). VRM uses the **MToon** cel
-  shader, so it already matches the toon look.
-- The walk is **hand-authored in code** — we rotate the normalized humanoid bones
-  (`getNormalizedBoneNode('leftUpperLeg')` …) with sine curves for legs / arms / knees /
-  hip-sway / bob, then `vrm.update(dt)`. No animation file. (This is why it looks a bit
-  stiff — see Gap.)
-- Falls back to a placeholder rigged model (`src/model-character.js`, three.js
-  `RobotExpressive`) if no `public/character.vrm` is present.
+### 2. The character — `src/entities/character/*` + `src/content/*`
+- Loaded via **content catalog** (`createFromCatalog('actors.hunter_f')`), not one-off scripts.
+- A **VRM** anime avatar + **Mixamo** walk FBX, retargeted with `loadMixamoAnimation`.
+- Idle arms use named presets (`little_girl_soft` …); cloth Aim bones are pinned; hair uses
+  light spring + velocity trail (see CONTENT_PIPELINE §5).
+- Falls back to `src/model-character.js` if the catalog actor fails to load.
+- **Add a new person / animal / building:** follow [CONTENT_PIPELINE](docs/CONTENT_PIPELINE.zh.md) checklist — new folder + manifest + `register()`, no `main.js` hacks.
 
 ### 3. The world props + city — `src/world.js`
 - Trees / rocks / bushes / **buildings** are **procedural 3D toon geometry** (boxes +

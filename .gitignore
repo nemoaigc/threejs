@@ -5,3 +5,5 @@ dist/
 *.log
 .env
 /tmp-gen/
+# Cloned third-party research trees (large; may contain proprietary mirrors)
+/research/messenger-ecosystem/

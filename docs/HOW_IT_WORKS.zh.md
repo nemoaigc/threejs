@@ -89,9 +89,43 @@
 **补齐路线图:** 真模型+贴图 · 给 VRM 套 Mixamo 动捕走路 · surface-ID 描边 · 更多生态/道具种类
 · 资源压缩。
 
-**当前内容规格（平面优先 · 恋与深空主题切片）:** 见同目录
-[SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md](./SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md)
+**当前内容规格（平面优先 · 无职转生村庄切片）:** 见同目录
+[SCENE_SPEC_MUSHOKU.zh.md](./SCENE_SPEC_MUSHOKU.zh.md)
 ——人物 / 建筑 / 动作 / 面数预算 / 声明式布局纪律；**平面 DoD 通过后再包球**。
+（旧临空规格已退役：[SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md](./SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md)）
+
+**批量内容管线（新增人物 / 小动物 / 建筑）:** [CONTENT_PIPELINE.zh.md](./CONTENT_PIPELINE.zh.md)
+——`kind` + manifest + `registry` + Entity 接口；代码入口 `src/content/*`、`src/entities/*`。
+
+## 第五部分 —— 调研结论与项目来源（务必保留）
+
+> 早期 Claude Code / 本地会话可能已删；**以本文 + README + CONTENT_PIPELINE 为权威记忆**，勿依赖已丢失 chat。
+
+### 我们在逆向 / 对齐什么
+
+更完整的 GitHub 生态克隆清单、原版「展开立方体手作 vs 程序化」结论与本地对照仓说明：见
+[MESSENGER_ECOSYSTEM_RESEARCH.zh.md](./MESSENGER_ECOSYSTEM_RESEARCH.zh.md)
+（克隆在 `research/messenger-ecosystem/`，已 gitignore）。
+
+| 对象 | 结论 |
+|------|------|
+| [messenger.abeto.co](https://messenger.abeto.co) | 画风目标：cel + 墨线描边 + 色阶/抖动。引擎 three.js，真角色是 **定制模 + VAT + 2D 脸**，**不是 VRM**。世界主体是 **手作 unwrapped-cube**，不是 runtime 整城 PCG。 |
+| 本 demo 的「够用」技术债 | **How It Works（本文）** 已写清 abeto 栈与本项目五块拆分；生态对照见上链调研文；**优先内容管线 + 程序化建筑**，不必再扒专有 `.drc`。 |
+| **VRM / three-vrm** | 我们的角色捷径：VRoid → `.vrm` → `@pixiv/three-vrm`。有标准骨骼、MToon、spring bone。代价：默认 VTuber 味、头发 rest 易外张、袖/裤常有 Aim 骨需 pin。 |
+| Mixamo | 只提供 walk 等 FBX，retarget 进 VRM normalized bones（`loadMixamoAnimation`）。 |
+| 平面 → 星球 | **先平面 DoD**（布局 sole@y=0 + plant adapter），再 `plantOnPlanet`；内容不重做。 |
+
+### 时间线（本机可核实部分）
+
+- **~2026-06-18**：目录主体出现（`package.json`、`character.vrm`、`HOW_IT_WORKS`、Mixamo walk 等）。本机 **Claude / Codex 存档未找到** 对应 cwd 的构建会话（疑似已删）。
+- **~2026-07-03**：有 Codex 会话跑过社区 `messenger-copy` 类仓库（调研向），**不是** 本仓库 cwd。
+- **2026-07-22 起**：**Cursor** 会话可完整回溯（git 初始提交、Linkon 切片、内容管线重构）。
+
+### 现在默认策略
+
+1. **渲染与调研**：本文 + README Gap 已足够，优先 **内容管线批量加资产**，不再重复「abeto 怎么做」长调研。  
+2. **角色**：走 `src/content` + `src/entities/character`；idle 手臂自然下垂、静止头发贴身下垂；禁止在 `main.js` 叠姿势补丁。  
+3. **丢失 session**：不追；缺口用本文档补，改动写进 git。
 
 ## 参考(开源)
 

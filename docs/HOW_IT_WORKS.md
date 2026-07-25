@@ -84,6 +84,18 @@ Five pieces, one file each.
 - **To use your own character**: make one in VRoid Studio → export `.vrm` → drop it at
   `public/character.vrm` (overwrites the placeholder; no code change).
 
+## Part 3.5 — Research log / provenance (keep this)
+
+Early Claude Code / local chat history for this folder may be gone. **Canonical memory is this
+doc + README + `docs/CONTENT_PIPELINE.zh.md` (+ Chinese §5 in `HOW_IT_WORKS.zh.md`)**, not deleted sessions.
+
+- **Target**: [messenger.abeto.co](https://messenger.abeto.co) look (cel + ink outline + posterize).
+  Their character is **not** VRM (custom mesh + VAT + 2D face).
+- **Our shortcut**: VRM via `@pixiv/three-vrm` + Mixamo walk FBX. Enough reverse-engineering is
+  already written above — prefer shipping content over re-doing a full site RE.
+- **Timeline (machine-checkable)**: core tree ~2026-06-18; Cursor-era work + git from ~2026-07-22.
+  No local Claude/Codex session with cwd `personal/threejs` found for the original scaffold.
+
 ## Part 4 — The gap (our 40% → their 100%)
 
 | | abeto | this demo |

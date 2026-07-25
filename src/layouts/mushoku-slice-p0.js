@@ -1,6 +1,6 @@
 /**
- * Linkon hunter-slice P0 — declarative layout (meters, sole@y=0).
- * Spec: docs/SCENE_SPEC_LOVE_AND_DEEPSPACE.zh.md §11
+ * Mushoku Tensei village-slice P0 — Buena / Roa countryside feel (meters, sole@y=0).
+ * Spec: docs/SCENE_SPEC_MUSHOKU.zh.md
  *
  * Rules baked in:
  * - plaza center stays clear of L/XL buildings
@@ -8,9 +8,9 @@
  * - roads are segmented lines (plantRoadLine), not one giant slab
  */
 
-export const LINKON_SLICE_P0 = {
+export const MUSHOKU_SLICE_P0 = {
   meta: {
-    name: 'linkon-hunter-slice-p0',
+    name: 'mushoku-buena-roa-slice-p0',
     playableHalfExtent: 32,
     roadWidthMain: 5.2,
     plazaSize: 14,
@@ -37,21 +37,21 @@ export const LINKON_SLICE_P0 = {
       priority: 'P0',
     },
     {
-      id: 'prop.plaza_marker',
-      type: 'obelisk',
+      id: 'prop.plaza_well',
+      type: 'well',
       x: -3.5,
       z: 2.0,
       yaw: 0.2,
-      footprintWxD: [1.2, 1.2],
+      footprintWxD: [1.6, 1.6],
       heightHint: 'S',
       zone: 'B',
       priority: 'P0',
     },
 
-    // C landmarks — placed in the north view cone from hero spawn (0, 6) looking −Z
+    // C landmarks — north view cone from hero spawn (0, 6) looking −Z
     {
-      id: 'landmark.hunter_hq',
-      type: 'hunterHq',
+      id: 'landmark.adventurers_guild',
+      type: 'adventurersGuild',
       x: -16,
       z: -12,
       yaw: 0.55, // face plaza / southeast
@@ -61,8 +61,8 @@ export const LINKON_SLICE_P0 = {
       priority: 'P0',
     },
     {
-      id: 'landmark.hospital',
-      type: 'hospital',
+      id: 'landmark.temple',
+      type: 'temple',
       x: 6,
       z: -22,
       yaw: 0.15, // long facade readable from plaza
@@ -72,8 +72,8 @@ export const LINKON_SLICE_P0 = {
       priority: 'P0',
     },
     {
-      id: 'landmark.cafe_meow',
-      type: 'cafe',
+      id: 'landmark.inn',
+      type: 'inn',
       x: 14,
       z: -8,
       yaw: -0.4, // face plaza / southwest
@@ -85,8 +85,8 @@ export const LINKON_SLICE_P0 = {
 
     // A main-street shops (set back from cross, do not wall the plaza)
     {
-      id: 'shop.east_1',
-      type: 'shopBoutique',
+      id: 'shop.magic',
+      type: 'shopMagic',
       x: 16,
       z: 5.5,
       yaw: Math.PI,
@@ -96,8 +96,8 @@ export const LINKON_SLICE_P0 = {
       priority: 'P0',
     },
     {
-      id: 'shop.west_1',
-      type: 'shopConvenience',
+      id: 'shop.smithy',
+      type: 'shopSmithy',
       x: -16,
       z: 5.5,
       yaw: Math.PI,
@@ -107,8 +107,8 @@ export const LINKON_SLICE_P0 = {
       priority: 'P0',
     },
     {
-      id: 'shop.south_1',
-      type: 'shopBoutique',
+      id: 'shop.general',
+      type: 'shopGeneral',
       x: -14,
       z: -5.5,
       yaw: 0,
@@ -119,8 +119,8 @@ export const LINKON_SLICE_P0 = {
     },
 
     {
-      id: 'prop.bus_stop_e',
-      type: 'busStop',
+      id: 'prop.carriage_e',
+      type: 'carriageStop',
       x: 9,
       z: 3.2,
       yaw: Math.PI,
@@ -130,8 +130,8 @@ export const LINKON_SLICE_P0 = {
       priority: 'P0',
     },
     {
-      id: 'prop.bus_stop_w',
-      type: 'busStop',
+      id: 'prop.carriage_w',
+      type: 'carriageStop',
       x: -9,
       z: 3.2,
       yaw: Math.PI,
@@ -142,8 +142,8 @@ export const LINKON_SLICE_P0 = {
     },
 
     {
-      id: 'prop.hunter_board',
-      type: 'hunterBoard',
+      id: 'prop.quest_board',
+      type: 'questBoard',
       x: -4.5,
       z: 4.5,
       yaw: 0.5,
@@ -153,10 +153,10 @@ export const LINKON_SLICE_P0 = {
       priority: 'P0',
     },
 
-    // D skyline ring (far, not in playable collision)
+    // D skyline ring — distant keep / castle silhouettes
     {
-      id: 'skyline.tower_a',
-      type: 'skylineTower',
+      id: 'skyline.keep_a',
+      type: 'skylineKeep',
       x: -30,
       z: -26,
       yaw: 0.1,
@@ -167,8 +167,8 @@ export const LINKON_SLICE_P0 = {
       variant: 0,
     },
     {
-      id: 'skyline.tower_b',
-      type: 'skylineTower',
+      id: 'skyline.keep_b',
+      type: 'skylineKeep',
       x: 32,
       z: -14,
       yaw: -0.2,
@@ -179,8 +179,8 @@ export const LINKON_SLICE_P0 = {
       variant: 1,
     },
     {
-      id: 'skyline.tower_c',
-      type: 'skylineTower',
+      id: 'skyline.keep_c',
+      type: 'skylineKeep',
       x: 18,
       z: -34,
       yaw: 0,
@@ -191,10 +191,10 @@ export const LINKON_SLICE_P0 = {
       variant: 2,
     },
 
-    // sparse D-zone apartments (silhouettes only)
+    // sparse D-zone cottage silhouettes
     {
-      id: 'apt.mid_nw',
-      type: 'apartmentSilhouette',
+      id: 'cottage.mid_nw',
+      type: 'cottageSilhouette',
       x: -26,
       z: 18,
       yaw: Math.PI * 0.15,
@@ -204,8 +204,8 @@ export const LINKON_SLICE_P0 = {
       priority: 'P1',
     },
     {
-      id: 'apt.mid_ne',
-      type: 'apartmentSilhouette',
+      id: 'cottage.mid_ne',
+      type: 'cottageSilhouette',
       x: 26,
       z: 16,
       yaw: -0.4,
@@ -215,22 +215,22 @@ export const LINKON_SLICE_P0 = {
       priority: 'P1',
     },
 
-    // street lights along main axes (declarative, not random)
-    ...streetLightsAlongMain(),
+    // lantern posts along main axes
+    ...lanternsAlongMain(),
 
-    // a few trees with fixed positions (no scatter density)
+    // trees with fixed positions
     { id: 'tree.n1', type: 'tree', x: -10, z: 4.2, yaw: 0.3, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'A', priority: 'P0' },
     { id: 'tree.n2', type: 'tree', x: 10, z: 4.2, yaw: 1.1, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'A', priority: 'P0' },
     { id: 'tree.s1', type: 'tree', x: -8, z: -4.5, yaw: 2.0, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'A', priority: 'P0' },
     { id: 'tree.s2', type: 'tree', x: 8, z: -4.5, yaw: 0.7, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'A', priority: 'P0' },
-    { id: 'tree.hq1', type: 'tree', x: -12, z: -16, yaw: 0.2, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'C', priority: 'P0' },
-    { id: 'tree.cafe1', type: 'tree', x: 18, z: -10, yaw: 1.4, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'A', priority: 'P0' },
-    { id: 'tree.hosp1', type: 'tree', x: 0, z: -18, yaw: 0.5, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'C', priority: 'P0' },
-    { id: 'tree.hosp2', type: 'tree', x: 14, z: -18, yaw: 2.2, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'C', priority: 'P0' },
+    { id: 'tree.guild1', type: 'tree', x: -12, z: -16, yaw: 0.2, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'C', priority: 'P0' },
+    { id: 'tree.inn1', type: 'tree', x: 18, z: -10, yaw: 1.4, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'A', priority: 'P0' },
+    { id: 'tree.temple1', type: 'tree', x: 0, z: -18, yaw: 0.5, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'C', priority: 'P0' },
+    { id: 'tree.temple2', type: 'tree', x: 14, z: -18, yaw: 2.2, footprintWxD: [1.5, 1.5], heightHint: 'S', zone: 'C', priority: 'P0' },
   ],
 };
 
-function streetLightsAlongMain() {
+function lanternsAlongMain() {
   const lights = [];
   const xs = [-24, -16, -10, 10, 16, 24];
   for (const x of xs) {

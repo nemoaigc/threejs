@@ -3,11 +3,13 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import GUI from 'lil-gui';
 import { createFlatWorld } from './world.js';
 import { createModelCharacter, updateModelCharacter } from './model-character.js';
-import { createVRMCharacter, updateVRMCharacter } from './vrm-character.js';
 import { createPostFX } from './postfx.js';
+import { bootstrapContent } from './content/bootstrap.js';
+import { createFromCatalog } from './content/registry.js';
+import { PLAYER_ID } from './content/catalog.js';
 
 // Flat authoring stage — fix character + town assets first, wrap to sphere later.
-const SKY = 0x6eb6de;
+const SKY = 0x5aa8d8;
 
 const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -16,17 +18,18 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.18;
+renderer.toneMappingExposure = 1.08;
 renderer.setClearColor(SKY, 1);
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(SKY, 45, 110);
+// Shorter fog range keeps mid landmarks colorful (less grey wash)
+scene.fog = new THREE.Fog(SKY, 55, 130);
 
-// Hero shot (spec §3): stand south of plaza looking north toward hospital axis.
+// Hero shot (spec §3): stand south of plaza looking north toward temple axis.
 const HERO_SPAWN = { x: 0, y: 0, z: 6 };
 const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 250);
-// Behind the hunter, looking north (−Z) at association / hospital / cafe.
+// Behind the adventurer, looking north (−Z) at guild / temple / inn.
 camera.position.set(2.5, 5.5, 16);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -39,13 +42,14 @@ controls.minPolarAngle = 0.12;
 controls.maxPolarAngle = Math.PI * 0.48;
 controls.target.set(2, 3.0, -6);
 
-const sun = new THREE.DirectionalLight(0xfff6e8, 2.15);
-sun.position.set(12, 20, 10);
+// Stronger key, softer fill — punchier cel bands (X consensus: lighting is half the look)
+const sun = new THREE.DirectionalLight(0xfff2dc, 2.45);
+sun.position.set(14, 22, 11);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 sun.shadow.bias = -0.00025;
 sun.shadow.normalBias = 0.04;
-sun.shadow.radius = 3;
+sun.shadow.radius = 2.5;
 Object.assign(sun.shadow.camera, {
   left: -48,
   right: 48,
@@ -57,10 +61,14 @@ Object.assign(sun.shadow.camera, {
 scene.add(sun);
 scene.add(sun.target);
 
-scene.add(new THREE.HemisphereLight(0xd8f2ff, 0xb8d48a, 1.2));
-const fill = new THREE.DirectionalLight(0xd0e8ff, 0.6);
+scene.add(new THREE.HemisphereLight(0xc8e8ff, 0x9ec868, 0.85));
+const fill = new THREE.DirectionalLight(0xb8d8ff, 0.38);
 fill.position.set(-8, 6, -4);
 scene.add(fill);
+// Cool rim from behind — cheap Fresnel substitute for buildings/character
+const rim = new THREE.DirectionalLight(0xa8d4ff, 0.35);
+rim.position.set(-4, 8, -14);
+scene.add(rim);
 
 const loader = new THREE.TextureLoader();
 
@@ -96,14 +104,14 @@ let postfx;
 let targetYaw = 0;
 const params = {
   walkSpeed: 3.4,
-  thickness: 1.15,
-  depthBias: 0.0018,
-  normalBias: 0.55,
-  sketch: 0.15,
-  outlineColor: '#2a2430',
-  levels: 10,
-  dither: 0.06,
-  saturation: 1.05,
+  thickness: 1.25,
+  depthBias: 0.0015,
+  normalBias: 0.48,
+  sketch: 0.08,
+  outlineColor: '#1e1824',
+  levels: 9,
+  dither: 0.08,
+  saturation: 1.22,
 };
 
 function move(dt) {
@@ -134,7 +142,7 @@ function move(dt) {
 }
 
 function buildGUI() {
-  const gui = new GUI({ title: 'Linkon slice' });
+  const gui = new GUI({ title: '无职转生 · 村庄切片' });
   gui.add(params, 'walkSpeed', 0.5, 8, 0.1).name('walk speed');
   const fo = gui.addFolder('outline');
   fo.add(params, 'thickness', 0, 3, 0.05).onChange((v) => (postfx.outline.uThickness.value = v));
@@ -151,7 +159,7 @@ function buildGUI() {
   const fp = gui.addFolder('colour grade');
   fp.add(params, 'levels', 2, 16, 1).onChange((v) => (postfx.posterize.uLevels.value = v));
   fp.add(params, 'dither', 0, 1, 0.01).onChange((v) => (postfx.posterize.uDither.value = v));
-  fp.add(params, 'saturation', 0, 1.4, 0.02).onChange((v) => (postfx.posterize.uSaturation.value = v));
+  fp.add(params, 'saturation', 0, 1.6, 0.02).onChange((v) => (postfx.posterize.uSaturation.value = v));
 }
 
 addEventListener('resize', () => {
@@ -189,8 +197,14 @@ function animate() {
   prevCamAzimuth = az;
   orbitDelta = THREE.MathUtils.clamp(orbitDelta, -0.35, 0.35);
 
-  if (character.isVRM) {
-    updateVRMCharacter(character, t, moving, dt, { orbitDelta });
+  if (typeof character.update === 'function') {
+    character.update({
+      time: t,
+      dt,
+      moving,
+      loco: moving ? 'walk' : 'idle',
+      orbitDelta,
+    });
   } else {
     updateModelCharacter(character, t, moving, dt);
   }
@@ -199,34 +213,66 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+function hideBoot() {
+  const el = document.getElementById('boot');
+  if (!el) return;
+  el.dataset.hide = '1';
+  setTimeout(() => el.remove(), 400);
+}
+
 (async () => {
-  await createFlatWorld(scene, loader);
-
+  const boot = document.getElementById('boot');
   try {
-    character = await createVRMCharacter(`${import.meta.env.BASE_URL}character.vrm`);
+    bootstrapContent();
+    if (boot) boot.textContent = '加载场景…';
+    await createFlatWorld(scene, loader);
+
+    // World first so the page is never a dead blank while VRM downloads.
+    postfx = createPostFX(renderer, scene, camera);
+    postfx.outline.uThickness.value = params.thickness;
+    postfx.outline.uDepthBias.value = params.depthBias;
+    postfx.outline.uNormalBias.value = params.normalBias;
+    postfx.outline.uSketch.value = params.sketch;
+    postfx.outline.uOutlineColor.value.set(params.outlineColor);
+    postfx.posterize.uLevels.value = params.levels;
+    postfx.posterize.uDither.value = params.dither;
+    postfx.posterize.uSaturation.value = params.saturation;
+    // Anti washed-out: low lift, higher contrast (matches GradeShader defaults)
+    if (postfx.posterize.uLift) postfx.posterize.uLift.value = 0.02;
+    if (postfx.posterize.uContrast) postfx.posterize.uContrast.value = 1.12;
+    if (postfx.posterize.uWarm) postfx.posterize.uWarm.value = 0.04;
+    if (postfx.posterize.uVignette) postfx.posterize.uVignette.value = 0.18;
+
+    if (boot) boot.textContent = '加载角色…';
+    try {
+      character = await createFromCatalog(PLAYER_ID);
+    } catch (e) {
+      console.warn('[character] catalog actor failed, placeholder robot:', e);
+      character = await createModelCharacter();
+      character.update = (ctx) => updateModelCharacter(character, ctx.time, ctx.moving, ctx.dt);
+    }
+    character.group.position.set(HERO_SPAWN.x, HERO_SPAWN.y, HERO_SPAWN.z);
+    character.group.rotation.y = 0;
+    targetYaw = 0;
+    character.group.scale.setScalar(1);
+    scene.add(character.group);
+    // Dev probes for hair/arm metrics + camera framing (Playwright / console).
+    if (import.meta.env.DEV) {
+      window.__character = character;
+      window.__camera = camera;
+      window.__controls = controls;
+    }
+
+    buildGUI();
+    hideBoot();
+    animate();
   } catch (e) {
-    console.warn('[character] no VRM found, using placeholder robot:', e.message);
-    character = await createModelCharacter();
+    console.error('[boot] failed:', e);
+    if (boot) {
+      boot.textContent = `加载失败：${e?.message || e}`;
+      boot.style.whiteSpace = 'pre-wrap';
+      boot.style.padding = '24px';
+      boot.style.textAlign = 'center';
+    }
   }
-  character.group.position.set(HERO_SPAWN.x, HERO_SPAWN.y, HERO_SPAWN.z);
-  // Three.js default forward is −Z (toward hospital / north landmarks).
-  character.group.rotation.y = 0;
-  targetYaw = 0;
-  character.group.scale.setScalar(1);
-  scene.add(character.group);
-
-  postfx = createPostFX(renderer, scene, camera);
-  postfx.outline.uThickness.value = params.thickness;
-  postfx.outline.uDepthBias.value = params.depthBias;
-  postfx.outline.uNormalBias.value = params.normalBias;
-  postfx.outline.uSketch.value = params.sketch;
-  postfx.outline.uOutlineColor.value.set(params.outlineColor);
-  postfx.posterize.uLevels.value = params.levels;
-  postfx.posterize.uDither.value = params.dither;
-  postfx.posterize.uSaturation.value = params.saturation;
-  if (postfx.posterize.uLift) postfx.posterize.uLift.value = 0.06;
-  if (postfx.posterize.uContrast) postfx.posterize.uContrast.value = 1.04;
-
-  buildGUI();
-  animate();
 })();
