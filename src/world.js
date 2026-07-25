@@ -1997,11 +1997,11 @@ export async function createFlatWorld(scene, loader) {
   const group = new THREE.Group();
   scene.add(group);
 
-  // Soft light aprons under the three heroes only (not plaza)
+  // Soft light aprons under the three heroes (match layout positions)
   for (const [x, z, r] of [
-    [-11, -10, 7],
-    [2, -16, 8],
-    [11, -9, 5.5],
+    [-22, -14, 6],
+    [0, -34, 7],
+    [22, -12, 5],
   ]) {
     const apron = createBuildingDirtApron(r);
     apron.position.set(x, 0, z);

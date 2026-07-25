@@ -25,24 +25,24 @@ document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 // Fog matches sky so distance stays airy, not green-grey sludge
-scene.fog = new THREE.Fog(FOG, 60, 140);
+scene.fog = new THREE.Fog(FOG, 70, 160);
 
-// Hero shot (spec §3): stand south of plaza looking north toward temple axis.
-const HERO_SPAWN = { x: 0, y: 0, z: 8 };
-const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 250);
-// Behind the adventurer, looking north (−Z) at guild / temple / inn.
-camera.position.set(0, 6.5, 22);
+// Hero shot: plaza south, looking north into the open village axis.
+const HERO_SPAWN = { x: 0, y: 0, z: 10 };
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 280);
+// Pull back so guild (W) · temple (N) · inn (E) all fit with air between them.
+camera.position.set(0, 9, 28);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.enablePan = false;
 controls.minDistance = 2.5;
-controls.maxDistance = 60;
+controls.maxDistance = 90;
 controls.minPolarAngle = 0.12;
 controls.maxPolarAngle = Math.PI * 0.48;
-// Frame the three heroes: guild (−11,−10) · temple (2,−16) · inn (11,−9)
-controls.target.set(0, 4.5, -10);
+// Aim mid-field between plaza and temple path
+controls.target.set(0, 4.0, -14);
 
 // Soft daylight — lift shadows, avoid crushing midtones
 const sun = new THREE.DirectionalLight(0xfff6e8, 2.1);
