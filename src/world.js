@@ -10,6 +10,7 @@ import {
   createRoadTile as createEnvRoadTile,
   createPlazaPad as createEnvPlazaPad,
   createBuildingDirtApron,
+  ensureEnvTextures,
 } from './environment/flat-env.js';
 
 // Toy planet large enough for a readable town pad, small enough to read as a globe.
@@ -1824,6 +1825,9 @@ function buildByType(type, place, assets) {
     case 'skylineKeep':
       return createSkylineKeep(place.variant ?? 0);
     case 'cottageSilhouette':
+    case 'cottageGlb':
+      // Prefer real house GLBs over procedural silhouettes
+      if (assets?.gltfHouse) return assets.gltfHouse();
       return createCottageSilhouette();
     case 'streetLight':
       return createStreetLight();
@@ -1949,7 +1953,8 @@ function makeRoadPlane(w, d, color = ROAD) {
 
 // Mushoku village-slice: flat authoring stage — declarative layout, plant = flat
 export async function createFlatWorld(scene, loader) {
-  // Crafted meadow (procedural grass canvas) — not a single flat green plastic plane
+  // Authored seamless env tiles first (A/C tier); canvas only as fallback
+  await ensureEnvTextures();
   const ground = createMeadowGround(200);
   scene.add(ground);
 

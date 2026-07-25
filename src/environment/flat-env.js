@@ -5,6 +5,7 @@
 import * as THREE from 'three';
 import { makeToon } from '../entities/building/toon.js';
 import {
+  ensureEnvTextures,
   makeGrassTexture,
   makeDirtRoadTexture,
   makeCobbleTexture,
@@ -12,15 +13,18 @@ import {
   makeWornEarthApronTexture,
 } from './textures.js';
 
+export { ensureEnvTextures };
+
 let _tex = null;
 function textures() {
   if (_tex) return _tex;
+  // Prefer authored seamless tiles (ensureEnvTextures should have run first)
   _tex = {
-    grass: makeGrassTexture(512),
-    road: makeDirtRoadTexture(512),
-    cobble: makeCobbleTexture(512),
-    shoulder: makeShoulderTexture(256),
-    apron: makeWornEarthApronTexture(256),
+    grass: makeGrassTexture(),
+    road: makeDirtRoadTexture(),
+    cobble: makeCobbleTexture(),
+    shoulder: makeShoulderTexture(),
+    apron: makeWornEarthApronTexture(),
   };
   return _tex;
 }
