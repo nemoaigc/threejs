@@ -133,9 +133,18 @@ src/entities/building/heroes/
 | 步骤 | 状态 |
 |------|------|
 | 规范（本文） | ✅ |
-| 三张主参考图 | ⏳ |
+| 三张主参考图 | ✅ `docs/references/heroes/{adventurers_guild,temple,inn}/ref_main.png`（1024²，2026-07-25） |
+| 剪影验收（人眼） | ✅ 公会=交叉剑大牌+告示板；神殿=尖塔+彩窗+太阳徽；旅馆=酒杯牌+暖窗 |
 | img2threejs 重建 | ⏳ |
 | catalog + toon 接入 | ⏳ |
 | 退役 world.js 旧 createTemple/Guild/Inn 作为主路径 | ⏳（可留 fallback） |
 
-下一步：按 §3.3 产出 `docs/references/heroes/*/ref_main.png`，通过剪影验收后再开 skill。
+### 6.1 参考图验收记录
+
+| 地标 | 文件 | 像 3D | 单主体 | 中性底 | 身份特征 |
+|------|------|-------|--------|--------|----------|
+| 公会 | `adventurers_guild/ref_main.png` | ✅ 产品渲染 | ✅ | ✅ 浅灰 | 绿牌交叉剑、委托板、酒桶 |
+| 神殿 | `temple/ref_main.png` | ✅ | ✅ | ✅ | 高尖塔、玫瑰窗、金太阳徽、彩窗条 |
+| 旅馆 | `inn/ref_main.png` | ✅ | ✅ | ✅ | 酒杯挂牌、底楼暖窗、花箱与桶 |
+
+下一步：对每座单独跑 img2threejs（或等效 skill），产出 `create*Model` factory → toon 适配 → catalog。
