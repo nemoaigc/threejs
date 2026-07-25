@@ -5,6 +5,13 @@ import { createNoise3D } from 'simplex-noise';
 import groundUrl from './assets/ground.png';
 import { MUSHOKU_SLICE_P0 } from './layouts/mushoku-slice-p0.js';
 import { createHeroBuilding } from './entities/building/heroes/index.js';
+import {
+  createMeadowGround,
+  createRoadTile as createEnvRoadTile,
+  createPlazaPad as createEnvPlazaPad,
+  createBuildingDirtApron,
+  scatterGroundMicroDetail,
+} from './environment/flat-env.js';
 
 // Toy planet large enough for a readable town pad, small enough to read as a globe.
 export const PLANET_RADIUS = 2.6;
@@ -1035,21 +1042,8 @@ function createSkylineKeep(variant = 0) {
 }
 
 function createPlazaPad(size = 14) {
-  const g = new THREE.Group();
-  const m = new THREE.Mesh(new THREE.BoxGeometry(size, 0.06, size), makeToon(0xc9b89a));
-  m.position.y = 0.03;
-  m.receiveShadow = true;
-  m.castShadow = false;
-  m.userData.noOutline = true;
-  g.add(m);
-  // packed-earth cross paths
-  boxAt(g, size * 0.7, 0.02, 0.4, 0, 0.055, 0, 0xb0a088);
-  boxAt(g, 0.4, 0.02, size * 0.7, 0, 0.055, 0, 0xb0a088);
-  g.userData.noOutline = true;
-  g.traverse((o) => {
-    o.userData.noOutline = true;
-  });
-  return g;
+  // Crafted cobble plaza (environment module)
+  return createEnvPlazaPad(size);
 }
 
 /** Village well / simple magic-circle plinth for plaza. */
@@ -1906,20 +1900,9 @@ function populateTown(plant, { treePick, gltfHouse }, { density = 1, maxR = 55 }
   });
 }
 
-/** Short road tile (sole at y=0). Long roads must be built from tiles — a 90m slab breaks the sphere. */
-function createRoadTile(length, width, color = ROAD) {
-  const g = new THREE.Group();
-  const m = new THREE.Mesh(new THREE.BoxGeometry(length, 0.05, width), makeToon(color));
-  m.position.y = 0.025;
-  m.receiveShadow = true;
-  m.castShadow = false;
-  m.userData.noOutline = true;
-  g.add(m);
-  g.userData.noOutline = true;
-  g.traverse((o) => {
-    o.userData.noOutline = true;
-  });
-  return g;
+/** Short dirt-road tile (sole at y=0). Long roads = segmented tiles for sphere later. */
+function createRoadTile(length, width, _color = ROAD) {
+  return createEnvRoadTile(length, width);
 }
 
 /** Segment a long road into short flat tiles so each sole can bury into the sphere. */
@@ -1928,8 +1911,7 @@ function plantRoadLine(plant, { x0, z0, x1, z1, width = 5.2, step = 5.5, color =
   const dz = z1 - z0;
   const len = Math.hypot(dx, dz);
   if (len < 1e-4) return;
-  const yaw = Math.atan2(dx, dz); // tile local Z along the road? Box is length on X
-  // Our tile length is along local X; face so local X follows the line.
+  // Tile length along local X; face so local X follows the line.
   const faceYaw = Math.atan2(dz, dx);
   const n = Math.max(1, Math.ceil(len / step));
   for (let i = 0; i <= n; i++) {
@@ -1968,53 +1950,36 @@ function makeRoadPlane(w, d, color = ROAD) {
 
 // Mushoku village-slice: flat authoring stage — declarative layout, plant = flat
 export async function createFlatWorld(scene, loader) {
-  const groundTex = await loader.loadAsync(groundUrl);
-  groundTex.colorSpace = THREE.SRGBColorSpace;
-  groundTex.wrapS = groundTex.wrapT = THREE.RepeatWrapping;
-  groundTex.repeat.set(10, 10);
-  groundTex.magFilter = THREE.LinearFilter;
-  groundTex.minFilter = THREE.LinearMipmapLinearFilter;
-  groundTex.generateMipmaps = true;
-  groundTex.anisotropy = 16;
-
-  const groundMat = makeToon(0x6bc24a);
-  groundMat.map = groundTex;
-  groundMat.onBeforeCompile = (sh) => {
-    sh.fragmentShader = sh.fragmentShader.replace(
-      '#include <map_fragment>',
-      `#include <map_fragment>
-       #ifdef USE_MAP
-         // Punchier meadow green — avoid muddy olive wash
-         vec3 grass = vec3(0.42, 0.68, 0.32);
-         diffuseColor.rgb = mix(grass, diffuseColor.rgb * vec3(0.85, 1.08, 0.72) + 0.06, 0.28);
-         diffuseColor.rgb = mix(diffuseColor.rgb, grass, 0.12);
-       #endif`,
-    );
-  };
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), groundMat);
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  ground.userData.noOutline = true;
+  // Crafted meadow (procedural grass canvas) — not a single flat green plastic plane
+  const ground = createMeadowGround(200);
   scene.add(ground);
 
   const sky = createSky();
   scene.add(sky);
 
+  // Fewer, larger soft clouds — countryside air, not random confetti
   const clouds = new THREE.Group();
-  const cloudMat = makeToon(0xffffff);
+  const cloudMat = makeToon(0xf4f8fc);
   cloudMat.transparent = true;
-  cloudMat.opacity = 0.92;
+  cloudMat.opacity = 0.88;
   cloudMat.depthWrite = false;
-  for (let i = 0; i < 18; i++) {
+  const cloudSlots = [
+    [-40, 16, -20], [30, 18, -35], [-25, 14, 30], [45, 17, 15],
+    [10, 20, -50], [-50, 15, 5], [20, 19, 40], [-15, 16, -45],
+  ];
+  for (let i = 0; i < cloudSlots.length; i++) {
     const cloud = new THREE.Group();
-    const n = 3 + (i % 3);
+    const n = 4 + (i % 3);
     for (let j = 0; j < n; j++) {
-      const puff = new THREE.Mesh(new THREE.SphereGeometry(0.7 + Math.random() * 0.6, 10, 8), cloudMat);
-      puff.position.set((j - n * 0.5) * 0.8, Math.random() * 0.25, (Math.random() - 0.5) * 0.45);
-      puff.scale.y = 0.5;
+      const puff = new THREE.Mesh(
+        new THREE.SphereGeometry(1.1 + (j % 3) * 0.35, 12, 10),
+        cloudMat,
+      );
+      puff.position.set((j - n * 0.5) * 1.1, (j % 2) * 0.2, (j % 3 - 1) * 0.35);
+      puff.scale.set(1, 0.45, 0.85);
       cloud.add(puff);
     }
-    cloud.position.set((Math.random() - 0.5) * 100, 12 + Math.random() * 6, (Math.random() - 0.5) * 100);
+    cloud.position.set(cloudSlots[i][0], cloudSlots[i][1], cloudSlots[i][2]);
     cloud.userData.noOutline = true;
     cloud.traverse((o) => {
       o.castShadow = false;
@@ -2028,11 +1993,28 @@ export async function createFlatWorld(scene, loader) {
   const group = new THREE.Group();
   scene.add(group);
 
+  // Dirt aprons under main landmarks — grass doesn't read as plastic lawn under feet of buildings
+  for (const [x, z, r] of [
+    [-11, -10, 9],
+    [2, -16, 11],
+    [11, -9, 7],
+    [0, 0, 10],
+  ]) {
+    const apron = createBuildingDirtApron(r);
+    apron.position.set(x, 0, z);
+    group.add(apron);
+  }
+
   const assets = await loadTownAssets();
   const plant = makePlant(group, 'flat');
   // Roads + landmarks from the same table (segmented tiles, sole@y=0).
   populateFromLayout(plant, MUSHOKU_SLICE_P0, assets, {
     maxR: MUSHOKU_SLICE_P0.meta.playableHalfExtent + 8,
+  });
+
+  // Roadside grass tufts + pebbles — ground micro-read, not empty lawn
+  scatterGroundMicroDetail(group, {
+    half: MUSHOKU_SLICE_P0.meta.playableHalfExtent ?? 32,
   });
 
   return {

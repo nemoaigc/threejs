@@ -9,7 +9,9 @@ import { createFromCatalog } from './content/registry.js';
 import { PLAYER_ID } from './content/catalog.js';
 
 // Flat authoring stage — fix character + town assets first, wrap to sphere later.
-const SKY = 0x5aa8d8;
+// Warm countryside afternoon — fog matches horizon grass haze, not pure sky blue
+const SKY = 0x6eb6de;
+const FOG = 0xb8d4c0;
 
 const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -18,13 +20,13 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.08;
+renderer.toneMappingExposure = 1.1;
 renderer.setClearColor(SKY, 1);
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-// Shorter fog range keeps mid landmarks colorful (less grey wash)
-scene.fog = new THREE.Fog(SKY, 55, 130);
+// Soft ground-colored haze — distance reads as meadow, not grey wash
+scene.fog = new THREE.Fog(FOG, 48, 115);
 
 // Hero shot (spec §3): stand south of plaza looking north toward temple axis.
 const HERO_SPAWN = { x: 0, y: 0, z: 8 };
