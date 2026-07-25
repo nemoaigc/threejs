@@ -319,10 +319,13 @@ function addFoundation(root, materials, nodes) {
 
 function addShell(root, materials, nodes) {
   const group = createNode(root, nodes, 'building-core');
+  // Keep plaster volume *inside* facade planes so front/back timber never z-fights
+  // into a blank wall (shell z was ±3.2 while facade sat at ~3.25 → coplanar mud).
+  const shellDepth = 5.7;
   addBlock(
     group,
     'shell.ground-storey',
-    [7.9, DIMS.lowerHeight, 6.4],
+    [7.55, DIMS.lowerHeight, shellDepth],
     [0, 0.28 + DIMS.lowerHeight / 2, 0],
     materials.plaster,
     [0, 0, 0],
@@ -331,7 +334,7 @@ function addShell(root, materials, nodes) {
   addBlock(
     group,
     'shell.upper-storey',
-    [7.9, DIMS.upperHeight, 6.4],
+    [7.55, DIMS.upperHeight, shellDepth],
     [0, 3.25 + DIMS.upperHeight / 2, 0],
     materials.plasterShade,
     [0, 0, 0],
@@ -451,41 +454,117 @@ function addCurvedBrace(parent, name, start, control, end, z, material, radius =
   );
 }
 
+/**
+ * Full half-timber face on +Z (and optional rear on -Z).
+ * Posts/rails sit proud of the plaster shell so the middle never reads empty.
+ */
+function addFacadeTimber(root, materials, nodes, { faceZ, label, withOpenings = true }) {
+  const group = createNode(root, nodes, label);
+  // Proud of shell max |z|≈2.85 so no coplanar blank wall
+  const z = faceZ;
+  const postT = 0.28;
+  const railT = 0.22;
+
+  // Outer frame + mid posts — full height both storeys
+  for (const x of [-3.72, -1.85, 0, 1.85, 3.72]) {
+    addBlock(
+      group,
+      `${label}.post.${x}`,
+      [postT, 5.95, 0.26],
+      [x, 3.2, z],
+      materials.timber,
+      [0, 0, 0],
+      0.04,
+    );
+  }
+  // Horizontal rails: sill, mid belt, upper rail, wall plate
+  for (const [y, h] of [
+    [0.42, 0.26],
+    [1.85, 0.2],
+    [3.28, 0.36],
+    [4.55, 0.22],
+    [6.05, 0.26],
+  ]) {
+    addBlock(
+      group,
+      `${label}.rail.${y}`,
+      [7.7, h, railT],
+      [0, y, z],
+      y === 3.28 ? materials.timberDark : materials.timber,
+      [0, 0, 0],
+      0.04,
+    );
+  }
+
+  // Lower braces (fill the previously blank ground storey)
+  addCurvedBrace(group, `${label}.brace.lower-left`, [-3.35, 0.55], [-2.55, 1.35], [-2.0, 3.05], z + 0.04, materials.timberLight);
+  addCurvedBrace(group, `${label}.brace.lower-right`, [3.35, 0.55], [2.55, 1.35], [2.0, 3.05], z + 0.04, materials.timberLight);
+  addBeamXY(group, `${label}.brace.lower-chevron-l`, [-1.55, 0.55], [-0.2, 1.75], 0.16, 0.15, materials.timber, z + 0.03);
+  addBeamXY(group, `${label}.brace.lower-chevron-r`, [0.2, 1.75], [1.55, 0.55], 0.16, 0.15, materials.timber, z + 0.03);
+
+  // Upper braces
+  addCurvedBrace(group, `${label}.brace.upper-left`, [-3.45, 3.42], [-2.85, 4.55], [-2.48, 5.92], z + 0.05, materials.timberLight);
+  addCurvedBrace(group, `${label}.brace.upper-right`, [3.45, 3.42], [2.85, 4.55], [2.48, 5.92], z + 0.05, materials.timberLight);
+  addBeamXY(group, `${label}.brace.chevron-left`, [-1.9, 3.38], [-0.15, 4.35], 0.17, 0.16, materials.timber, z + 0.04);
+  addBeamXY(group, `${label}.brace.chevron-right`, [0.15, 4.35], [1.9, 3.38], 0.17, 0.16, materials.timber, z + 0.04);
+
+  // Gable triangle timber (only on the front gable elevation)
+  if (withOpenings) {
+    const gableShell = createMesh(
+      createGableInfillGeometry(7.45, 2.38, 0.18),
+      materials.plaster,
+      `${label}.gable.plaster-infill`,
+    );
+    gableShell.position.set(0, 6.06, z - 0.08);
+    group.add(gableShell);
+
+    addBeamXY(group, `${label}.gable.rafter-left`, [-3.78, 6.1], [0, 8.52], 0.24, 0.2, materials.timberDark, z + 0.04, 0.035);
+    addBeamXY(group, `${label}.gable.rafter-right`, [0, 8.52], [3.78, 6.1], 0.24, 0.2, materials.timberDark, z + 0.04, 0.035);
+    addBlock(group, `${label}.gable.king-post`, [0.25, 2.38, 0.2], [0, 7.28, z + 0.04], materials.timber, [0, 0, 0], 0.035);
+    addCurvedBrace(group, `${label}.gable.curved-brace-left`, [-3.1, 6.22], [-2.0, 6.7], [-0.5, 8.1], z + 0.06, materials.timberLight, 0.095);
+    addCurvedBrace(group, `${label}.gable.curved-brace-right`, [3.1, 6.22], [2.0, 6.7], [0.5, 8.1], z + 0.06, materials.timberLight, 0.095);
+
+    const frontWindow = createShutterWindow(materials, 'window.front-upper', 1.18, 1.18);
+    frontWindow.position.set(0, 4.96, z + 0.18);
+    group.add(frontWindow);
+    nodes['upper-windows'] = frontWindow;
+
+    // Extra upper side windows so facade is not empty beside center window
+    for (const x of [-2.55, 2.55]) {
+      const w = createShutterWindow(materials, `window.front-upper.side.${x}`, 0.95, 1.05);
+      w.position.set(x, 4.9, z + 0.18);
+      group.add(w);
+    }
+  } else {
+    // Rear: simpler gable timber + two windows so the back is never blank plaster
+    addBeamXY(group, `${label}.gable.rafter-left`, [-3.5, 6.05], [0, 8.4], 0.22, 0.18, materials.timberDark, z + 0.04, 0.035);
+    addBeamXY(group, `${label}.gable.rafter-right`, [0, 8.4], [3.5, 6.05], 0.22, 0.18, materials.timberDark, z + 0.04, 0.035);
+    addBlock(group, `${label}.gable.king-post`, [0.22, 2.2, 0.18], [0, 7.15, z + 0.04], materials.timber, [0, 0, 0], 0.03);
+    for (const x of [-1.9, 1.9]) {
+      const w = createShutterWindow(materials, `window.rear.${x}`, 1.0, 1.1);
+      w.position.set(x, 4.85, z + 0.16);
+      group.add(w);
+    }
+    const lower = createShutterWindow(materials, 'window.rear.lower', 1.1, 1.15);
+    lower.position.set(0, 1.85, z + 0.16);
+    group.add(lower);
+  }
+
+  return group;
+}
+
 function addFrontTimber(root, materials, nodes) {
-  const group = createNode(root, nodes, 'upper-gable');
-  const z = DIMS.frontZ + 0.05;
-
-  for (const x of [-3.78, 0, 3.78]) {
-    addBlock(group, `front.post.${x}`, [0.24, 5.94, 0.18], [x, 3.2, z], materials.timber, [0, 0, 0], 0.035);
-  }
-  for (const y of [3.28, 4.45, 6.08]) {
-    addBlock(group, `front.rail.${y}`, [7.75, y === 3.28 ? 0.34 : 0.22, 0.18], [0, y, z], materials.timber, [0, 0, 0], 0.04);
-  }
-
-  addCurvedBrace(group, 'front.brace.upper-left', [-3.45, 3.42], [-2.85, 4.55], [-2.48, 5.92], z + 0.05, materials.timberLight);
-  addCurvedBrace(group, 'front.brace.upper-right', [3.45, 3.42], [2.85, 4.55], [2.48, 5.92], z + 0.05, materials.timberLight);
-  addBeamXY(group, 'front.brace.chevron-left', [-1.9, 3.38], [-0.15, 4.35], 0.17, 0.16, materials.timber, z + 0.04);
-  addBeamXY(group, 'front.brace.chevron-right', [0.15, 4.35], [1.9, 3.38], 0.17, 0.16, materials.timber, z + 0.04);
-
-  const gableShell = createMesh(
-    createGableInfillGeometry(7.45, 2.38, 0.16),
-    materials.plaster,
-    'front-gable.plaster-infill',
-  );
-  gableShell.position.set(0, 6.06, DIMS.frontZ - 0.03);
-  group.add(gableShell);
-  nodes['front-gable-shell'] = gableShell;
-
-  addBeamXY(group, 'gable.rafter-left', [-3.78, 6.1], [0, 8.52], 0.24, 0.2, materials.timberDark, z + 0.04, 0.035);
-  addBeamXY(group, 'gable.rafter-right', [0, 8.52], [3.78, 6.1], 0.24, 0.2, materials.timberDark, z + 0.04, 0.035);
-  addBlock(group, 'gable.king-post', [0.25, 2.38, 0.2], [0, 7.28, z + 0.04], materials.timber, [0, 0, 0], 0.035);
-  addCurvedBrace(group, 'gable.curved-brace-left', [-3.1, 6.22], [-2.0, 6.7], [-0.5, 8.1], z + 0.06, materials.timberLight, 0.095);
-  addCurvedBrace(group, 'gable.curved-brace-right', [3.1, 6.22], [2.0, 6.7], [0.5, 8.1], z + 0.06, materials.timberLight, 0.095);
-
-  const frontWindow = createShutterWindow(materials, 'window.front-upper', 1.18, 1.18);
-  frontWindow.position.set(0, 4.96, z + 0.14);
-  group.add(frontWindow);
-  nodes['upper-windows'] = frontWindow;
+  // Sit clearly outside shell (±2.85)
+  addFacadeTimber(root, materials, nodes, {
+    faceZ: DIMS.frontZ + 0.12,
+    label: 'front-facade',
+    withOpenings: true,
+  });
+  addFacadeTimber(root, materials, nodes, {
+    faceZ: -(DIMS.frontZ + 0.12),
+    label: 'rear-facade',
+    withOpenings: false,
+  });
 }
 
 function addSideSurface(root, materials, nodes, side) {
@@ -527,16 +606,18 @@ function addSideSurface(root, materials, nodes, side) {
 
 function addFloorBelt(root, materials, nodes) {
   const group = createNode(root, nodes, 'floor-belt');
-  addBlock(group, 'belt.front', [8.3, 0.36, 0.32], [0, 3.22, 3.38], materials.timberDark, [0, 0, 0], 0.055);
-  addBlock(group, 'belt.back', [8.3, 0.36, 0.32], [0, 3.22, -3.38], materials.timberDark, [0, 0, 0], 0.055);
-  addBlock(group, 'belt.right', [0.32, 0.36, 6.45], [4.14, 3.22, 0], materials.timberDark, [0, 0, 0], 0.055);
-  addBlock(group, 'belt.left', [0.32, 0.36, 6.45], [-4.14, 3.22, 0], materials.timberDark, [0, 0, 0], 0.055);
+  const fz = DIMS.frontZ + 0.18;
+  addBlock(group, 'belt.front', [8.3, 0.4, 0.38], [0, 3.22, fz], materials.timberDark, [0, 0, 0], 0.055);
+  addBlock(group, 'belt.back', [8.3, 0.4, 0.38], [0, 3.22, -fz], materials.timberDark, [0, 0, 0], 0.055);
+  addBlock(group, 'belt.right', [0.38, 0.4, 6.55], [4.14, 3.22, 0], materials.timberDark, [0, 0, 0], 0.055);
+  addBlock(group, 'belt.left', [0.38, 0.4, 6.55], [-4.14, 3.22, 0], materials.timberDark, [0, 0, 0], 0.055);
 
   for (const x of [-3.55, -1.2, 1.2, 3.55]) {
-    addBlock(group, `belt.front-corbel.${x}`, [0.32, 0.55, 0.42], [x, 2.88, 3.38], materials.timber, [0, 0, 0], 0.045);
+    addBlock(group, `belt.front-corbel.${x}`, [0.32, 0.55, 0.48], [x, 2.88, fz], materials.timber, [0, 0, 0], 0.045);
+    addBlock(group, `belt.back-corbel.${x}`, [0.32, 0.55, 0.48], [x, 2.88, -fz], materials.timber, [0, 0, 0], 0.045);
   }
   for (const z of [-2.65, -0.9, 0.9, 2.65]) {
-    addBlock(group, `belt.side-corbel.${z}`, [0.42, 0.55, 0.32], [4.14, 2.88, z], materials.timber, [0, 0, 0], 0.045);
+    addBlock(group, `belt.side-corbel.${z}`, [0.48, 0.55, 0.32], [4.14, 2.88, z], materials.timber, [0, 0, 0], 0.045);
   }
 }
 
@@ -604,8 +685,8 @@ function addBayWindow(root, materials, nodes) {
   const group = createNode(root, nodes, 'bay-window');
   const yCenter = 1.92;
   const paneHeight = 1.82;
-  const wallZ = DIMS.frontZ + 0.04;
-  const frontZ = DIMS.frontZ + 0.96;
+  const wallZ = DIMS.frontZ + 0.14;
+  const frontZ = DIMS.frontZ + 1.05;
   const leftWall = [0.0, wallZ];
   const leftFront = [0.46, frontZ];
   const rightFront = [3.08, frontZ];
@@ -645,7 +726,7 @@ function addDoor(root, materials, nodes, sockets) {
   const assembly = createNode(root, nodes, 'door-system');
   const hinge = new THREE.Group();
   hinge.name = 'door.left-hinge-pivot';
-  hinge.position.set(-2.78, 0.31, DIMS.frontZ + 0.13);
+  hinge.position.set(-2.78, 0.31, DIMS.frontZ + 0.22);
   assembly.add(hinge);
   sockets.doorHinge = hinge;
 
@@ -671,9 +752,9 @@ function addDoor(root, materials, nodes, sockets) {
   addBlock(hinge, 'door.pull-plate', [0.16, 0.44, 0.07], [1.23, 1.32, 0.14], materials.iron, [0, 0, 0], 0.035);
   addTorus(hinge, 'door.pull', 0.13, 0.032, [1.23, 1.31, 0.23], materials.ironLight, [0, 0, 0], 14, Math.PI * 1.55);
 
-  addBlock(assembly, 'door.frame-left', [0.25, 2.95, 0.28], [-2.9, 1.77, DIMS.frontZ + 0.06], materials.timberDark, [0, 0, 0], 0.04);
-  addBlock(assembly, 'door.frame-right', [0.25, 2.95, 0.28], [-0.98, 1.77, DIMS.frontZ + 0.06], materials.timberDark, [0, 0, 0], 0.04);
-  addBlock(assembly, 'door.frame-lintel', [2.17, 0.28, 0.3], [-1.94, 3.12, DIMS.frontZ + 0.06], materials.timber, [0, 0, 0], 0.045);
+  addBlock(assembly, 'door.frame-left', [0.25, 2.95, 0.32], [-2.9, 1.77, DIMS.frontZ + 0.16], materials.timberDark, [0, 0, 0], 0.04);
+  addBlock(assembly, 'door.frame-right', [0.25, 2.95, 0.32], [-0.98, 1.77, DIMS.frontZ + 0.16], materials.timberDark, [0, 0, 0], 0.04);
+  addBlock(assembly, 'door.frame-lintel', [2.17, 0.28, 0.34], [-1.94, 3.12, DIMS.frontZ + 0.16], materials.timber, [0, 0, 0], 0.045);
 
   const interaction = new THREE.Object3D();
   interaction.name = 'socket.door-interaction';
