@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <title>公会对比 · 参考图 vs img2threejs 3D</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #1a1e24; color: #e8eef4; }
+    h1 { font-size: 18px; font-weight: 600; padding: 16px 20px 8px; margin: 0; }
+    p { margin: 0 20px 16px; opacity: 0.75; font-size: 13px; line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px 24px; }
+    figure { margin: 0; background: #0f1216; border-radius: 12px; overflow: hidden; border: 1px solid #2a313a; }
+    figcaption { padding: 10px 12px; font-size: 13px; border-top: 1px solid #2a313a; }
+    img { display: block; width: 100%; height: auto; background: #888; }
+    .full { grid-column: 1 / -1; }
+    a { color: #8ec8ff; }
+  </style>
+</head>
+<body>
+  <h1>冒险者公会 · 参考图 vs 生成 3D</h1>
+  <p>
+    左：产品渲染参考图 · 右：img2threejs 管线生成模型在浏览器中的截图<br/>
+    generator: <code>img2threejs-forge-authored</code> ·
+    <a href="/hero-preview.html">打开可旋转 3D 预览</a>
+  </p>
+  <div class="grid">
+    <figure>
+      <img src="./01_reference.png" alt="reference" />
+      <figcaption><b>A. 参考图</b> · ref_main.png（1024²）</figcaption>
+    </figure>
+    <figure>
+      <img src="./02_3d_preview.png" alt="3d preview" />
+      <figcaption><b>B. 生成 3D（默认视角）</b> · hero-preview 截图</figcaption>
+    </figure>
+    <figure>
+      <img src="./03_3d_angle_side.png" alt="3d side" />
+      <figcaption><b>C. 生成 3D（侧转视角）</b></figcaption>
+    </figure>
+    <figure>
+      <img src="./04_3d_angle_high.png" alt="3d high" />
+      <figcaption><b>D. 生成 3D（俯视角）</b></figcaption>
+    </figure>
+  </div>
+</body>
+</html>
