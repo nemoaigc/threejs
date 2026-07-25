@@ -1,0 +1,48 @@
+{
+  "allAdmitted": true,
+  "references": [
+    {
+      "admitted": true,
+      "reasons": [],
+      "provenance": {
+        "viewpoint": "three-quarter-front",
+        "sourcePath": "public/content/buildings/temple/ref_main.png",
+        "width": 1024,
+        "height": 1024,
+        "foregroundCoverage": 0.3591,
+        "largestComponentFraction": 1.0,
+        "pHash": "16831521268329125595",
+        "duplicateOfHash": null
+      }
+    },
+    {
+      "admitted": true,
+      "reasons": [],
+      "provenance": {
+        "viewpoint": "front",
+        "sourcePath": "public/content/buildings/temple/ref_front.png",
+        "width": 1024,
+        "height": 1024,
+        "foregroundCoverage": 0.2058,
+        "largestComponentFraction": 0.9987,
+        "pHash": "16467355105867569486",
+        "duplicateOfHash": null
+      }
+    },
+    {
+      "admitted": true,
+      "reasons": [],
+      "provenance": {
+        "viewpoint": "side",
+        "sourcePath": "public/content/buildings/temple/ref_side.png",
+        "width": 1024,
+        "height": 1024,
+        "foregroundCoverage": 0.2106,
+        "largestComponentFraction": 0.9928,
+        "pHash": "16772464100599188427",
+        "duplicateOfHash": null
+      }
+    }
+  ],
+  "duplicateCheck": "front checked against main; side checked against main and front; no duplicate angle rejected"
+}

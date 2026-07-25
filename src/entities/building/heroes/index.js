@@ -21,8 +21,13 @@ export function createHeroBuilding(type) {
   if (!fn) return null;
   const g = fn();
   if (g) {
-    g.userData.heroMode = 'agent-gen';
-    g.userData.heroVersion = type === 'adventurersGuild' ? 'gen-guild-v2' : 'solid-v3';
+    g.userData.heroMode = g.userData.heroMode || 'agent-gen';
+    // Prefer factory stamps (img2threejs-*-v2 / gen-guild-v2); never force solid-v3 over them
+    if (!g.userData.heroVersion) {
+      g.userData.heroVersion =
+        g.userData.gen ||
+        (type === 'adventurersGuild' ? 'gen-guild-v2' : 'solid-v3');
+    }
   }
   return g;
 }

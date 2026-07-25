@@ -1,0 +1,121 @@
+{
+  "sourceImage": "public/content/buildings/inn/ref_side.png",
+  "zonesDir": "src/entities/building/heroes/img2threejs-inn-v2/crops-side",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 10,
+    "details": [
+      {
+        "id": "side-r0c0-eave",
+        "kind": "contour",
+        "description": "The long left eave exposes the depth and overhang of the single gable-roof volume.",
+        "region": {"x": 0.0, "y": 0.0, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "macro",
+        "affects": "roof depth and side silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "roof/solid-gable-volume"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r0c0.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "side-r0c1-tile-rows",
+        "kind": "ridge",
+        "description": "Nine regular stepped tile courses span the long roof plane with staggered vertical joints.",
+        "region": {"x": 0.3333, "y": 0.0, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "meso repeated grid",
+        "affects": "dominant roof surface relief",
+        "mapsTo": {"type": "component.localFeatures", "ref": "roof/tile-courses"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r0c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-r0c2-chimney",
+        "kind": "seam",
+        "description": "The tall stone chimney interrupts the slope with rounded block faces, dark mortar gaps, a broad shoulder block, and overhanging cap.",
+        "region": {"x": 0.6667, "y": 0.0, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "meso masonry repeat",
+        "affects": "roofline landmark",
+        "mapsTo": {"type": "component.localFeatures", "ref": "chimney/stone-block-courses"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r0c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-r1c0-upper-bracing",
+        "kind": "ridge",
+        "description": "The upper side wall starts with a corner post, horizontal rail, and tall inward-curving brace over warm plaster.",
+        "region": {"x": 0.0, "y": 0.3333, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "meso structural network",
+        "affects": "left upper side bay",
+        "mapsTo": {"type": "component.localFeatures", "ref": "side-walls/half-timber-network"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r1c0.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "side-r1c1-upper-windows",
+        "kind": "seam",
+        "description": "Two evenly spaced four-pane amber windows share thick timber heads and sills with paired ivory shutters.",
+        "region": {"x": 0.3333, "y": 0.3333, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "meso repeated modules",
+        "affects": "upper side rhythm",
+        "mapsTo": {"type": "component.localFeatures", "ref": "upper-windows/shutters-and-muntins"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-r1c2-upper-bracing",
+        "kind": "ridge",
+        "description": "A mirrored outer curved brace, central post, lower diagonals, and continuous floor belt complete the upper half-timber network.",
+        "region": {"x": 0.6667, "y": 0.3333, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "meso structural network",
+        "affects": "right upper side bay",
+        "mapsTo": {"type": "component.localFeatures", "ref": "side-walls/half-timber-network"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r1c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-r2c0-lower-bracing",
+        "kind": "ridge",
+        "description": "The ground-floor side wall uses vertical corner posts, a mid-height rail, and two tall mirrored curved braces.",
+        "region": {"x": 0.0, "y": 0.6667, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "meso structural network",
+        "affects": "lower side wall identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "side-walls/half-timber-network"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r2c0.png",
+        "confidence": 0.97
+      },
+      {
+        "id": "side-r2c1-plaster",
+        "kind": "stain",
+        "description": "Large plaster bays stay warm ivory with restrained low-frequency mottling and slightly darker contact zones near timber.",
+        "region": {"x": 0.3333, "y": 0.6667, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "macro-to-meso color variation",
+        "affects": "plaster albedo and AO response",
+        "mapsTo": {"type": "material.localOverrides", "ref": "plaster-material/warm-variation"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r2c1.png",
+        "confidence": 0.93
+      },
+      {
+        "id": "side-r2c2-lower-window",
+        "kind": "seam",
+        "description": "One lower side window repeats the amber four-pane glazing, timber frame, projecting sill, and paired ivory shutters.",
+        "region": {"x": 0.6667, "y": 0.6667, "width": 0.3333, "height": 0.3333, "units": "normalized"},
+        "scale": "meso window assembly",
+        "affects": "ground-floor side focal point",
+        "mapsTo": {"type": "component.localFeatures", "ref": "upper-windows/shutters-and-muntins"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r2c2.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "side-r2c2-timber-bevel",
+        "kind": "bevel",
+        "description": "All exposed posts, rails, braces, heads, and sills use small clean chamfers with broad warm edge highlights.",
+        "region": {"x": 0.70, "y": 0.55, "width": 0.23, "height": 0.37, "units": "normalized"},
+        "scale": "micro edge treatment",
+        "affects": "stylized timber readability",
+        "mapsTo": {"type": "material.localOverrides", "ref": "timber-material/bevel-and-grain-banding"},
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v2/crops-side/zone-r2c2.png",
+        "confidence": 0.93
+      }
+    ]
+  },
+  "authoringInstruction": "Filled by direct visual inspection; every detail maps to a planned component localFeature or material localOverride."
+}

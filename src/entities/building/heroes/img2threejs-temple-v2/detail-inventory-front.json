@@ -1,0 +1,143 @@
+{
+  "sourceImage": "public/content/buildings/temple/ref_front.png",
+  "zonesDir": "src/entities/building/heroes/img2threejs-temple-v2/crops-front",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 10,
+    "details": [
+      {
+        "id": "front-finial",
+        "kind": "ridge",
+        "description": "Centered-on-spire gold sun has a circular core and alternating long/short rays, never a cross.",
+        "region": {"x": 0.58, "y": 0.01, "width": 0.11, "height": 0.1, "units": "normalized"},
+        "scale": "meso radial",
+        "affects": "skyline identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "finial/radial-sun-finial"},
+        "evidenceRef": "crops-front/zone-r0c1.png",
+        "confidence": 1.0
+      },
+      {
+        "id": "front-spire",
+        "kind": "contour",
+        "description": "Tall dark tapered spire rises behind and right of the front gable.",
+        "region": {"x": 0.54, "y": 0.08, "width": 0.17, "height": 0.31, "units": "normalized"},
+        "scale": "macro",
+        "affects": "asymmetric upper silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "steeple-spire/solid-octagonal-spire"},
+        "evidenceRef": "crops-front/zone-r0c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "front-rose-system",
+        "kind": "decal",
+        "description": "Large circular rose combines a gold solar center/rays with saturated red, blue, cyan, green, violet, and orange wedges.",
+        "region": {"x": 0.37, "y": 0.34, "width": 0.25, "height": 0.24, "units": "normalized"},
+        "scale": "meso radial assembly",
+        "affects": "primary facade identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "rose-window/stained-sun-system"},
+        "evidenceRef": "crops-front/zone-r1c1.png",
+        "confidence": 1.0
+      },
+      {
+        "id": "front-rose-spokes",
+        "kind": "linework",
+        "description": "Black lead spokes and a dark perimeter ring separate the rose glazing.",
+        "region": {"x": 0.38, "y": 0.35, "width": 0.24, "height": 0.23, "units": "normalized"},
+        "scale": "micro radial repeat",
+        "affects": "rose segmentation",
+        "mapsTo": {"type": "component.localFeatures", "ref": "rose-window/lead-cames"},
+        "evidenceRef": "crops-front/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "front-lower-sun",
+        "kind": "ridge",
+        "description": "Raised gold sun disc, spiral-like center rings, and pointed rays sit on the white facade below the rose.",
+        "region": {"x": 0.42, "y": 0.55, "width": 0.17, "height": 0.17, "units": "normalized"},
+        "scale": "meso radial relief",
+        "affects": "secondary facade identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "facade-sun/sun-rays"},
+        "evidenceRef": "crops-front/zone-r1c1.png",
+        "confidence": 1.0
+      },
+      {
+        "id": "front-twin-lancets",
+        "kind": "hole",
+        "description": "Two tall pointed stained-glass lancets mirror each other on the side wings.",
+        "region": {"x": 0.23, "y": 0.53, "width": 0.56, "height": 0.34, "units": "normalized"},
+        "scale": "meso paired openings",
+        "affects": "front symmetry",
+        "mapsTo": {"type": "component.localFeatures", "ref": "lancets/front-lancet-system"},
+        "evidenceRef": "crops-front/zone-r2c0.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "front-lancet-leading",
+        "kind": "linework",
+        "description": "Each front lancet has a small gold sun, blue-violet glass, green chevrons, red lower diamond, and dark cames.",
+        "region": {"x": 0.23, "y": 0.55, "width": 0.56, "height": 0.31, "units": "normalized"},
+        "scale": "micro colored repeat",
+        "affects": "glass palette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "stained-glass/glass-leading"},
+        "evidenceRef": "crops-front/zone-r2c2.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "front-portico-pediment",
+        "kind": "contour",
+        "description": "Shallow closed triangular pediment projects from the facade with gold inner trim.",
+        "region": {"x": 0.34, "y": 0.67, "width": 0.35, "height": 0.11, "units": "normalized"},
+        "scale": "meso",
+        "affects": "entry silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "portico-roof/solid-gable-volume"},
+        "evidenceRef": "crops-front/zone-r2c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "front-column-order",
+        "kind": "bevel",
+        "description": "Four tapered columns have square bases, neck rings, and broad stepped capitals.",
+        "region": {"x": 0.35, "y": 0.73, "width": 0.34, "height": 0.18, "units": "normalized"},
+        "scale": "meso repeated supports",
+        "affects": "portico depth",
+        "mapsTo": {"type": "component.localFeatures", "ref": "portico/column-order"},
+        "evidenceRef": "crops-front/zone-r2c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "front-double-door",
+        "kind": "hole",
+        "description": "Dark recessed double door sits behind the portico columns and stone reveal.",
+        "region": {"x": 0.45, "y": 0.77, "width": 0.13, "height": 0.14, "units": "normalized"},
+        "scale": "meso",
+        "affects": "entry negative space",
+        "mapsTo": {"type": "component.localFeatures", "ref": "door-system/recessed-double-door"},
+        "evidenceRef": "crops-front/zone-r2c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "front-steps",
+        "kind": "bevel",
+        "description": "Four shallow stone steps widen symmetrically toward the ground.",
+        "region": {"x": 0.29, "y": 0.88, "width": 0.44, "height": 0.09, "units": "normalized"},
+        "scale": "meso terraces",
+        "affects": "ground contact",
+        "mapsTo": {"type": "component.localFeatures", "ref": "entry-steps/stepped-profile"},
+        "evidenceRef": "crops-front/zone-r2c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "front-gold-bands",
+        "kind": "ridge",
+        "description": "Thin gold bands mark wing shoulders, portico pediment, belfry cap, and spire base.",
+        "region": {"x": 0.22, "y": 0.27, "width": 0.58, "height": 0.48, "units": "normalized"},
+        "scale": "meso linear accents",
+        "affects": "trim readability",
+        "mapsTo": {"type": "component.localFeatures", "ref": "gold-trim/eave-bands"},
+        "evidenceRef": "crops-front/zone-r1c2.png",
+        "confidence": 0.97
+      }
+    ]
+  },
+  "authoringInstruction": "Filled from all nine front-view zones; mappings resolve to authored sculpt-spec features."
+}

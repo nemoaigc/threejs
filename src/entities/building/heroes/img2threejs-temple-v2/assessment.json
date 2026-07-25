@@ -1,0 +1,437 @@
+{
+  "targetName": "Temple v2",
+  "sourceImage": "public/content/buildings/temple/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "stylized fantasy village sun temple",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "clean architectural hard-surface",
+        "stylized fantasy game prop",
+        "bright beveled color blocks",
+        "regular masonry and slate relief"
+      ],
+      "structureKind": [
+        "compound architectural object",
+        "layered shell",
+        "repeated modules",
+        "deep attachment hierarchy"
+      ],
+      "motionPotential": [
+        "static hero building",
+        "hinged double doors",
+        "detachable facade emblems",
+        "material-boundary destruction groups"
+      ],
+      "materialFamilies": [
+        "white ashlar stone",
+        "dark blue slate",
+        "warm gold metal",
+        "colored stained glass",
+        "dark wood",
+        "dark lead"
+      ],
+      "notes": "Three admitted complementary views describe the same clean stylized temple prop. The front view fixes facade symmetry and explicitly solar—not Christian—iconography; the side fixes nave length, five-lancet rhythm, roof volume, and rear tower placement; the three-quarter view fixes depth and attachments. Hidden rear/left details are continued conservatively by symmetry. This is a stylized procedural reconstruction, not survey geometry or photoreal inverse rendering."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 2,
+        "occlusionRisk": 1,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 7,
+        "mesoComponents": 22,
+        "microFeatureGroups": 20,
+        "materialLayers": 8,
+        "repetitionSystems": 10
+      },
+      "reasoning": [
+        "The identity silhouette combines a long nave, raised front gable, columned portico, rear-offset square tower, tall slate spire, and radial sun finial.",
+        "The roof must be a closed solid gable volume with attached shingle relief, never two rotated box slabs.",
+        "The facade requires a large rose window, a separate gold sun disc, twin pointed lancets, recessed doors, four columns, a pediment, and stepped plinth.",
+        "Repeated systems include ashlar courses, slate courses, side buttresses, side lancets, glass leading, rose wedges, belfry openings, spire ribs, sun rays, and column modules.",
+        "Three distinct views substantially reduce occlusion risk; the rear elevation and exact hidden roof/tower intersection remain inferred."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "The outer building mass is simple, but identity depends on a deep architectural hierarchy, two solar emblems, repeated stained-glass systems, and an attached multi-stage steeple."
+    },
+    "unknownsToResolveBeforeImplementation": [],
+    "resolvedAssumptions": [
+      "Rear wall openings remain restrained because no rear view was supplied.",
+      "The left nave elevation mirrors the admitted right-side five-lancet rhythm.",
+      "Slate and ashlar relief remain regular and stylized rather than photoreal micro-noise."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3 across three admitted views",
+      "targetMinDetails": 10,
+      "note": "Twenty observed identity systems are consolidated from the main, front, and side scans. Every item maps to a concrete component.localFeatures or material.localOverrides entry used by the sculpt spec.",
+      "details": [
+        {
+          "id": "tall-steeple-silhouette",
+          "kind": "contour",
+          "description": "A rear-offset square tower rises into an open belfry, tall dark faceted spire, gold cap, stem, and radial sun finial.",
+          "region": {"x": 0.58, "y": 0.01, "width": 0.26, "height": 0.47, "units": "normalized"},
+          "scale": "macro",
+          "affects": "upper silhouette",
+          "mapsTo": {"type": "component.localFeatures", "ref": "steeple-spire/solid-octagonal-spire"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "gold-sun-finial",
+          "kind": "ridge",
+          "description": "A gold circular solar core with alternating long and short radial rays crowns the spire; no cross geometry is present.",
+          "region": {"x": 0.67, "y": 0.01, "width": 0.1, "height": 0.1, "units": "normalized"},
+          "scale": "meso radial",
+          "affects": "temple identity and skyline",
+          "mapsTo": {"type": "component.localFeatures", "ref": "finial/radial-sun-finial"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "belfry-arched-openings",
+          "kind": "hole",
+          "description": "Tall dark recessed arches appear on each belfry face between white stone corner piers.",
+          "region": {"x": 0.63, "y": 0.24, "width": 0.18, "height": 0.15, "units": "normalized"},
+          "scale": "meso repeated openings",
+          "affects": "tower negative space",
+          "mapsTo": {"type": "component.localFeatures", "ref": "belfry/arched-openings"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.97
+        },
+        {
+          "id": "spire-gold-lattice",
+          "kind": "ridge",
+          "description": "Thin gold vertical ribs and a lower diamond lattice sit proud of the dark slate spire.",
+          "region": {"x": 0.63, "y": 0.08, "width": 0.18, "height": 0.22, "units": "normalized"},
+          "scale": "micro repeated linear relief",
+          "affects": "spire surface articulation",
+          "mapsTo": {"type": "component.localFeatures", "ref": "steeple-spire/gold-lattice"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.96
+        },
+        {
+          "id": "solid-main-gable",
+          "kind": "contour",
+          "description": "The long nave roof is one closed gable prism with triangular end caps, eaves, and continuous ridge.",
+          "region": {"x": 0.18, "y": 0.33, "width": 0.68, "height": 0.25, "units": "normalized"},
+          "scale": "macro",
+          "affects": "roof silhouette and volume",
+          "mapsTo": {"type": "component.localFeatures", "ref": "main-roof/solid-gable-volume"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "slate-tile-courses",
+          "kind": "seam",
+          "description": "Regular dark-blue slate courses overlap across both roof pitches with a restrained alternating value pattern.",
+          "region": {"x": 0.2, "y": 0.34, "width": 0.65, "height": 0.2, "units": "normalized"},
+          "scale": "meso repeated grid",
+          "affects": "roof relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "roof-relief/slate-courses"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.98
+        },
+        {
+          "id": "white-ashlar-courses",
+          "kind": "seam",
+          "description": "Offset rectangular white stone blocks form regular shallow courses with cool grey recessed mortar lines.",
+          "region": {"x": 0.18, "y": 0.41, "width": 0.68, "height": 0.48, "units": "normalized"},
+          "scale": "meso repeated grid",
+          "affects": "wall relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "masonry-relief/ashlar-courses"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "rose-window-sun",
+          "kind": "decal",
+          "description": "The large circular rose window uses a gold central sun, sixteen gold rays, and saturated radial stained-glass wedges.",
+          "region": {"x": 0.31, "y": 0.32, "width": 0.27, "height": 0.25, "units": "normalized"},
+          "scale": "meso radial assembly",
+          "affects": "primary facade identity",
+          "mapsTo": {"type": "component.localFeatures", "ref": "rose-window/stained-sun-system"},
+          "evidenceRef": "ref-front",
+          "confidence": 1.0
+        },
+        {
+          "id": "rose-lead-spokes",
+          "kind": "linework",
+          "description": "Dark radial lead cames divide the colored rose wedges and a thick dark ring separates glass from the white stone frame.",
+          "region": {"x": 0.36, "y": 0.34, "width": 0.23, "height": 0.23, "units": "normalized"},
+          "scale": "micro radial repeat",
+          "affects": "rose-window readability",
+          "mapsTo": {"type": "component.localFeatures", "ref": "rose-window/lead-cames"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "facade-sun-disc",
+          "kind": "ridge",
+          "description": "A separate gold sun disc with embossed concentric center and alternating pointed rays sits below the rose window; it is explicitly not a cross.",
+          "region": {"x": 0.38, "y": 0.53, "width": 0.18, "height": 0.17, "units": "normalized"},
+          "scale": "meso radial relief",
+          "affects": "facade symbol",
+          "mapsTo": {"type": "component.localFeatures", "ref": "facade-sun/sun-rays"},
+          "evidenceRef": "ref-front",
+          "confidence": 1.0
+        },
+        {
+          "id": "portico-columns",
+          "kind": "bevel",
+          "description": "Four white columns use tapered shafts, square plinths, neck rings, and stepped capitals under a deep entablature.",
+          "region": {"x": 0.28, "y": 0.69, "width": 0.39, "height": 0.23, "units": "normalized"},
+          "scale": "meso repeated supports",
+          "affects": "entry depth and silhouette",
+          "mapsTo": {"type": "component.localFeatures", "ref": "portico/column-order"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "portico-pediment",
+          "kind": "contour",
+          "description": "The portico roof is a shallow closed gable/pediment volume with a white face and gold inner trim.",
+          "region": {"x": 0.25, "y": 0.65, "width": 0.45, "height": 0.12, "units": "normalized"},
+          "scale": "meso",
+          "affects": "entry silhouette",
+          "mapsTo": {"type": "component.localFeatures", "ref": "portico-roof/solid-gable-volume"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "entry-steps",
+          "kind": "bevel",
+          "description": "Four broad shallow stone steps widen toward ground level and terminate the facade at y=0.",
+          "region": {"x": 0.21, "y": 0.87, "width": 0.52, "height": 0.1, "units": "normalized"},
+          "scale": "meso repeated terraces",
+          "affects": "ground contact",
+          "mapsTo": {"type": "component.localFeatures", "ref": "entry-steps/stepped-profile"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "front-lancets",
+          "kind": "hole",
+          "description": "Two tall narrow pointed stained-glass lancets flank the raised central facade.",
+          "region": {"x": 0.2, "y": 0.53, "width": 0.58, "height": 0.35, "units": "normalized"},
+          "scale": "meso paired openings",
+          "affects": "front facade symmetry",
+          "mapsTo": {"type": "component.localFeatures", "ref": "lancets/front-lancet-system"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "side-lancet-rhythm",
+          "kind": "contour",
+          "description": "Five evenly spaced tall pointed lancets repeat along each nave side between slim projecting buttress piers.",
+          "region": {"x": 0.21, "y": 0.54, "width": 0.57, "height": 0.34, "units": "normalized"},
+          "scale": "meso linear repeat",
+          "affects": "nave side rhythm",
+          "mapsTo": {"type": "component.localFeatures", "ref": "lancets/side-lancet-system"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "lancet-glass-leading",
+          "kind": "linework",
+          "description": "Each lancet contains a small gold sun, blue-violet upper fields, green chevrons, red lower diamond, and dark geometric lead cames.",
+          "region": {"x": 0.2, "y": 0.55, "width": 0.6, "height": 0.32, "units": "normalized"},
+          "scale": "micro repeated colored panels",
+          "affects": "stained-glass material blocks",
+          "mapsTo": {"type": "component.localFeatures", "ref": "stained-glass/glass-leading"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.98
+        },
+        {
+          "id": "gold-eave-bands",
+          "kind": "ridge",
+          "description": "Thin warm-gold bands trace the nave eaves, front wing shoulders, belfry cap, and portico pediment.",
+          "region": {"x": 0.2, "y": 0.44, "width": 0.68, "height": 0.25, "units": "normalized"},
+          "scale": "meso linear accents",
+          "affects": "material boundary readability",
+          "mapsTo": {"type": "component.localFeatures", "ref": "gold-trim/eave-bands"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.97
+        },
+        {
+          "id": "buttress-piers",
+          "kind": "seam",
+          "description": "Slim white projecting vertical piers divide the nave bays and terminate in a continuous raised base course.",
+          "region": {"x": 0.18, "y": 0.5, "width": 0.66, "height": 0.4, "units": "normalized"},
+          "scale": "meso linear repeat",
+          "affects": "side wall depth",
+          "mapsTo": {"type": "component.localFeatures", "ref": "buttresses/vertical-rhythm"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.98
+        },
+        {
+          "id": "recessed-double-door",
+          "kind": "hole",
+          "description": "A dark recessed double doorway sits behind the portico, separated by a narrow center seam and white stone reveal.",
+          "region": {"x": 0.4, "y": 0.76, "width": 0.15, "height": 0.14, "units": "normalized"},
+          "scale": "meso",
+          "affects": "entry negative space",
+          "mapsTo": {"type": "component.localFeatures", "ref": "door-system/recessed-double-door"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "clean-stone-edge-catch",
+          "kind": "bevel",
+          "description": "Exposed stone corners, trims, frames, steps, and column blocks use small real chamfers that catch the upper-left key light.",
+          "region": {"x": 0.16, "y": 0.37, "width": 0.72, "height": 0.57, "units": "normalized"},
+          "scale": "micro edge treatment",
+          "affects": "stone form readability",
+          "mapsTo": {"type": "material.localOverrides", "ref": "white-stone/clean-beveled-edges"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.96
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {"headUnit": 0.0, "torso": 0.0, "legs": 0.0, "shoulderWidth": 0.0, "hipWidth": 0.0},
+      "pose": {"type": "not-applicable", "jointAngles": {}},
+      "faceLandmarks": {"eyeLine": 0.0, "eyeSpacing": 0.0, "noseBase": 0.0, "mouthLine": 0.0, "hairline": 0.0},
+      "features": [],
+      "confidence": 1.0,
+      "note": "Not applicable: architectural object."
+    },
+    "sourceImage": "public/content/buildings/temple/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The model reads immediately as the admitted fantasy sun temple from front, side, and three-quarter views.",
+      "The tall rear-offset steeple, dark solid spire, gold radial sun finial, white ashlar, rose-window sun, separate facade sun disc, portico, steps, and repeated lancets all survive.",
+      "Every structural roof is a closed solid prism or faceted solid; no dual rotated box-slab roof construction is permitted.",
+      "The palette remains bright and clean with geometric stone/slate relief and no photoreal micro-noise or reference-image billboard."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 6,
+      "mesoComponents": 16,
+      "microFeatureGroups": 14,
+      "materialLayers": 7,
+      "repetitionSystems": 8,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "temple-silhouette",
+        "name": "Nave, raised facade, rear steeple, spire, and sun-finial silhouette",
+        "required": true,
+        "qualityCriteria": [
+          "The long nave and tall rear-offset steeple preserve the front/side/three-quarter proportions.",
+          "The sun finial is radial solar geometry and cannot read as a cross."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+        "failureModes": ["generic chapel silhouette", "short tower", "cross-like finial", "tower centered on facade"]
+      },
+      {
+        "id": "solid-roof-system",
+        "name": "Closed solid slate roof and spire volumes",
+        "required": true,
+        "qualityCriteria": [
+          "The nave and portico roofs are closed gable prisms with end caps and continuous ridges.",
+          "Slate tiles are surface relief only; they are never used as two structural rotated box slabs."
+        ],
+        "evidenceRefs": ["ref-main", "ref-side"],
+        "failureModes": ["dual rotated box roof slabs", "open roof underside", "flat billboard roof", "missing gable end volume"]
+      },
+      {
+        "id": "solar-facade-system",
+        "name": "Rose-window sun and separate golden facade sun emblem",
+        "required": true,
+        "qualityCriteria": [
+          "The rose contains a gold sun core, radial rays, saturated colored wedges, dark lead spokes, and a white stone surround.",
+          "The lower gold emblem is a distinct raised sun disc with pointed rays and no Christian cross."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front"],
+        "failureModes": ["plain blue circle", "cross symbol", "missing lower sun emblem", "rose lacks radial color segmentation"]
+      },
+      {
+        "id": "portico-entry-system",
+        "name": "Columned portico, solid pediment, recessed doors, and broad steps",
+        "required": true,
+        "qualityCriteria": [
+          "Four attached columns carry a deep entablature and closed gable pediment.",
+          "The entry steps widen downward, touch y=0, and lead to a dark recessed double door."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front"],
+        "failureModes": ["floating columns", "flat canopy", "missing steps", "door in front of columns"]
+      },
+      {
+        "id": "lancet-masonry-system",
+        "name": "Ashlar, buttress, and stained-glass lancet rhythm",
+        "required": true,
+        "qualityCriteria": [
+          "Five pointed windows repeat along each nave side and two flank the front facade.",
+          "White buttress piers and ashlar courses create shallow real relief between saturated glass panels."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+        "failureModes": ["rectangular windows", "wrong window count", "flat blank walls", "muddy or monochrome glass"]
+      },
+      {
+        "id": "surface-material-response",
+        "name": "Clean stylized stone, slate, gold, glass, lead, and wood response",
+        "required": true,
+        "qualityCriteria": [
+          "Material blocks are bright and readable under neutral light with separate roughness roles.",
+          "Stone and slate use restrained macro/meso/micro variation through geometry and scalar response, not photoreal image noise.",
+          "Gold remains warm and metallic; stained glass remains saturated but opaque enough for a toon/game-prop renderer."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+        "failureModes": ["muddy palette", "flat plastic stone", "chrome-like washed gold", "transparent disappearing glass"]
+      },
+      {
+        "id": "attachment-runtime-readiness",
+        "name": "Attachment, pivot, collider, socket, and destruction readiness",
+        "required": true,
+        "qualityCriteria": [
+          "Spire, finial, emblems, portico, windows, and doors have stable named parent pivots and no visible gaps.",
+          "Runtime metadata exposes door hinges, sockets, primitive colliders, and semantic destruction groups."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+        "failureModes": ["floating steeple parts", "inert merged lump", "missing door pivots", "unaddressable facade assemblies"]
+      }
+    ],
+    "visualDeltaChecks": [
+      "front and side silhouette/proportion delta",
+      "rear-offset steeple and solid-roof volume delta",
+      "rose-window and lower-sun semantic delta",
+      "lancet count, spacing, point profile, and leading delta",
+      "portico attachment and ground-contact delta",
+      "bright material-block and edge-relief delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not proceed if any identity feature is represented only by prose.",
+      "Do not proceed if either roof is modeled as two rotated box slabs.",
+      "Do not proceed if the gold finial or facade emblem can read as a Christian cross.",
+      "Do not proceed if the rose window is a single unsegmented colored disc.",
+      "Do not proceed if side lancets, buttresses, ashlar, or slate courses lack repeated systems.",
+      "Do not proceed if attached steeple, portico, window, or door assemblies lack parent/contact data.",
+      "Do not pass material look-dev if white stone, slate, gold, glass, lead, and wood collapse into a muddy palette.",
+      "Do not claim photoreal PBR extraction or photo billboards for this accepted stylized solid-color target."
+    ]
+  },
+  "authoringInstruction": "Assessment completed from all three admitted views; use it to author the deep Temple v2 sculpt spec."
+}

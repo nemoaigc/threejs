@@ -1,0 +1,143 @@
+{
+  "sourceImage": "public/content/buildings/temple/ref_main.png",
+  "zonesDir": "src/entities/building/heroes/img2threejs-temple-v2/crops-main",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 10,
+    "details": [
+      {
+        "id": "main-steeple",
+        "kind": "contour",
+        "description": "Rear-offset tower, open belfry, tall dark faceted spire, and gold cap form the dominant vertical silhouette.",
+        "region": {"x": 0.58, "y": 0.0, "width": 0.27, "height": 0.48, "units": "normalized"},
+        "scale": "macro",
+        "affects": "upper silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "steeple-spire/solid-octagonal-spire"},
+        "evidenceRef": "crops-main/zone-r0c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-finial",
+        "kind": "ridge",
+        "description": "Gold disc and alternating radial rays crown the spire without any cross geometry.",
+        "region": {"x": 0.68, "y": 0.0, "width": 0.09, "height": 0.1, "units": "normalized"},
+        "scale": "meso radial",
+        "affects": "skyline identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "finial/radial-sun-finial"},
+        "evidenceRef": "crops-main/zone-r0c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-spire-lattice",
+        "kind": "ridge",
+        "description": "Thin gold ribs and a lower diamond lattice lie proud of the slate spire.",
+        "region": {"x": 0.63, "y": 0.08, "width": 0.17, "height": 0.22, "units": "normalized"},
+        "scale": "micro repeated lines",
+        "affects": "spire relief",
+        "mapsTo": {"type": "component.localFeatures", "ref": "steeple-spire/gold-lattice"},
+        "evidenceRef": "crops-main/zone-r0c1.png",
+        "confidence": 0.96
+      },
+      {
+        "id": "main-solid-roof",
+        "kind": "contour",
+        "description": "The nave roof reads as one deep closed gable volume with a long ridge and triangular end geometry.",
+        "region": {"x": 0.29, "y": 0.32, "width": 0.57, "height": 0.24, "units": "normalized"},
+        "scale": "macro",
+        "affects": "roof volume",
+        "mapsTo": {"type": "component.localFeatures", "ref": "main-roof/solid-gable-volume"},
+        "evidenceRef": "crops-main/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-rose",
+        "kind": "decal",
+        "description": "Large rose assembly combines saturated radial wedges, a gold sun core and rays, dark spokes, and a white stone ring.",
+        "region": {"x": 0.3, "y": 0.34, "width": 0.27, "height": 0.24, "units": "normalized"},
+        "scale": "meso radial assembly",
+        "affects": "facade identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "rose-window/stained-sun-system"},
+        "evidenceRef": "crops-main/zone-r1c1.png",
+        "confidence": 1.0
+      },
+      {
+        "id": "main-rose-leading",
+        "kind": "linework",
+        "description": "Dark lead ring and radial cames separate every rose wedge.",
+        "region": {"x": 0.31, "y": 0.35, "width": 0.25, "height": 0.23, "units": "normalized"},
+        "scale": "micro radial",
+        "affects": "glass segmentation",
+        "mapsTo": {"type": "component.localFeatures", "ref": "rose-window/lead-cames"},
+        "evidenceRef": "crops-main/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-lower-sun",
+        "kind": "ridge",
+        "description": "Separate embossed gold sun disc and pointed rays sit below the rose.",
+        "region": {"x": 0.36, "y": 0.55, "width": 0.18, "height": 0.17, "units": "normalized"},
+        "scale": "meso relief",
+        "affects": "facade symbol",
+        "mapsTo": {"type": "component.localFeatures", "ref": "facade-sun/sun-rays"},
+        "evidenceRef": "crops-main/zone-r1c1.png",
+        "confidence": 1.0
+      },
+      {
+        "id": "main-portico",
+        "kind": "bevel",
+        "description": "Four white stepped columns support a deep entablature and closed shallow pediment.",
+        "region": {"x": 0.25, "y": 0.67, "width": 0.45, "height": 0.25, "units": "normalized"},
+        "scale": "meso repeated supports",
+        "affects": "entry depth",
+        "mapsTo": {"type": "component.localFeatures", "ref": "portico/column-order"},
+        "evidenceRef": "crops-main/zone-r2c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-steps",
+        "kind": "bevel",
+        "description": "Four broad white stone terraces widen toward the ground plane.",
+        "region": {"x": 0.19, "y": 0.86, "width": 0.52, "height": 0.1, "units": "normalized"},
+        "scale": "meso repeated terraces",
+        "affects": "ground contact",
+        "mapsTo": {"type": "component.localFeatures", "ref": "entry-steps/stepped-profile"},
+        "evidenceRef": "crops-main/zone-r2c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-side-lancets",
+        "kind": "contour",
+        "description": "Five tall pointed stained-glass windows repeat along the visible nave side.",
+        "region": {"x": 0.5, "y": 0.51, "width": 0.37, "height": 0.37, "units": "normalized"},
+        "scale": "meso linear repeat",
+        "affects": "side elevation rhythm",
+        "mapsTo": {"type": "component.localFeatures", "ref": "lancets/side-lancet-system"},
+        "evidenceRef": "crops-main/zone-r2c2.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "main-ashlar",
+        "kind": "seam",
+        "description": "Offset white rectangular stone courses cover facade, nave, and tower with shallow cool mortar recesses.",
+        "region": {"x": 0.2, "y": 0.4, "width": 0.68, "height": 0.5, "units": "normalized"},
+        "scale": "meso repeated grid",
+        "affects": "masonry relief",
+        "mapsTo": {"type": "component.localFeatures", "ref": "masonry-relief/ashlar-courses"},
+        "evidenceRef": "crops-main/zone-r1c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-stone-bevel",
+        "kind": "bevel",
+        "description": "Clean chamfers on trims, corners, steps, and column blocks catch the upper-left key.",
+        "region": {"x": 0.16, "y": 0.36, "width": 0.72, "height": 0.58, "units": "normalized"},
+        "scale": "micro edge treatment",
+        "affects": "stone shading",
+        "mapsTo": {"type": "material.localOverrides", "ref": "white-stone/clean-beveled-edges"},
+        "evidenceRef": "crops-main/zone-r2c0.png",
+        "confidence": 0.96
+      }
+    ]
+  },
+  "authoringInstruction": "Filled from all nine main-view zones; mappings resolve to authored sculpt-spec features."
+}

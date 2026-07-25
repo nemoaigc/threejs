@@ -1,0 +1,121 @@
+{
+  "sourceImage": "public/content/buildings/temple/ref_side.png",
+  "zonesDir": "src/entities/building/heroes/img2threejs-temple-v2/crops-side",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 10,
+    "details": [
+      {
+        "id": "side-long-nave",
+        "kind": "contour",
+        "description": "Long rectangular nave establishes a depth roughly one-and-a-half times the facade width.",
+        "region": {"x": 0.2, "y": 0.4, "width": 0.63, "height": 0.5, "units": "normalized"},
+        "scale": "macro",
+        "affects": "side proportions",
+        "mapsTo": {"type": "component.localFeatures", "ref": "nave-shell/long-nave-proportion"},
+        "evidenceRef": "crops-side/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-solid-gable",
+        "kind": "contour",
+        "description": "One continuous closed gable prism spans the long nave, including deep eaves and end caps.",
+        "region": {"x": 0.2, "y": 0.39, "width": 0.62, "height": 0.2, "units": "normalized"},
+        "scale": "macro",
+        "affects": "roof volume",
+        "mapsTo": {"type": "component.localFeatures", "ref": "main-roof/solid-gable-volume"},
+        "evidenceRef": "crops-side/zone-r1c1.png",
+        "confidence": 1.0
+      },
+      {
+        "id": "side-slate-courses",
+        "kind": "seam",
+        "description": "Regular staggered dark slate rows run across the roof pitch with restrained blue-grey variation.",
+        "region": {"x": 0.22, "y": 0.41, "width": 0.58, "height": 0.16, "units": "normalized"},
+        "scale": "meso repeated grid",
+        "affects": "roof relief",
+        "mapsTo": {"type": "component.localFeatures", "ref": "roof-relief/slate-courses"},
+        "evidenceRef": "crops-side/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-tower-stack",
+        "kind": "contour",
+        "description": "Square rear tower rises from the nave to a belfry and tall spire, visibly attached rather than floating.",
+        "region": {"x": 0.69, "y": 0.04, "width": 0.19, "height": 0.53, "units": "normalized"},
+        "scale": "macro attachment",
+        "affects": "rear skyline",
+        "mapsTo": {"type": "component.localFeatures", "ref": "tower-base/rear-offset-attachment"},
+        "evidenceRef": "crops-side/zone-r0c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-belfry-arches",
+        "kind": "hole",
+        "description": "Three visible tall dark arched recesses are divided by white belfry piers.",
+        "region": {"x": 0.72, "y": 0.28, "width": 0.13, "height": 0.12, "units": "normalized"},
+        "scale": "meso repeated openings",
+        "affects": "belfry negative space",
+        "mapsTo": {"type": "component.localFeatures", "ref": "belfry/arched-openings"},
+        "evidenceRef": "crops-side/zone-r0c2.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "side-five-lancets",
+        "kind": "contour",
+        "description": "Exactly five evenly spaced pointed lancets occupy the visible nave wall.",
+        "region": {"x": 0.23, "y": 0.58, "width": 0.55, "height": 0.31, "units": "normalized"},
+        "scale": "meso linear repeat",
+        "affects": "side rhythm",
+        "mapsTo": {"type": "component.localFeatures", "ref": "lancets/side-lancet-system"},
+        "evidenceRef": "crops-side/zone-r2c1.png",
+        "confidence": 1.0
+      },
+      {
+        "id": "side-glass-leading",
+        "kind": "linework",
+        "description": "Each lancet repeats a small gold sun, blue/violet body, green chevrons, red lower diamond, and dark leading.",
+        "region": {"x": 0.24, "y": 0.59, "width": 0.54, "height": 0.29, "units": "normalized"},
+        "scale": "micro repeated colored panels",
+        "affects": "stained-glass readability",
+        "mapsTo": {"type": "component.localFeatures", "ref": "stained-glass/glass-leading"},
+        "evidenceRef": "crops-side/zone-r2c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-buttress-rhythm",
+        "kind": "seam",
+        "description": "Slim projecting white piers separate the five window bays and land on a raised base course.",
+        "region": {"x": 0.2, "y": 0.56, "width": 0.6, "height": 0.35, "units": "normalized"},
+        "scale": "meso repeated supports",
+        "affects": "wall depth",
+        "mapsTo": {"type": "component.localFeatures", "ref": "buttresses/vertical-rhythm"},
+        "evidenceRef": "crops-side/zone-r2c0.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-ashlar",
+        "kind": "seam",
+        "description": "Regular white ashlar blocks and shallow cool-grey mortar cover the long nave and tower.",
+        "region": {"x": 0.19, "y": 0.43, "width": 0.68, "height": 0.48, "units": "normalized"},
+        "scale": "meso repeated grid",
+        "affects": "masonry relief",
+        "mapsTo": {"type": "component.localFeatures", "ref": "masonry-relief/ashlar-courses"},
+        "evidenceRef": "crops-side/zone-r1c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "side-gold-eave",
+        "kind": "ridge",
+        "description": "A thin continuous gold band traces the full nave eave and returns around the tower cap.",
+        "region": {"x": 0.2, "y": 0.54, "width": 0.66, "height": 0.05, "units": "normalized"},
+        "scale": "meso linear accent",
+        "affects": "roof-wall boundary",
+        "mapsTo": {"type": "component.localFeatures", "ref": "gold-trim/eave-bands"},
+        "evidenceRef": "crops-side/zone-r1c1.png",
+        "confidence": 0.98
+      }
+    ]
+  },
+  "authoringInstruction": "Filled from all nine side-view zones; mappings resolve to authored sculpt-spec features."
+}

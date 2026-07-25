@@ -1,0 +1,1727 @@
+{
+  "targetName": "Inn v2",
+  "targetId": "inn-v2",
+  "schemaVersion": "2.1",
+  "terminologyProfile": {
+    "domain": "real-time procedural Three.js asset",
+    "geometryTerms": [
+      "silhouette",
+      "topology",
+      "primitive",
+      "bevel",
+      "chamfer",
+      "taper",
+      "bend",
+      "boolean cut",
+      "edge loop",
+      "surface normal",
+      "displacement"
+    ],
+    "materialTerms": [
+      "albedo",
+      "baseColor",
+      "roughness",
+      "metalness",
+      "normal map",
+      "bump map",
+      "ambient occlusion",
+      "cavity dirt",
+      "edge wear",
+      "clearcoat"
+    ],
+    "lightingTerms": [
+      "key light",
+      "fill light",
+      "rim light",
+      "HDRI/environment reflection",
+      "contact shadow"
+    ],
+    "descriptionRule": "Use measurable 3D graphics terms. Avoid vague words unless they are paired with concrete geometry/material/shader parameters."
+  },
+  "sourceImage": "public/content/buildings/inn/ref_main.png",
+  "referenceCamera": {
+    "solved": true,
+    "fovDegrees": 35.0,
+    "aspect": 1.0,
+    "orientation": {
+      "yaw": -0.58,
+      "pitch": -0.18,
+      "roll": 0.0
+    },
+    "positionHint": [
+      13.5,
+      10.2,
+      15.5
+    ],
+    "note": "Visually estimated from the admitted three-quarter studio reference; front and side views provide orthographic proportion checks."
+  },
+  "suitability": "pass",
+  "scores": {
+    "object_isolation": 3,
+    "silhouette_readability": 3,
+    "depth_inference": 3,
+    "primitive_decomposition": 3,
+    "material_procedurality": 3,
+    "occlusion_risk": 1,
+    "interaction_fit": 3
+  },
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "stylized two-storey half-timber fantasy inn",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "clean architectural hard-surface",
+        "stylized fantasy game prop",
+        "readable chamfered color blocks",
+        "faceted projecting bay"
+      ],
+      "structureKind": [
+        "compound object",
+        "layered architectural shell",
+        "repeated modules",
+        "deep parent-child attachment hierarchy"
+      ],
+      "motionPotential": [
+        "static building prop",
+        "hinged timber door",
+        "swinging hanging sign",
+        "detachable barrel and flower box",
+        "material-boundary destruction groups"
+      ],
+      "materialFamilies": [
+        "warm ivory plaster",
+        "stained timber",
+        "red clay tile",
+        "grey masonry",
+        "burgundy painted wood",
+        "gold trim",
+        "black iron",
+        "warm emissive glazing",
+        "painted shutter wood",
+        "green foliage",
+        "red flowers"
+      ],
+      "notes": "Three admitted views describe one clean stylized fantasy inn. The front fixes the gable width, sign placement, entrance, and bay-window proportions; the side fixes building depth, tile-course count, chimney location, two upper windows, one lower window, and the timber network. The hidden rear repeats the observed construction conservatively. This is a procedural stylized reconstruction, not survey geometry or photoreal inverse rendering."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 2,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 1,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 6,
+        "mesoComponents": 21,
+        "microFeatureGroups": 22,
+        "materialLayers": 12,
+        "repetitionSystems": 10
+      },
+      "reasoning": [
+        "The macro silhouette combines a two-storey wall volume, one closed gable-roof prism, a chimney, a projecting faceted bay, a hanging sign, and entrance props.",
+        "Half-timber construction requires separate plaster shells, floor belt, corner posts, front gable posts, side rails, straight diagonals, and curved braces on both visible elevations.",
+        "Identity depends on regular repeated systems: clay roof tiles, ridge caps, chimney blocks, windows, shutters, muntins, diamond lattice, chain links, door planks, barrel staves, leaves, and flowers.",
+        "The sign, door, shutters, flower box, barrel, and bay window require explicit parent sockets or contact contracts so they do not float.",
+        "The clean stylized palette contains many distinct material families while deliberately avoiding photoreal micro-noise.",
+        "Three mutually distinct views reduce geometric uncertainty; only the rear elevation remains inferred."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "A shallow box facade would lose the closed roof volume, dense timber skeleton, projecting bay, regular tile and lattice systems, and the attached sign/door/flower/barrel props."
+    },
+    "unknownsToResolveBeforeImplementation": [],
+    "detailInventory": {
+      "scanMethod": "grid-3x3 across three admitted views",
+      "targetMinDetails": 10,
+      "note": "Twenty-two consolidated identity systems come from the three filled view inventories. Every item maps to a component localFeature or material localOverride that the sculpt spec must contain.",
+      "details": [
+        {
+          "id": "solid-gable-volume",
+          "kind": "contour",
+          "description": "One closed triangular prism supplies both roof slopes, eaves, underside, and front/rear gable caps.",
+          "region": {
+            "x": 0.08,
+            "y": 0.06,
+            "width": 0.82,
+            "height": 0.36,
+            "units": "normalized"
+          },
+          "scale": "macro",
+          "affects": "roof silhouette and depth",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "roof/solid-gable-volume"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "tile-courses",
+          "kind": "ridge",
+          "description": "Regular overlapping red clay tile rows step down both roof slopes with staggered vertical joints.",
+          "region": {
+            "x": 0.13,
+            "y": 0.1,
+            "width": 0.72,
+            "height": 0.28,
+            "units": "normalized"
+          },
+          "scale": "meso repeated rows",
+          "affects": "roof relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "roof/tile-courses"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "ridge-caps",
+          "kind": "ridge",
+          "description": "A regular cap row follows the full ridge and is thicker than the field tiles.",
+          "region": {
+            "x": 0.23,
+            "y": 0.07,
+            "width": 0.56,
+            "height": 0.08,
+            "units": "normalized"
+          },
+          "scale": "meso linear repeat",
+          "affects": "roof crest",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "roof/ridge-caps"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.96
+        },
+        {
+          "id": "chimney-block-courses",
+          "kind": "seam",
+          "description": "Rounded grey blocks form staggered chimney courses with recessed joints, a shoulder block, and projecting cap.",
+          "region": {
+            "x": 0.62,
+            "y": 0.06,
+            "width": 0.18,
+            "height": 0.27,
+            "units": "normalized"
+          },
+          "scale": "meso masonry repeat",
+          "affects": "chimney relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "chimney/stone-block-courses"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "upper-gable-braces",
+          "kind": "ridge",
+          "description": "The front gable uses a center post, collar beam, and mirrored inward-curving braces raised above plaster.",
+          "region": {
+            "x": 0.25,
+            "y": 0.18,
+            "width": 0.5,
+            "height": 0.31,
+            "units": "normalized"
+          },
+          "scale": "meso structural network",
+          "affects": "front gable identity",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "upper-gable/curved-braces"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "side-half-timber-network",
+          "kind": "ridge",
+          "description": "Posts, rails, straight lower diagonals, and tall curved braces articulate both storeys on the visible side.",
+          "region": {
+            "x": 0.19,
+            "y": 0.34,
+            "width": 0.63,
+            "height": 0.55,
+            "units": "normalized"
+          },
+          "scale": "meso structural network",
+          "affects": "side elevation hierarchy",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "side-walls/half-timber-network"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "window-shutters-muntins",
+          "kind": "seam",
+          "description": "Upper and side windows use four amber panes, thick muntins, raised timber heads and sills, and paired ivory shutters.",
+          "region": {
+            "x": 0.32,
+            "y": 0.37,
+            "width": 0.46,
+            "height": 0.28,
+            "units": "normalized"
+          },
+          "scale": "meso repeated modules",
+          "affects": "facade and side rhythm",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "upper-windows/shutters-and-muntins"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "bay-faceted-frame",
+          "kind": "bevel",
+          "description": "A three-face projecting ground-floor bay uses thick chamfered timber corner posts, header, sill, and side returns.",
+          "region": {
+            "x": 0.42,
+            "y": 0.62,
+            "width": 0.39,
+            "height": 0.28,
+            "units": "normalized"
+          },
+          "scale": "macro-to-meso projection",
+          "affects": "ground-floor silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bay-window/faceted-frame"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "bay-diamond-lattice",
+          "kind": "linework",
+          "description": "Black raised diamond leading repeats across the front and angled side panes of the bay.",
+          "region": {
+            "x": 0.43,
+            "y": 0.65,
+            "width": 0.35,
+            "height": 0.2,
+            "units": "normalized"
+          },
+          "scale": "micro repeated linework",
+          "affects": "bay glazing identity",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bay-window/diamond-lattice"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "warm-window-emission",
+          "kind": "emissive",
+          "description": "All glazing is warm amber; the projecting bay is the strongest light source and needs restrained emissive intensity.",
+          "region": {
+            "x": 0.37,
+            "y": 0.38,
+            "width": 0.42,
+            "height": 0.46,
+            "units": "normalized"
+          },
+          "scale": "macro luminous zones",
+          "affects": "glazing albedo and emission",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "glazing-material/warm-emission"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "door-planks-and-iron",
+          "kind": "groove",
+          "description": "The timber door has recessed vertical plank seams, two black strap hinges, and a raised pull under a thick lintel.",
+          "region": {
+            "x": 0.25,
+            "y": 0.65,
+            "width": 0.24,
+            "height": 0.27,
+            "units": "normalized"
+          },
+          "scale": "meso entrance with micro hardware",
+          "affects": "entrance readability",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "door-system/planks-and-iron"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "sign-bracket-and-chains",
+          "kind": "fastener",
+          "description": "A black wall plate and horizontal bracket carry two articulated chain drops with visible air gaps.",
+          "region": {
+            "x": 0.12,
+            "y": 0.42,
+            "width": 0.22,
+            "height": 0.16,
+            "units": "normalized"
+          },
+          "scale": "meso attachment with micro repeat",
+          "affects": "sign attachment and negative space",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "sign-rig/bracket-and-chains"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "sign-face-border-mug",
+          "kind": "ridge",
+          "description": "The hanging burgundy sign has a stepped scalloped edge, thin gold inset border, and raised black foaming-mug emblem.",
+          "region": {
+            "x": 0.12,
+            "y": 0.49,
+            "width": 0.19,
+            "height": 0.24,
+            "units": "normalized"
+          },
+          "scale": "meso identity emblem",
+          "affects": "inn recognition",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "inn-sign/scalloped-border-and-mug"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "flower-box-cluster",
+          "kind": "ridge",
+          "description": "A projecting timber planter supports layered foliage, red blossom clusters, and hanging vines below the bay sill.",
+          "region": {
+            "x": 0.42,
+            "y": 0.74,
+            "width": 0.27,
+            "height": 0.23,
+            "units": "normalized"
+          },
+          "scale": "meso planter with micro botanical repeat",
+          "affects": "facade accent and silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "flower-box/flowers-and-vines"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.98
+        },
+        {
+          "id": "barrel-staves-hoops",
+          "kind": "ridge",
+          "description": "A bulged barrel uses alternating vertical staves, three dark hoops, and a recessed top rim.",
+          "region": {
+            "x": 0.23,
+            "y": 0.74,
+            "width": 0.13,
+            "height": 0.2,
+            "units": "normalized"
+          },
+          "scale": "meso prop with micro repeat",
+          "affects": "entrance prop silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "barrel/staves-and-hoops"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "timber-bevel-grain-bands",
+          "kind": "bevel",
+          "description": "Timber edges use clean chamfers and restrained lengthwise value bands rather than noisy photoreal grain.",
+          "region": {
+            "x": 0.18,
+            "y": 0.29,
+            "width": 0.68,
+            "height": 0.61,
+            "units": "normalized"
+          },
+          "scale": "micro edge and meso color treatment",
+          "affects": "timber highlight and albedo response",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "timber-material/bevel-and-grain-banding"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.94
+        },
+        {
+          "id": "plaster-warm-variation",
+          "kind": "stain",
+          "description": "Warm ivory plaster has low-frequency bay-to-bay value variation and slightly darker timber contact zones.",
+          "region": {
+            "x": 0.2,
+            "y": 0.31,
+            "width": 0.62,
+            "height": 0.58,
+            "units": "normalized"
+          },
+          "scale": "macro-to-meso color variation",
+          "affects": "plaster albedo and AO",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "plaster-material/warm-variation"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.94
+        },
+        {
+          "id": "stone-cavity-darkening",
+          "kind": "stain",
+          "description": "Chimney mortar gaps are darker than stone faces without random surface speckle.",
+          "region": {
+            "x": 0.63,
+            "y": 0.04,
+            "width": 0.17,
+            "height": 0.29,
+            "units": "normalized"
+          },
+          "scale": "micro cavity response",
+          "affects": "stone AO and roughness",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "stone-material/cavity-darkening"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.96
+        },
+        {
+          "id": "tile-tone-variation",
+          "kind": "stain",
+          "description": "Tile rows alternate across a restrained brick-red palette; joints read through geometry, not noisy albedo.",
+          "region": {
+            "x": 0.15,
+            "y": 0.09,
+            "width": 0.7,
+            "height": 0.29,
+            "units": "normalized"
+          },
+          "scale": "meso per-module color variation",
+          "affects": "roof albedo and roughness",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "roof-material/tile-tone-variation"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.98
+        },
+        {
+          "id": "burgundy-gold-contrast",
+          "kind": "gloss",
+          "description": "The matte burgundy sign face is separated from a slightly smoother gold border and black raised emblem.",
+          "region": {
+            "x": 0.13,
+            "y": 0.49,
+            "width": 0.18,
+            "height": 0.23,
+            "units": "normalized"
+          },
+          "scale": "meso material zoning",
+          "affects": "sign material hierarchy",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "burgundy-material/gold-border"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.97
+        },
+        {
+          "id": "shutter-panel-insets",
+          "kind": "groove",
+          "description": "Ivory shutters use shallow recessed inner panels and chamfered outer frames.",
+          "region": {
+            "x": 0.32,
+            "y": 0.37,
+            "width": 0.46,
+            "height": 0.28,
+            "units": "normalized"
+          },
+          "scale": "micro repeated relief",
+          "affects": "window depth and value separation",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "upper-windows/shutters-and-muntins"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.96
+        },
+        {
+          "id": "floor-belt-and-brackets",
+          "kind": "ridge",
+          "description": "A continuous deep timber belt separates storeys and is supported by short downward block brackets.",
+          "region": {
+            "x": 0.19,
+            "y": 0.55,
+            "width": 0.64,
+            "height": 0.14,
+            "units": "normalized"
+          },
+          "scale": "meso linear repeat",
+          "affects": "storey division and shadow line",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "side-walls/half-timber-network"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {
+        "headUnit": 0.0,
+        "torso": 0.0,
+        "legs": 0.0,
+        "shoulderWidth": 0.0,
+        "hipWidth": 0.0
+      },
+      "pose": {
+        "type": "not-applicable",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0.0,
+        "eyeSpacing": 0.0,
+        "noseBase": 0.0,
+        "mouthLine": 0.0,
+        "hairline": 0.0
+      },
+      "features": [],
+      "confidence": 1.0,
+      "note": "Not a character or hybrid subject."
+    },
+    "sourceImage": "public/content/buildings/inn/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The model reads immediately as the same compact two-storey half-timber fantasy inn from front, side, and three-quarter views.",
+      "The building uses one closed solid gable-roof prism with regular geometric tile relief; paired rotated box slabs are prohibited.",
+      "Warm plaster, raised timber frame, red tile roof, stone chimney, hanging burgundy mug sign, glowing faceted bay, timber door, barrel, and flower box remain separately readable.",
+      "The factory returns an action-ready THREE.Group with facade +Z, visible sole y=0, and named hinges, sign pivot, sockets, colliders, and destruction groups.",
+      "Visible materials are MeshStandardMaterial or MeshToonMaterial-compatible color blocks with clean bevels, restrained scalar variation, and no facade photo or texture billboard."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 6,
+      "mesoComponents": 18,
+      "microFeatureGroups": 12,
+      "materialLayers": 10,
+      "repetitionSystems": 8,
+      "reviewViewpoints": 3
+    },
+    "featureGroups": [
+      {
+        "id": "solid-roof-and-massing",
+        "name": "Closed red-tile gable roof and compact inn massing",
+        "required": true,
+        "qualityCriteria": [
+          "One manifold prism supplies both roof slopes, underside, eaves, and gable caps.",
+          "Wall width/depth, floor split, eave height, ridge height, and chimney placement agree across all three views.",
+          "Regular relief tiles and ridge caps sit on the solid roof rather than becoming structural slabs."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front",
+          "ref-side"
+        ],
+        "failureModes": [
+          "two rotated roof slabs",
+          "open or paper-thin roof",
+          "irregular noisy tile scattering",
+          "chimney detached from roof"
+        ]
+      },
+      {
+        "id": "half-timber-window-system",
+        "name": "Half-timber plaster shell and shuttered windows",
+        "required": true,
+        "qualityCriteria": [
+          "Raised posts, rails, belt beam, straight diagonals, and curved braces remain separate depth layers over plaster.",
+          "The front gable and long side use the distinct bracing rhythms established by their references.",
+          "Window heads, sills, muntins, warm panes, and paired panelled shutters remain legible."
+        ],
+        "evidenceRefs": [
+          "ref-front",
+          "ref-side"
+        ],
+        "failureModes": [
+          "painted timber grid",
+          "generic blank side wall",
+          "flat window decals",
+          "missing curved braces"
+        ]
+      },
+      {
+        "id": "bay-window-and-glow",
+        "name": "Projecting faceted bay with warm diamond-lattice glazing",
+        "required": true,
+        "qualityCriteria": [
+          "A real three-face bay projects beyond the ground-floor facade with corner posts, header, sill, front pane, and angled returns.",
+          "Raised black diamond leading remains regular on every visible pane.",
+          "Amber glazing is emissive enough to read warm without erasing lattice contrast."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ],
+        "failureModes": [
+          "flat glow plane",
+          "rectangular box without angled returns",
+          "missing lattice",
+          "overexposed solid yellow window"
+        ]
+      },
+      {
+        "id": "inn-sign-and-entrance-props",
+        "name": "Hanging mug sign, timber door, barrel, and flower box",
+        "required": true,
+        "qualityCriteria": [
+          "The sign hangs from a projecting iron bracket through two chain runs and uses a scalloped burgundy plate, gold border, and raised black mug.",
+          "The timber door includes a hinge pivot, plank grooves, strap hinges, and pull.",
+          "The barrel uses staves and hoops; the planter uses a solid box plus repeated foliage, red blossoms, and trailing vines."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ],
+        "failureModes": [
+          "floating sign",
+          "generic rectangular sign",
+          "plain door",
+          "smooth cylinder barrel",
+          "single green box standing in for flowers"
+        ]
+      },
+      {
+        "id": "clean-stylized-materials",
+        "name": "Clean bright stylized material separation",
+        "required": true,
+        "qualityCriteria": [
+          "Plaster, stained timber, red tile, grey stone, burgundy paint, gold trim, black iron, ivory shutters, warm glass, foliage, and flowers remain distinct under neutral light.",
+          "Chamfers, real seams, module spacing, and clean low-frequency value bands carry form detail; photoreal micro-noise is absent.",
+          "Neutral, grazing, and reference-matched review views preserve material readability."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front",
+          "ref-side"
+        ],
+        "failureModes": [
+          "flat unlit color",
+          "photoreal grain or speckle",
+          "materials collapse into similar values",
+          "emissive glazing washes out structure"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "closed roof-prism silhouette, eave depth, and ridge height",
+      "regular tile rows and staggered module joints",
+      "front gable versus side half-timber bracing rhythm",
+      "window count, shutter width, and warm pane layout",
+      "faceted bay projection and diamond lattice density",
+      "sign bracket, chains, plate silhouette, border, and mug emblem",
+      "door, barrel, and flower-box placement",
+      "clean bright palette and bevel response"
+    ],
+    "antiShallowSpecRules": [
+      "Reject paired rotated box roof slabs, open roofs, and facade-only roof planes.",
+      "Reject wall textures or painted lines standing in for the raised half-timber network.",
+      "Reject facade photo planes, projected reference photos, sprites, and billboard substitutes.",
+      "Reject unmapped inventory details and generic feature-review targets.",
+      "Reject sign, shutters, door, flower box, barrel, chimney, or lattice without complete attachment/contact data.",
+      "Reject material families without independent albedo, roughness, tactile relief intent, frequency bands, and local overrides.",
+      "Reference PBR crop extraction is intentionally omitted because the accepted target is a clean stylized flat-color prop and the user prohibits photoreal micro-noise; solid albedo, geometric relief, and independent scalar PBR channels are the correct implementation."
+    ],
+    "referencePbrLimitation": "The reference images intentionally depict clean stylized material blocks rather than patterned or photoreal finishes. Reference-derived texture crops would import baked lighting and unwanted micro-noise. Important relief is therefore geometric, colors are solid sampled families, and albedo/roughness/normal/AO intent remains independent through scalar and procedural descriptions."
+  },
+  "qualityTargets": {
+    "targetFidelity": 0.86,
+    "mustMatch": [
+      "single closed gable-roof prism and regular tile rows",
+      "half-timber plaster hierarchy on front and side",
+      "faceted warm bay window with diamond leading",
+      "stone chimney and shuttered window rhythm",
+      "hanging burgundy mug sign, timber door, barrel, and flower box",
+      "clean bright stylized material separation"
+    ],
+    "niceToHave": [
+      "restrained timber value banding",
+      "slight plaster and tile tone variation",
+      "secondary rear-wall construction inferred from visible sides"
+    ],
+    "fpsTarget": 60,
+    "reviewViewpoints": [
+      "front",
+      "three-quarter",
+      "side"
+    ]
+  },
+  "selfCorrectLoop": {
+    "enabled": true,
+    "visualAcceptance": {
+      "reviewer": "ai-vision",
+      "threshold": 0.7,
+      "comparisonArtifactRequired": true,
+      "layerScoresRequired": true,
+      "codePixelDiffIsAcceptanceAuthority": false,
+      "scoringRule": "AI vision must inspect a side-by-side reference/render sheet and score the current pass from 0 to 1. Pixel-diff code may assist diagnostics but cannot approve a pass.",
+      "requiredLayerScores": [
+        "silhouetteProportion",
+        "componentStructure",
+        "formDetail",
+        "materialSurface",
+        "lightingCamera"
+      ],
+      "featureReviewPolicy": {
+        "enabled": true,
+        "reviewUnit": "semantic-subsystem",
+        "maxCriticalFeaturesPerPass": 5,
+        "maxImportantFeaturesPerPass": 3,
+        "criticalDefaultThreshold": 0.8,
+        "importantAverageThreshold": 0.65,
+        "adaptiveEscalation": true,
+        "singleImagePairOnly": true,
+        "selectionRule": "Choose only the most visually salient, identity-defining, user-prioritized, or high-risk semantic systems. Group repeated parts instead of reviewing every mesh. AI vision scores every selected feature from the same full reference/render pair."
+      }
+    },
+    "reviewAfterPasses": [
+      "blockout",
+      "structural-pass",
+      "form-refinement",
+      "material-pass",
+      "surface-pass",
+      "lighting-pass",
+      "interaction-pass",
+      "optimization-pass"
+    ],
+    "allowedActions": [
+      "continue",
+      "refine-spec",
+      "refine-code",
+      "request-input",
+      "stop"
+    ],
+    "specRefineTriggers": [
+      "missing component",
+      "wrong primitive family",
+      "wrong proportions",
+      "material layer under-specified",
+      "local feature not traceable to viewEvidence",
+      "reference ambiguity discovered during implementation"
+    ],
+    "codeRefineTriggers": [
+      "spec is adequate but generated geometry/material does not match",
+      "browser render differs from reference",
+      "performance budget exceeded",
+      "lighting hides geometry or material response"
+    ],
+    "stopCriteria": [
+      "target fidelity reached or user accepts current approximation",
+      "remaining gaps require new reference images or manual art"
+    ],
+    "screenshotPolicy": {
+      "requiredForPasses": [
+        "blockout",
+        "structural-pass",
+        "form-refinement",
+        "material-pass",
+        "surface-pass",
+        "lighting-pass",
+        "interaction-pass"
+      ],
+      "preferredCapture": "in-app-browser-screenshot",
+      "fallbackCapture": "user-supplied-screenshot-path",
+      "minimumEvidence": "Each visual pass needs a reference image, rendered screenshot, side-by-side comparison sheet, AI vision score, layer scores, and critique before choosing continue.",
+      "reviewPairRule": "Compare the same camera/viewpoint whenever possible; do not judge a front reference against a random render angle.",
+      "acceptanceAuthority": "AI vision review of the comparison sheet. Code-generated pixel similarity is not sufficient evidence."
+    }
+  },
+  "featureReviewTargets": [
+    {
+      "id": "solid-roof-massing",
+      "name": "Single closed gable roof, regular tiles, wall massing, and chimney",
+      "tier": "critical",
+      "passIds": [
+        "blockout",
+        "form-refinement"
+      ],
+      "minimumScore": 0.85,
+      "mustPass": true,
+      "componentRefs": [
+        "building-core",
+        "roof",
+        "chimney"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "half-timber-window-system",
+      "name": "Raised half-timber plaster hierarchy and shuttered windows",
+      "tier": "critical",
+      "passIds": [
+        "structural-pass",
+        "form-refinement"
+      ],
+      "minimumScore": 0.83,
+      "mustPass": true,
+      "componentRefs": [
+        "upper-gable",
+        "side-walls",
+        "floor-belt",
+        "upper-windows",
+        "side-window-system"
+      ],
+      "evidenceRefs": [
+        "ref-front",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "bay-window-system",
+      "name": "Faceted projecting bay, warm glazing, and diamond lattice",
+      "tier": "critical",
+      "passIds": [
+        "structural-pass",
+        "form-refinement",
+        "material-pass",
+        "surface-pass"
+      ],
+      "minimumScore": 0.86,
+      "mustPass": true,
+      "componentRefs": [
+        "bay-window",
+        "bay-frame",
+        "bay-glazing",
+        "bay-lattice"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    },
+    {
+      "id": "sign-and-entrance-props",
+      "name": "Burgundy mug sign, door hardware, barrel, and flower box",
+      "tier": "critical",
+      "passIds": ["structural-pass", "form-refinement", "material-pass"],
+      "minimumScore": 0.84,
+      "mustPass": true,
+      "componentRefs": ["sign-rig", "inn-sign", "door-system", "barrel", "flower-box"],
+      "evidenceRefs": ["ref-main", "ref-front"]
+    },
+    {
+      "id": "clean-stylized-materials",
+      "name": "Bright stylized plaster, timber, tile, stone, paint, glass, metal, and botanical separation",
+      "tier": "important",
+      "passIds": ["material-pass", "surface-pass", "lighting-pass"],
+      "minimumScore": 0.76,
+      "mustPass": false,
+      "componentRefs": ["building-core", "roof", "chimney", "bay-window", "inn-sign", "flower-box"],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"]
+    }
+  ],
+  "sculptPipeline": {
+    "passGateMode": "locked-sequential",
+    "passOrder": [
+      "blockout",
+      "structural-pass",
+      "form-refinement",
+      "material-pass",
+      "surface-pass",
+      "lighting-pass",
+      "interaction-pass",
+      "optimization-pass"
+    ],
+    "currentPass": "blockout",
+    "completedPasses": [],
+    "lastCompletedPass": "",
+    "blockedReason": "blockout requires a browser screenshot and self-correction review before structural-pass unlocks",
+    "nextRequiredEvidence": [
+      "blockout browser render screenshot from your agent's browser/screenshot tool",
+      "side-by-side reference/render comparison sheet",
+      "AI vision score >= 0.7 with layer scores and mismatch critique",
+      "critical semantic feature scores from the same image pair meeting their individual thresholds",
+      "reviewHistory entry for blockout with action=continue"
+    ]
+  },
+  "lookDevTargets": {
+    "qualityPriority": "stylized-reference",
+    "materialPass": {
+      "albedoPaletteRequired": true,
+      "roughnessVariationRequired": true,
+      "normalOrBumpRequired": true,
+      "localOverridesRequired": true,
+      "minimumTextureResolution": 1024,
+      "preferredTextureResolution": 2048,
+      "independentMapChannels": [
+        "albedo",
+        "roughness",
+        "height",
+        "normal",
+        "ambient-occlusion"
+      ],
+      "requiredSurfaceFrequencyBands": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "geometryReliefRequiredWhenSilhouetteAffected": true,
+      "referencePbrExtraction": {
+        "requiredWhenSourceImagePresent": false,
+        "targetThreshold": 0.7,
+        "stopOnLowConfidence": false,
+        "script": "forge/stage1_intake/extract_pbr_evidence.py",
+        "acceptedLimitation": "The references are deliberately clean flat-color game-prop renders and the user prohibits photoreal micro-noise. Solid sampled albedo families, scalar roughness, geometric relief, and independent AO intent are more faithful than crop-derived textures."
+      },
+      "mustAvoid": [
+        "unlit flat color without roughness separation",
+        "uniform roughness across unrelated materials",
+        "albedo reused as roughness, height, normal, or AO",
+        "photoreal micro-noise and image-derived grain",
+        "flat facade planes in place of structural depth",
+        "photo projection, sprite, or billboard substitution"
+      ]
+    },
+    "lightingPass": {
+      "requiredTerms": [
+        "key light",
+        "fill light",
+        "rim or environment light",
+        "exposure",
+        "tone mapping",
+        "background",
+        "contact shadow"
+      ],
+      "mustAvoid": [
+        "ambient-only lighting",
+        "flat value range",
+        "missing contact shadow",
+        "emissive windows washing out lattice detail"
+      ]
+    },
+    "screenshotReview": [
+      "Compare roof silhouette, tile cadence, and chimney placement from all three views.",
+      "Compare front and side half-timber networks, window counts, and attachment contacts.",
+      "Compare bay projection, lattice density, emissive value, and sign/entrance props.",
+      "Capture a neutral-light render for honest material separation.",
+      "Capture a grazing-light close-up for chamfers, seams, tile relief, and lattice depth.",
+      "Capture a reference-matched three-quarter render."
+    ]
+  },
+  "actionReadiness": {
+    "contract": "Every macro/meso component should be generated as a stable named Object3D pivot node with a mesh child, action metadata, optional sockets, collider proxy, and destruction metadata.",
+    "defaultRigType": "action-ready-static-rig",
+    "rootMotionNode": "root",
+    "requiredComponentFields": [
+      "id",
+      "parent",
+      "transform",
+      "attachment for child appendages, connectors, limbs, tubes, handles, legs, horns, wings, branches, or cables",
+      "actionProfile.animationRole",
+      "actionProfile.pivot",
+      "actionProfile.collider",
+      "actionProfile.destruction"
+    ],
+    "transformChannels": [
+      "translate",
+      "rotate",
+      "scale",
+      "bend",
+      "twist",
+      "detach",
+      "visibility",
+      "material-state"
+    ],
+    "authoringRules": [
+      "Do not collapse independently movable parts into one mesh.",
+      "Put transforms on component pivot groups, not only on raw meshes.",
+      "For attached child parts, put the pivot at the semantic root/socket and build visible geometry from localStart to localEnd.",
+      "Represent hinge, socket, detachable, and breakable intent even when no animation is implemented yet.",
+      "Use simplified collider proxies for runtime physics instead of visual mesh colliders by default."
+    ],
+    "destructionPolicy": {
+      "defaultBreakable": false,
+      "fractureGroupNaming": "Use stable semantic names such as body-shell, left-hinge, glass-panel, branch-segment.",
+      "debrisStrategy": "Prefer detachable component groups and a small number of procedural fragments over random mesh explosion."
+    }
+  },
+  "assumptions": [
+    "The hidden rear elevation repeats the visible side's plaster, timber, and shuttered-window construction conservatively.",
+    "The sign plate faces +Z like the facade, as shown face-on in the front reference and at an angle in the main view.",
+    "The bay's side returns are approximately 35 degrees from the front plane and remain shallow enough not to dominate the side elevation.",
+    "Stylized scalar PBR and geometric relief are intentionally preferred over reference-crop textures because the user prohibits photoreal micro-noise."
+  ],
+  "coordinateFrame": {
+    "front": "+Z",
+    "up": "+Y",
+    "right": "+X",
+    "sole": "y=0",
+    "scaleReference": "front wall width 8 world units"
+  },
+  "silhouette": {
+    "boundingShape": "Compact two-storey rectangular inn below one steep closed gable prism, with a right-rear chimney, a left-projecting sign, and a front-right faceted bay.",
+    "aspectRatios": [
+      "wall width:depth approximately 1.22:1",
+      "wall width:total height approximately 0.92:1",
+      "ground storey:upper rectangular storey approximately 0.88:1",
+      "roof rise:roof half-span approximately 0.64:1"
+    ],
+    "symmetry": "The roof and structural shell are approximately ridge-symmetric; the left sign, left door and barrel, right bay, flower box, and offset chimney create deliberate asymmetry.",
+    "dominantCurves": [
+      "front-gable and side-wall timber braces",
+      "lathed barrel bulge",
+      "chain links and sign border",
+      "trailing flower-box vines"
+    ],
+    "negativeSpaces": [
+      "air between sign chains and beneath the bracket",
+      "recess around the timber door",
+      "faceted bay side returns",
+      "gaps between foliage and trailing vines"
+    ],
+    "landmarks": [
+      "red tiled ridge and thick eaves",
+      "right-rear grey chimney",
+      "burgundy hanging mug sign",
+      "warm diamond-lattice bay",
+      "timber door with adjacent barrel and flower box"
+    ]
+  },
+  "viewEvidence": [
+    {
+      "id": "ref-main",
+      "view": "three-quarter-front",
+      "imageRegion": {
+        "x": 0.05,
+        "y": 0.03,
+        "width": 0.90,
+        "height": 0.93,
+        "units": "normalized"
+      },
+      "observations": [
+        "overall width, depth, height, roof and chimney proportions",
+        "sign, door, barrel, bay, and flower-box placement",
+        "material palette and projecting facade depth"
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "ref-front",
+      "view": "straight-front",
+      "imageRegion": {"x": 0.08, "y": 0.04, "width": 0.84, "height": 0.92, "units": "normalized"},
+      "observations": [
+        "front-gable silhouette and timber bracing",
+        "central upper window, left door, and right bay proportions",
+        "face-on sign plate and chain spacing"
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "ref-side",
+      "view": "right-side",
+      "imageRegion": {"x": 0.17, "y": 0.04, "width": 0.69, "height": 0.90, "units": "normalized"},
+      "observations": [
+        "building depth and long roof slope",
+        "nine tile rows, chimney depth, and eave thickness",
+        "two upper windows, one lower window, and side timber network"
+      ],
+      "confidence": 0.99
+    }
+  ],
+  "componentTree": [
+    {
+      "id": "root",
+      "name": "Inn v2 runtime container",
+      "level": "macro",
+      "role": "runtime-container",
+      "importance": 1.0,
+      "confidence": 1.0,
+      "primitive": "box",
+      "topologyClass": "material-only",
+      "topologyRationale": "Hidden non-rendering container for named pivots, sockets, colliders, and runtime metadata.",
+      "geometryDescriptor": {"topologyIntent": "hidden container", "edgeTreatment": {"type": "none", "bevelRadius": 0.0, "segments": 1}, "deformationStack": [], "uvStrategy": "none", "normalStrategy": "none"},
+      "parent": null,
+      "attachment": null,
+      "dimensions": {"width": 0.01, "height": 0.01, "depth": 0.01, "units": "world", "confidence": 1.0},
+      "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {
+        "animationRole": "root",
+        "pivot": {"mode": "sole-center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 1.0},
+        "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true},
+        "sockets": [],
+        "collider": {"type": "compound", "offset": [0, 4.35, 0], "scale": [8.6, 8.7, 7.1], "isTrigger": false},
+        "constraints": [],
+        "destruction": {"breakable": false, "fractureGroup": "whole-inn", "seamRefs": ["floor-belt", "roof-eaves"], "detachableFragments": ["roof", "sign-system", "entrance-props"], "breakImpulse": 0.0, "debrisMaterial": "timber-material"}
+      },
+      "material": "utility-material",
+      "materialLayers": ["utility-material"],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [],
+      "surfaceDetail": {"macroRoughness": 0.0, "microRoughness": 0.0, "bumpAmplitude": 0.0, "normalPattern": "none", "displacementPattern": "none", "occlusionPattern": "none", "edgeWearPattern": "none", "notes": "Hidden container."},
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "details": ["Sole remains at y=0; facade faces +Z."],
+      "fidelityTier": "runtime"
+    },
+    {
+      "id": "building-core", "name": "Two-storey plaster wall core", "level": "macro", "role": "architectural-shell", "importance": 1.0, "confidence": 0.99,
+      "primitive": "box", "topologyClass": "assembled-solid", "topologyRationale": "The three views show a discrete rectangular two-storey wall volume beneath the eaves.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(242, 232, 210, 1)", "secondaryAlbedo": "rgba(224, 210, 185, 1)", "materialClass": "stone", "materialClassConfidence": 0.96},
+      "geometryDescriptor": {"topologyIntent": "closed beveled wall mass", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.05, "segments": 2}, "deformationStack": [], "uvStrategy": "object-space planar", "normalStrategy": "weighted vertex normals"},
+      "parent": "root", "attachment": {"parentId": "root", "parentSocket": "sole", "localStart": [0, 0, 0], "localEnd": [0, 6.2, 0], "contactType": "surface-contact", "overlap": 0.02, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 8.0, "height": 6.2, "depth": 6.5, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 3.1, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-shell", "pivot": {"mode": "base", "localPosition": [0, -3.1, 0], "axis": [0, 1, 0], "confidence": 1.0}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "front-wall", "localPosition": [0, 0, 3.25]}, {"id": "right-wall", "localPosition": [4, 0, 0]}, {"id": "eave", "localPosition": [0, 3.1, 0]}], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [8, 6.2, 6.5], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "plaster-shell", "seamRefs": ["floor-belt"], "detachableFragments": [], "breakImpulse": 14, "debrisMaterial": "plaster-material"}},
+      "material": "plaster-material", "materialLayers": ["plaster-material", "timber-material"], "deformations": [], "joints": [], "seams": ["floor split at y=3.0"], "localFeatures": [{"id": "panel-insets", "type": "recessed plaster bays", "depth": 0.035, "evidenceRefs": ["ref-front", "ref-side"]}], "surfaceDetail": {"macroRoughness": 0.2, "microRoughness": 0.06, "bumpAmplitude": 0.008, "normalPattern": "restrained plaster undulation", "displacementPattern": "none", "occlusionPattern": "timber-contact darkening", "edgeWearPattern": "none", "notes": "No photoreal speckle."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": ["rear repeats visible construction conservatively"], "fidelityTier": "hero"
+    },
+    {
+      "id": "roof", "name": "Closed red-clay gable roof", "level": "macro", "role": "architectural-shell", "importance": 1.0, "confidence": 1.0,
+      "primitive": "extrude", "topologyClass": "assembled-solid", "topologyRationale": "A triangular end profile extends through the full depth as one closed rigid roof prism with two slopes and gable caps.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(179, 58, 43, 1)", "secondaryAlbedo": "rgba(135, 42, 32, 1)", "materialClass": "ceramic", "materialClassConfidence": 0.98},
+      "geometryDescriptor": {"topologyIntent": "closed indexed triangular prism plus separate tile relief", "profile2D": {"points": [[-4.3, 0], [4.3, 0], [0, 2.65]], "depth": 7.1}, "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.04, "segments": 1}, "deformationStack": [], "uvStrategy": "slope-local planar", "normalStrategy": "face normals with beveled tile modules"},
+      "parent": "root", "attachment": {"parentId": "root", "parentSocket": "building-eaves", "localStart": [0, 6.08, 0], "localEnd": [0, 8.83, 0], "contactType": "overlap", "overlap": 0.12, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 8.6, "height": 2.65, "depth": 7.1, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 6.08, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "detachable-shell", "pivot": {"mode": "eave-center", "localPosition": [0, 0, 0], "axis": [0, 0, 1], "confidence": 1.0}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "chimney-seat", "localPosition": [1.65, 0.8, -0.8]}, {"id": "ridge", "localPosition": [0, 2.65, 0]}], "collider": {"type": "compound-gable-prism", "offset": [0, 1.32, 0], "scale": [8.6, 2.65, 7.1], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "roof", "seamRefs": ["eaves", "ridge"], "detachableFragments": ["chimney"], "breakImpulse": 12, "debrisMaterial": "roof-material"}},
+      "material": "roof-material", "materialLayers": ["roof-material"], "deformations": [], "joints": [], "seams": ["ridge", "front gable fascia", "rear gable fascia"], "localFeatures": [{"id": "solid-gable-volume", "type": "closed manifold prism", "evidenceRefs": ["ref-main", "ref-front", "ref-side"]}, {"id": "tile-courses", "type": "regular overlapping relief rows", "countIntent": 198, "evidenceRefs": ["ref-main", "ref-side"]}, {"id": "ridge-caps", "type": "thick repeated crest modules", "countIntent": 13, "evidenceRefs": ["ref-main", "ref-front"]}], "surfaceDetail": {"macroRoughness": 0.18, "microRoughness": 0.08, "bumpAmplitude": 0.015, "normalPattern": "tile face subtle clay response", "displacementPattern": "geometric courses", "occlusionPattern": "course overlaps", "edgeWearPattern": "slightly lighter tile rims", "notes": "Regular rows, no random scatter."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": ["paired rotated slab roofs prohibited"], "fidelityTier": "hero"
+    },
+    {
+      "id": "bay-window", "name": "Projecting ground-floor bay", "level": "macro", "role": "facade-assembly", "importance": 0.98, "confidence": 0.99,
+      "primitive": "extrude", "topologyClass": "assembled-solid", "topologyRationale": "The front and three-quarter views show a rigid three-face projection with a wide front and two angled returns.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(126, 77, 42, 1)", "secondaryAlbedo": "rgba(255, 191, 88, 1)", "materialClass": "wood", "materialClassConfidence": 0.97},
+      "geometryDescriptor": {"topologyIntent": "faceted bay footprint extruded vertically", "profile2D": {"points": [[-1.85, 0], [-1.55, 0.6], [1.55, 0.6], [1.85, 0]], "depth": 3.1}, "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.055, "segments": 2}, "deformationStack": [], "uvStrategy": "face-local planar", "normalStrategy": "weighted normals"},
+      "parent": "building-core", "attachment": {"parentId": "building-core", "parentSocket": "front-wall", "localStart": [1.65, -1.55, 3.2], "localEnd": [1.65, 1.55, 4.25], "contactType": "embedded", "embedDepth": 0.12, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 3.7, "height": 3.1, "depth": 1.05, "units": "world", "confidence": 0.99}, "transform": {"position": [1.65, 1.55, 3.55], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-facade-module", "pivot": {"mode": "wall-contact", "localPosition": [0, 0, -0.5], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "flower-box-seat", "localPosition": [0, -0.55, 0.62]}, {"id": "window-glow", "localPosition": [0, 0.15, 0.66]}], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [3.7, 3.1, 1.05], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "bay-window", "seamRefs": ["wall-contact", "glazing"], "detachableFragments": ["bay-glazing", "flower-box"], "breakImpulse": 8, "debrisMaterial": "timber-material"}},
+      "material": "timber-material", "materialLayers": ["timber-material", "glazing-material", "iron-material"], "deformations": [], "joints": [], "seams": ["three pane faces", "wall contact"], "localFeatures": [{"id": "faceted-frame", "type": "wide front with angled returns", "evidenceRefs": ["ref-main", "ref-front"]}, {"id": "diamond-lattice", "type": "raised crossing lead strips on all panes", "evidenceRefs": ["ref-main", "ref-front"]}], "surfaceDetail": {"macroRoughness": 0.15, "microRoughness": 0.05, "bumpAmplitude": 0.006, "normalPattern": "clean timber bands", "displacementPattern": "geometric lattice", "occlusionPattern": "mullion contacts", "edgeWearPattern": "light chamfer crests", "notes": "Amber glass remains visible behind lattice."}, "evidenceRefs": ["ref-main", "ref-front"], "details": ["not a flat glow plane"], "fidelityTier": "hero"
+    },
+    {
+      "id": "chimney", "name": "Stone chimney stack", "level": "macro", "role": "masonry-stack", "importance": 0.9, "confidence": 0.99,
+      "primitive": "box", "topologyClass": "assembled-solid", "topologyRationale": "A discrete vertical masonry stack penetrates the right-rear roof slope and ends in an overhanging cap.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(139, 134, 124, 1)", "secondaryAlbedo": "rgba(105, 101, 94, 1)", "materialClass": "stone", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "rectangular core carrying beveled stone modules", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.06, "segments": 2}, "deformationStack": [], "uvStrategy": "box projection", "normalStrategy": "weighted normals"},
+      "parent": "roof", "attachment": {"parentId": "roof", "parentSocket": "chimney-seat", "localStart": [1.65, 0.55, -0.8], "localEnd": [1.65, 3.65, -0.8], "contactType": "embedded", "embedDepth": 0.45, "gapTolerance": 0.015, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 1.15, "height": 3.25, "depth": 1.1, "units": "world", "confidence": 0.99}, "transform": {"position": [1.65, 7.65, -0.8], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "detachable-masonry", "pivot": {"mode": "roof-seat", "localPosition": [0, -1.62, 0], "axis": [0, 1, 0], "confidence": 0.98}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "smoke", "localPosition": [0, 1.75, 0]}], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1.2, 3.25, 1.15], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "chimney", "seamRefs": ["roof-seat", "mortar-joints"], "detachableFragments": ["chimney-blocks"], "breakImpulse": 9, "debrisMaterial": "stone-material"}},
+      "material": "stone-material", "materialLayers": ["stone-material", "mortar-material"], "deformations": [], "joints": [], "seams": ["roof penetration", "cap joint"], "localFeatures": [{"id": "stone-block-courses", "type": "staggered rounded blocks and recessed mortar", "countIntent": 30, "evidenceRefs": ["ref-main", "ref-side"]}], "surfaceDetail": {"macroRoughness": 0.25, "microRoughness": 0.09, "bumpAmplitude": 0.012, "normalPattern": "subtle stone face variation", "displacementPattern": "beveled blocks", "occlusionPattern": "dark mortar", "edgeWearPattern": "light cap edges", "notes": "Clean stylized blocks."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": ["cap projects beyond stack"], "fidelityTier": "hero"
+    },
+    {
+      "id": "sign-system", "name": "Inn sign macro assembly", "level": "macro", "role": "facade-prop-group", "importance": 0.96, "confidence": 0.99,
+      "primitive": "box", "topologyClass": "material-only", "topologyRationale": "Hidden grouping pivot for the bracket, chains, and swinging sign plate.",
+      "geometryDescriptor": {"topologyIntent": "hidden prop container", "edgeTreatment": {"type": "none", "bevelRadius": 0, "segments": 1}, "deformationStack": [], "uvStrategy": "none", "normalStrategy": "none"},
+      "parent": "building-core", "attachment": {"parentId": "building-core", "parentSocket": "front-left-sign-seat", "localStart": [-3.85, 4.7, 3.15], "localEnd": [-5.65, 4.7, 3.15], "contactType": "embedded", "embedDepth": 0.12, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 0.01, "height": 0.01, "depth": 0.01, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-prop-container", "pivot": {"mode": "wall-seat", "localPosition": [-3.85, 4.7, 3.15], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "bracket-seat", "localPosition": [-3.85, 4.7, 3.15]}], "collider": {"type": "box", "offset": [-4.8, 4.15, 3.7], "scale": [2.4, 2.6, 1.2], "isTrigger": true}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "sign", "seamRefs": ["wall-plate", "chain-links"], "detachableFragments": ["sign-rig", "inn-sign"], "breakImpulse": 5, "debrisMaterial": "burgundy-material"}},
+      "material": "utility-material", "materialLayers": ["utility-material"], "deformations": [], "joints": ["sign swing pivot"], "seams": [], "localFeatures": [{"id": "sign-layout", "type": "left wall bracket and hanging plate", "evidenceRefs": ["ref-main", "ref-front"]}], "surfaceDetail": {"macroRoughness": 0, "microRoughness": 0, "bumpAmplitude": 0, "normalPattern": "none", "displacementPattern": "none", "occlusionPattern": "none", "edgeWearPattern": "none", "notes": "Hidden container."}, "evidenceRefs": ["ref-main", "ref-front"], "details": ["plate face parallel to +Z facade"], "fidelityTier": "runtime"
+    },
+    {
+      "id": "entrance-props", "name": "Entrance prop macro group", "level": "macro", "role": "facade-prop-group", "importance": 0.9, "confidence": 0.99,
+      "primitive": "box", "topologyClass": "material-only", "topologyRationale": "Hidden grouping pivot for door, barrel, and flower-box systems at the front wall.",
+      "geometryDescriptor": {"topologyIntent": "hidden prop container", "edgeTreatment": {"type": "none", "bevelRadius": 0, "segments": 1}, "deformationStack": [], "uvStrategy": "none", "normalStrategy": "none"},
+      "parent": "building-core", "attachment": {"parentId": "building-core", "parentSocket": "front-wall", "localStart": [0, 0, 3.2], "localEnd": [0, 3.2, 4.2], "contactType": "surface-contact", "overlap": 0.05, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 0.01, "height": 0.01, "depth": 0.01, "units": "world", "confidence": 1.0}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-prop-container", "pivot": {"mode": "sole", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 1.0}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "door-seat", "localPosition": [-2.05, 0, 3.3]}, {"id": "barrel-seat", "localPosition": [-3.55, 0, 3.72]}, {"id": "planter-seat", "localPosition": [0.75, 0.9, 4.0]}], "collider": {"type": "compound", "offset": [-0.4, 1.45, 3.75], "scale": [7.2, 3.0, 1.4], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "entrance-props", "seamRefs": ["wall-contact"], "detachableFragments": ["door-system", "barrel", "flower-box"], "breakImpulse": 6, "debrisMaterial": "timber-material"}},
+      "material": "utility-material", "materialLayers": ["utility-material"], "deformations": [], "joints": [], "seams": [], "localFeatures": [{"id": "prop-layout", "type": "door left, barrel farther left, planter before bay", "evidenceRefs": ["ref-main", "ref-front"]}], "surfaceDetail": {"macroRoughness": 0, "microRoughness": 0, "bumpAmplitude": 0, "normalPattern": "none", "displacementPattern": "none", "occlusionPattern": "none", "edgeWearPattern": "none", "notes": "Hidden container."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "runtime"
+    },
+    {
+      "id": "ground-floor-shell", "name": "Ground-floor plaster shell", "level": "meso", "role": "wall-layer", "importance": 0.82, "confidence": 0.98,
+      "primitive": "box", "topologyClass": "assembled-solid", "topologyRationale": "The lower rectangular storey is a discrete plastered wall layer behind door and bay openings.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(240, 230, 207, 1)", "secondaryAlbedo": "rgba(219, 204, 178, 1)", "materialClass": "stone", "materialClassConfidence": 0.95},
+      "geometryDescriptor": {"topologyIntent": "beveled lower wall shell with facade openings represented by covering assemblies", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.04, "segments": 2}, "deformationStack": [], "uvStrategy": "planar", "normalStrategy": "weighted normals"},
+      "parent": "building-core", "attachment": {"parentId": "building-core", "parentSocket": "lower-storey", "localStart": [0, -3.1, 0], "localEnd": [0, -0.05, 0], "contactType": "overlap", "overlap": 0.08, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 7.9, "height": 3.05, "depth": 6.4, "units": "world", "confidence": 0.98}, "transform": {"position": [0, 1.53, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-wall-layer", "pivot": {"mode": "base", "localPosition": [0, -1.53, 0], "axis": [0, 1, 0], "confidence": 0.98}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [7.9, 3.05, 6.4], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "ground-plaster", "seamRefs": ["floor-belt"], "detachableFragments": [], "breakImpulse": 10, "debrisMaterial": "plaster-material"}},
+      "material": "plaster-material", "materialLayers": ["plaster-material"], "deformations": [], "joints": [], "seams": ["floor-belt"], "localFeatures": [{"id": "lower-plaster-bays", "type": "large clean inset panels", "evidenceRefs": ["ref-side"]}], "surfaceDetail": {"macroRoughness": 0.18, "microRoughness": 0.05, "bumpAmplitude": 0.006, "normalPattern": "low-frequency plaster", "displacementPattern": "none", "occlusionPattern": "timber contacts", "edgeWearPattern": "none", "notes": "Clean color blocks."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "upper-storey-shell", "name": "Upper rectangular plaster shell", "level": "meso", "role": "wall-layer", "importance": 0.86, "confidence": 0.99,
+      "primitive": "box", "topologyClass": "assembled-solid", "topologyRationale": "A discrete upper rectangular wall volume carries the visible half-timber network below the gable.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(244, 234, 213, 1)", "secondaryAlbedo": "rgba(226, 214, 190, 1)", "materialClass": "stone", "materialClassConfidence": 0.96},
+      "geometryDescriptor": {"topologyIntent": "upper wall shell behind raised timber", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.035, "segments": 2}, "deformationStack": [], "uvStrategy": "planar", "normalStrategy": "weighted normals"},
+      "parent": "building-core", "attachment": {"parentId": "building-core", "parentSocket": "upper-storey", "localStart": [0, -0.1, 0], "localEnd": [0, 3.1, 0], "contactType": "overlap", "overlap": 0.08, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 7.9, "height": 3.1, "depth": 6.4, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 4.65, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-wall-layer", "pivot": {"mode": "floor-belt", "localPosition": [0, -1.55, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [7.9, 3.1, 6.4], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "upper-plaster", "seamRefs": ["floor-belt", "eave"], "detachableFragments": [], "breakImpulse": 10, "debrisMaterial": "plaster-material"}},
+      "material": "plaster-material", "materialLayers": ["plaster-material"], "deformations": [], "joints": [], "seams": ["floor-belt", "eave"], "localFeatures": [{"id": "upper-plaster-bays", "type": "timber-defined panels", "evidenceRefs": ["ref-front", "ref-side"]}], "surfaceDetail": {"macroRoughness": 0.16, "microRoughness": 0.05, "bumpAmplitude": 0.006, "normalPattern": "low-frequency plaster", "displacementPattern": "none", "occlusionPattern": "frame contacts", "edgeWearPattern": "none", "notes": "Panels remain brighter than timber."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "front-gable-shell", "name": "Front triangular plaster gable", "level": "meso", "role": "gable-layer", "importance": 0.9, "confidence": 0.99,
+      "primitive": "extrude", "topologyClass": "assembled-solid", "topologyRationale": "The front view shows a rigid triangular plaster infill bounded by the roof fascia.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(245, 236, 216, 1)", "secondaryAlbedo": "rgba(225, 211, 187, 1)", "materialClass": "stone", "materialClassConfidence": 0.96},
+      "geometryDescriptor": {"topologyIntent": "shallow triangular front infill", "profile2D": {"points": [[-3.7, 0], [3.7, 0], [0, 2.35]], "depth": 0.18}, "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 1}, "deformationStack": [], "uvStrategy": "front planar", "normalStrategy": "weighted normals"},
+      "parent": "building-core", "attachment": {"parentId": "building-core", "parentSocket": "front-upper-edge", "localStart": [0, 3.0, 3.18], "localEnd": [0, 5.35, 3.18], "contactType": "overlap", "overlap": 0.08, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 7.4, "height": 2.35, "depth": 0.18, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 6.16, 3.18], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-gable-layer", "pivot": {"mode": "gable-base", "localPosition": [0, -1.18, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "triangular-prism", "offset": [0, 1.18, 0], "scale": [7.4, 2.35, 0.18], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "front-gable", "seamRefs": ["gable-fascia"], "detachableFragments": [], "breakImpulse": 8, "debrisMaterial": "plaster-material"}},
+      "material": "plaster-material", "materialLayers": ["plaster-material", "timber-material"], "deformations": [], "joints": [], "seams": ["roof fascia"], "localFeatures": [{"id": "triangular-infill", "type": "bright plaster field behind braces", "evidenceRefs": ["ref-front"]}], "surfaceDetail": {"macroRoughness": 0.15, "microRoughness": 0.05, "bumpAmplitude": 0.005, "normalPattern": "subtle plaster", "displacementPattern": "none", "occlusionPattern": "brace contacts", "edgeWearPattern": "none", "notes": "No painted brace lines."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "upper-gable", "name": "Front gable timber frame", "level": "meso", "role": "timber-structure", "importance": 0.97, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "assembled-solid", "topologyRationale": "The gable is built from countable raised posts, collar beam, rafters, and paired curved braces.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(137, 86, 47, 1)", "secondaryAlbedo": "rgba(91, 54, 30, 1)", "materialClass": "wood", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "network of beveled beams and curved extruded braces", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.045, "segments": 2}, "deformationStack": [{"type": "curve", "targets": "paired braces", "radius": 2.1}], "uvStrategy": "member-local lengthwise", "normalStrategy": "weighted normals"},
+      "parent": "front-gable-shell", "attachment": {"parentId": "front-gable-shell", "parentSocket": "front-face", "localStart": [0, -1.15, 0.08], "localEnd": [0, 1.15, 0.08], "contactType": "surface-contact", "overlap": 0.04, "gapTolerance": 0.008, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 7.5, "height": 2.55, "depth": 0.18, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 0, 0.12], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-timber-structure", "pivot": {"mode": "gable-base", "localPosition": [0, -1.27, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "compound-beams", "offset": [0, 0, 0], "scale": [7.5, 2.55, 0.2], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "front-timber", "seamRefs": ["beam-joints"], "detachableFragments": [], "breakImpulse": 9, "debrisMaterial": "timber-material"}},
+      "material": "timber-material", "materialLayers": ["timber-material"], "deformations": [{"type": "controlled curvature", "targets": ["left brace", "right brace"]}], "joints": ["center post to collar beam", "braces embedded into collar and base"], "seams": ["mortise-like contacts"], "localFeatures": [{"id": "curved-braces", "type": "mirrored inward-curving raised members", "evidenceRefs": ["ref-main", "ref-front"]}, {"id": "rafter-fascia", "type": "thick timber following both gable slopes", "evidenceRefs": ["ref-front"]}], "surfaceDetail": {"macroRoughness": 0.14, "microRoughness": 0.06, "bumpAmplitude": 0.008, "normalPattern": "lengthwise bands", "displacementPattern": "none", "occlusionPattern": "joint contacts", "edgeWearPattern": "lighter chamfer crests", "notes": "Clean stylized timber."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "side-walls", "name": "Front and side half-timber network", "level": "meso", "role": "timber-structure", "importance": 0.97, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "assembled-solid", "topologyRationale": "Countable posts, rails, straight diagonals, belt brackets, and tall curved braces sit proud of the plaster on visible walls.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(132, 82, 45, 1)", "secondaryAlbedo": "rgba(86, 51, 28, 1)", "materialClass": "wood", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "shared beveled beam modules plus extruded curved braces", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.045, "segments": 2}, "deformationStack": [{"type": "curve", "targets": "outer braces", "radius": 2.4}], "uvStrategy": "member-local lengthwise", "normalStrategy": "weighted normals"},
+      "parent": "building-core", "attachment": {"parentId": "building-core", "parentSocket": "wall-faces", "localStart": [0, 0, 3.2], "localEnd": [4.0, 6.1, 0], "contactType": "surface-contact", "overlap": 0.045, "gapTolerance": 0.008, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 8.1, "height": 6.15, "depth": 6.6, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 3.08, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-timber-structure", "pivot": {"mode": "sole", "localPosition": [0, -3.08, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "compound-beams", "offset": [0, 0, 0], "scale": [8.1, 6.15, 6.6], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "timber-frame", "seamRefs": ["post-rail joints"], "detachableFragments": ["floor-belt"], "breakImpulse": 10, "debrisMaterial": "timber-material"}},
+      "material": "timber-material", "materialLayers": ["timber-material"], "deformations": [{"type": "controlled curvature", "targets": ["front outer braces", "side braces"]}], "joints": ["posts embedded into rails", "diagonals overlap posts"], "seams": ["beam contacts"], "localFeatures": [{"id": "half-timber-network", "type": "raised front and side posts rails diagonals and curves", "evidenceRefs": ["ref-main", "ref-front", "ref-side"]}, {"id": "floor-brackets", "type": "short repeated blocks under belt beam", "evidenceRefs": ["ref-main", "ref-side"]}], "surfaceDetail": {"macroRoughness": 0.14, "microRoughness": 0.06, "bumpAmplitude": 0.008, "normalPattern": "lengthwise tonal bands", "displacementPattern": "none", "occlusionPattern": "beam intersections", "edgeWearPattern": "chamfer crests", "notes": "Structural relief is geometry."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "floor-belt", "name": "Deep storey belt and brackets", "level": "meso", "role": "structural-band", "importance": 0.85, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "assembled-solid", "topologyRationale": "A countable set of deep horizontal beams and short block brackets creates the strong storey shadow line.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(123, 74, 40, 1)", "secondaryAlbedo": "rgba(80, 46, 25, 1)", "materialClass": "wood", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "beveled horizontal belt and repeated bracket blocks", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.055, "segments": 2}, "deformationStack": [], "uvStrategy": "lengthwise", "normalStrategy": "weighted normals"},
+      "parent": "side-walls", "attachment": {"parentId": "side-walls", "parentSocket": "storey-seam", "localStart": [-4.05, 0, 0], "localEnd": [4.05, 0, 0], "contactType": "overlap", "overlap": 0.08, "gapTolerance": 0.005, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 8.25, "height": 0.34, "depth": 6.75, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 3.12, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-structural-band", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [8.25, 0.34, 6.75], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "timber-frame", "seamRefs": ["storey-seam"], "detachableFragments": [], "breakImpulse": 9, "debrisMaterial": "timber-material"}},
+      "material": "timber-material", "materialLayers": ["timber-material"], "deformations": [], "joints": [], "seams": ["storey joint"], "localFeatures": [{"id": "continuous-belt", "type": "deep chamfered band", "evidenceRefs": ["ref-side"]}, {"id": "under-brackets", "type": "regular short block supports", "evidenceRefs": ["ref-main", "ref-side"]}], "surfaceDetail": {"macroRoughness": 0.12, "microRoughness": 0.06, "bumpAmplitude": 0.006, "normalPattern": "lengthwise timber", "displacementPattern": "bracket geometry", "occlusionPattern": "underside contact", "edgeWearPattern": "top edge highlight", "notes": "Strong shadow line."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "roof-relief", "name": "Roof tile and ridge-cap system", "level": "meso", "role": "surface-module-system", "importance": 0.98, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "surface-relief", "topologyRationale": "Repeated thin clay modules change the roof surface silhouette while the solid prism remains structural.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(184, 60, 44, 1)", "secondaryAlbedo": "rgba(144, 43, 33, 1)", "materialClass": "ceramic", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "shared beveled tile instances on two planar slopes", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 1}, "deformationStack": [], "uvStrategy": "module-local", "normalStrategy": "weighted tile normals"},
+      "parent": "roof", "attachment": {"parentId": "roof", "parentSocket": "roof-slopes", "localStart": [-4.25, 0.08, -3.45], "localEnd": [4.25, 2.68, 3.45], "contactType": "surface-contact", "overlap": 0.04, "gapTolerance": 0.004, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 8.65, "height": 2.75, "depth": 7.05, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-surface-modules", "pivot": {"mode": "roof-local", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "none", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "roof-tiles", "seamRefs": ["tile-overlaps"], "detachableFragments": [], "breakImpulse": 3, "debrisMaterial": "roof-material"}},
+      "material": "roof-material", "materialLayers": ["roof-material"], "deformations": [], "joints": [], "seams": ["regular row overlaps", "staggered column joints"], "localFeatures": [{"id": "staggered-joints", "type": "alternating half-module offset", "evidenceRefs": ["ref-main", "ref-side"]}], "surfaceDetail": {"macroRoughness": 0.16, "microRoughness": 0.07, "bumpAmplitude": 0.009, "normalPattern": "subtle clay face", "displacementPattern": "module geometry", "occlusionPattern": "overlap shadows", "edgeWearPattern": "lighter lower lips", "notes": "Deterministic regular rows."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "chimney-blocks", "name": "Chimney masonry module grid", "level": "meso", "role": "surface-module-system", "importance": 0.86, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "surface-relief", "topologyRationale": "Countable rounded stone blocks project from a rectangular chimney core with visible mortar gaps.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(145, 140, 130, 1)", "secondaryAlbedo": "rgba(112, 108, 101, 1)", "materialClass": "stone", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "staggered beveled block modules on four faces", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.07, "segments": 2}, "deformationStack": [], "uvStrategy": "module-local", "normalStrategy": "weighted normals"},
+      "parent": "chimney", "attachment": {"parentId": "chimney", "parentSocket": "core-surfaces", "localStart": [0, -1.55, 0], "localEnd": [0, 1.55, 0], "contactType": "surface-contact", "overlap": 0.035, "gapTolerance": 0.005, "evidenceRefs": ["ref-main", "ref-side"]},
+      "dimensions": {"width": 1.25, "height": 3.2, "depth": 1.2, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-masonry-modules", "pivot": {"mode": "core-center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "none", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "chimney-blocks", "seamRefs": ["mortar"], "detachableFragments": [], "breakImpulse": 4, "debrisMaterial": "stone-material"}},
+      "material": "stone-material", "materialLayers": ["stone-material", "mortar-material"], "deformations": [], "joints": [], "seams": ["recessed mortar grid"], "localFeatures": [{"id": "cap-overhang", "type": "two broad top blocks", "evidenceRefs": ["ref-front", "ref-side"]}], "surfaceDetail": {"macroRoughness": 0.24, "microRoughness": 0.09, "bumpAmplitude": 0.01, "normalPattern": "restrained face variation", "displacementPattern": "module relief", "occlusionPattern": "mortar cavities", "edgeWearPattern": "rounded highlights", "notes": "No noisy rock texture."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "upper-windows", "name": "Front and upper shuttered windows", "level": "meso", "role": "window-module-system", "importance": 0.92, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "assembled-solid", "topologyRationale": "Each window is a rigid assembly of frame, sill, glazing, muntins, and two panelled shutters.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(250, 238, 213, 1)", "secondaryAlbedo": "rgba(231, 174, 79, 1)", "materialClass": "wood", "materialClassConfidence": 0.95},
+      "geometryDescriptor": {"topologyIntent": "shared window assemblies with layered solid parts", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 2}, "deformationStack": [], "uvStrategy": "module-local planar", "normalStrategy": "weighted normals"},
+      "parent": "upper-storey-shell", "attachment": {"parentId": "upper-storey-shell", "parentSocket": "window-faces", "localStart": [0, -0.5, 3.14], "localEnd": [4.0, 0.7, 0], "contactType": "embedded", "embedDepth": 0.06, "gapTolerance": 0.006, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 7.3, "height": 1.45, "depth": 6.55, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 4.78, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-window-modules", "pivot": {"mode": "module-centers", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "none", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "windows", "seamRefs": ["frame-contacts"], "detachableFragments": [], "breakImpulse": 4, "debrisMaterial": "shutter-material"}},
+      "material": "shutter-material", "materialLayers": ["shutter-material", "timber-material", "glazing-material"], "deformations": [], "joints": ["shutter hinge intent"], "seams": ["pane divisions", "shutter panels"], "localFeatures": [{"id": "shutters-and-muntins", "type": "paired ivory panel shutters and four-pane timber grid", "evidenceRefs": ["ref-main", "ref-front", "ref-side"]}, {"id": "projecting-sills", "type": "thick timber sill and head", "evidenceRefs": ["ref-side"]}], "surfaceDetail": {"macroRoughness": 0.12, "microRoughness": 0.04, "bumpAmplitude": 0.004, "normalPattern": "painted panel response", "displacementPattern": "recessed panel geometry", "occlusionPattern": "frame corners", "edgeWearPattern": "slightly warm edges", "notes": "Glazing remains warm behind muntins."}, "evidenceRefs": ["ref-main", "ref-front", "ref-side"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "side-window-system", "name": "Side window placement system", "level": "meso", "role": "window-module-layout", "importance": 0.85, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "assembled-solid", "topologyRationale": "The side view fixes two upper modules and one lower module as discrete repeated rigid assemblies.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(247, 235, 211, 1)", "secondaryAlbedo": "rgba(222, 161, 70, 1)", "materialClass": "wood", "materialClassConfidence": 0.94},
+      "geometryDescriptor": {"topologyIntent": "deterministic placement of shared window modules", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 2}, "deformationStack": [], "uvStrategy": "module-local", "normalStrategy": "weighted normals"},
+      "parent": "side-walls", "attachment": {"parentId": "side-walls", "parentSocket": "right-wall", "localStart": [4.02, 1.15, -0.8], "localEnd": [4.02, 5.25, 1.4], "contactType": "embedded", "embedDepth": 0.06, "gapTolerance": 0.006, "evidenceRefs": ["ref-main", "ref-side"]},
+      "dimensions": {"width": 0.18, "height": 4.2, "depth": 4.5, "units": "world", "confidence": 0.99}, "transform": {"position": [4.02, 3.1, 0], "rotation": [0, 1.5708, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-window-layout", "pivot": {"mode": "wall-local", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "none", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "windows", "seamRefs": ["right-wall contacts"], "detachableFragments": [], "breakImpulse": 4, "debrisMaterial": "shutter-material"}},
+      "material": "shutter-material", "materialLayers": ["shutter-material", "timber-material", "glazing-material"], "deformations": [], "joints": [], "seams": ["two upper and one lower modules"], "localFeatures": [{"id": "side-window-rhythm", "type": "two upper windows and one lower rearward window", "evidenceRefs": ["ref-side"]}], "surfaceDetail": {"macroRoughness": 0.12, "microRoughness": 0.04, "bumpAmplitude": 0.004, "normalPattern": "painted wood", "displacementPattern": "panel relief", "occlusionPattern": "frame contacts", "edgeWearPattern": "subtle warm edges", "notes": "Matches side reference count."}, "evidenceRefs": ["ref-main", "ref-side"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "bay-frame", "name": "Bay timber frame", "level": "meso", "role": "bay-structure", "importance": 0.94, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "assembled-solid", "topologyRationale": "Countable header, sill, mullions, corner posts, and angled return rails form the rigid bay skeleton.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(126, 76, 41, 1)", "secondaryAlbedo": "rgba(83, 48, 26, 1)", "materialClass": "wood", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "shared beveled straight members on three faces", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.05, "segments": 2}, "deformationStack": [], "uvStrategy": "member-local", "normalStrategy": "weighted normals"},
+      "parent": "bay-window", "attachment": {"parentId": "bay-window", "parentSocket": "faceted-shell", "localStart": [-1.85, -1.5, 0], "localEnd": [1.85, 1.5, 0.65], "contactType": "overlap", "overlap": 0.055, "gapTolerance": 0.005, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 3.75, "height": 3.1, "depth": 1.1, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-bay-frame", "pivot": {"mode": "wall-contact", "localPosition": [0, 0, -0.5], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "compound-beams", "offset": [0, 0, 0], "scale": [3.75, 3.1, 1.1], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "bay-frame", "seamRefs": ["corner-posts"], "detachableFragments": ["bay-glazing", "bay-lattice"], "breakImpulse": 6, "debrisMaterial": "timber-material"}},
+      "material": "timber-material", "materialLayers": ["timber-material"], "deformations": [], "joints": ["angled return corners"], "seams": ["header and sill joints"], "localFeatures": [{"id": "chamfered-corner-posts", "type": "thick verticals separating three pane faces", "evidenceRefs": ["ref-main"]}], "surfaceDetail": {"macroRoughness": 0.13, "microRoughness": 0.05, "bumpAmplitude": 0.006, "normalPattern": "lengthwise bands", "displacementPattern": "none", "occlusionPattern": "corner contacts", "edgeWearPattern": "light chamfer crests", "notes": "Strong readable frame."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "bay-glazing", "name": "Warm bay glazing", "level": "meso", "role": "glazing-layer", "importance": 0.94, "confidence": 0.99,
+      "primitive": "plane-card", "topologyClass": "conforming-shell", "topologyRationale": "Thin amber panes conform to the three faceted openings and carry no independent thick volume.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(255, 194, 91, 1)", "secondaryAlbedo": "rgba(255, 226, 151, 1)", "materialClass": "glass", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "three thin opaque-emissive pane solids behind lattice", "edgeTreatment": {"type": "none", "bevelRadius": 0.0, "segments": 1}, "deformationStack": [], "uvStrategy": "pane-local planar", "normalStrategy": "face normals"},
+      "parent": "bay-window", "attachment": {"parentId": "bay-window", "parentSocket": "window-glow", "localStart": [-1.48, -1.05, 0.54], "localEnd": [1.48, 1.05, 0.63], "contactType": "embedded", "embedDepth": 0.025, "gapTolerance": 0.003, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 3.0, "height": 2.15, "depth": 0.06, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 0.15, 0.58], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-glazing", "pivot": {"mode": "pane-center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "warm-light", "localPosition": [0, 0, 0.15]}], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [3, 2.15, 0.06], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "glazing", "seamRefs": ["pane-edges"], "detachableFragments": [], "breakImpulse": 2, "debrisMaterial": "glazing-material"}},
+      "material": "glazing-material", "materialLayers": ["glazing-material"], "deformations": [], "joints": [], "seams": ["three pane faces"], "localFeatures": [{"id": "warm-pane-gradient", "type": "amber center with slightly darker edges", "evidenceRefs": ["ref-main", "ref-front"]}], "surfaceDetail": {"macroRoughness": 0.08, "microRoughness": 0.02, "bumpAmplitude": 0.0, "normalPattern": "flat panes", "displacementPattern": "none", "occlusionPattern": "frame edge darkening", "edgeWearPattern": "none", "notes": "Emission does not erase lattice."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "bay-lattice", "name": "Diamond lead lattice", "level": "meso", "role": "surface-module-system", "importance": 0.95, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "surface-relief", "topologyRationale": "Raised thin crossing strips project in front of each pane and visibly catch shadow.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(42, 36, 31, 1)", "secondaryAlbedo": "rgba(73, 63, 55, 1)", "materialClass": "metal", "materialClassConfidence": 0.95},
+      "geometryDescriptor": {"topologyIntent": "shared thin beveled strip segments clipped to three pane faces", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.008, "segments": 1}, "deformationStack": [], "uvStrategy": "none", "normalStrategy": "weighted normals"},
+      "parent": "bay-window", "attachment": {"parentId": "bay-window", "parentSocket": "glazing-fronts", "localStart": [-1.5, -1.05, 0.63], "localEnd": [1.5, 1.05, 0.7], "contactType": "surface-contact", "overlap": 0.012, "gapTolerance": 0.003, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 3.1, "height": 2.2, "depth": 0.05, "units": "world", "confidence": 0.99}, "transform": {"position": [0, 0.15, 0.68], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-lattice", "pivot": {"mode": "pane-center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "none", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "lattice", "seamRefs": ["strip-crossings"], "detachableFragments": [], "breakImpulse": 2, "debrisMaterial": "iron-material"}},
+      "material": "iron-material", "materialLayers": ["iron-material"], "deformations": [], "joints": ["crossing strip contacts"], "seams": [], "localFeatures": [{"id": "regular-diamonds", "type": "even diagonal spacing across front and returns", "evidenceRefs": ["ref-main", "ref-front"]}], "surfaceDetail": {"macroRoughness": 0.05, "microRoughness": 0.03, "bumpAmplitude": 0.0, "normalPattern": "flat metal strips", "displacementPattern": "geometric relief", "occlusionPattern": "crossing contacts", "edgeWearPattern": "slight highlight", "notes": "Regular, not random."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "door-system", "name": "Timber entrance door", "level": "meso", "role": "hinge", "importance": 0.92, "confidence": 0.99,
+      "primitive": "box", "topologyClass": "assembled-solid", "topologyRationale": "The entrance is one rigid rectangular plank leaf within a thick timber frame and carries raised iron hardware.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(113, 65, 34, 1)", "secondaryAlbedo": "rgba(72, 39, 20, 1)", "materialClass": "wood", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "hinged beveled door leaf with plank and hardware relief", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.04, "segments": 2}, "deformationStack": [], "uvStrategy": "vertical planar", "normalStrategy": "weighted normals"},
+      "parent": "entrance-props", "attachment": {"parentId": "entrance-props", "parentSocket": "door-seat", "localStart": [-2.75, 0, 3.27], "localEnd": [-1.35, 2.85, 3.27], "contactType": "hinge", "embedDepth": 0.08, "gapTolerance": 0.008, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 1.55, "height": 2.85, "depth": 0.18, "units": "world", "confidence": 0.99}, "transform": {"position": [-2.05, 1.43, 3.29], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "hinge", "pivot": {"mode": "left-hinge", "localPosition": [-0.72, 0, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": true, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "door-interaction", "localPosition": [0.45, 0, 0.18]}], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1.55, 2.85, 0.18], "isTrigger": false}, "constraints": [{"type": "hinge-angle", "min": -1.25, "max": 0}], "destruction": {"breakable": true, "fractureGroup": "door", "seamRefs": ["hinges", "plank-grooves"], "detachableFragments": [], "breakImpulse": 7, "debrisMaterial": "timber-material"}},
+      "material": "timber-material", "materialLayers": ["timber-material", "iron-material"], "deformations": [], "joints": ["left hinge pivot"], "seams": ["vertical plank grooves"], "localFeatures": [{"id": "planks-and-iron", "type": "six plank grooves, two strap hinges, raised pull", "evidenceRefs": ["ref-main", "ref-front"]}, {"id": "thick-door-frame", "type": "chamfered jambs and lintel", "evidenceRefs": ["ref-front"]}], "surfaceDetail": {"macroRoughness": 0.14, "microRoughness": 0.06, "bumpAmplitude": 0.007, "normalPattern": "vertical timber bands", "displacementPattern": "plank seams and hardware geometry", "occlusionPattern": "jamb and hinge contacts", "edgeWearPattern": "pull-side wear", "notes": "No flat door texture."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "sign-rig", "name": "Iron sign bracket and chains", "level": "meso", "role": "hinge", "importance": 0.94, "confidence": 0.99,
+      "primitive": "instanced-cluster", "topologyClass": "assembled-solid", "topologyRationale": "A rigid wall plate and projecting arm terminate above two repeated articulated chain runs.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(45, 43, 40, 1)", "secondaryAlbedo": "rgba(75, 71, 66, 1)", "materialClass": "metal", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "beveled bracket solids and shared torus chain links", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.02, "segments": 2}, "deformationStack": [], "uvStrategy": "module-local", "normalStrategy": "weighted normals"},
+      "parent": "sign-system", "attachment": {"parentId": "sign-system", "parentSocket": "bracket-seat", "localStart": [-3.85, 4.7, 3.2], "localEnd": [-5.72, 4.7, 3.2], "contactType": "embedded", "embedDepth": 0.14, "gapTolerance": 0.005, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 2.1, "height": 0.95, "depth": 0.3, "units": "world", "confidence": 0.99}, "transform": {"position": [-4.82, 4.62, 3.35], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "hinge", "pivot": {"mode": "wall-plate", "localPosition": [0.97, 0.08, -0.15], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "chain-left", "localPosition": [-0.45, -0.1, 0]}, {"id": "chain-right", "localPosition": [0.45, -0.1, 0]}], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [2.1, 0.95, 0.3], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "sign-rig", "seamRefs": ["wall-plate", "chains"], "detachableFragments": ["inn-sign"], "breakImpulse": 5, "debrisMaterial": "iron-material"}},
+      "material": "iron-material", "materialLayers": ["iron-material"], "deformations": [], "joints": ["chain articulation"], "seams": ["wall plate bolts"], "localFeatures": [{"id": "bracket-and-chains", "type": "projecting spear-tip arm, wall plate, two chain runs", "evidenceRefs": ["ref-main", "ref-front"]}, {"id": "chain-links", "type": "alternating torus orientation", "countIntent": 12, "evidenceRefs": ["ref-front"]}], "surfaceDetail": {"macroRoughness": 0.05, "microRoughness": 0.04, "bumpAmplitude": 0.0, "normalPattern": "clean forged metal", "displacementPattern": "link geometry", "occlusionPattern": "link contacts", "edgeWearPattern": "subtle bracket edge", "notes": "Visible air gaps preserved."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "inn-sign", "name": "Burgundy mug sign plate", "level": "meso", "role": "hinge", "importance": 1.0, "confidence": 0.99,
+      "primitive": "extrude", "topologyClass": "assembled-solid", "topologyRationale": "A thick clipped and scalloped plate has its own volume, raised border, and raised emblem.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(127, 31, 52, 1)", "secondaryAlbedo": "rgba(189, 78, 101, 1)", "materialClass": "wood", "materialClassConfidence": 0.95},
+      "geometryDescriptor": {"topologyIntent": "custom 2D sign profile extruded with raised inset border and emblem", "profile2D": {"points": [[-0.95, -1.05], [-1.05, -0.92], [-1.05, 0.82], [-0.9, 0.98], [0.9, 0.98], [1.05, 0.82], [1.05, -0.92], [0.95, -1.05]], "depth": 0.16}, "edgeTreatment": {"type": "bevel", "bevelRadius": 0.045, "segments": 2}, "deformationStack": [], "uvStrategy": "front planar", "normalStrategy": "weighted normals"},
+      "parent": "sign-rig", "attachment": {"parentId": "sign-rig", "parentSocket": "chain-pair", "localStart": [-0.48, -0.5, 0], "localEnd": [0.48, -2.45, 0], "contactType": "hinge", "overlap": 0.04, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 2.15, "height": 2.25, "depth": 0.18, "units": "world", "confidence": 0.99}, "transform": {"position": [-4.82, 3.15, 3.62], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "hinge", "pivot": {"mode": "top-chain-line", "localPosition": [0, 1.1, 0], "axis": [0, 0, 1], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": true, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "sign-interaction", "localPosition": [0, 0, 0.2]}], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [2.15, 2.25, 0.18], "isTrigger": true}, "constraints": [{"type": "swing-angle", "min": -0.12, "max": 0.12}], "destruction": {"breakable": true, "fractureGroup": "sign-plate", "seamRefs": ["chain-eyes"], "detachableFragments": [], "breakImpulse": 4, "debrisMaterial": "burgundy-material"}},
+      "material": "burgundy-material", "materialLayers": ["burgundy-material", "gold-material", "iron-material"], "deformations": [], "joints": ["top chain pivot"], "seams": ["raised inset border"], "localFeatures": [{"id": "scalloped-border-and-mug", "type": "stepped plate silhouette, gold border, black foaming mug", "evidenceRefs": ["ref-main", "ref-front"]}, {"id": "raised-mug-emblem", "type": "tankard body handle foam lobes and vertical highlight cuts", "evidenceRefs": ["ref-front"]}], "surfaceDetail": {"macroRoughness": 0.12, "microRoughness": 0.04, "bumpAmplitude": 0.002, "normalPattern": "painted wood", "displacementPattern": "raised border and emblem geometry", "occlusionPattern": "border recess", "edgeWearPattern": "slightly lighter scallops", "notes": "No image-texture sign."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "flower-box", "name": "Timber flower box and botanical cluster", "level": "meso", "role": "facade-prop", "importance": 0.91, "confidence": 0.98,
+      "primitive": "instanced-cluster", "topologyClass": "assembled-solid", "topologyRationale": "A rigid timber planter supports countable leaf, blossom, and vine modules that affect the facade silhouette.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(107, 61, 32, 1)", "secondaryAlbedo": "rgba(47, 126, 57, 1)", "materialClass": "wood", "materialClassConfidence": 0.94},
+      "geometryDescriptor": {"topologyIntent": "beveled planter plus deterministic botanical instances and curved vine tubes", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.035, "segments": 2}, "deformationStack": [{"type": "bend", "targets": "trailing vines", "amplitude": 0.3}], "uvStrategy": "module-local", "normalStrategy": "weighted normals"},
+      "parent": "entrance-props", "attachment": {"parentId": "entrance-props", "parentSocket": "planter-seat", "localStart": [0.0, 0.95, 3.8], "localEnd": [1.8, 1.45, 4.0], "contactType": "glued", "overlap": 0.05, "gapTolerance": 0.008, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 2.35, "height": 1.55, "depth": 0.75, "units": "world", "confidence": 0.98}, "transform": {"position": [0.65, 1.02, 3.85], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "detachable-prop", "pivot": {"mode": "planter-back", "localPosition": [0, 0, -0.35], "axis": [0, 1, 0], "confidence": 0.98}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "petal-particles", "localPosition": [0, 0.65, 0]}], "collider": {"type": "box", "offset": [0, 0.2, 0], "scale": [2.35, 0.75, 0.75], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "flower-box", "seamRefs": ["wall-brackets"], "detachableFragments": [], "breakImpulse": 4, "debrisMaterial": "timber-material"}},
+      "material": "timber-material", "materialLayers": ["timber-material", "foliage-material", "flower-material"], "deformations": [{"type": "controlled vine curves", "count": 7}], "joints": ["planter wall contact", "vines rooted in foliage"], "seams": ["planter board joints"], "localFeatures": [{"id": "flowers-and-vines", "type": "layered green leaves, red blossom clusters, trailing stems", "evidenceRefs": ["ref-main", "ref-front"]}, {"id": "planter-boards", "type": "beveled timber box with corner bands", "evidenceRefs": ["ref-main"]}], "surfaceDetail": {"macroRoughness": 0.18, "microRoughness": 0.08, "bumpAmplitude": 0.006, "normalPattern": "clean timber and leaf vein hints", "displacementPattern": "botanical geometry", "occlusionPattern": "dense cluster contacts", "edgeWearPattern": "planter rim", "notes": "Controlled repeats, not random noise."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    },
+    {
+      "id": "barrel", "name": "Entrance barrel", "level": "meso", "role": "facade-prop", "importance": 0.83, "confidence": 0.99,
+      "primitive": "lathe", "topologyClass": "continuous-sculpt", "topologyRationale": "The barrel body is one smoothly bulged revolved volume with discrete stave and hoop relief.",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(126, 76, 39, 1)", "secondaryAlbedo": "rgba(79, 44, 23, 1)", "materialClass": "wood", "materialClassConfidence": 0.99},
+      "geometryDescriptor": {"topologyIntent": "lathed bulged body plus radial stave ridges and torus hoops", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 2}, "deformationStack": [{"type": "revolve", "profile": [[0.36, 0], [0.46, 0.32], [0.49, 0.68], [0.43, 1.04], [0.35, 1.18]]}], "uvStrategy": "cylindrical", "normalStrategy": "smooth lathe normals"},
+      "parent": "entrance-props", "attachment": {"parentId": "entrance-props", "parentSocket": "barrel-seat", "localStart": [-3.55, 0, 3.72], "localEnd": [-3.55, 1.2, 3.72], "contactType": "surface-contact", "overlap": 0.015, "gapTolerance": 0.005, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 1.0, "height": 1.25, "depth": 1.0, "units": "world", "confidence": 0.99}, "transform": {"position": [-3.45, 0.62, 3.72], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "detachable-prop", "pivot": {"mode": "base", "localPosition": [0, -0.62, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": true, "rotate": true, "scale": false, "bend": false, "twist": false, "detach": true, "visibility": true, "materialState": true}, "sockets": [{"id": "barrel-grip", "localPosition": [0, 0.3, 0.48]}], "collider": {"type": "cylinder", "offset": [0, 0, 0], "scale": [0.5, 1.25, 0.5], "isTrigger": false}, "constraints": [], "destruction": {"breakable": true, "fractureGroup": "barrel", "seamRefs": ["hoops", "staves"], "detachableFragments": [], "breakImpulse": 5, "debrisMaterial": "timber-material"}},
+      "material": "timber-material", "materialLayers": ["timber-material", "iron-material"], "deformations": [{"type": "lathe bulge", "maxRadius": 0.49}], "joints": ["hoops compress stave body"], "seams": ["radial stave grooves"], "localFeatures": [{"id": "staves-and-hoops", "type": "twelve raised staves, three dark hoops, recessed top", "evidenceRefs": ["ref-main", "ref-front"]}], "surfaceDetail": {"macroRoughness": 0.16, "microRoughness": 0.07, "bumpAmplitude": 0.007, "normalPattern": "vertical stave bands", "displacementPattern": "stave and hoop geometry", "occlusionPattern": "hoop contacts", "edgeWearPattern": "upper rim", "notes": "Not a plain cylinder."}, "evidenceRefs": ["ref-main", "ref-front"], "details": [], "fidelityTier": "hero"
+    }
+  ],
+  "materials": [
+    {
+      "id": "utility-material", "name": "Invisible runtime container", "type": "standard", "shaderModel": "MeshStandardMaterial", "qualityTier": "utility", "baseColor": "#FFFFFF", "color": "#FFFFFF", "transparent": true, "opacity": 0.0,
+      "albedo": {"dominant": "#FFFFFF", "secondary": ["#FFFFFF"], "samplingNotes": "Non-rendering utility material."}, "colorVariation": {"palette": ["#FFFFFF"], "pattern": "none", "amplitude": 0.001, "heightCorrelation": 0.0}, "roughness": {"base": 1.0, "variation": 0.01, "map": "independent-constant", "localResponse": "none"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "none", "strength": 0.001, "scale": 1.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.001, "contactShadowBias": 0.001, "notes": "Hidden."}, "localOverrides": [{"id": "hidden-container", "region": "all", "opacity": 0.0, "evidenceRefs": ["ref-main"]}], "shaderNotes": ["Utility only; final factory does not render this material."]
+    },
+    {
+      "id": "plaster-material", "name": "Warm ivory plaster", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#F1E7D1", "color": "#F1E7D1", "textureResolution": 1024,
+      "albedo": {"dominant": "#F1E7D1", "secondary": ["#E4D5BB", "#FAF1DF"], "samplingNotes": "Warm bright plaster sampled from front and side bays."}, "colorVariation": {"palette": ["#F1E7D1", "#E4D5BB", "#FAF1DF"], "pattern": "low-frequency bay variation", "amplitude": 0.05, "heightCorrelation": 0.0}, "textureProjection": {"mode": "object-space planar", "repeat": [1.0, 1.0], "anisotropy": 4, "texelDensityIntent": "Broad color blocks, no visible tiling."}, "surfaceFrequencyBands": [{"id": "macro", "frequency": 1.0, "amplitude": 0.05, "role": "bay-to-bay warmth"}, {"id": "meso", "frequency": 5.0, "amplitude": 0.018, "role": "soft plaster undulation"}, {"id": "micro", "frequency": 24.0, "amplitude": 0.004, "role": "restrained grazing-light breakup"}], "roughness": {"base": 0.88, "variation": 0.04, "map": "independent-procedural-plaster-field", "localResponse": "slightly rougher panel centers"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent soft plaster height", "strength": 0.08, "scale": 8.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.22, "contactShadowBias": 0.35, "notes": "Darken only timber contacts and panel recesses."}, "localOverrides": [{"id": "warm-variation", "region": "plaster bays", "colorShift": "alternating warm ivory values", "dirtAmount": 0.03, "cavityBias": 0.55, "evidenceRefs": ["ref-main", "ref-side"]}], "shaderNotes": ["No photoreal speckle; geometry defines panel seams."]
+    },
+    {
+      "id": "timber-material", "name": "Warm stained structural timber", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#86522D", "color": "#86522D", "textureResolution": 1024,
+      "albedo": {"dominant": "#86522D", "secondary": ["#613719", "#A76838"], "samplingNotes": "Warm medium timber with darker joints and lighter bevel crests."}, "colorVariation": {"palette": ["#86522D", "#613719", "#A76838"], "pattern": "restrained lengthwise bands", "amplitude": 0.09, "heightCorrelation": 0.1}, "textureProjection": {"mode": "member-local planar", "repeat": [1.0, 3.0], "anisotropy": 8, "texelDensityIntent": "Bands follow beam length without photo grain."}, "surfaceFrequencyBands": [{"id": "macro", "frequency": 1.5, "amplitude": 0.08, "role": "member value family"}, {"id": "meso", "frequency": 7.0, "amplitude": 0.035, "role": "lengthwise bands"}, {"id": "micro", "frequency": 30.0, "amplitude": 0.006, "role": "highlight breakup"}], "roughness": {"base": 0.66, "variation": 0.08, "map": "independent-lengthwise-roughness", "localResponse": "bevel crests slightly smoother"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent lengthwise band height", "strength": 0.11, "scale": 12.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.28, "contactShadowBias": 0.45, "notes": "Joint and frame contacts only."}, "localOverrides": [{"id": "bevel-and-grain-banding", "region": "all exposed beams and props", "roughness": 0.58, "edgeTreatment": "real chamfer 0.025-0.06", "evidenceRefs": ["ref-main", "ref-side"]}], "shaderNotes": ["Use geometry chamfers; avoid noisy photoreal wood texture."]
+    },
+    {
+      "id": "roof-material", "name": "Red clay roof tile", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#B64534", "color": "#B64534", "textureResolution": 1024,
+      "albedo": {"dominant": "#B64534", "secondary": ["#963728", "#C95642"], "samplingNotes": "Brick-red tiles with restrained per-module variation."}, "colorVariation": {"palette": ["#B64534", "#963728", "#C95642"], "pattern": "deterministic row and module alternation", "amplitude": 0.08, "heightCorrelation": 0.05}, "textureProjection": {"mode": "module-local planar", "repeat": [1.0, 1.0], "anisotropy": 4, "texelDensityIntent": "One stable material per geometric tile."}, "surfaceFrequencyBands": [{"id": "macro", "frequency": 1.0, "amplitude": 0.07, "role": "roof color block"}, {"id": "meso", "frequency": 9.0, "amplitude": 0.04, "role": "row variation and lip shadows"}, {"id": "micro", "frequency": 28.0, "amplitude": 0.006, "role": "subtle clay response"}], "roughness": {"base": 0.74, "variation": 0.07, "map": "independent-clay-roughness", "localResponse": "lower lips slightly smoother"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent subtle clay face", "strength": 0.09, "scale": 15.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.32, "contactShadowBias": 0.4, "notes": "Course overlaps and vertical joints."}, "localOverrides": [{"id": "tile-tone-variation", "region": "alternating tile modules", "colorShift": "restrained red family", "roughness": 0.7, "evidenceRefs": ["ref-main", "ref-side"]}], "shaderNotes": ["All major relief is geometric and regular."]
+    },
+    {
+      "id": "stone-material", "name": "Grey chimney stone", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#908A80", "color": "#908A80", "textureResolution": 1024,
+      "albedo": {"dominant": "#908A80", "secondary": ["#777269", "#AAA398"], "samplingNotes": "Warm-neutral grey block faces."}, "colorVariation": {"palette": ["#908A80", "#777269", "#AAA398"], "pattern": "per-block deterministic value", "amplitude": 0.08, "heightCorrelation": 0.05}, "textureProjection": {"mode": "module-local box", "repeat": [1.0, 1.0], "anisotropy": 4, "texelDensityIntent": "Broad clean block faces."}, "surfaceFrequencyBands": [{"id": "macro", "frequency": 1.0, "amplitude": 0.07, "role": "block family"}, {"id": "meso", "frequency": 6.0, "amplitude": 0.035, "role": "face variation"}, {"id": "micro", "frequency": 22.0, "amplitude": 0.007, "role": "grazing response"}], "roughness": {"base": 0.84, "variation": 0.05, "map": "independent-stone-roughness", "localResponse": "faces matte, rounded crests slightly smoother"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent restrained stone face", "strength": 0.1, "scale": 10.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.38, "contactShadowBias": 0.5, "notes": "Mortar cavities remain dark."}, "localOverrides": [{"id": "cavity-darkening", "region": "mortar-adjacent block edges", "dirtAmount": 0.08, "cavityBias": 0.85, "evidenceRefs": ["ref-main", "ref-side"]}], "shaderNotes": ["Rounded bevels and mortar gaps carry masonry detail."]
+    },
+    {
+      "id": "mortar-material", "name": "Dark recessed mortar", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#5F5B55", "color": "#5F5B55",
+      "albedo": {"dominant": "#5F5B55", "secondary": ["#514E49"], "samplingNotes": "Only visible within chimney joints."}, "colorVariation": {"palette": ["#5F5B55", "#514E49"], "pattern": "constant cavities", "amplitude": 0.02, "heightCorrelation": 0.0}, "roughness": {"base": 0.96, "variation": 0.02, "map": "independent-mortar-roughness", "localResponse": "uniformly matte"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent fine mortar", "strength": 0.06, "scale": 18.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.55, "contactShadowBias": 0.65, "notes": "Joint shadow support."}, "localOverrides": [{"id": "recessed-joints", "region": "chimney seams", "dirtAmount": 0.1, "cavityBias": 1.0, "evidenceRefs": ["ref-side"]}], "shaderNotes": ["Never placed on exposed block faces."]
+    },
+    {
+      "id": "glazing-material", "name": "Warm glowing glazing", "type": "standard", "shaderModel": "MeshStandardMaterial with emissive", "baseColor": "#F5B85A", "color": "#F5B85A", "emissive": "#FFB84A", "emissiveIntensity": 1.15, "textureResolution": 1024,
+      "albedo": {"dominant": "#F5B85A", "secondary": ["#FFD98D", "#D98937"], "samplingNotes": "Warm amber panes with brighter centers."}, "colorVariation": {"palette": ["#F5B85A", "#FFD98D", "#D98937"], "pattern": "radial pane gradient", "amplitude": 0.12, "heightCorrelation": 0.0}, "textureProjection": {"mode": "pane-local planar", "repeat": [1.0, 1.0], "anisotropy": 4, "texelDensityIntent": "One non-tiling gradient per pane."}, "surfaceFrequencyBands": [{"id": "macro", "frequency": 1.0, "amplitude": 0.12, "role": "warm center glow"}, {"id": "meso", "frequency": 4.0, "amplitude": 0.025, "role": "pane separation"}, {"id": "micro", "frequency": 20.0, "amplitude": 0.003, "role": "controlled highlight"}], "roughness": {"base": 0.28, "variation": 0.04, "map": "independent-pane-roughness", "localResponse": "slightly rougher near frames"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "flat glass with minute independent variation", "strength": 0.025, "scale": 16.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.12, "contactShadowBias": 0.25, "notes": "Frame-edge only."}, "localOverrides": [{"id": "warm-emission", "region": "all window panes; bay strongest", "emissive": "#FFB84A", "emissiveIntensity": 1.15, "roughness": 0.28, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]}], "shaderNotes": ["Opaque emissive stylization; preserve lattice contrast."]
+    },
+    {
+      "id": "iron-material", "name": "Dark forged iron", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#2F2C29", "color": "#2F2C29",
+      "albedo": {"dominant": "#2F2C29", "secondary": ["#4B4540"], "samplingNotes": "Near-black bracket, chains, hinges, pull, hoops, and lattice."}, "colorVariation": {"palette": ["#2F2C29", "#4B4540"], "pattern": "edge value shift", "amplitude": 0.05, "heightCorrelation": 0.1}, "roughness": {"base": 0.32, "variation": 0.07, "map": "independent-metal-roughness", "localResponse": "raised edges slightly smoother"}, "metalness": {"base": 0.72, "variation": 0.06}, "normal": {"pattern": "independent forged streak", "strength": 0.07, "scale": 18.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.25, "contactShadowBias": 0.35, "notes": "Hardware contacts."}, "localOverrides": [{"id": "handled-edge-polish", "region": "door pull, chain crowns, hoop crests", "roughness": 0.24, "evidenceRefs": ["ref-main", "ref-front"]}], "shaderNotes": ["Readable dark silhouette without chrome reflections."]
+    },
+    {
+      "id": "shutter-material", "name": "Warm ivory painted shutters", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#E8DDC6", "color": "#E8DDC6",
+      "albedo": {"dominant": "#E8DDC6", "secondary": ["#D0C4AC", "#F4EAD5"], "samplingNotes": "Ivory shutters remain distinct from brighter plaster."}, "colorVariation": {"palette": ["#E8DDC6", "#D0C4AC", "#F4EAD5"], "pattern": "panel value zoning", "amplitude": 0.05, "heightCorrelation": 0.0}, "roughness": {"base": 0.72, "variation": 0.05, "map": "independent-painted-wood-roughness", "localResponse": "bevels slightly smoother"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent painted wood band", "strength": 0.06, "scale": 14.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.24, "contactShadowBias": 0.35, "notes": "Panel insets and frame edges."}, "localOverrides": [{"id": "panel-insets", "region": "shutter centers", "colorShift": "slightly darker inset", "roughness": 0.76, "evidenceRefs": ["ref-main", "ref-side"]}], "shaderNotes": ["Recessed panel is geometry, not painted line."]
+    },
+    {
+      "id": "burgundy-material", "name": "Burgundy painted sign", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#7D2035", "color": "#7D2035",
+      "albedo": {"dominant": "#7D2035", "secondary": ["#A93E59", "#5F1728"], "samplingNotes": "Deep burgundy face with lighter center and darker beveled edge."}, "colorVariation": {"palette": ["#7D2035", "#A93E59", "#5F1728"], "pattern": "soft radial sign-face gradient", "amplitude": 0.08, "heightCorrelation": 0.0}, "roughness": {"base": 0.6, "variation": 0.05, "map": "independent-painted-sign-roughness", "localResponse": "beveled edge slightly smoother"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent painted wood", "strength": 0.05, "scale": 15.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.25, "contactShadowBias": 0.35, "notes": "Border and emblem contacts."}, "localOverrides": [{"id": "gold-border", "region": "raised inset outline", "roughness": 0.25, "clearcoat": 0.1, "evidenceRefs": ["ref-main", "ref-front"]}], "shaderNotes": ["Sign face is solid geometry; no image plane."]
+    },
+    {
+      "id": "gold-material", "name": "Muted gold sign trim", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#C59A4B", "color": "#C59A4B",
+      "albedo": {"dominant": "#C59A4B", "secondary": ["#E0BA69", "#8D6A2E"], "samplingNotes": "Thin warm gold border."}, "colorVariation": {"palette": ["#C59A4B", "#E0BA69", "#8D6A2E"], "pattern": "edge highlight", "amplitude": 0.05, "heightCorrelation": 0.15}, "roughness": {"base": 0.26, "variation": 0.05, "map": "independent-gold-roughness", "localResponse": "crest smoother than recess"}, "metalness": {"base": 0.62, "variation": 0.05}, "normal": {"pattern": "flat trim", "strength": 0.02, "scale": 12.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.18, "contactShadowBias": 0.22, "notes": "Border recess."}, "localOverrides": [{"id": "border-crest", "region": "raised sign border", "roughness": 0.2, "evidenceRefs": ["ref-main", "ref-front"]}], "shaderNotes": ["Bright enough to separate from burgundy without chrome."]
+    },
+    {
+      "id": "foliage-material", "name": "Bright green foliage", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#3E9B4C", "color": "#3E9B4C",
+      "albedo": {"dominant": "#3E9B4C", "secondary": ["#236A35", "#6BBC59"], "samplingNotes": "Layered medium and bright green leaf clumps."}, "colorVariation": {"palette": ["#3E9B4C", "#236A35", "#6BBC59"], "pattern": "deterministic per-leaf alternation", "amplitude": 0.14, "heightCorrelation": 0.08}, "roughness": {"base": 0.7, "variation": 0.08, "map": "independent-leaf-roughness", "localResponse": "upper leaves slightly smoother"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent central vein hint", "strength": 0.08, "scale": 18.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.28, "contactShadowBias": 0.4, "notes": "Cluster contacts."}, "localOverrides": [{"id": "leaf-tone-cluster", "region": "planter foliage and vines", "colorShift": "three controlled greens", "evidenceRefs": ["ref-main", "ref-front"]}], "shaderNotes": ["Leaves are small solid shapes, not alpha photo cards."]
+    },
+    {
+      "id": "flower-material", "name": "Red blossom accents", "type": "standard", "shaderModel": "MeshStandardMaterial", "baseColor": "#D63B3B", "color": "#D63B3B",
+      "albedo": {"dominant": "#D63B3B", "secondary": ["#A91F2C", "#F05B4E"], "samplingNotes": "Warm red flower heads above green foliage."}, "colorVariation": {"palette": ["#D63B3B", "#A91F2C", "#F05B4E"], "pattern": "per-blossom alternation", "amplitude": 0.12, "heightCorrelation": 0.05}, "roughness": {"base": 0.68, "variation": 0.07, "map": "independent-petal-roughness", "localResponse": "petal tips slightly smoother"}, "metalness": {"base": 0.0, "variation": 0.0}, "normal": {"pattern": "independent petal lobe", "strength": 0.07, "scale": 20.0, "space": "tangent"}, "ambientOcclusion": {"cavityStrength": 0.2, "contactShadowBias": 0.3, "notes": "Petal cluster centers."}, "localOverrides": [{"id": "blossom-clusters", "region": "planter crown", "colorShift": "controlled red family", "evidenceRefs": ["ref-main", "ref-front"]}], "shaderNotes": ["Use clustered small spheres/petal lobes."]
+    }
+  ],
+  "repetitionSystems": [
+    {"id": "roof-tile-grid", "componentRef": "roof-relief", "count": 198, "distribution": "nine overlapping rows on each slope with eleven staggered modules per row", "primitive": "shared thin beveled tile boxes"},
+    {"id": "ridge-cap-row", "componentRef": "roof-relief", "count": 13, "distribution": "regular modules along the full roof depth", "primitive": "shared beveled cap blocks"},
+    {"id": "chimney-stone-grid", "componentRef": "chimney-blocks", "count": 30, "distribution": "staggered courses on four faces plus shoulder and cap blocks", "primitive": "shared rounded bevel boxes"},
+    {"id": "half-timber-member-network", "componentRef": "side-walls", "count": 52, "distribution": "front and side posts, rails, diagonals, curved braces, belt members, and brackets", "primitive": "shared beveled boxes plus curve-extruded braces"},
+    {"id": "shuttered-window-modules", "componentRef": "upper-windows", "count": 6, "distribution": "one front upper, two right upper, one right lower, and conservatively repeated rear modules", "primitive": "shared layered window assembly"},
+    {"id": "bay-diamond-lattice-grid", "componentRef": "bay-lattice", "count": 28, "distribution": "paired diagonal strip families clipped to front and angled return panes", "primitive": "shared thin beveled strip segments"},
+    {"id": "sign-chain-links", "componentRef": "sign-rig", "count": 12, "distribution": "two short vertical runs with alternating torus orientation", "primitive": "shared torus links"},
+    {"id": "door-plank-and-hardware-row", "componentRef": "door-system", "count": 12, "distribution": "six plank faces, five grooves, two strap hinges, rivet heads, and one pull", "primitive": "shared beveled planks and iron hardware"},
+    {"id": "barrel-stave-and-hoop-system", "componentRef": "barrel", "count": 16, "distribution": "twelve radial stave ridges, three hoops, and one top rim", "primitive": "lathed body, shared stave ridges, and torus hoops"},
+    {"id": "flower-leaf-cluster", "componentRef": "flower-box", "count": 48, "distribution": "layered deterministic leaf rows with size, rotation, and three-tone variation", "primitive": "shared flattened ellipsoids"},
+    {"id": "red-blossom-cluster", "componentRef": "flower-box", "count": 18, "distribution": "clustered red flower heads across the planter crown", "primitive": "shared petal-lobe sphere clusters"},
+    {"id": "trailing-vine-system", "componentRef": "flower-box", "count": 7, "distribution": "rooted at planter lip and bending downward with controlled offsets", "primitive": "tube curves with attached leaf instances"}
+  ],
+  "buildPasses": [
+    {
+      "id": "blockout",
+      "goal": "Lock y=0 sole, +Z facade, compact two-storey mass, one closed gable prism, chimney, projecting bay, hanging sign, and entrance-prop silhouettes.",
+      "componentRefs": [
+        "root",
+        "building-core",
+        "roof",
+        "chimney",
+        "bay-window",
+        "sign-system",
+        "entrance-props"
+      ],
+      "acceptance": [
+        "Silhouette reads correctly without materials.",
+        "Quality contract has named all required macro feature groups before code generation.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "structural-pass",
+      "goal": "Build plaster storeys, front gable infill, raised front/side timber networks, floor belt, window modules, bay frame, door, and attached sign rig.",
+      "componentRefs": [
+        "ground-floor-shell",
+        "upper-storey-shell",
+        "front-gable-shell",
+        "upper-gable",
+        "side-walls",
+        "floor-belt",
+        "upper-windows",
+        "side-window-system",
+        "bay-frame",
+        "door-system",
+        "sign-rig"
+      ],
+      "acceptance": [
+        "Macro, meso, and repeated structures meet qualityContract.minimumSpecDepth.",
+        "Parent-child relations, joints, seams, sockets, and contact points are explicit.",
+        "Every attached child appendage/connector has parentSocket, localStart/localEnd, contactType, embedDepth or overlap, and gapTolerance.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "form-refinement",
+      "goal": "Add clean chamfers, regular tile rows, ridge caps, stone courses, curved braces, shutters, diamond lattice, sign border and mug, door hardware, barrel staves, flowers, leaves, and vines.",
+      "componentRefs": [
+        "roof-relief",
+        "chimney-blocks",
+        "upper-gable",
+        "side-walls",
+        "upper-windows",
+        "bay-frame",
+        "bay-lattice",
+        "door-system",
+        "inn-sign",
+        "flower-box",
+        "barrel"
+      ],
+      "acceptance": [
+        "Important visible forms are represented in component geometryDescriptor, deformations, localFeatures, or repetitionSystems.",
+        "Endpoint-based child parts are rooted at their attachment sockets and do not visibly float away from parents.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "material-pass",
+      "goal": "Separate warm plaster, stained timber, red clay, grey stone, ivory shutters, amber glazing, burgundy paint, gold trim, black iron, foliage, and flowers under neutral light.",
+      "componentRefs": [
+        "building-core",
+        "roof",
+        "chimney",
+        "upper-gable",
+        "side-walls",
+        "upper-windows",
+        "bay-glazing",
+        "inn-sign",
+        "flower-box",
+        "barrel"
+      ],
+      "acceptance": [
+        "Reference-derived albedo palette records dominant, secondary, and accent colors per visible material.",
+        "Each important material defines roughness variation and at least one normal/bump/displacement response.",
+        "Local material overrides, dirt/wear/stains/moss/chips/scratches or equivalent masks are tied to evidenceRefs.",
+        "Thin, transparent, reflective, wet, or fibrous materials document alpha/transmission/clearcoat/metalness/fiber response when relevant.",
+        "Generated preview uses solid sampled color families plus controlled per-module value variation instead of one undifferentiated color.",
+        "Albedo, roughness, normal intent, and AO remain independent scalar/procedural channels even though crop-derived maps are intentionally omitted.",
+        "Reference PBR extraction remains intentionally disabled because clean stylized color blocks and geometric relief are the accepted target.",
+        "Macro, meso, and micro surface frequency bands are visible at the intended review distance without obvious tiling.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "surface-pass",
+      "goal": "Verify geometric seams, module contacts, chamfers, cavity AO, and restrained value/roughness locality without photoreal micro-noise.",
+      "componentRefs": [
+        "roof-relief",
+        "chimney-blocks",
+        "upper-gable",
+        "side-walls",
+        "upper-windows",
+        "bay-lattice",
+        "door-system",
+        "inn-sign",
+        "flower-box",
+        "barrel"
+      ],
+      "acceptance": [
+        "Every required material feature group has local overrides or surfaceDetail tied to evidenceRefs.",
+        "A grazing-angle close-up proves that normal/height detail breaks highlights naturally and does not read as smooth plastic.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "lighting-pass",
+      "goal": "Keep bright color blocks and warm glazing readable under neutral turntable, grazing, and reference-matched lighting.",
+      "componentRefs": [
+        "root",
+        "building-core",
+        "roof",
+        "chimney",
+        "bay-window",
+        "sign-system",
+        "entrance-props"
+      ],
+      "acceptance": [
+        "lightingFromPhoto identifies key light direction/color/intensity, fill light, rim or environment light, and ambient color.",
+        "Exposure, tone mapping, background color/gradient, shadow softness, and contact shadow behavior are specified.",
+        "Lighting does not hide geometry/material gaps and screenshots can be compared fairly to the reference.",
+        "Neutral, grazing, and reference-matched lighting checks distinguish material errors from lighting errors.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "interaction-pass",
+      "goal": "Expose door hinge, sign swing pivot, window and prop sockets, compound colliders, and semantic destruction groups.",
+      "componentRefs": [
+        "root",
+        "door-system",
+        "sign-rig",
+        "inn-sign",
+        "bay-window",
+        "flower-box",
+        "barrel"
+      ],
+      "acceptance": [
+        "Macro and movable meso components have stable pivot nodes.",
+        "Sockets, collider proxies, and destruction metadata are present for future runtime actions.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "optimization-pass",
+      "goal": "Share repeated tile, stone, window, lattice, chain, barrel, leaf, and flower geometry while preserving identity silhouettes.",
+      "componentRefs": [
+        "root",
+        "roof-relief",
+        "chimney-blocks",
+        "side-walls",
+        "upper-windows",
+        "bay-lattice",
+        "sign-rig",
+        "barrel",
+        "flower-box"
+      ],
+      "acceptance": [
+        "Triangle count, draw calls, instancing, LOD strategy, and FPS target are documented or verified.",
+        "Repeated detail is instanced or simplified where possible without breaking silhouette/material believability."
+      ]
+    }
+  ],
+  "visualEvidence": [],
+  "reviewHistory": [],
+  "lodPlan": [
+    {
+      "tier": "near",
+      "distance": 0,
+      "strategy": "full component tree and material layers"
+    },
+    {
+      "tier": "far",
+      "distance": 30,
+      "strategy": "merge static components and reduce local feature geometry"
+    }
+  ],
+  "performanceBudget": {
+    "qualityPriority": "stylized-reference",
+    "targetTriangles": 180000,
+    "maxDrawCalls": 240,
+    "textureSize": 0,
+    "fpsTarget": 60,
+    "optimizationPolicy": "Share deterministic repeated geometry and materials while preserving the roof prism, tile rhythm, timber network, bay lattice, sign emblem, door hardware, barrel, and botanical silhouette."
+  },
+  "lightingFromPhoto": [
+    "Use a broad warm-neutral key light from upper-front-left at intensity near 2.2 with soft shadows to define roof slopes, chamfers, timber relief, and stone blocks.",
+    "Use a cool-neutral fill light from rear-right near intensity 0.5 so the side timber network, shutter insets, door recess, and bay returns remain readable without flattening contrast.",
+    "Use a subtle rim or hemisphere environment light near intensity 0.7 to separate the red ridge, chimney, sign, and flower silhouettes from a neutral light-gray studio background.",
+    "Use ACES filmic tone mapping at exposure near 1.0 and a soft contact/ground shadow under the wall sole, bay posts, barrel, planter vines, and sign."
+  ],
+  "proceduralStrategy": [
+    "Build the wall shell at y=0 and one closed indexed triangular-prism roof; paired rotated box roof slabs are prohibited.",
+    "Build front and side plaster, raised timber frames, gable infill, belt beam, windows, bay, chimney, door, sign, barrel, and planter as named action-ready groups.",
+    "Use deterministic shared geometry for tile rows, ridge caps, masonry blocks, beam modules, shutters, muntins, lattice strips, chain links, door hardware, barrel parts, leaves, flowers, and vines.",
+    "Use MeshStandardMaterial-compatible solid color families with controlled scalar roughness, emissive amber glazing, geometric seams and chamfers, and no reference-photo projection.",
+    "Expose the door hinge, sign swing pivot, interaction/effect sockets, compound colliders, and material-boundary destruction groups through root.userData.sculptRuntime."
+  ],
+  "animationAnchors": [
+    "root sole pivot supports whole-building translation, rotation, scale, and visibility",
+    "door-system left-edge hinge rotates the timber door through approximately -72 degrees",
+    "inn-sign top-chain pivot supports a restrained wind swing around local Z",
+    "barrel and flower-box pivots permit later pickup/detach effects without rebuilding geometry"
+  ],
+  "destructionAnchors": [
+    "roof eaves, chimney mortar, floor belt, wall timber contacts, bay wall seam, door hinges, sign wall plate, planter brackets, and barrel hoops are explicit break lines",
+    "destruction groups separate plaster, timber frame, roof, chimney, glazing, sign, and entrance props"
+  ],
+  "risks": [
+    "The rear elevation is inferred by repeating visible half-timber and window construction.",
+    "Curved braces need real extruded/tube geometry; straight box substitutes would lose the reference character.",
+    "Warm glazing must stay below the value that washes out black diamond leading.",
+    "High repeated-part counts must use shared geometry or instancing to stay within the runtime budget."
+  ]
+}

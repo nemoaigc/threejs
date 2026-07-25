@@ -1,0 +1,36 @@
+{
+  "technicalSuitability": "pass",
+  "references": [
+    {
+      "path": "public/content/buildings/temple/ref_main.png",
+      "type": "png",
+      "bytes": 789093,
+      "width": 1024,
+      "height": 1024,
+      "aspectRatio": 1.0,
+      "technicalSuitability": "pass",
+      "warnings": []
+    },
+    {
+      "path": "public/content/buildings/temple/ref_front.png",
+      "type": "png",
+      "bytes": 715603,
+      "width": 1024,
+      "height": 1024,
+      "aspectRatio": 1.0,
+      "technicalSuitability": "pass",
+      "warnings": []
+    },
+    {
+      "path": "public/content/buildings/temple/ref_side.png",
+      "type": "png",
+      "bytes": 644413,
+      "width": 1024,
+      "height": 1024,
+      "aspectRatio": 1.0,
+      "technicalSuitability": "pass",
+      "warnings": []
+    }
+  ],
+  "note": "Semantic suitability was inspected separately against the multi-view object validation rubric."
+}
