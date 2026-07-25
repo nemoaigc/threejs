@@ -265,7 +265,7 @@ function hideBoot() {
       window.__scene = scene;
       // Quick proof the new hero factories are live (console + optional HUD).
       console.info('[boot] heroes:', window.__heroes);
-      console.info('[boot] hero mode: solid-v3 solidGableRoof (still hand-built, not img2threejs)');
+      console.info('[boot] heroes', window.__heroes);
       let badge = document.getElementById('hero-badge');
       if (!badge) {
         badge = document.createElement('div');
@@ -280,12 +280,10 @@ function hideBoot() {
           background: 'rgba(20,30,50,0.88)',
           color: '#c8e0ff',
           font: '12px/1.4 ui-monospace, monospace',
-          pointerEvents: 'none',
         });
         document.body.appendChild(badge);
       }
-      const n = window.__heroes?.length ?? 0;
-      badge.innerHTML = `HEROES solid-v3 ×${n}<br/><a href="/hero-preview.html" style="color:#9fd0ff">单独预览模型 →</a>`;
+      badge.innerHTML = `公会 gen-guild-v1<br/><a href="/hero-preview.html" style="color:#9fd0ff">单独预览 →</a>`;
     }
 
     buildGUI();

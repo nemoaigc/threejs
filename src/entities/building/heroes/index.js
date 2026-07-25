@@ -21,8 +21,8 @@ export function createHeroBuilding(type) {
   if (!fn) return null;
   const g = fn();
   if (g) {
-    g.userData.heroMode = 'procedural-3d';
-    g.userData.heroVersion = 'solid-v3-solidRoof';
+    g.userData.heroMode = 'agent-gen';
+    g.userData.heroVersion = type === 'adventurersGuild' ? 'gen-guild-v1' : 'solid-v3';
   }
   return g;
 }

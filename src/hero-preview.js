@@ -1,78 +1,80 @@
 /**
- * Isolated hero model viewer — no town, no character, no post clutter.
- * Open: http://localhost:5173/hero-preview.html
+ * Isolated hero viewer — start with guild only (gen-guild-v1).
+ * http://localhost:5173/hero-preview.html
  */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import {
-  createAdventurersGuildHero,
-  createTempleHero,
-  createInnHero,
-} from './entities/building/heroes/index.js';
+import { createAdventurersGuildHero } from './entities/building/heroes/adventurers_guild.js';
 
-const SKY = 0x8a9aaa;
+const SKY = 0x9aa8b4;
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
 renderer.setClearColor(SKY, 1);
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(SKY, 40, 90);
 
-const camera = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.1, 200);
-camera.position.set(18, 14, 28);
+const camera = new THREE.PerspectiveCamera(38, innerWidth / innerHeight, 0.1, 120);
+// Match product-render 3/4 view
+camera.position.set(14, 11, 18);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
-controls.target.set(0, 5, 0);
+controls.target.set(0, 5.5, 0);
+controls.minDistance = 8;
+controls.maxDistance = 45;
 
-const sun = new THREE.DirectionalLight(0xfff2dc, 2.2);
-sun.position.set(12, 22, 10);
+const sun = new THREE.DirectionalLight(0xfff5e8, 2.4);
+sun.position.set(10, 20, 12);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
-Object.assign(sun.shadow.camera, { left: -30, right: 30, top: 30, bottom: -30, near: 1, far: 80 });
+sun.shadow.radius = 2;
+Object.assign(sun.shadow.camera, { left: -20, right: 20, top: 20, bottom: -20, near: 1, far: 60 });
 scene.add(sun);
-scene.add(new THREE.HemisphereLight(0xc8e0f0, 0x90a870, 0.9));
+scene.add(sun.target);
+scene.add(new THREE.HemisphereLight(0xd0e4f0, 0x8a9078, 0.75));
+const fill = new THREE.DirectionalLight(0xb0c8e0, 0.35);
+fill.position.set(-8, 6, -4);
+scene.add(fill);
 
+// Neutral ground like product studio
 const ground = new THREE.Mesh(
-  new THREE.CircleGeometry(40, 48),
-  new THREE.MeshToonMaterial({ color: 0x6a7a6a }),
+  new THREE.CircleGeometry(28, 64),
+  new THREE.MeshStandardMaterial({ color: 0xb0b0b0, roughness: 0.95, metalness: 0 }),
 );
 ground.rotation.x = -Math.PI / 2;
 ground.receiveShadow = true;
 scene.add(ground);
 
-const grid = new THREE.GridHelper(40, 20, 0x445544, 0x556655);
-grid.position.y = 0.02;
-scene.add(grid);
-
-// Three heroes side by side — inspect roofs / massing without the town
 const guild = createAdventurersGuildHero();
-guild.position.set(-16, 0, 0);
-const temple = createTempleHero();
-temple.position.set(0, 0, 0);
-const inn = createInnHero();
-inn.position.set(14, 0, 0);
+guild.rotation.y = 0.4; // 3/4 like ref
+scene.add(guild);
 
-// Face camera (+Z toward +Z is default; rotate so we see 3/4)
-for (const b of [guild, temple, inn]) {
-  b.rotation.y = 0.35;
-  scene.add(b);
-}
+// Soft ground shadow disk
+const disc = new THREE.Mesh(
+  new THREE.CircleGeometry(9, 32),
+  new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.12 }),
+);
+disc.rotation.x = -Math.PI / 2;
+disc.position.y = 0.02;
+scene.add(disc);
 
 const labels = document.getElementById('labels');
 if (labels) {
   labels.innerHTML = [
-    '<b>公会</b> adventurers_guild · solidGableRoof',
-    '<b>神殿</b> temple · solidGableRoof + cone spire',
-    '<b>旅馆</b> inn · solidGableRoof',
+    '<b>gen-guild-v1</b> · 冒险者公会',
+    '参考：content/buildings/adventurers_guild/ref_main.png',
+    '实心三角屋顶 · 半木构 · 绿牌交叉剑 · 委托板 · 酒桶',
     '',
-    '拖拽旋转 · 滚轮缩放 · 这不是 img2threejs 输出，是手写实心几何 solid-v3',
+    '拖拽旋转 · 滚轮缩放',
+    '<span style="opacity:.75">Agent 按参考雕刻（非双板假屋顶）。后续可换 img2threejs 输出同接口。</span>',
   ].join('<br/>');
 }
 
@@ -82,11 +84,18 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
 });
 
-function tick() {
+// auto slow orbit for presentation
+let t0 = performance.now();
+function tick(now) {
+  const t = (now - t0) * 0.00015;
+  if (!controls.active) {
+    // gentle presentation spin only if user idle — OrbitControls has no .active; skip
+  }
   controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(tick);
 }
-tick();
+requestAnimationFrame(tick);
 
-console.info('[hero-preview] solid-v3 models only — no photo planes, no dual-slab roofs');
+console.info('[hero-preview] gen-guild-v1', guild.userData);
+window.__guild = guild;
