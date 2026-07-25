@@ -4,7 +4,7 @@
  */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { createAdventurersGuildHero } from './entities/building/heroes/adventurers_guild.js';
+import { createAdventurersGuildModel } from './entities/building/heroes/img2threejs-guild/createAdventurersGuildModel.js';
 
 const SKY = 0x9aa8b4;
 
@@ -53,7 +53,7 @@ ground.rotation.x = -Math.PI / 2;
 ground.receiveShadow = true;
 scene.add(ground);
 
-const guild = createAdventurersGuildHero();
+const guild = createAdventurersGuildModel();
 guild.rotation.y = 0.4; // 3/4 like ref
 scene.add(guild);
 
@@ -68,13 +68,16 @@ scene.add(disc);
 
 const labels = document.getElementById('labels');
 if (labels) {
+  const gen = guild.userData?.generator || 'unknown';
+  const meshes = (() => { let n = 0; guild.traverse((o) => { if (o.isMesh) n++; }); return n; })();
   labels.innerHTML = [
-    '<b>gen-guild-v1</b> · 冒险者公会',
-    '参考：content/buildings/adventurers_guild/ref_main.png',
-    '实心三角屋顶 · 半木构 · 绿牌交叉剑 · 委托板 · 酒桶',
+    '<b>img2threejs</b> · 冒险者公会',
+    `generator: <code>${gen}</code>`,
+    `meshes: ${meshes} · sole@y=0 · facade +Z`,
+    '参考：public/content/buildings/adventurers_guild/ref_main.png',
+    '产物：src/entities/building/heroes/img2threejs-guild/',
     '',
     '拖拽旋转 · 滚轮缩放',
-    '<span style="opacity:.75">Agent 按参考雕刻（非双板假屋顶）。后续可换 img2threejs 输出同接口。</span>',
   ].join('<br/>');
 }
 
@@ -97,5 +100,5 @@ function tick(now) {
 }
 requestAnimationFrame(tick);
 
-console.info('[hero-preview] gen-guild-v1', guild.userData);
+console.info('[hero-preview] img2threejs guild', guild.userData);
 window.__guild = guild;

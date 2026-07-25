@@ -1,0 +1,165 @@
+{
+  "sourceImage": "public/content/buildings/adventurers_guild/ref_main.png",
+  "zonesDir": "src/entities/building/heroes/img2threejs-guild/crops",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 10,
+    "details": [
+      {
+        "id": "roof-tile-courses",
+        "kind": "ridge",
+        "description": "Overlapping horizontal terracotta tile courses step down both roof slopes.",
+        "region": {"x": 0.05, "y": 0.12, "width": 0.89, "height": 0.33, "units": "normalized"},
+        "scale": "meso repeated rows",
+        "affects": "roof relief and silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "roof/terracotta-tile-courses"},
+        "evidenceRef": "crops/zone-r0c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "roof-moss",
+        "kind": "stain",
+        "description": "Muted green moss accumulates along tile overlaps and ridge edges.",
+        "region": {"x": 0.12, "y": 0.13, "width": 0.66, "height": 0.26, "units": "normalized"},
+        "scale": "micro-to-meso patches",
+        "affects": "tile albedo and roughness",
+        "mapsTo": {"type": "material.localOverrides", "ref": "roof-tile/moss-in-overlaps"},
+        "evidenceRef": "crops/zone-r0c1.png",
+        "confidence": 0.87
+      },
+      {
+        "id": "chimney-brick-seams",
+        "kind": "seam",
+        "description": "Staggered brick courses and recessed mortar lines break up the chimney.",
+        "region": {"x": 0.31, "y": 0.11, "width": 0.12, "height": 0.18, "units": "normalized"},
+        "scale": "meso courses",
+        "affects": "chimney geometry and cavity shading",
+        "mapsTo": {"type": "component.localFeatures", "ref": "chimney/brick-courses"},
+        "evidenceRef": "crops/zone-r0c1.png",
+        "confidence": 0.94
+      },
+      {
+        "id": "timber-lattice",
+        "kind": "ridge",
+        "description": "Raised vertical posts, rails, and diagonal braces form the upper half-timber lattice.",
+        "region": {"x": 0.09, "y": 0.31, "width": 0.79, "height": 0.29, "units": "normalized"},
+        "scale": "meso structural network",
+        "affects": "facade depth and recognizability",
+        "mapsTo": {"type": "component.localFeatures", "ref": "upper-structure/half-timber-lattice"},
+        "evidenceRef": "crops/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "timber-joinery",
+        "kind": "fastener",
+        "description": "Round wooden pegs and carved square joint blocks punctuate the floor beam and capitals.",
+        "region": {"x": 0.09, "y": 0.51, "width": 0.84, "height": 0.13, "units": "normalized"},
+        "scale": "micro repeated pegs",
+        "affects": "timber joint relief",
+        "mapsTo": {"type": "component.localFeatures", "ref": "arcade/wooden-pegs"},
+        "evidenceRef": "crops/zone-r1c1.png",
+        "confidence": 0.9
+      },
+      {
+        "id": "stone-mortar",
+        "kind": "seam",
+        "description": "Irregular ashlar blocks have recessed dark mortar seams and offset courses.",
+        "region": {"x": 0.08, "y": 0.55, "width": 0.84, "height": 0.28, "units": "normalized"},
+        "scale": "meso repeated masonry",
+        "affects": "stone relief and ambient occlusion",
+        "mapsTo": {"type": "component.localFeatures", "ref": "stone-base/ashlar-mortar-seams"},
+        "evidenceRef": "crops/zone-r2c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "column-capitals",
+        "kind": "bevel",
+        "description": "Heavy arcade posts terminate in stepped carved capitals and stone plinths.",
+        "region": {"x": 0.1, "y": 0.54, "width": 0.57, "height": 0.27, "units": "normalized"},
+        "scale": "meso structural accents",
+        "affects": "column silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "arcade/stepped-capitals"},
+        "evidenceRef": "crops/zone-r2c0.png",
+        "confidence": 0.94
+      },
+      {
+        "id": "sign-frame",
+        "kind": "ridge",
+        "description": "A raised gold inset border sits on the dark green sign face.",
+        "region": {"x": 0.58, "y": 0.31, "width": 0.29, "height": 0.23, "units": "normalized"},
+        "scale": "meso border relief",
+        "affects": "sign face depth",
+        "mapsTo": {"type": "component.localFeatures", "ref": "hanging-sign/gold-frame"},
+        "evidenceRef": "crops/zone-r1c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "crossed-swords",
+        "kind": "decal",
+        "description": "Two gold swords cross diagonally as a thick raised emblem with guards and pommels.",
+        "region": {"x": 0.64, "y": 0.35, "width": 0.19, "height": 0.17, "units": "normalized"},
+        "scale": "meso emblem",
+        "affects": "primary identity mark",
+        "mapsTo": {"type": "component.localFeatures", "ref": "hanging-sign/crossed-swords-relief"},
+        "evidenceRef": "crops/zone-r1c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "sign-chains",
+        "kind": "fastener",
+        "description": "Two short black chain runs suspend the sign from the projecting timber arm.",
+        "region": {"x": 0.57, "y": 0.26, "width": 0.3, "height": 0.11, "units": "normalized"},
+        "scale": "micro repeated links",
+        "affects": "sign attachment and negative space",
+        "mapsTo": {"type": "component.localFeatures", "ref": "sign-rig/black-chain-links"},
+        "evidenceRef": "crops/zone-r0c2.png",
+        "confidence": 0.93
+      },
+      {
+        "id": "quest-notices",
+        "kind": "decal",
+        "description": "Overlapping parchment notices of varied sizes and warm tones are pinned to the freestanding board.",
+        "region": {"x": 0.36, "y": 0.67, "width": 0.22, "height": 0.17, "units": "normalized"},
+        "scale": "micro paper cluster",
+        "affects": "quest board identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "quest-board/paper-notice-cluster"},
+        "evidenceRef": "crops/zone-r2c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "door-ironwork",
+        "kind": "fastener",
+        "description": "Dark strap hinges and a compact handle sit proud of the open plank door.",
+        "region": {"x": 0.58, "y": 0.63, "width": 0.14, "height": 0.2, "units": "normalized"},
+        "scale": "micro hardware",
+        "affects": "door relief",
+        "mapsTo": {"type": "component.localFeatures", "ref": "door/iron-hinges"},
+        "evidenceRef": "crops/zone-r2c1.png",
+        "confidence": 0.88
+      },
+      {
+        "id": "plaster-cracks",
+        "kind": "linework",
+        "description": "Sparse hairline cracks and uneven discoloration interrupt the warm plaster infill.",
+        "region": {"x": 0.4, "y": 0.43, "width": 0.43, "height": 0.31, "units": "normalized"},
+        "scale": "micro linework",
+        "affects": "plaster albedo and normal response",
+        "mapsTo": {"type": "material.localOverrides", "ref": "plaster/hairline-cracks"},
+        "evidenceRef": "crops/zone-r1c1.png",
+        "confidence": 0.8
+      },
+      {
+        "id": "barrel-hoops",
+        "kind": "ridge",
+        "description": "Dark iron hoops wrap vertically oriented staved barrels at the right facade.",
+        "region": {"x": 0.81, "y": 0.68, "width": 0.15, "height": 0.15, "units": "normalized"},
+        "scale": "meso repeated bands",
+        "affects": "barrel silhouette and material contrast",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrel-cluster/iron-hoops"},
+        "evidenceRef": "crops/zone-r2c2.png",
+        "confidence": 0.98
+      }
+    ]
+  },
+  "authoringInstruction": "All generated zone stubs were replaced after direct visual inspection. Every detail maps to a planned spec field."
+}

@@ -1,0 +1,339 @@
+{
+  "targetName": "Adventurers Guild",
+  "sourceImage": "public/content/buildings/adventurers_guild/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "medieval half-timber guildhall",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "architectural hard-surface",
+        "hand-built irregular",
+        "storybook low-poly"
+      ],
+      "structureKind": [
+        "compound object",
+        "layered shell",
+        "repeated modules",
+        "deep parent-child hierarchy"
+      ],
+      "motionPotential": [
+        "static prop",
+        "hinged door",
+        "swinging sign",
+        "detachable facade props",
+        "destructible modules"
+      ],
+      "materialFamilies": [
+        "fieldstone",
+        "aged timber",
+        "lime plaster",
+        "terracotta",
+        "painted wood",
+        "iron",
+        "paper",
+        "rope"
+      ],
+      "notes": "Single three-quarter front reference. Front and visible left side are high confidence; back and hidden right side use conservative symmetry and architectural continuation. The result is a stylized real-time reconstruction, not survey-grade architecture."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 2,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 7,
+        "mesoComponents": 18,
+        "microFeatureGroups": 14,
+        "materialLayers": 10,
+        "repetitionSystems": 7
+      },
+      "reasoning": [
+        "The silhouette combines a broad main gable prism, offset front gable, chimney, deep eaves, hanging sign, quest board, and barrel cluster.",
+        "The facade contains repeated ashlar blocks, timber posts and braces, roof tile courses, sign hardware, paper notices, and barrel staves.",
+        "Distinct stone, timber, plaster, tile, painted sign, gold emblem, iron, paper, and rope responses require separate material treatment.",
+        "A single image leaves the rear elevation uncertain, but the visible construction system supports a conservative volumetric reconstruction."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "The guild identity depends on a true solid roof volume plus layered architecture and facade prop systems; a shallow shell or single mesh cannot preserve the reference."
+    },
+    "unknownsToResolveBeforeImplementation": [],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "note": "Fourteen image-observed detail systems are linked to planned component localFeatures or material localOverrides.",
+      "details": [
+        {
+          "id": "roof-tile-courses",
+          "kind": "ridge",
+          "description": "Overlapping horizontal terracotta tile courses step down both roof slopes.",
+          "region": {"x": 0.05, "y": 0.12, "width": 0.89, "height": 0.33, "units": "normalized"},
+          "scale": "meso repeated rows",
+          "affects": "roof relief and silhouette",
+          "mapsTo": {"type": "component.localFeatures", "ref": "roof/terracotta-tile-courses"},
+          "evidenceRef": "zone-r0c1",
+          "confidence": 0.98
+        },
+        {
+          "id": "roof-moss",
+          "kind": "stain",
+          "description": "Muted green moss accumulates along tile overlaps and ridge edges.",
+          "region": {"x": 0.12, "y": 0.13, "width": 0.66, "height": 0.26, "units": "normalized"},
+          "scale": "micro-to-meso patches",
+          "affects": "tile albedo and roughness",
+          "mapsTo": {"type": "material.localOverrides", "ref": "roof-tile/moss-in-overlaps"},
+          "evidenceRef": "zone-r0c1",
+          "confidence": 0.87
+        },
+        {
+          "id": "chimney-brick-seams",
+          "kind": "seam",
+          "description": "Staggered brick courses and recessed mortar lines break up the chimney.",
+          "region": {"x": 0.31, "y": 0.11, "width": 0.12, "height": 0.18, "units": "normalized"},
+          "scale": "meso courses",
+          "affects": "chimney geometry and cavity shading",
+          "mapsTo": {"type": "component.localFeatures", "ref": "chimney/brick-courses"},
+          "evidenceRef": "zone-r0c1",
+          "confidence": 0.94
+        },
+        {
+          "id": "timber-lattice",
+          "kind": "ridge",
+          "description": "Raised vertical posts, rails, and diagonal braces form the upper half-timber lattice.",
+          "region": {"x": 0.09, "y": 0.31, "width": 0.79, "height": 0.29, "units": "normalized"},
+          "scale": "meso structural network",
+          "affects": "facade depth and recognizability",
+          "mapsTo": {"type": "component.localFeatures", "ref": "upper-structure/half-timber-lattice"},
+          "evidenceRef": "zone-r1c1",
+          "confidence": 0.99
+        },
+        {
+          "id": "timber-joinery",
+          "kind": "fastener",
+          "description": "Round wooden pegs and carved square joint blocks punctuate the floor beam and capitals.",
+          "region": {"x": 0.09, "y": 0.51, "width": 0.84, "height": 0.13, "units": "normalized"},
+          "scale": "micro repeated pegs",
+          "affects": "timber joint relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "arcade/wooden-pegs"},
+          "evidenceRef": "zone-r1c1",
+          "confidence": 0.9
+        },
+        {
+          "id": "stone-mortar",
+          "kind": "seam",
+          "description": "Irregular ashlar blocks have recessed dark mortar seams and offset courses.",
+          "region": {"x": 0.08, "y": 0.55, "width": 0.84, "height": 0.28, "units": "normalized"},
+          "scale": "meso repeated masonry",
+          "affects": "stone relief and ambient occlusion",
+          "mapsTo": {"type": "component.localFeatures", "ref": "stone-base/ashlar-mortar-seams"},
+          "evidenceRef": "zone-r2c1",
+          "confidence": 0.98
+        },
+        {
+          "id": "column-capitals",
+          "kind": "bevel",
+          "description": "Heavy arcade posts terminate in stepped carved capitals and stone plinths.",
+          "region": {"x": 0.1, "y": 0.54, "width": 0.57, "height": 0.27, "units": "normalized"},
+          "scale": "meso structural accents",
+          "affects": "column silhouette",
+          "mapsTo": {"type": "component.localFeatures", "ref": "arcade/stepped-capitals"},
+          "evidenceRef": "zone-r2c0",
+          "confidence": 0.94
+        },
+        {
+          "id": "sign-frame",
+          "kind": "ridge",
+          "description": "A raised gold inset border sits on the dark green sign face.",
+          "region": {"x": 0.58, "y": 0.31, "width": 0.29, "height": 0.23, "units": "normalized"},
+          "scale": "meso border relief",
+          "affects": "sign face depth",
+          "mapsTo": {"type": "component.localFeatures", "ref": "hanging-sign/gold-frame"},
+          "evidenceRef": "zone-r1c2",
+          "confidence": 0.99
+        },
+        {
+          "id": "crossed-swords",
+          "kind": "decal",
+          "description": "Two gold swords cross diagonally as a thick raised emblem with guards and pommels.",
+          "region": {"x": 0.64, "y": 0.35, "width": 0.19, "height": 0.17, "units": "normalized"},
+          "scale": "meso emblem",
+          "affects": "primary identity mark",
+          "mapsTo": {"type": "component.localFeatures", "ref": "hanging-sign/crossed-swords-relief"},
+          "evidenceRef": "zone-r1c2",
+          "confidence": 0.99
+        },
+        {
+          "id": "sign-chains",
+          "kind": "fastener",
+          "description": "Two short black chain runs suspend the sign from the projecting timber arm.",
+          "region": {"x": 0.57, "y": 0.26, "width": 0.3, "height": 0.11, "units": "normalized"},
+          "scale": "micro repeated links",
+          "affects": "sign attachment and negative space",
+          "mapsTo": {"type": "component.localFeatures", "ref": "sign-rig/black-chain-links"},
+          "evidenceRef": "zone-r0c2",
+          "confidence": 0.93
+        },
+        {
+          "id": "quest-notices",
+          "kind": "decal",
+          "description": "Overlapping parchment notices of varied sizes and warm tones are pinned to the freestanding board.",
+          "region": {"x": 0.36, "y": 0.67, "width": 0.22, "height": 0.17, "units": "normalized"},
+          "scale": "micro paper cluster",
+          "affects": "quest board identity",
+          "mapsTo": {"type": "component.localFeatures", "ref": "quest-board/paper-notice-cluster"},
+          "evidenceRef": "zone-r2c1",
+          "confidence": 0.98
+        },
+        {
+          "id": "door-ironwork",
+          "kind": "fastener",
+          "description": "Dark strap hinges and a compact handle sit proud of the open plank door.",
+          "region": {"x": 0.58, "y": 0.63, "width": 0.14, "height": 0.2, "units": "normalized"},
+          "scale": "micro hardware",
+          "affects": "door relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "door/iron-hinges"},
+          "evidenceRef": "zone-r2c1",
+          "confidence": 0.88
+        },
+        {
+          "id": "plaster-cracks",
+          "kind": "linework",
+          "description": "Sparse hairline cracks and uneven discoloration interrupt the warm plaster infill.",
+          "region": {"x": 0.4, "y": 0.43, "width": 0.43, "height": 0.31, "units": "normalized"},
+          "scale": "micro linework",
+          "affects": "plaster albedo and normal response",
+          "mapsTo": {"type": "material.localOverrides", "ref": "plaster/hairline-cracks"},
+          "evidenceRef": "zone-r1c1",
+          "confidence": 0.8
+        },
+        {
+          "id": "barrel-hoops",
+          "kind": "ridge",
+          "description": "Dark iron hoops wrap vertically oriented staved barrels at the right facade.",
+          "region": {"x": 0.81, "y": 0.68, "width": 0.15, "height": 0.15, "units": "normalized"},
+          "scale": "meso repeated bands",
+          "affects": "barrel silhouette and material contrast",
+          "mapsTo": {"type": "component.localFeatures", "ref": "barrel-cluster/iron-hoops"},
+          "evidenceRef": "zone-r2c2",
+          "confidence": 0.98
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {"headUnit": 0.0, "torso": 0.0, "legs": 0.0, "shoulderWidth": 0.0, "hipWidth": 0.0},
+      "pose": {"type": "not-applicable", "jointAngles": {}},
+      "faceLandmarks": {"eyeLine": 0.0, "eyeSpacing": 0.0, "noseBase": 0.0, "mouthLine": 0.0, "hairline": 0.0},
+      "features": [],
+      "confidence": 1.0,
+      "note": "Not applicable to an architectural object."
+    },
+    "sourceImage": "public/content/buildings/adventurers_guild/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The model reads immediately as the reference guildhall from a three-quarter facade view and remains volumetric from side and rear-quarter views.",
+      "The main roof and front gable are closed triangular-prism or extruded solids with real gable end faces; two rotated box slabs are a blocking failure.",
+      "Stone base, timber arcade, half-timber upper storey, terracotta roof, green sword sign, quest board, and barrels are separate named systems with visible depth.",
+      "The sole rests at y=0, the facade faces +Z, and createAdventurersGuildModel returns an action-ready THREE.Group."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 5,
+      "mesoComponents": 12,
+      "microFeatureGroups": 8,
+      "materialLayers": 8,
+      "repetitionSystems": 5,
+      "reviewViewpoints": 3
+    },
+    "featureGroups": [
+      {
+        "id": "architectural-silhouette",
+        "name": "Solid gable roof and guildhall massing",
+        "required": true,
+        "qualityCriteria": [
+          "Closed roof geometry carries both slopes, gable end faces, eaves, ridge, and chimney interruption.",
+          "The upper storey overhangs the stone base and secondary front gable interrupts the roofline."
+        ],
+        "evidenceRefs": ["full-object", "roof-zone"],
+        "failureModes": ["dual-slab fake roof", "flat facade billboard", "missing gable end volume"]
+      },
+      {
+        "id": "timber-stone-structure",
+        "name": "Stone base, arcade, and half-timber hierarchy",
+        "required": true,
+        "qualityCriteria": [
+          "Ground-storey stone courses, heavy timber posts, stepped capitals, floor beam, and upper braces remain separate depth layers."
+        ],
+        "evidenceRefs": ["full-object", "facade-zone"],
+        "failureModes": ["painted-on timber grid", "missing arcade depth", "uniform stone wall"]
+      },
+      {
+        "id": "guild-sign-system",
+        "name": "Green hanging sign with crossed swords",
+        "required": true,
+        "qualityCriteria": [
+          "Projecting timber arm, two chain runs, framed green panel, and two raised gold swords are readable at hero-preview distance."
+        ],
+        "evidenceRefs": ["sign-zone"],
+        "failureModes": ["missing sign", "flat unframed rectangle", "generic crossed sticks without guards or points"]
+      },
+      {
+        "id": "facade-props",
+        "name": "Quest board, open door, and barrel cluster",
+        "required": true,
+        "qualityCriteria": [
+          "Quest board has legs, frame, varied overlapping papers and pins; right facade has at least three staved barrels with dark hoops."
+        ],
+        "evidenceRefs": ["lower-facade-zone"],
+        "failureModes": ["props omitted", "papers merge into one patch", "barrels read as plain cylinders"]
+      },
+      {
+        "id": "aged-material-separation",
+        "name": "Aged material and relief separation",
+        "required": true,
+        "qualityCriteria": [
+          "Stone, timber, plaster, tile, paint, metal, and paper use distinct albedo and roughness ranges.",
+          "Tile overlaps, mortar seams, joinery pegs, moss, cracks, and edge wear remain visible under grazing light."
+        ],
+        "evidenceRefs": ["full-object", "roof-zone", "facade-zone"],
+        "failureModes": ["flat plastic material", "uniform roughness", "all detail painted without relief"]
+      }
+    ],
+    "visualDeltaChecks": [
+      "roof volume and roofline silhouette delta",
+      "ground-to-upper-storey proportion and jetty overhang delta",
+      "half-timber bay spacing and brace-angle delta",
+      "sign size, suspension, green/gold palette, and sword-emblem delta",
+      "quest-board and barrel-cluster placement delta",
+      "stone/timber/plaster/tile material separation delta"
+    ],
+    "antiShallowSpecRules": [
+      "Reject any roof made from two rotated boxes or planes.",
+      "Reject any solution that collapses the facade into a billboard.",
+      "Reject code generation until all fourteen inventory details map to actual component features or material overrides.",
+      "Reject a structural pass without real depth between wall, arcade, sign, quest board, and props.",
+      "Reject a material pass that reuses albedo as roughness, normal, height, or ambient occlusion.",
+      "Reject a factory whose sole is not y=0 or whose facade is not +Z."
+    ]
+  },
+  "authoringInstruction": "Assessment completed by direct visual inspection on 2026-07-25. Author the object-specific component tree, topology classifications, materials, repetition systems, and feature review targets from this contract."
+}

@@ -283,7 +283,7 @@ function hideBoot() {
         });
         document.body.appendChild(badge);
       }
-      badge.innerHTML = `公会 gen-guild-v1<br/><a href="/hero-preview.html" style="color:#9fd0ff">单独预览 →</a>`;
+      badge.innerHTML = `公会 img2threejs<br/><a href="/hero-preview.html" style="color:#9fd0ff">单独预览 →</a>`;
     }
 
     buildGUI();
