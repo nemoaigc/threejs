@@ -1,0 +1,14 @@
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "side",
+    "sourcePath": "/Users/nemo/Documents/personal/mushoku-tensei/public/content/buildings/inn/ref_side.png",
+    "width": 1024,
+    "height": 1024,
+    "foregroundCoverage": 0.3992,
+    "largestComponentFraction": 1.0,
+    "pHash": 16729069161453104242,
+    "duplicateOfHash": null
+  }
+}

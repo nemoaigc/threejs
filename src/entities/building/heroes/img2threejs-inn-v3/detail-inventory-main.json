@@ -1,0 +1,291 @@
+{
+  "sourceImage": "public/content/buildings/inn/ref_main.png",
+  "zonesDir": "src/entities/building/heroes/img2threejs-inn-v3/crops-main",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 14,
+    "details": [
+      {
+        "id": "main-r0c0-roof-edge",
+        "kind": "contour",
+        "description": "The front gable eave is the visible end of one deep closed roof prism, with a thick fascia and no open gap between slopes.",
+        "region": {
+          "x": 0.0,
+          "y": 0.0,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "macro",
+        "affects": "gable silhouette and roof volume",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "roof/solid-gable-volume"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r0c0.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "main-r0c1-tile-courses",
+        "kind": "ridge",
+        "description": "Regular overlapping red-clay tile courses step down both slopes with a distinct capped ridge.",
+        "region": {
+          "x": 0.3333,
+          "y": 0.0,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "meso repeated rows",
+        "affects": "roof relief and color rhythm",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "roof/tile-courses"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r0c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-r0c2-chimney-blocks",
+        "kind": "seam",
+        "description": "The chimney is built from staggered rounded rectangular grey blocks with recessed dark joints and a projecting two-block cap.",
+        "region": {
+          "x": 0.6667,
+          "y": 0.0,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "meso repeated masonry",
+        "affects": "chimney relief and silhouette",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "chimney/stone-block-courses"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r0c2.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-r1c0-sign-rig",
+        "kind": "fastener",
+        "description": "A black wall plate and horizontal iron arm carry two short chain runs that suspend the sign below the bracket.",
+        "region": {
+          "x": 0.0,
+          "y": 0.3333,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "meso attachment with micro links",
+        "affects": "sign negative space and attachment credibility",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "sign-rig/bracket-and-chains"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r1c0.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "main-r1c0-sign-face",
+        "kind": "ridge",
+        "description": "The burgundy sign uses a stepped scalloped silhouette, thin gold inset border, and raised black foaming-mug emblem.",
+        "region": {
+          "x": 0.08,
+          "y": 0.45,
+          "width": 0.2,
+          "height": 0.24,
+          "units": "normalized"
+        },
+        "scale": "meso emblem relief",
+        "affects": "primary inn identity",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "inn-sign/scalloped-border-and-mug"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r1c0.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-r1c1-upper-timber",
+        "kind": "ridge",
+        "description": "Raised timber posts, rails, and curved diagonal braces divide warm plaster into distinct upper-storey bays and the front gable.",
+        "region": {
+          "x": 0.3333,
+          "y": 0.3333,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "meso structural network",
+        "affects": "half-timber facade depth",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "upper-gable/curved-braces"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-r1c2-upper-windows",
+        "kind": "seam",
+        "description": "Warm four-pane upper windows sit inside timber frames with paired thick ivory shutters and projecting sills.",
+        "region": {
+          "x": 0.6667,
+          "y": 0.3333,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "meso repeated window modules",
+        "affects": "upper-storey facade rhythm",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "upper-windows/shutters-and-muntins"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r1c2.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "main-r2c0-door-barrel",
+        "kind": "groove",
+        "description": "The timber door has vertical plank seams, a heavy frame, black strap hinges, and a dark pull; a bulged staved barrel with three hoops touches its left jamb.",
+        "region": {
+          "x": 0.0,
+          "y": 0.6667,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "meso props with micro hardware",
+        "affects": "entrance readability",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "door-system/planks-and-iron"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r2c0.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-r2c0-barrel-relief",
+        "kind": "ridge",
+        "description": "Alternating wooden staves bulge between three dark metal hoops and a recessed top rim.",
+        "region": {
+          "x": 0.22,
+          "y": 0.72,
+          "width": 0.13,
+          "height": 0.2,
+          "units": "normalized"
+        },
+        "scale": "micro repeated barrel parts",
+        "affects": "barrel surface and silhouette",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "barrel/staves-and-hoops"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r2c0.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "main-r2c1-bay-glazing",
+        "kind": "linework",
+        "description": "The projecting three-face bay window has thick chamfered timber mullions and black diamond lattice over warm amber glazing.",
+        "region": {
+          "x": 0.3333,
+          "y": 0.6667,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "meso faceted bay with repeated micro lattice",
+        "affects": "ground-floor light and projection",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "bay-window/diamond-lattice"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r2c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-r2c1-flower-box",
+        "kind": "ridge",
+        "description": "A timber planter projects beside the door with clustered red blossoms, layered green leaves, and trailing vines below the sill.",
+        "region": {
+          "x": 0.38,
+          "y": 0.72,
+          "width": 0.22,
+          "height": 0.25,
+          "units": "normalized"
+        },
+        "scale": "meso planter with micro botanical cluster",
+        "affects": "warm facade accent and silhouette",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "flower-box/flowers-and-vines"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r2c1.png",
+        "confidence": 0.97
+      },
+      {
+        "id": "main-r2c2-plaster-and-bevels",
+        "kind": "bevel",
+        "description": "Clean chamfers catch broad highlights on timber and masonry while plaster remains softly varied rather than noisy.",
+        "region": {
+          "x": 0.6667,
+          "y": 0.6667,
+          "width": 0.3333,
+          "height": 0.3333,
+          "units": "normalized"
+        },
+        "scale": "micro edge treatment",
+        "affects": "clean stylized material separation",
+        "mapsTo": {
+          "type": "material.localOverrides",
+          "ref": "timber-material/bevel-and-grain-banding"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r2c2.png",
+        "confidence": 0.92
+      },
+      {
+        "id": "main-v3-panelized-plaster",
+        "kind": "seam",
+        "description": "Warm cream plaster is panelized into discrete inset bays between proud timber posts and rails on every visible storey \u2014 never a continuous blank slab.",
+        "region": {
+          "x": 0.25,
+          "y": 0.35,
+          "width": 0.5,
+          "height": 0.4,
+          "units": "normalized"
+        },
+        "scale": "meso repeated panels",
+        "affects": "half-timber readability and wall depth",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "building-core/inset-plaster-panels"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "main-v3-rear-gable-parity",
+        "kind": "contour",
+        "description": "Rear gable end mirrors front half-timber network (rafters, king post, curved braces) so orbit never reveals a blank plaster triangle.",
+        "region": {
+          "x": 0.05,
+          "y": 0.05,
+          "width": 0.25,
+          "height": 0.3,
+          "units": "normalized"
+        },
+        "scale": "macro gable",
+        "affects": "rear identity and multi-angle fidelity",
+        "mapsTo": {
+          "type": "component.localFeatures",
+          "ref": "upper-gable/full-timber-network"
+        },
+        "evidenceRef": "src/entities/building/heroes/img2threejs-inn-v3/crops-main/zone-r0c0.png",
+        "confidence": 0.95
+      }
+    ]
+  },
+  "authoringInstruction": "Filled by direct visual inspection; every detail maps to a planned component localFeature or material localOverride."
+}

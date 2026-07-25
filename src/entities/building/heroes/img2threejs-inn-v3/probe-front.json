@@ -1,0 +1,11 @@
+{
+  "path": "/Users/nemo/Documents/personal/mushoku-tensei/public/content/buildings/inn/ref_front.png",
+  "type": "png",
+  "bytes": 840899,
+  "width": 1024,
+  "height": 1024,
+  "aspectRatio": 1.0,
+  "technicalSuitability": "pass",
+  "warnings": [],
+  "note": "This is only technical image probing. Semantic object suitability still requires visual inspection."
+}

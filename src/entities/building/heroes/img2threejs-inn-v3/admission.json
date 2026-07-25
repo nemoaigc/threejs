@@ -1,0 +1,54 @@
+{
+  "allAdmitted": true,
+  "references": [
+    {
+      "viewpoint": "three-quarter-front",
+      "path": "public/content/buildings/inn/ref_main.png",
+      "admitted": true,
+      "provenance": {
+        "viewpoint": "three-quarter-front",
+        "sourcePath": "/Users/nemo/Documents/personal/mushoku-tensei/public/content/buildings/inn/ref_main.png",
+        "width": 1024,
+        "height": 1024,
+        "foregroundCoverage": 0.4861,
+        "largestComponentFraction": 1.0,
+        "pHash": 16836022329818008590,
+        "duplicateOfHash": null
+      },
+      "reasons": []
+    },
+    {
+      "viewpoint": "front",
+      "path": "public/content/buildings/inn/ref_front.png",
+      "admitted": true,
+      "provenance": {
+        "viewpoint": "front",
+        "sourcePath": "/Users/nemo/Documents/personal/mushoku-tensei/public/content/buildings/inn/ref_front.png",
+        "width": 1024,
+        "height": 1024,
+        "foregroundCoverage": 0.3864,
+        "largestComponentFraction": 1.0,
+        "pHash": 16827351667003922716,
+        "duplicateOfHash": null
+      },
+      "reasons": []
+    },
+    {
+      "viewpoint": "side",
+      "path": "public/content/buildings/inn/ref_side.png",
+      "admitted": true,
+      "provenance": {
+        "viewpoint": "side",
+        "sourcePath": "/Users/nemo/Documents/personal/mushoku-tensei/public/content/buildings/inn/ref_side.png",
+        "width": 1024,
+        "height": 1024,
+        "foregroundCoverage": 0.3992,
+        "largestComponentFraction": 1.0,
+        "pHash": 16729069161453104242,
+        "duplicateOfHash": null
+      },
+      "reasons": []
+    }
+  ],
+  "duplicateCheck": "against-main-pHash"
+}
