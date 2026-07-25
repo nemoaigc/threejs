@@ -73,37 +73,36 @@ export function createDirtRoadTile(length, width) {
   const g = new THREE.Group();
   g.name = 'dirt_road_tile';
 
-  // Shoulder: wider strip, grass→dirt texture (edges show as soft transition)
+  // Shoulder: wider strip — grass→dirt must peek past road bed
   const shoulderMap = t.shoulder.clone();
   shoulderMap.wrapS = shoulderMap.wrapT = THREE.RepeatWrapping;
-  // U along length, V across full shoulder width
   shoulderMap.repeat.set(Math.max(1, length / Math.max(width, 1)), 1);
   shoulderMap.needsUpdate = true;
 
   const shoulderMat = groundMat(0xc8d498, shoulderMap);
   const shoulder = new THREE.Mesh(
-    new THREE.BoxGeometry(length, 0.018, width * 1.3),
+    new THREE.BoxGeometry(length, 0.02, width * 1.55),
     shoulderMat,
   );
-  shoulder.position.y = 0.009;
+  shoulder.position.y = 0.008;
   shoulder.receiveShadow = true;
   shoulder.castShadow = false;
   shoulder.name = 'shoulder';
   g.add(shoulder);
 
-  // Packed dirt bed — ruts run along U (length)
+  // Packed dirt bed — ruts along U (length)
   const roadMap = t.road.clone();
   roadMap.wrapS = roadMap.wrapT = THREE.RepeatWrapping;
-  // U along length (tile), V across width once
-  roadMap.repeat.set(Math.max(1, length / Math.max(width, 1)), 1);
+  // One V span across width; tile U along length so dual ruts stay continuous
+  roadMap.repeat.set(Math.max(1.2, length / Math.max(width * 0.85, 1)), 1);
   roadMap.needsUpdate = true;
 
-  const roadMat = groundMat(0xdccdb0, roadMap);
+  const roadMat = groundMat(0xe0d0b0, roadMap);
   const road = new THREE.Mesh(
-    new THREE.BoxGeometry(length * 0.98, 0.028, width),
+    new THREE.BoxGeometry(length * 0.98, 0.036, width),
     roadMat,
   );
-  road.position.y = 0.018;
+  road.position.y = 0.022;
   road.receiveShadow = true;
   road.castShadow = false;
   road.name = 'dirt_road';
@@ -120,16 +119,17 @@ export function createCobblePlaza(size = 14) {
 
   const cobbleMap = t.cobble.clone();
   cobbleMap.wrapS = cobbleMap.wrapT = THREE.RepeatWrapping;
-  const tiles = Math.max(2, Math.round(size / 4.5));
+  // Larger stone scale so joints read from hero camera
+  const tiles = Math.max(2, Math.round(size / 5.5));
   cobbleMap.repeat.set(tiles, tiles);
   cobbleMap.needsUpdate = true;
 
-  const cobbleMat = groundMat(0xe0d4c0, cobbleMap);
+  const cobbleMat = groundMat(0xe8dcc8, cobbleMap);
   const pad = new THREE.Mesh(
-    new THREE.BoxGeometry(size, 0.045, size),
+    new THREE.BoxGeometry(size, 0.055, size),
     cobbleMat,
   );
-  pad.position.y = 0.024;
+  pad.position.y = 0.03;
   pad.receiveShadow = true;
   pad.castShadow = false;
   pad.name = 'cobble_pad';

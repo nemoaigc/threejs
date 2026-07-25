@@ -101,24 +101,24 @@ function loadUrl(url, { repeat = 1 } = {}) {
  */
 function makeGrassFallback(size = 512) {
   const { c, ctx } = canvas(size);
-  // Base: bright spring green (exposure-friendly, not muddy)
-  ctx.fillStyle = '#8fd86e';
+  // Base: bright spring green — distinct from road sand
+  ctx.fillStyle = '#7ed45a';
   ctx.fillRect(0, 0, size, size);
 
-  // Large soft color patches (yellow-green / cooler green / slightly deeper)
+  // Large soft color patches — higher alpha so meadow reads under cel
   const patchPalettes = [
     [155, 220, 100], // lime
-    [110, 190, 95], // cooler
+    [90, 175, 85], // cooler
     [140, 210, 80], // chartreuse
-    [100, 175, 90], // soft teal-green
-    [170, 225, 110], // sunlit
+    [85, 160, 80], // soft deep green
+    [180, 230, 120], // sunlit
   ];
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 34; i++) {
     const x = hash2(i, 11) * size;
     const y = hash2(i, 17) * size;
-    const r = size * (0.12 + hash2(i, 23) * 0.22);
+    const r = size * (0.14 + hash2(i, 23) * 0.24);
     const pal = patchPalettes[i % patchPalettes.length];
-    const a = 0.1 + hash2(i, 29) * 0.14;
+    const a = 0.18 + hash2(i, 29) * 0.2;
     const grd = ctx.createRadialGradient(x, y, 0, x, y, r);
     grd.addColorStop(0, `rgba(${pal[0]},${pal[1]},${pal[2]},${a})`);
     grd.addColorStop(0.55, `rgba(${pal[0]},${pal[1]},${pal[2]},${a * 0.4})`);
@@ -196,38 +196,38 @@ function makeDirtFallback(size = 512) {
     ctx.fillRect(x - r, y - r, r * 2, r * 2);
   }
 
-  // Dual soft wagon ruts — bands constant along U (x), vary across V (y)
-  // Soft darkened packed earth, no hard trench.
+  // Dual wagon ruts — MUST read at a glance (previous alpha was too low to notice)
+  // Bands constant along U (x), across V (y)
   const rutCenters = [0.34, 0.66];
   for (const vc of rutCenters) {
     const cy = vc * size;
-    const half = size * 0.055;
-    const g = ctx.createLinearGradient(0, cy - half * 1.8, 0, cy + half * 1.8);
-    g.addColorStop(0, 'rgba(140,120,90,0)');
-    g.addColorStop(0.3, 'rgba(145,125,95,0.12)');
-    g.addColorStop(0.5, 'rgba(130,110,82,0.2)');
-    g.addColorStop(0.7, 'rgba(145,125,95,0.12)');
-    g.addColorStop(1, 'rgba(140,120,90,0)');
+    const half = size * 0.07;
+    const g = ctx.createLinearGradient(0, cy - half * 2.0, 0, cy + half * 2.0);
+    g.addColorStop(0, 'rgba(100,80,55,0)');
+    g.addColorStop(0.28, 'rgba(120,95,65,0.28)');
+    g.addColorStop(0.5, 'rgba(95,75,50,0.42)');
+    g.addColorStop(0.72, 'rgba(120,95,65,0.28)');
+    g.addColorStop(1, 'rgba(100,80,55,0)');
     ctx.fillStyle = g;
-    ctx.fillRect(0, cy - half * 1.8, size, half * 3.6);
+    ctx.fillRect(0, cy - half * 2.0, size, half * 4.0);
 
-    // Slightly lighter dust ridge on inner edge of each rut
-    const ridge = ctx.createLinearGradient(0, cy - half * 0.35, 0, cy + half * 0.35);
-    ridge.addColorStop(0, 'rgba(210,195,155,0)');
-    ridge.addColorStop(0.5, 'rgba(215,200,160,0.1)');
-    ridge.addColorStop(1, 'rgba(210,195,155,0)');
+    // Inner dust ridge (lighter)
+    const ridge = ctx.createLinearGradient(0, cy - half * 0.4, 0, cy + half * 0.4);
+    ridge.addColorStop(0, 'rgba(230,210,165,0)');
+    ridge.addColorStop(0.5, 'rgba(235,215,170,0.22)');
+    ridge.addColorStop(1, 'rgba(230,210,165,0)');
     ctx.fillStyle = ridge;
-    ctx.fillRect(0, cy - half * 0.35, size, half * 0.7);
+    ctx.fillRect(0, cy - half * 0.4, size, half * 0.8);
   }
 
-  // Centre strip between ruts slightly lighter (packed crown)
+  // Centre crown between ruts (lighter packed strip)
   {
     const cy = size * 0.5;
-    const half = size * 0.08;
+    const half = size * 0.09;
     const g = ctx.createLinearGradient(0, cy - half, 0, cy + half);
-    g.addColorStop(0, 'rgba(220,205,170,0)');
-    g.addColorStop(0.5, 'rgba(225,210,175,0.1)');
-    g.addColorStop(1, 'rgba(220,205,170,0)');
+    g.addColorStop(0, 'rgba(230,215,175,0)');
+    g.addColorStop(0.5, 'rgba(235,220,180,0.2)');
+    g.addColorStop(1, 'rgba(230,215,175,0)');
     ctx.fillStyle = g;
     ctx.fillRect(0, cy - half, size, half * 2);
   }
@@ -341,76 +341,73 @@ function makeShoulderFallback(size = 256) {
 function makeCobbleFallback(size = 512) {
   const { c, ctx } = canvas(size);
 
-  // Mortar / joint base — warm pale
-  ctx.fillStyle = '#c4b8a4';
+  // Darker mortar so joints read clearly from hero camera
+  ctx.fillStyle = '#9a8c78';
   ctx.fillRect(0, 0, size, size);
 
-  const cols = 8;
-  const rows = 8;
+  const cols = 7;
+  const rows = 7;
   const cellW = size / cols;
   const cellH = size / rows;
-  const gap = 2.2;
+  const gap = 4.5;
 
   for (let row = 0; row < rows; row++) {
-    const xOff = (row % 2) * (cellW * 0.5);
+    const xOff = (row % 2) * (cellW * 0.45);
     for (let col = -1; col < cols + 1; col++) {
       const bx = col * cellW + xOff;
       const by = row * cellH;
-      // irregular inset
-      const insetL = gap + hash2(col, row) * 1.4;
-      const insetT = gap + hash2(col + 3, row + 1) * 1.2;
-      const insetR = gap + hash2(col + 5, row + 2) * 1.4;
-      const insetB = gap + hash2(col + 7, row + 3) * 1.2;
+      const insetL = gap * 0.45 + hash2(col, row) * 1.6;
+      const insetT = gap * 0.45 + hash2(col + 3, row + 1) * 1.4;
+      const insetR = gap * 0.45 + hash2(col + 5, row + 2) * 1.6;
+      const insetB = gap * 0.45 + hash2(col + 7, row + 3) * 1.4;
       const x = bx + insetL;
       const y = by + insetT;
       const w = cellW - insetL - insetR;
       const h = cellH - insetT - insetB;
-      if (w < 4 || h < 4) continue;
+      if (w < 6 || h < 6) continue;
 
-      // Pale warm stone — slight per-tile hue shift (cream / blush / cool)
-      const base = 205 + Math.floor(hash2(col * 3, row * 5) * 28);
+      const base = 210 + Math.floor(hash2(col * 3, row * 5) * 30);
       const warm = hash2(col, row + 20);
-      let rr = base + 8;
+      let rr = base + 12;
       let gg = base;
-      let bb = base - 18;
+      let bb = base - 22;
       if (warm > 0.7) {
-        rr += 10;
+        rr += 12;
         gg += 2;
-        bb -= 8;
+        bb -= 10;
       } else if (warm < 0.25) {
-        rr -= 6;
-        gg += 2;
-        bb += 6;
+        rr -= 4;
+        gg += 4;
+        bb += 8;
       }
-      // soft fill
       ctx.fillStyle = `rgb(${rr},${gg},${bb})`;
-      roundRect(ctx, x, y, w, h, 2.5);
+      roundRect(ctx, x, y, w, h, 3.5);
       ctx.fill();
 
-      // top-left soft highlight (stylized, not PBR)
-      const hl = ctx.createLinearGradient(x, y, x + w * 0.6, y + h * 0.6);
-      hl.addColorStop(0, 'rgba(255,252,245,0.22)');
-      hl.addColorStop(0.5, 'rgba(255,252,245,0.04)');
+      const hl = ctx.createLinearGradient(x, y, x + w * 0.55, y + h * 0.55);
+      hl.addColorStop(0, 'rgba(255,252,245,0.35)');
+      hl.addColorStop(0.55, 'rgba(255,252,245,0.06)');
       hl.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = hl;
-      roundRect(ctx, x, y, w, h, 2.5);
+      roundRect(ctx, x, y, w, h, 3.5);
       ctx.fill();
 
-      // bottom-right soft shade
-      const sh = ctx.createLinearGradient(x + w, y + h, x + w * 0.3, y + h * 0.3);
-      sh.addColorStop(0, 'rgba(120,105,85,0.12)');
+      const sh = ctx.createLinearGradient(x + w, y + h, x + w * 0.25, y + h * 0.25);
+      sh.addColorStop(0, 'rgba(90,75,55,0.22)');
       sh.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = sh;
-      roundRect(ctx, x, y, w, h, 2.5);
+      roundRect(ctx, x, y, w, h, 3.5);
       ctx.fill();
+
+      // joint outline so cel posterize doesn't erase edges
+      ctx.strokeStyle = 'rgba(70,60,48,0.35)';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, x, y, w, h, 3.5);
+      ctx.stroke();
     }
   }
 
-  // Very light overall warmth wash
-  ctx.fillStyle = 'rgba(240,220,180,0.05)';
-  ctx.fillRect(0, 0, size, size);
-
-  return configure(new THREE.CanvasTexture(c), { repeat: 3 });
+  return configure(new THREE.CanvasTexture(c), { repeat: 2.5 });
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -479,13 +476,13 @@ function makeApronFallback(size = 256) {
 let _cache = null;
 
 /**
- * Load authored tiles if present; otherwise craft canvas fallbacks.
- * Call once at world boot before mesh factories.
+ * Build ground textures once at world boot.
+ * Default: **procedural Three.js craft** for all five layers (what you actually see).
+ * Set `window.__ENV_USE_AUTHORED_TILES = true` before boot to prefer public/content/env/*.png.
  */
 export async function ensureEnvTextures() {
   if (_cache) return _cache;
 
-  // Procedural craft is always available (singleton). Authored tiles override grass/road.
   const procedural = {
     grass: safeMake(makeGrassFallback, 'grass'),
     road: safeMake(makeDirtFallback, 'road'),
@@ -495,8 +492,17 @@ export async function ensureEnvTextures() {
   };
 
   if (typeof window === 'undefined' && !hasCanvas()) {
-    // Node smoke / SSR: keep null maps out of mesh path; return stubs only if needed.
     _cache = procedural;
+    return _cache;
+  }
+
+  const preferAuthored =
+    typeof window !== 'undefined' && window.__ENV_USE_AUTHORED_TILES === true;
+
+  if (!preferAuthored) {
+    // Always use craft — authored grass/road PNGs were hiding all ground upgrades
+    _cache = procedural;
+    console.info('[env] ground textures: procedural craft (grass/road/cobble/shoulder/apron)');
     return _cache;
   }
 
@@ -505,8 +511,6 @@ export async function ensureEnvTextures() {
     loadUrl(`${BASE}content/env/road_dirt.png`, { repeat: 1 }).catch(() => procedural.road),
   ]);
 
-  // Prefer procedural craft for cobble/shoulder/apron (author packs often muddy);
-  // grass/road use authored when load succeeds.
   _cache = {
     grass,
     road,
@@ -514,6 +518,7 @@ export async function ensureEnvTextures() {
     shoulder: procedural.shoulder,
     apron: procedural.apron,
   };
+  console.info('[env] ground textures: authored grass/road + procedural cobble/shoulder/apron');
   return _cache;
 }
 
