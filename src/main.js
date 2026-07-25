@@ -8,10 +8,9 @@ import { bootstrapContent } from './content/bootstrap.js';
 import { createFromCatalog } from './content/registry.js';
 import { PLAYER_ID } from './content/catalog.js';
 
-// Flat authoring stage — fix character + town assets first, wrap to sphere later.
-// Warm countryside afternoon — fog matches horizon grass haze, not pure sky blue
-const SKY = 0x6eb6de;
-const FOG = 0xb8d4c0;
+// Flat authoring stage — bright, soft countryside (avoid muddy dark grade).
+const SKY = 0x8ec8ec;
+const FOG = 0xc8e4f4;
 
 const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
@@ -20,13 +19,13 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.toneMappingExposure = 1.22;
 renderer.setClearColor(SKY, 1);
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-// Soft ground-colored haze — distance reads as meadow, not grey wash
-scene.fog = new THREE.Fog(FOG, 48, 115);
+// Fog matches sky so distance stays airy, not green-grey sludge
+scene.fog = new THREE.Fog(FOG, 60, 140);
 
 // Hero shot (spec §3): stand south of plaza looking north toward temple axis.
 const HERO_SPAWN = { x: 0, y: 0, z: 8 };
@@ -45,14 +44,14 @@ controls.maxPolarAngle = Math.PI * 0.48;
 // Frame the three heroes: guild (−11,−10) · temple (2,−16) · inn (11,−9)
 controls.target.set(0, 4.5, -10);
 
-// Stronger key, softer fill — punchier cel bands (X consensus: lighting is half the look)
-const sun = new THREE.DirectionalLight(0xfff2dc, 2.45);
-sun.position.set(14, 22, 11);
+// Soft daylight — lift shadows, avoid crushing midtones
+const sun = new THREE.DirectionalLight(0xfff6e8, 2.1);
+sun.position.set(14, 24, 11);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 sun.shadow.bias = -0.00025;
 sun.shadow.normalBias = 0.04;
-sun.shadow.radius = 2.5;
+sun.shadow.radius = 3.5;
 Object.assign(sun.shadow.camera, {
   left: -48,
   right: 48,
@@ -64,12 +63,11 @@ Object.assign(sun.shadow.camera, {
 scene.add(sun);
 scene.add(sun.target);
 
-scene.add(new THREE.HemisphereLight(0xc8e8ff, 0x9ec868, 0.85));
-const fill = new THREE.DirectionalLight(0xb8d8ff, 0.38);
-fill.position.set(-8, 6, -4);
+scene.add(new THREE.HemisphereLight(0xe8f4ff, 0xc8e0a8, 1.05));
+const fill = new THREE.DirectionalLight(0xd0e8ff, 0.55);
+fill.position.set(-8, 8, -4);
 scene.add(fill);
-// Cool rim from behind — cheap Fresnel substitute for buildings/character
-const rim = new THREE.DirectionalLight(0xa8d4ff, 0.35);
+const rim = new THREE.DirectionalLight(0xc8e0ff, 0.28);
 rim.position.set(-4, 8, -14);
 scene.add(rim);
 
@@ -107,14 +105,14 @@ let postfx;
 let targetYaw = 0;
 const params = {
   walkSpeed: 3.4,
-  thickness: 1.25,
-  depthBias: 0.0015,
-  normalBias: 0.48,
-  sketch: 0.08,
-  outlineColor: '#1e1824',
-  levels: 9,
-  dither: 0.08,
-  saturation: 1.22,
+  thickness: 0.9,
+  depthBias: 0.0022,
+  normalBias: 0.62,
+  sketch: 0.0,
+  outlineColor: '#3a3548',
+  levels: 14,
+  dither: 0.03,
+  saturation: 1.05,
 };
 
 function move(dt) {
@@ -240,11 +238,11 @@ function hideBoot() {
     postfx.posterize.uLevels.value = params.levels;
     postfx.posterize.uDither.value = params.dither;
     postfx.posterize.uSaturation.value = params.saturation;
-    // Anti washed-out: low lift, higher contrast (matches GradeShader defaults)
-    if (postfx.posterize.uLift) postfx.posterize.uLift.value = 0.02;
-    if (postfx.posterize.uContrast) postfx.posterize.uContrast.value = 1.12;
-    if (postfx.posterize.uWarm) postfx.posterize.uWarm.value = 0.04;
-    if (postfx.posterize.uVignette) postfx.posterize.uVignette.value = 0.18;
+    // Soft bright grade — no muddy contrast / vignette crush
+    if (postfx.posterize.uLift) postfx.posterize.uLift.value = 0.05;
+    if (postfx.posterize.uContrast) postfx.posterize.uContrast.value = 0.98;
+    if (postfx.posterize.uWarm) postfx.posterize.uWarm.value = 0.02;
+    if (postfx.posterize.uVignette) postfx.posterize.uVignette.value = 0.04;
 
     if (boot) boot.textContent = '加载角色…';
     try {

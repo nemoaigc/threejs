@@ -5,9 +5,10 @@ import * as THREE from 'three';
 
 function makeGradientMap(steps = 5) {
   const data = new Uint8Array(steps);
+  // Soft bright cel — shadow floor lifted (was ~72, read as muddy ink)
   for (let i = 0; i < steps; i++) {
     const t = i / (steps - 1);
-    data[i] = Math.round(72 + t * t * 40 + t * 138);
+    data[i] = Math.round(120 + t * 130);
   }
   const tex = new THREE.DataTexture(data, steps, 1, THREE.RedFormat);
   tex.minFilter = tex.magFilter = THREE.NearestFilter;

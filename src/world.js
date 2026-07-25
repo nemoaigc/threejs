@@ -10,7 +10,6 @@ import {
   createRoadTile as createEnvRoadTile,
   createPlazaPad as createEnvPlazaPad,
   createBuildingDirtApron,
-  scatterGroundMicroDetail,
 } from './environment/flat-env.js';
 
 // Toy planet large enough for a readable town pad, small enough to read as a globe.
@@ -52,11 +51,11 @@ export function terrainHeight(dir) {
 
 function makeGradientMap(steps = 5) {
   const data = new Uint8Array(steps);
-  // Punchier cel: darker shadow band + bright key — avoids washed flat grey
-  // steps≈5 → ~72, 118, 168, 214, 250
+  // Soft cel bands — lift shadow floor so materials stay bright (not muddy)
+  // steps≈5 → ~120, 150, 185, 220, 250
   for (let i = 0; i < steps; i++) {
     const t = i / (steps - 1);
-    data[i] = Math.round(72 + t * t * 40 + t * 138);
+    data[i] = Math.round(120 + t * 130);
   }
   const tex = new THREE.DataTexture(data, steps, 1, THREE.RedFormat);
   tex.minFilter = tex.magFilter = THREE.NearestFilter;
@@ -1993,12 +1992,11 @@ export async function createFlatWorld(scene, loader) {
   const group = new THREE.Group();
   scene.add(group);
 
-  // Dirt aprons under main landmarks — grass doesn't read as plastic lawn under feet of buildings
+  // Soft light aprons under the three heroes only (not plaza)
   for (const [x, z, r] of [
-    [-11, -10, 9],
-    [2, -16, 11],
-    [11, -9, 7],
-    [0, 0, 10],
+    [-11, -10, 7],
+    [2, -16, 8],
+    [11, -9, 5.5],
   ]) {
     const apron = createBuildingDirtApron(r);
     apron.position.set(x, 0, z);
@@ -2007,14 +2005,9 @@ export async function createFlatWorld(scene, loader) {
 
   const assets = await loadTownAssets();
   const plant = makePlant(group, 'flat');
-  // Roads + landmarks from the same table (segmented tiles, sole@y=0).
+  // Sparse layout: plaza + 3 heroes + trees (no box-junk props)
   populateFromLayout(plant, MUSHOKU_SLICE_P0, assets, {
     maxR: MUSHOKU_SLICE_P0.meta.playableHalfExtent + 8,
-  });
-
-  // Roadside grass tufts + pebbles — ground micro-read, not empty lawn
-  scatterGroundMicroDetail(group, {
-    half: MUSHOKU_SLICE_P0.meta.playableHalfExtent ?? 32,
   });
 
   return {

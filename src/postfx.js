@@ -53,11 +53,11 @@ const OutlineShader = {
     uResolution: { value: new THREE.Vector2() },
     uNear: { value: 0.1 },
     uFar: { value: 100 },
-    uThickness: { value: 1.15 },
-    uDepthBias: { value: 0.0018 },
-    uNormalBias: { value: 0.55 },
-    uSketch: { value: 0.15 },
-    uOutlineColor: { value: new THREE.Color(0x2a2430) },
+    uThickness: { value: 0.9 },
+    uDepthBias: { value: 0.0022 },
+    uNormalBias: { value: 0.62 },
+    uSketch: { value: 0.0 },
+    uOutlineColor: { value: new THREE.Color(0x3a3548) },
   },
   vertexShader: /* glsl */ `
     varying vec2 vUv;
@@ -106,24 +106,24 @@ const OutlineShader = {
       // thinner lines in the distance
       edge *= 1.0 - smoothstep(0.45, 0.92, dC) * 0.4;
 
-      // darker ink for anime-street silhouette punch
-      vec3 ink = mix(uOutlineColor, base.rgb * vec3(0.22, 0.2, 0.26), 0.08);
-      gl_FragColor = vec4(mix(base.rgb, ink, edge), base.a);
+      // soft ink — blend toward mid-dark, not pure black
+      vec3 ink = mix(uOutlineColor, base.rgb * 0.55, 0.35);
+      gl_FragColor = vec4(mix(base.rgb, ink, edge * 0.85), base.a);
     }`,
 };
 
-// Cel grade: punchier contrast + saturation, light warm village bias, soft posterize
+// Soft cel grade: bright midtones, light posterize, almost no vignette
 const GradeShader = {
   uniforms: {
     tDiffuse: { value: null },
-    uLevels: { value: 9.0 },
-    uDither: { value: 0.08 },
-    uSaturation: { value: 1.22 },
+    uLevels: { value: 14.0 },
+    uDither: { value: 0.03 },
+    uSaturation: { value: 1.05 },
     uGrain: { value: 0.0 },
-    uLift: { value: 0.02 },
-    uContrast: { value: 1.12 },
-    uWarm: { value: 0.04 },
-    uVignette: { value: 0.18 },
+    uLift: { value: 0.05 },
+    uContrast: { value: 0.98 },
+    uWarm: { value: 0.02 },
+    uVignette: { value: 0.04 },
   },
   vertexShader: OutlineShader.vertexShader,
   fragmentShader: /* glsl */ `
@@ -157,25 +157,24 @@ const GradeShader = {
       float d = (bayer4(gl_FragCoord.xy) - 0.5) * uDither / max(uLevels, 1.0);
       c += d;
 
-      // soft posterize (mix quantized with original → no hard muddy steps)
+      // very soft posterize — keep most of the original brightness
       float lv = max(uLevels, 2.0);
       vec3 hard = floor(c * lv + 0.5) / lv;
       vec3 soft = floor(c * lv) / lv + 0.5 / lv;
-      vec3 q = mix(c, mix(soft, hard, 0.55), 0.58);
+      vec3 q = mix(c, mix(soft, hard, 0.4), 0.28);
 
       float l = dot(q, vec3(0.2126, 0.7152, 0.0722));
       q = mix(vec3(l), q, uSaturation);
 
-      // slight warm wood/fantasy bias on midtones (not highlights)
       float mid = smoothstep(0.12, 0.55, l) * (1.0 - smoothstep(0.65, 0.95, l));
-      q.r += uWarm * 0.9 * mid;
-      q.g += uWarm * 0.25 * mid;
-      q.b -= uWarm * 0.35 * mid;
+      q.r += uWarm * 0.7 * mid;
+      q.g += uWarm * 0.2 * mid;
+      q.b -= uWarm * 0.25 * mid;
 
-      // soft vignette — frames the shot, cheap polish
+      // almost-off vignette (uVignette ~0.04 → no dark corners)
       vec2 vc = vUv - 0.5;
-      float vig = 1.0 - dot(vc, vc) * (uVignette * 2.4);
-      q *= clamp(vig, 0.72, 1.0);
+      float vig = 1.0 - dot(vc, vc) * (uVignette * 1.6);
+      q *= clamp(vig, 0.88, 1.0);
 
       q = clamp(q, 0.0, 1.0);
       gl_FragColor = vec4(q, 1.0);
