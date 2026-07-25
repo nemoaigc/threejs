@@ -2,42 +2,43 @@
 <html lang="zh">
 <head>
   <meta charset="utf-8" />
-  <title>公会对比 · 参考图 vs img2threejs 3D</title>
+  <title>公会对比 · 参考图 v2 vs img2threejs</title>
   <style>
     body { margin: 0; font-family: system-ui, sans-serif; background: #1a1e24; color: #e8eef4; }
     h1 { font-size: 18px; font-weight: 600; padding: 16px 20px 8px; margin: 0; }
-    p { margin: 0 20px 16px; opacity: 0.75; font-size: 13px; line-height: 1.5; }
+    p { margin: 0 20px 16px; opacity: 0.8; font-size: 13px; line-height: 1.55; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px 24px; }
     figure { margin: 0; background: #0f1216; border-radius: 12px; overflow: hidden; border: 1px solid #2a313a; }
     figcaption { padding: 10px 12px; font-size: 13px; border-top: 1px solid #2a313a; }
-    img { display: block; width: 100%; height: auto; background: #888; }
-    .full { grid-column: 1 / -1; }
+    img { display: block; width: 100%; height: auto; background: #666; }
     a { color: #8ec8ff; }
+    code { font-size: 12px; }
   </style>
 </head>
 <body>
-  <h1>冒险者公会 · 参考图 vs 生成 3D</h1>
+  <h1>冒险者公会 · 参考图（v2 规范） vs 生成 3D</h1>
   <p>
-    左：产品渲染参考图 · 右：img2threejs 管线生成模型在浏览器中的截图<br/>
-    generator: <code>img2threejs-forge-authored</code> ·
-    <a href="/hero-preview.html">打开可旋转 3D 预览</a>
+    官方要求：单主体 · 中性底 · 强剪影 · 多视角 · 明确 stylized/game-prop<br/>
+    v2 参考：3/4 + front + side · generator: <code>img2threejs-forge-authored-v2</code><br/>
+    <a href="/hero-preview.html">可旋转 3D 预览</a> ·
+    <a href="/docs/references/heroes/adventurers_guild/v2/ref_three_quarter.png">主参考图</a>
   </p>
   <div class="grid">
     <figure>
-      <img src="./01_reference.png" alt="reference" />
-      <figcaption><b>A. 参考图</b> · ref_main.png（1024²）</figcaption>
+      <img src="../v2/ref_three_quarter.png" alt="ref 3/4" />
+      <figcaption><b>A. 参考 3/4</b>（主输入，stylized game prop）</figcaption>
     </figure>
     <figure>
-      <img src="./02_3d_preview.png" alt="3d preview" />
-      <figcaption><b>B. 生成 3D（默认视角）</b> · hero-preview 截图</figcaption>
+      <img src="./05_3d_v2_preview.png" alt="3d v2" />
+      <figcaption><b>B. 生成 3D v2</b> · hero-preview 截图</figcaption>
     </figure>
     <figure>
-      <img src="./03_3d_angle_side.png" alt="3d side" />
-      <figcaption><b>C. 生成 3D（侧转视角）</b></figcaption>
+      <img src="../v2/ref_front.png" alt="ref front" />
+      <figcaption><b>C. 参考 front</b></figcaption>
     </figure>
     <figure>
-      <img src="./04_3d_angle_high.png" alt="3d high" />
-      <figcaption><b>D. 生成 3D（俯视角）</b></figcaption>
+      <img src="../v2/ref_side.png" alt="ref side" />
+      <figcaption><b>D. 参考 side</b></figcaption>
     </figure>
   </div>
 </body>

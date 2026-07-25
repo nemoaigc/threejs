@@ -1,0 +1,37 @@
+{
+  "admitted": true,
+  "references": [
+    {
+      "viewpoint": "three-quarter-front",
+      "path": "public/content/buildings/adventurers_guild/ref_main.png",
+      "foregroundCoverage": 0.5986,
+      "largestComponentFraction": 0.9998,
+      "pHash": "16915666623440859453",
+      "duplicateOfHash": null
+    },
+    {
+      "viewpoint": "front",
+      "path": "public/content/buildings/adventurers_guild/ref_front.png",
+      "foregroundCoverage": 0.6179,
+      "largestComponentFraction": 0.973,
+      "pHash": "18051435758406240121",
+      "duplicateOfHash": null,
+      "checkedAgainst": ["16915666623440859453"]
+    },
+    {
+      "viewpoint": "right-side",
+      "path": "public/content/buildings/adventurers_guild/ref_side.png",
+      "foregroundCoverage": 0.4492,
+      "largestComponentFraction": 0.934,
+      "pHash": "16759749514127838552",
+      "duplicateOfHash": null,
+      "checkedAgainst": [
+        "16915666623440859453",
+        "18051435758406240121"
+      ]
+    }
+  ],
+  "reasons": [],
+  "decision": "continue",
+  "note": "All three references are coherent, decodable, sufficiently large, and non-duplicate viewpoints of the same target."
+}

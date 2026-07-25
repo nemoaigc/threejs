@@ -1,0 +1,36 @@
+{
+  "technicalSuitability": "pass",
+  "references": [
+    {
+      "view": "three-quarter-front",
+      "path": "public/content/buildings/adventurers_guild/ref_main.png",
+      "type": "png",
+      "bytes": 1124840,
+      "width": 1024,
+      "height": 1024,
+      "aspectRatio": 1.0,
+      "warnings": []
+    },
+    {
+      "view": "front",
+      "path": "public/content/buildings/adventurers_guild/ref_front.png",
+      "type": "png",
+      "bytes": 1000890,
+      "width": 1024,
+      "height": 1024,
+      "aspectRatio": 1.0,
+      "warnings": []
+    },
+    {
+      "view": "right-side",
+      "path": "public/content/buildings/adventurers_guild/ref_side.png",
+      "type": "png",
+      "bytes": 781423,
+      "width": 1024,
+      "height": 1024,
+      "aspectRatio": 1.0,
+      "warnings": []
+    }
+  ],
+  "note": "Metadata probe only; semantic suitability was separately judged against the validation rubric."
+}

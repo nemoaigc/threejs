@@ -1,10 +1,10 @@
 /**
- * Isolated hero viewer — start with guild only (gen-guild-v1).
+ * Isolated hero viewer — start with guild only (gen-guild-v2).
  * http://localhost:5173/hero-preview.html
  */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { createAdventurersGuildModel } from './entities/building/heroes/img2threejs-guild/createAdventurersGuildModel.js';
+import { createAdventurersGuildModel } from './entities/building/heroes/adventurers_guild.js';
 
 const SKY = 0x9aa8b4;
 
@@ -75,7 +75,7 @@ if (labels) {
     `generator: <code>${gen}</code>`,
     `meshes: ${meshes} · sole@y=0 · facade +Z`,
     '参考：public/content/buildings/adventurers_guild/ref_main.png',
-    '产物：src/entities/building/heroes/img2threejs-guild/',
+    '产物：src/entities/building/heroes/img2threejs-guild-v2/',
     '',
     '拖拽旋转 · 滚轮缩放',
   ].join('<br/>');

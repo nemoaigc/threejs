@@ -1,0 +1,2018 @@
+{
+  "targetName": "Adventurers Guild v2",
+  "targetId": "adventurers-guild-v2",
+  "schemaVersion": "2.1",
+  "terminologyProfile": {
+    "domain": "real-time procedural Three.js asset",
+    "geometryTerms": [
+      "silhouette",
+      "topology",
+      "primitive",
+      "bevel",
+      "chamfer",
+      "taper",
+      "bend",
+      "boolean cut",
+      "edge loop",
+      "surface normal",
+      "displacement"
+    ],
+    "materialTerms": [
+      "albedo",
+      "baseColor",
+      "roughness",
+      "metalness",
+      "normal map",
+      "bump map",
+      "ambient occlusion",
+      "cavity dirt",
+      "edge wear",
+      "clearcoat"
+    ],
+    "lightingTerms": [
+      "key light",
+      "fill light",
+      "rim light",
+      "HDRI/environment reflection",
+      "contact shadow"
+    ],
+    "descriptionRule": "Use measurable 3D graphics terms. Avoid vague words unless they are paired with concrete geometry/material/shader parameters."
+  },
+  "sourceImage": "public/content/buildings/adventurers_guild/ref_main.png",
+  "referenceCamera": {
+    "solved": true,
+    "fovDegrees": 35.0,
+    "aspect": 1.0,
+    "orientation": {
+      "yaw": -0.52,
+      "pitch": -0.16,
+      "roll": 0.0
+    },
+    "positionHint": [
+      14.0,
+      10.5,
+      17.0
+    ],
+    "note": "Visually estimated from the three-quarter studio view; front and side references provide orthographic proportion checks."
+  },
+  "suitability": "pass",
+  "scores": {
+    "object_isolation": 3,
+    "silhouette_readability": 3,
+    "depth_inference": 3,
+    "primitive_decomposition": 3,
+    "material_procedurality": 3,
+    "occlusion_risk": 1,
+    "interaction_fit": 3
+  },
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "stylized half-timber adventurers guildhall",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "clean architectural hard-surface",
+        "stylized fantasy game prop",
+        "readable beveled color blocks"
+      ],
+      "structureKind": [
+        "compound object",
+        "layered architectural shell",
+        "repeated modules",
+        "action-ready hierarchy"
+      ],
+      "motionPotential": [
+        "static building prop",
+        "hinged doors",
+        "swinging perpendicular sign",
+        "detachable facade props",
+        "material-boundary destruction groups"
+      ],
+      "materialFamilies": [
+        "ashlar stone",
+        "dark stained timber",
+        "warm plaster",
+        "terracotta roof tile",
+        "brick",
+        "painted green wood",
+        "gold metal",
+        "black iron",
+        "parchment"
+      ],
+      "notes": "Three admitted views describe the same clean stylized game prop. The front view fixes six upper timber bays and two lower door bays; the right-side view fixes wall depth, the solid triangular gable profile, and the sign perpendicular to the facade. The hidden rear continues the observed construction system conservatively. This is an explicit stylized reconstruction, not photoreal or survey/manufacturing geometry."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 2,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 2,
+        "occlusionRisk": 1,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 5,
+        "mesoComponents": 17,
+        "microFeatureGroups": 20,
+        "materialLayers": 9,
+        "repetitionSystems": 8
+      },
+      "reasoning": [
+        "The macro silhouette is a two-storey rectangular hall, one closed gable-roof prism, a chimney, a perpendicular hanging sign, and facade props.",
+        "The facade and gable sides require separate stone courses, plaster panels, timber posts, rails, diagonal braces, arcade posts, and two door assemblies.",
+        "Identity depends on regular repeated systems: ashlar courses, roof tile rows, chimney bricks, timber bays, door planks, chain links, notice papers, and barrel staves/hoops.",
+        "Nine distinct color/material blocks must stay legible without photoreal micro-noise.",
+        "Three mutually distinct views reduce occlusion risk, but the rear elevation remains inferred and intentionally conservative."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "The simple outer building mass contains a dense, identity-bearing hierarchy. A shallow facade or pair of roof slabs would lose the solid gable, side evidence, timber depth, and prop systems."
+    },
+    "unknownsToResolveBeforeImplementation": [],
+    "detailInventory": {
+      "scanMethod": "grid-3x3 across three admitted views",
+      "targetMinDetails": 10,
+      "note": "Twenty observed detail systems are consolidated from the main, front, and side inventories. Every item maps to a component localFeature or material localOverride used by the sculpt spec.",
+      "details": [
+        {
+          "id": "solid-gable-volume",
+          "kind": "contour",
+          "description": "One continuous closed gable prism creates both roof slopes, the underside, and both triangular end caps.",
+          "region": {
+            "x": 0.07,
+            "y": 0.07,
+            "width": 0.86,
+            "height": 0.34,
+            "units": "normalized"
+          },
+          "scale": "macro",
+          "affects": "roof silhouette and side-view volume",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "roof/solid-gable-volume"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "tile-courses",
+          "kind": "ridge",
+          "description": "Regular overlapping terracotta tile rows step down both roof slopes.",
+          "region": {
+            "x": 0.08,
+            "y": 0.08,
+            "width": 0.84,
+            "height": 0.31,
+            "units": "normalized"
+          },
+          "scale": "meso repeated rows",
+          "affects": "roof relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "roof/tile-courses"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "ridge-caps",
+          "kind": "ridge",
+          "description": "A regular capped ridge follows the roof length and remains thicker than tile relief.",
+          "region": {
+            "x": 0.13,
+            "y": 0.08,
+            "width": 0.72,
+            "height": 0.08,
+            "units": "normalized"
+          },
+          "scale": "meso linear repeat",
+          "affects": "roof crest",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "roof/ridge-caps"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.93
+        },
+        {
+          "id": "chimney-brick-courses",
+          "kind": "seam",
+          "description": "The chimney has staggered red brick courses, recessed dark seams, a stone shoulder, and a projecting cap.",
+          "region": {
+            "x": 0.66,
+            "y": 0.02,
+            "width": 0.16,
+            "height": 0.18,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "chimney relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "chimney/brick-courses"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "ashlar-courses",
+          "kind": "seam",
+          "description": "Offset rectangular stone blocks create clean recessed mortar lines on front and side walls.",
+          "region": {
+            "x": 0.08,
+            "y": 0.58,
+            "width": 0.84,
+            "height": 0.3,
+            "units": "normalized"
+          },
+          "scale": "meso repeated grid",
+          "affects": "stone wall relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "stone-base/ashlar-courses"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "arcade-columns",
+          "kind": "bevel",
+          "description": "Front timber posts have clean chamfered shafts, stepped collars, broad capitals, and square stone feet.",
+          "region": {
+            "x": 0.1,
+            "y": 0.55,
+            "width": 0.82,
+            "height": 0.33,
+            "units": "normalized"
+          },
+          "scale": "meso repeated supports",
+          "affects": "arcade silhouette and depth",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "arcade/stepped-columns"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "front-half-timber",
+          "kind": "ridge",
+          "description": "Six front plaster bays are divided by raised posts, two rails, and alternating diagonal braces.",
+          "region": {
+            "x": 0.1,
+            "y": 0.34,
+            "width": 0.81,
+            "height": 0.25,
+            "units": "normalized"
+          },
+          "scale": "meso structural network",
+          "affects": "upper facade identity",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "upper-front/half-timber-grid"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "side-gable-bracing",
+          "kind": "ridge",
+          "description": "The right gable uses a central vertical, a collar beam, and mirrored diagonals over the rectangular side bays.",
+          "region": {
+            "x": 0.24,
+            "y": 0.09,
+            "width": 0.55,
+            "height": 0.5,
+            "units": "normalized"
+          },
+          "scale": "meso structural network",
+          "affects": "side elevation identity",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "side-gables/gable-bracing"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "door-plank-grooves",
+          "kind": "groove",
+          "description": "Two double doors are divided into narrow vertical planks by dark recessed seams.",
+          "region": {
+            "x": 0.18,
+            "y": 0.64,
+            "width": 0.46,
+            "height": 0.23,
+            "units": "normalized"
+          },
+          "scale": "micro linear repeat",
+          "affects": "door face relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "door-system/plank-grooves"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "door-iron-hardware",
+          "kind": "fastener",
+          "description": "Black strap hinges and circular ring pulls sit proud of both double doors.",
+          "region": {
+            "x": 0.19,
+            "y": 0.65,
+            "width": 0.45,
+            "height": 0.21,
+            "units": "normalized"
+          },
+          "scale": "micro repeated hardware",
+          "affects": "door contrast and depth",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "door-system/iron-hardware"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "sign-chain-links",
+          "kind": "fastener",
+          "description": "Two short gold chain runs suspend the sign from a black projecting arm.",
+          "region": {
+            "x": 0.74,
+            "y": 0.39,
+            "width": 0.16,
+            "height": 0.12,
+            "units": "normalized"
+          },
+          "scale": "micro repeated links",
+          "affects": "sign attachment and negative space",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "sign-rig/chain-links"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.98
+        },
+        {
+          "id": "sign-gold-border",
+          "kind": "ridge",
+          "description": "A raised gold inset border follows the clipped shield outline.",
+          "region": {
+            "x": 0.6,
+            "y": 0.43,
+            "width": 0.16,
+            "height": 0.23,
+            "units": "normalized"
+          },
+          "scale": "meso relief",
+          "affects": "sign face depth",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "guild-sign/gold-border"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "crossed-sword-relief",
+          "kind": "ridge",
+          "description": "Two gold swords with tapered blades, guards, grips, and pommels cross as raised geometry.",
+          "region": {
+            "x": 0.61,
+            "y": 0.47,
+            "width": 0.14,
+            "height": 0.16,
+            "units": "normalized"
+          },
+          "scale": "meso emblem",
+          "affects": "primary guild identity",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "guild-sign/crossed-swords"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "quest-notices",
+          "kind": "decal",
+          "description": "Varied parchment sheets overlap across the board with simple ink linework.",
+          "region": {
+            "x": 0.66,
+            "y": 0.68,
+            "width": 0.19,
+            "height": 0.14,
+            "units": "normalized"
+          },
+          "scale": "micro paper cluster",
+          "affects": "quest-board identity",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "quest-board/notices"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "quest-board-pins",
+          "kind": "fastener",
+          "description": "Small colored pins and one red wax seal punctuate the paper cluster.",
+          "region": {
+            "x": 0.68,
+            "y": 0.69,
+            "width": 0.16,
+            "height": 0.12,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "notice attachment relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "quest-board/pins"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.93
+        },
+        {
+          "id": "barrel-staves-hoops",
+          "kind": "ridge",
+          "description": "Three bulged wooden barrels use alternating staves and three dark iron hoops.",
+          "region": {
+            "x": 0.1,
+            "y": 0.73,
+            "width": 0.23,
+            "height": 0.19,
+            "units": "normalized"
+          },
+          "scale": "meso repeated props",
+          "affects": "barrel silhouette and material contrast",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "barrels/staves-and-hoops"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "timber-edge-treatment",
+          "kind": "bevel",
+          "description": "Timber beams use small clean chamfers that catch broad studio highlights.",
+          "region": {
+            "x": 0.1,
+            "y": 0.34,
+            "width": 0.81,
+            "height": 0.54,
+            "units": "normalized"
+          },
+          "scale": "micro edge treatment",
+          "affects": "timber highlight response",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "timber-material/bevel-wear"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.93
+        },
+        {
+          "id": "stone-cavity-darkening",
+          "kind": "stain",
+          "description": "Mortar gaps are slightly darker than stone faces without noisy surface grain.",
+          "region": {
+            "x": 0.08,
+            "y": 0.58,
+            "width": 0.84,
+            "height": 0.3,
+            "units": "normalized"
+          },
+          "scale": "micro-to-meso cavities",
+          "affects": "stone albedo and AO response",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "stone-material/cavity-darkening"
+          },
+          "evidenceRef": "ref-side",
+          "confidence": 0.95
+        },
+        {
+          "id": "plaster-warm-variation",
+          "kind": "stain",
+          "description": "Plaster remains warm ivory with restrained bay-to-bay value variation.",
+          "region": {
+            "x": 0.11,
+            "y": 0.35,
+            "width": 0.79,
+            "height": 0.24,
+            "units": "normalized"
+          },
+          "scale": "macro color blocks",
+          "affects": "plaster albedo",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "plaster-material/warm-variation"
+          },
+          "evidenceRef": "ref-front",
+          "confidence": 0.96
+        },
+        {
+          "id": "tile-tone-variation",
+          "kind": "stain",
+          "description": "Tile rows alternate among a restrained red-terracotta palette; no random micro-noise is visible.",
+          "region": {
+            "x": 0.08,
+            "y": 0.08,
+            "width": 0.84,
+            "height": 0.31,
+            "units": "normalized"
+          },
+          "scale": "meso per-tile color variation",
+          "affects": "roof albedo and roughness",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "roof-material/tile-tone-variation"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.98
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {
+        "headUnit": 0.0,
+        "torso": 0.0,
+        "legs": 0.0,
+        "shoulderWidth": 0.0,
+        "hipWidth": 0.0
+      },
+      "pose": {
+        "type": "not-applicable",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0.0,
+        "eyeSpacing": 0.0,
+        "noseBase": 0.0,
+        "mouthLine": 0.0,
+        "hairline": 0.0
+      },
+      "features": [],
+      "confidence": 1.0,
+      "note": "Not a character or hybrid subject."
+    },
+    "sourceImage": "public/content/buildings/adventurers_guild/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The model reads immediately as the same clean stylized fantasy guild from front, side, and three-quarter views.",
+      "The building has one closed solid gable-roof prism with a regular relief tile system; two rotated slab roofs are prohibited.",
+      "Stone base, front timber arcade, half-timber upper floor, red tile roof, chimney, perpendicular green sword sign, quest board, and three barrels remain separately readable.",
+      "The factory returns an action-ready THREE.Group with facade +Z and the lowest visible geometry exactly at y=0.",
+      "All materials are MeshStandardMaterial or MeshToonMaterial color blocks with restrained roughness variation and no facade photo, projected photo, or texture billboard."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 5,
+      "mesoComponents": 14,
+      "microFeatureGroups": 10,
+      "materialLayers": 8,
+      "repetitionSystems": 6,
+      "reviewViewpoints": 3
+    },
+    "featureGroups": [
+      {
+        "id": "solid-roof-and-massing",
+        "name": "Solid gable roof and rectangular hall massing",
+        "required": true,
+        "qualityCriteria": [
+          "One closed prism supplies both slopes, underside, and gable caps.",
+          "The width, depth, eave, ridge, and chimney proportions agree across all three views."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front",
+          "ref-side"
+        ],
+        "failureModes": [
+          "two rotated roof slabs",
+          "extra front cross-gable",
+          "flat side or open roof"
+        ]
+      },
+      {
+        "id": "stone-timber-structure",
+        "name": "Stone base, front arcade, and half-timber structure",
+        "required": true,
+        "qualityCriteria": [
+          "Ashlar courses, arcade supports, upper plaster panels, and raised beams remain separate depth layers.",
+          "Front bay spacing and side gable bracing match their orthographic references."
+        ],
+        "evidenceRefs": [
+          "ref-front",
+          "ref-side"
+        ],
+        "failureModes": [
+          "painted timber grid",
+          "missing arcade depth",
+          "generic blank side wall"
+        ]
+      },
+      {
+        "id": "guild-sign-system",
+        "name": "Perpendicular green guild sign",
+        "required": true,
+        "qualityCriteria": [
+          "The bracket projects beyond the facade and the sign face is perpendicular to the facade.",
+          "The green clipped shield, gold border, two suspension chains, and raised crossed swords remain readable."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front",
+          "ref-side"
+        ],
+        "failureModes": [
+          "sign parallel to facade",
+          "flat texture emblem",
+          "floating chain attachment"
+        ]
+      },
+      {
+        "id": "facade-props",
+        "name": "Doors, quest board, and barrels",
+        "required": true,
+        "qualityCriteria": [
+          "Two double doors include plank seams, strap hinges, and ring pulls.",
+          "Quest papers and pins remain legible beside a three-barrel staved cluster."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ],
+        "failureModes": [
+          "missing props",
+          "plain cylinders for barrels",
+          "blank quest board"
+        ]
+      },
+      {
+        "id": "clean-stylized-materials",
+        "name": "Clean stylized material separation",
+        "required": true,
+        "qualityCriteria": [
+          "Stone, timber, plaster, terracotta, brick, green paint, gold, iron, and parchment stay distinct under neutral light.",
+          "Chamfers and geometric seams carry detail; random photoreal grain and photo-derived billboards are absent."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front",
+          "ref-side"
+        ],
+        "failureModes": [
+          "flat unlit color",
+          "photoreal micro-noise",
+          "materials collapse into similar values"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "single roof prism silhouette and side gable slope",
+      "wall-to-roof height and width-to-depth ratios",
+      "front six-bay timber spacing and side gable bracing",
+      "perpendicular sign projection, shield shape, and crossed swords",
+      "door, quest-board, and barrel placement",
+      "clean material color-block separation"
+    ],
+    "antiShallowSpecRules": [
+      "Reject two-slab or open gable roofs.",
+      "Reject the older extra front cross-gable composition.",
+      "Reject facade photo planes, projected reference photos, and billboard substitutes.",
+      "Reject unmapped inventory entries and generic feature review targets.",
+      "Reject a sign without a complete wall/bracket/chain attachment contract.",
+      "Reject material families without independent albedo, roughness, tactile relief intent, and local overrides.",
+      "Reference PBR extraction is intentionally omitted because the accepted target is clean stylized flat-color game-prop material, not patterned/photoreal material recovery; use solid albedo plus procedural geometry and independent scalar PBR response."
+    ],
+    "referencePbrLimitation": "The user explicitly accepts stylized reconstruction and prohibits photoreal micro-noise. The references show largely flat, clean material blocks. Therefore reference crop textures and inferred PBR maps are intentionally not used; important relief is geometric, colors are solid sampled families, and roughness/normal/AO intent stays independent."
+  },
+  "qualityTargets": {
+    "targetFidelity": 0.84,
+    "mustMatch": [
+      "single closed solid gable roof with no front cross-gable",
+      "stone base, front timber arcade, and six-bay half-timber upper facade",
+      "perpendicular green sign with raised gold crossed swords",
+      "two double doors, quest board, chimney, and three barrels",
+      "clean stylized MeshStandardMaterial color blocks"
+    ],
+    "niceToHave": [
+      "small parchment pins and abstract ink marks",
+      "subtle per-block and per-tile tone variation"
+    ],
+    "fpsTarget": 60,
+    "reviewViewpoints": [
+      "three-quarter-front",
+      "straight-front",
+      "right-side"
+    ]
+  },
+  "selfCorrectLoop": {
+    "enabled": true,
+    "visualAcceptance": {
+      "reviewer": "ai-vision",
+      "threshold": 0.7,
+      "comparisonArtifactRequired": true,
+      "layerScoresRequired": true,
+      "codePixelDiffIsAcceptanceAuthority": false,
+      "scoringRule": "AI vision must inspect a side-by-side reference/render sheet and score the current pass from 0 to 1. Pixel-diff code may assist diagnostics but cannot approve a pass.",
+      "requiredLayerScores": [
+        "silhouetteProportion",
+        "componentStructure",
+        "formDetail",
+        "materialSurface",
+        "lightingCamera"
+      ],
+      "featureReviewPolicy": {
+        "enabled": true,
+        "reviewUnit": "semantic-subsystem",
+        "maxCriticalFeaturesPerPass": 5,
+        "maxImportantFeaturesPerPass": 3,
+        "criticalDefaultThreshold": 0.8,
+        "importantAverageThreshold": 0.65,
+        "adaptiveEscalation": true,
+        "singleImagePairOnly": true,
+        "selectionRule": "Choose only the most visually salient, identity-defining, user-prioritized, or high-risk semantic systems. Group repeated parts instead of reviewing every mesh. AI vision scores every selected feature from the same full reference/render pair."
+      }
+    },
+    "reviewAfterPasses": [
+      "blockout",
+      "structural-pass",
+      "form-refinement",
+      "material-pass",
+      "surface-pass",
+      "lighting-pass",
+      "interaction-pass",
+      "optimization-pass"
+    ],
+    "allowedActions": [
+      "continue",
+      "refine-spec",
+      "refine-code",
+      "request-input",
+      "stop"
+    ],
+    "specRefineTriggers": [
+      "missing component",
+      "wrong primitive family",
+      "wrong proportions",
+      "material layer under-specified",
+      "local feature not traceable to viewEvidence",
+      "reference ambiguity discovered during implementation"
+    ],
+    "codeRefineTriggers": [
+      "spec is adequate but generated geometry/material does not match",
+      "browser render differs from reference",
+      "performance budget exceeded",
+      "lighting hides geometry or material response"
+    ],
+    "stopCriteria": [
+      "target fidelity reached or user accepts current approximation",
+      "remaining gaps require new reference images or manual art"
+    ],
+    "screenshotPolicy": {
+      "requiredForPasses": [
+        "blockout",
+        "structural-pass",
+        "form-refinement",
+        "material-pass",
+        "surface-pass",
+        "lighting-pass",
+        "interaction-pass"
+      ],
+      "preferredCapture": "in-app-browser-screenshot",
+      "fallbackCapture": "user-supplied-screenshot-path",
+      "minimumEvidence": "Each visual pass needs a reference image, rendered screenshot, side-by-side comparison sheet, AI vision score, layer scores, and critique before choosing continue.",
+      "reviewPairRule": "Compare the same camera/viewpoint whenever possible; do not judge a front reference against a random render angle.",
+      "acceptanceAuthority": "AI vision review of the comparison sheet. Code-generated pixel similarity is not sufficient evidence."
+    }
+  },
+  "featureReviewTargets": [
+    {
+      "id": "solid-roof-massing",
+      "name": "Single solid gable roof and rectangular hall massing",
+      "tier": "critical",
+      "passIds": [
+        "blockout",
+        "form-refinement"
+      ],
+      "minimumScore": 0.84,
+      "mustPass": true,
+      "componentRefs": [
+        "roof",
+        "chimney"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "stone-timber-hierarchy",
+      "name": "Stone base, front arcade, upper grid, and side gable bracing",
+      "tier": "critical",
+      "passIds": [
+        "structural-pass",
+        "form-refinement"
+      ],
+      "minimumScore": 0.82,
+      "mustPass": true,
+      "componentRefs": [
+        "stone-base",
+        "arcade",
+        "upper-front",
+        "side-gables"
+      ],
+      "evidenceRefs": [
+        "ref-front",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "perpendicular-guild-sign",
+      "name": "Perpendicular green shield sign with raised crossed swords",
+      "tier": "critical",
+      "passIds": [
+        "structural-pass",
+        "form-refinement",
+        "material-pass"
+      ],
+      "minimumScore": 0.86,
+      "mustPass": true,
+      "componentRefs": [
+        "sign-rig",
+        "guild-sign"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "facade-props",
+      "name": "Two door bays, quest board, and barrel cluster",
+      "tier": "important",
+      "passIds": [
+        "form-refinement",
+        "surface-pass"
+      ],
+      "minimumScore": 0.74,
+      "mustPass": false,
+      "componentRefs": [
+        "door-system",
+        "quest-board",
+        "barrels"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    },
+    {
+      "id": "clean-material-blocks",
+      "name": "Stylized stone, timber, plaster, tile, paint, metal, and paper separation",
+      "tier": "critical",
+      "passIds": [
+        "material-pass",
+        "surface-pass",
+        "lighting-pass"
+      ],
+      "minimumScore": 0.78,
+      "mustPass": true,
+      "componentRefs": [
+        "stone-base",
+        "upper-front",
+        "roof",
+        "guild-sign",
+        "quest-board"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front",
+        "ref-side"
+      ]
+    }
+  ],
+  "sculptPipeline": {
+    "passGateMode": "locked-sequential",
+    "passOrder": [
+      "blockout",
+      "structural-pass",
+      "form-refinement",
+      "material-pass",
+      "surface-pass",
+      "lighting-pass",
+      "interaction-pass",
+      "optimization-pass"
+    ],
+    "currentPass": "blockout",
+    "completedPasses": [],
+    "lastCompletedPass": "",
+    "blockedReason": "blockout requires a browser screenshot and self-correction review before structural-pass unlocks",
+    "nextRequiredEvidence": [
+      "blockout browser render screenshot from your agent's browser/screenshot tool",
+      "side-by-side reference/render comparison sheet",
+      "AI vision score >= 0.7 with layer scores and mismatch critique",
+      "critical semantic feature scores from the same image pair meeting their individual thresholds",
+      "reviewHistory entry for blockout with action=continue"
+    ]
+  },
+  "lookDevTargets": {
+    "qualityPriority": "stylized-reference",
+    "materialPass": {
+      "albedoPaletteRequired": true,
+      "roughnessVariationRequired": true,
+      "normalOrBumpRequired": true,
+      "localOverridesRequired": true,
+      "minimumTextureResolution": 1024,
+      "preferredTextureResolution": 2048,
+      "independentMapChannels": [
+        "albedo",
+        "roughness",
+        "height",
+        "normal",
+        "ambient-occlusion"
+      ],
+      "requiredSurfaceFrequencyBands": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "geometryReliefRequiredWhenSilhouetteAffected": true,
+      "referencePbrExtraction": {
+        "requiredWhenSourceImagePresent": false,
+        "targetThreshold": 0.7,
+        "stopOnLowConfidence": false,
+        "script": "forge/stage1_intake/extract_pbr_evidence.py",
+        "acceptedLimitation": "The accepted target is a clean stylized flat-color game prop. Solid albedo families, procedural relief, and independent scalar PBR response are more faithful than crop-derived photoreal textures."
+      },
+      "mustAvoid": [
+        "unlit flat color with no roughness separation",
+        "uniform roughness",
+        "albedo texture reused as roughness/height/normal/AO",
+        "photoreal micro-noise",
+        "plastic-looking stone, timber, tile, or paper",
+        "local color/detail described only in prose without material masks",
+        "photo facade or reference-image billboards"
+      ]
+    },
+    "lightingPass": {
+      "requiredTerms": [
+        "key light",
+        "fill light",
+        "rim or environment light",
+        "exposure",
+        "tone mapping",
+        "background",
+        "contact shadow"
+      ],
+      "mustAvoid": [
+        "ambient-only lighting",
+        "flat value range",
+        "missing contact shadow",
+        "reference lighting copied without separating material readability"
+      ]
+    },
+    "screenshotReview": [
+      "Compare albedo palette and local color zones.",
+      "Compare roughness/normal/bump response under light.",
+      "Compare cavity dirt, edge wear, stains, moss, scratches, or other local masks.",
+      "Compare key/fill/rim structure, exposure, tone mapping, background, and contact shadows.",
+      "Capture a neutral-light render to verify material readability without reference lighting.",
+      "Capture a grazing-light close-up to expose flat normals, uniform roughness, tiling, and plastic highlights.",
+      "Capture a reference-matched render from the same camera framing as the source."
+    ]
+  },
+  "actionReadiness": {
+    "contract": "Every macro/meso component should be generated as a stable named Object3D pivot node with a mesh child, action metadata, optional sockets, collider proxy, and destruction metadata.",
+    "defaultRigType": "action-ready-static-rig",
+    "rootMotionNode": "root",
+    "requiredComponentFields": [
+      "id",
+      "parent",
+      "transform",
+      "attachment for child appendages, connectors, limbs, tubes, handles, legs, horns, wings, branches, or cables",
+      "actionProfile.animationRole",
+      "actionProfile.pivot",
+      "actionProfile.collider",
+      "actionProfile.destruction"
+    ],
+    "transformChannels": [
+      "translate",
+      "rotate",
+      "scale",
+      "bend",
+      "twist",
+      "detach",
+      "visibility",
+      "material-state"
+    ],
+    "authoringRules": [
+      "Do not collapse independently movable parts into one mesh.",
+      "Put transforms on component pivot groups, not only on raw meshes.",
+      "For attached child parts, put the pivot at the semantic root/socket and build visible geometry from localStart to localEnd.",
+      "Represent hinge, socket, detachable, and breakable intent even when no animation is implemented yet.",
+      "Use simplified collider proxies for runtime physics instead of visual mesh colliders by default."
+    ],
+    "destructionPolicy": {
+      "defaultBreakable": false,
+      "fractureGroupNaming": "Use stable semantic names such as body-shell, left-hinge, glass-panel, branch-segment.",
+      "debrisStrategy": "Prefer detachable component groups and a small number of procedural fragments over random mesh explosion."
+    }
+  },
+  "assumptions": [
+    "The hidden rear elevation continues the observed stone and half-timber construction with fewer props.",
+    "World dimensions are proportional game units, not historical survey measurements.",
+    "Materials use solid stylized albedo and procedural geometry rather than reference-photo projection."
+  ],
+  "coordinateFrame": {
+    "front": "+Z",
+    "up": "+Y",
+    "right": "+X",
+    "sole": "y=0",
+    "scaleReference": "building wall width 12 world units"
+  },
+  "silhouette": {
+    "boundingShape": "Broad two-storey rectangle under one steep closed gable prism, interrupted by a right-of-center chimney and a sign projecting forward from the right facade corner.",
+    "aspectRatios": [
+      "wall width:depth approximately 1.85:1",
+      "wall width:total roof height approximately 1.14:1",
+      "ground stone storey:upper timber storey approximately 1.05:1"
+    ],
+    "symmetry": "The architectural shell is approximately symmetric along the ridge; facade doors, quest board, barrels, sign, and chimney create controlled asymmetry.",
+    "dominantCurves": [
+      "lathed barrel bulges",
+      "torus chain links and ring pulls",
+      "shield-shaped sign point"
+    ],
+    "negativeSpaces": [
+      "recessed paired door bays",
+      "arcade gaps between columns",
+      "open space beneath sign arm and between suspension chains"
+    ],
+    "landmarks": [
+      "single red ridge roof",
+      "right-of-center chimney",
+      "perpendicular green sword sign",
+      "right quest board",
+      "left barrel cluster"
+    ]
+  },
+  "viewEvidence": [
+    {
+      "id": "ref-main",
+      "view": "three-quarter-front",
+      "imageRegion": {
+        "x": 0.04,
+        "y": 0.02,
+        "width": 0.92,
+        "height": 0.94,
+        "units": "normalized"
+      },
+      "observations": [
+        "overall massing and material hierarchy",
+        "quest board, barrel, sign, and chimney placement",
+        "front and right side depth"
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "ref-front",
+      "view": "straight-front",
+      "imageRegion": {"x": 0.06, "y": 0.04, "width": 0.88, "height": 0.92, "units": "normalized"},
+      "observations": [
+        "front facade bay spacing",
+        "two double-door bays and one quest-board bay",
+        "sign edge-on orientation and barrel cluster"
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "ref-side",
+      "view": "right-side",
+      "imageRegion": {"x": 0.22, "y": 0.03, "width": 0.72, "height": 0.93, "units": "normalized"},
+      "observations": [
+        "solid triangular gable profile and wall depth",
+        "side half-timber and gable brace layout",
+        "full sign face perpendicular to facade"
+      ],
+      "confidence": 0.99
+    }
+  ],
+  "componentTree": [
+    {
+      "id": "root",
+      "name": "Adventurers Guild v2",
+      "level": "macro",
+      "role": "runtime-container",
+      "importance": 1.0,
+      "confidence": 1.0,
+      "primitive": "box",
+      "topologyClass": "material-only",
+      "topologyRationale": "The root is a transform and runtime metadata carrier with no visible surface.",
+      "geometryDescriptor": {
+        "topologyIntent": "invisible unit-scale hierarchy carrier",
+        "edgeTreatment": {
+          "type": "none",
+          "bevelRadius": 0.0,
+          "segments": 1
+        },
+        "deformationStack": [],
+        "uvStrategy": "generated procedural coordinates",
+        "normalStrategy": "vertex normals from generated geometry"
+      },
+      "parent": null,
+      "attachment": null,
+      "dimensions": {
+        "width": 12.8,
+        "height": 10.7,
+        "depth": 7.2,
+        "units": "world",
+        "confidence": 0.98
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "actionProfile": {
+        "animationRole": "root",
+        "pivot": {
+          "mode": "center",
+          "localPosition": [
+            0,
+            0,
+            0
+          ],
+          "axis": [
+            0,
+            1,
+            0
+          ],
+          "confidence": 1.0
+        },
+        "transformChannels": {
+          "translate": true,
+          "rotate": true,
+          "scale": true,
+          "bend": false,
+          "twist": false,
+          "detach": false,
+          "visibility": true,
+          "materialState": true
+        },
+        "sockets": [],
+        "collider": {
+          "type": "box",
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            1
+          ],
+          "isTrigger": false,
+          "notes": "Replace with sphere/capsule/compound proxy when the object shape demands it."
+        },
+        "constraints": [],
+        "destruction": {
+          "breakable": false,
+          "fractureGroup": "root",
+          "seamRefs": [],
+          "detachableFragments": [],
+          "breakImpulse": 0.0,
+          "debrisMaterial": "hidden"
+        }
+      },
+      "material": "hidden",
+      "materialLayers": [
+        "hidden"
+      ],
+      "deformations": [],
+      "joints": [],
+      "seams": [],
+      "localFeatures": [],
+      "surfaceDetail": {
+        "macroRoughness": 0.0,
+        "microRoughness": 0.0,
+        "bumpAmplitude": 0.0,
+        "normalPattern": "",
+        "displacementPattern": "",
+        "occlusionPattern": "",
+        "edgeWearPattern": "",
+        "notes": ""
+      },
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front",
+        "ref-side"
+      ],
+      "details": [],
+      "fidelityTier": "blockout"
+    },
+    {
+      "id": "stone-base",
+      "name": "Stone ground storey",
+      "level": "macro",
+      "role": "architecture",
+      "importance": 1.0,
+      "confidence": 0.99,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "The lower storey is a rigid rectangular masonry volume with planar faces and projecting ashlar courses.",
+      "geometryDescriptor": {"topologyIntent": "closed beveled masonry core", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.05, "segments": 1}, "deformationStack": [], "uvStrategy": "box projection", "normalStrategy": "weighted normals"},
+      "parent": "root",
+      "dimensions": {"width": 12.0, "height": 3.35, "depth": 6.4, "units": "world", "confidence": 0.98},
+      "transform": {"position": [0, 1.9, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "sole-center", "localPosition": [0, -1.675, 0], "axis": [0, 1, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "stone-material",
+      "materialLayers": ["stone-material", "mortar"],
+      "localFeatures": ["ashlar-courses"],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(126, 119, 106, 1.0)", "secondaryAlbedo": "rgba(155, 148, 132, 1.0)", "materialClass": "stone", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "arcade",
+      "name": "Front timber arcade",
+      "level": "macro",
+      "role": "architecture",
+      "importance": 0.96,
+      "confidence": 0.99,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "The facade arcade is a discrete assembly of rigid square posts, stepped collars, capitals, feet, and a continuous header.",
+      "geometryDescriptor": {"topologyIntent": "open post-and-beam frame", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.045, "segments": 1}, "deformationStack": [], "uvStrategy": "box projection", "normalStrategy": "weighted normals"},
+      "parent": "root",
+      "dimensions": {"width": 11.6, "height": 3.35, "depth": 0.75, "units": "world", "confidence": 0.98},
+      "transform": {"position": [0, 1.9, 3.22], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "sole-center", "localPosition": [0, -1.675, 0], "axis": [0, 1, 0], "confidence": 0.98}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "timber-material",
+      "materialLayers": ["timber-material", "stone-material"],
+      "localFeatures": ["stepped-columns"],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(76, 50, 34, 1.0)", "secondaryAlbedo": "rgba(99, 70, 48, 1.0)", "materialClass": "wood", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "upper-front",
+      "name": "Half-timber upper facade",
+      "level": "macro",
+      "role": "architecture",
+      "importance": 1.0,
+      "confidence": 0.99,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Warm rigid plaster wall panels are overlaid by separate raised timber posts, rails, and diagonal braces.",
+      "geometryDescriptor": {"topologyIntent": "projecting upper wall with raised frame network", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.035, "segments": 1}, "deformationStack": [], "uvStrategy": "box projection", "normalStrategy": "weighted normals"},
+      "parent": "root",
+      "dimensions": {"width": 12.25, "height": 3.45, "depth": 6.65, "units": "world", "confidence": 0.98},
+      "transform": {"position": [0, 5.35, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.98}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "plaster-material",
+      "materialLayers": ["plaster-material", "timber-material"],
+      "localFeatures": ["half-timber-grid"],
+      "evidenceRefs": ["ref-main", "ref-front"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(226, 216, 195, 1.0)", "secondaryAlbedo": "rgba(77, 50, 34, 1.0)", "materialClass": "ceramic", "materialClassConfidence": 0.94}
+    },
+    {
+      "id": "roof",
+      "name": "Single closed gable roof",
+      "level": "macro",
+      "role": "shell",
+      "importance": 1.0,
+      "confidence": 1.0,
+      "primitive": "extrude",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Both planar slopes, the closed underside, and both triangular end caps form one rigid triangular-prism volume with the ridge along X.",
+      "geometryDescriptor": {"topologyIntent": "closed six-vertex triangular prism", "profile2D": {"points": [[-3.75, 0], [3.75, 0], [0, 3.05]], "closed": true, "depth": 13.1}, "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.035, "segments": 1}, "deformationStack": [], "uvStrategy": "slope-aligned procedural", "normalStrategy": "flat face normals"},
+      "parent": "root",
+      "dimensions": {"width": 13.1, "height": 3.05, "depth": 7.5, "units": "world", "confidence": 0.99},
+      "transform": {"position": [0, 7.02, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "eave-center", "localPosition": [0, 0, 0], "axis": [1, 0, 0], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "roof-material",
+      "materialLayers": ["roof-material"],
+      "localFeatures": ["solid-gable-volume", "tile-courses", "ridge-caps"],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "blockout",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(157, 59, 43, 1.0)", "secondaryAlbedo": "rgba(117, 43, 32, 1.0)", "materialClass": "ceramic", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "masonry-relief",
+      "name": "Visible ashlar relief courses",
+      "level": "meso",
+      "role": "surface-relief",
+      "importance": 0.86,
+      "confidence": 0.99,
+      "primitive": "instanced-cluster",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "Shallow repeated stone blocks project from the masonry core and create visible recessed mortar seams.",
+      "geometryDescriptor": {"topologyIntent": "staggered beveled block modules", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 1}, "deformationStack": ["restrained deterministic size variance"], "uvStrategy": "per-block box projection", "normalStrategy": "weighted normals"},
+      "parent": "stone-base",
+      "dimensions": {"width": 12.0, "height": 3.15, "depth": 6.4, "units": "world", "confidence": 0.98},
+      "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.96}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "stone-material",
+      "materialLayers": ["stone-material", "mortar"],
+      "localFeatures": [],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(133, 126, 112, 1.0)", "secondaryAlbedo": "rgba(164, 156, 139, 1.0)", "materialClass": "stone", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "arcade-post-row",
+      "name": "Repeated arcade post assemblies",
+      "level": "meso",
+      "role": "architecture",
+      "importance": 0.88,
+      "confidence": 0.98,
+      "primitive": "instanced-cluster",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Four rigid square support assemblies repeat across the front and remain distinct from the wall core.",
+      "geometryDescriptor": {"topologyIntent": "repeated shafts, collars, capitals, and feet", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.04, "segments": 1}, "deformationStack": [], "uvStrategy": "vertical box projection", "normalStrategy": "weighted normals"},
+      "parent": "arcade",
+      "dimensions": {"width": 11.4, "height": 3.2, "depth": 0.7, "units": "world", "confidence": 0.97},
+      "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "sole-center", "localPosition": [0, -1.6, 0], "axis": [0, 1, 0], "confidence": 0.96}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "timber-material",
+      "materialLayers": ["timber-material", "stone-material"],
+      "localFeatures": [],
+      "evidenceRefs": ["ref-main", "ref-front"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(78, 51, 35, 1.0)", "secondaryAlbedo": "rgba(106, 77, 53, 1.0)", "materialClass": "wood", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "jetty-beam",
+      "name": "Projecting floor beam",
+      "level": "meso",
+      "role": "architecture",
+      "importance": 0.82,
+      "confidence": 0.99,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "A single rigid horizontal beam projects beyond the facade and separates the stone and upper timber storeys.",
+      "geometryDescriptor": {"topologyIntent": "deep continuous header", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.05, "segments": 1}, "deformationStack": [], "uvStrategy": "lengthwise box projection", "normalStrategy": "weighted normals"},
+      "parent": "root",
+      "dimensions": {"width": 12.6, "height": 0.34, "depth": 0.7, "units": "world", "confidence": 0.98},
+      "transform": {"position": [0, 3.6, 3.28], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [1, 0, 0], "confidence": 0.96}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "timber-material",
+      "materialLayers": ["timber-material"],
+      "localFeatures": [],
+      "evidenceRefs": ["ref-main", "ref-front"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(71, 45, 31, 1.0)", "secondaryAlbedo": "rgba(97, 66, 44, 1.0)", "materialClass": "wood", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "upper-side-walls",
+      "name": "Half-timber side wall panels",
+      "level": "meso",
+      "role": "architecture",
+      "importance": 0.8,
+      "confidence": 0.98,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Rigid side plaster panels and their raised frame members continue the observed rectangular upper storey.",
+      "geometryDescriptor": {"topologyIntent": "side plaster panels with raised framing", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.035, "segments": 1}, "deformationStack": [], "uvStrategy": "box projection", "normalStrategy": "weighted normals"},
+      "parent": "upper-front",
+      "dimensions": {"width": 12.2, "height": 3.4, "depth": 6.6, "units": "world", "confidence": 0.97},
+      "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.95}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "plaster-material",
+      "materialLayers": ["plaster-material", "timber-material"],
+      "localFeatures": [],
+      "evidenceRefs": ["ref-main", "ref-side"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(224, 214, 194, 1.0)", "secondaryAlbedo": "rgba(79, 52, 35, 1.0)", "materialClass": "ceramic", "materialClassConfidence": 0.94}
+    },
+    {
+      "id": "side-gables",
+      "name": "Closed side gable infill and bracing",
+      "level": "meso",
+      "role": "architecture",
+      "importance": 0.9,
+      "confidence": 0.99,
+      "primitive": "extrude",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Each triangular gable end is a shallow rigid plaster solid with separately raised timber braces.",
+      "geometryDescriptor": {"topologyIntent": "closed triangular infill plates and beam network", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 1}, "deformationStack": [], "uvStrategy": "planar projection", "normalStrategy": "flat-weighted normals"},
+      "parent": "upper-front",
+      "dimensions": {"width": 0.3, "height": 3.0, "depth": 6.4, "units": "world", "confidence": 0.98},
+      "transform": {"position": [0, 3.2, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "eave-center", "localPosition": [0, -1.5, 0], "axis": [0, 1, 0], "confidence": 0.96}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "plaster-material",
+      "materialLayers": ["plaster-material", "timber-material"],
+      "localFeatures": ["gable-bracing"],
+      "evidenceRefs": ["ref-main", "ref-side"],
+      "fidelityTier": "form-refinement",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(224, 214, 194, 1.0)", "secondaryAlbedo": "rgba(75, 49, 33, 1.0)", "materialClass": "ceramic", "materialClassConfidence": 0.96}
+    },
+    {
+      "id": "roof-relief",
+      "name": "Regular roof tile relief system",
+      "level": "meso",
+      "role": "surface-relief",
+      "importance": 0.92,
+      "confidence": 0.99,
+      "primitive": "instanced-cluster",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "Thin overlapping tile modules add regular relief over the already closed roof solid without replacing its volume.",
+      "geometryDescriptor": {"topologyIntent": "shared beveled tile modules aligned to both slopes", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.02, "segments": 1}, "deformationStack": [], "uvStrategy": "per-tile box projection", "normalStrategy": "weighted normals"},
+      "parent": "roof",
+      "dimensions": {"width": 13.0, "height": 3.0, "depth": 7.45, "units": "world", "confidence": 0.99},
+      "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "ridge-center", "localPosition": [0, 1.5, 0], "axis": [1, 0, 0], "confidence": 0.96}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "roof-material",
+      "materialLayers": ["roof-material"],
+      "localFeatures": [],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "form-refinement",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(159, 58, 42, 1.0)", "secondaryAlbedo": "rgba(188, 75, 55, 1.0)", "materialClass": "ceramic", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "chimney",
+      "name": "Brick chimney and stone shoulder",
+      "level": "meso",
+      "role": "architecture",
+      "importance": 0.85,
+      "confidence": 0.99,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "The chimney is a rigid stack of countable brick courses with projecting shoulder and cap solids.",
+      "geometryDescriptor": {"topologyIntent": "staggered beveled brick stack", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.02, "segments": 1}, "deformationStack": [], "uvStrategy": "per-brick box projection", "normalStrategy": "weighted normals"},
+      "parent": "roof",
+      "dimensions": {"width": 1.05, "height": 2.25, "depth": 0.95, "units": "world", "confidence": 0.98},
+      "transform": {"position": [2.65, 2.05, -0.35], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "base-center", "localPosition": [0, -1.125, 0], "axis": [0, 1, 0], "confidence": 0.97}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "brick",
+      "materialLayers": ["brick", "stone-material"],
+      "localFeatures": ["brick-courses"],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "form-refinement",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(133, 67, 50, 1.0)", "secondaryAlbedo": "rgba(104, 54, 42, 1.0)", "materialClass": "ceramic", "materialClassConfidence": 0.98}
+    },
+    {
+      "id": "door-system",
+      "name": "Paired double-door facade system",
+      "level": "meso",
+      "role": "entrance",
+      "importance": 0.88,
+      "confidence": 0.99,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Two rigid paired plank doors sit inside stone openings with separate raised iron straps and ring pulls.",
+      "geometryDescriptor": {"topologyIntent": "recessed paired doors with hinge-ready leaf pivots", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 1}, "deformationStack": [], "uvStrategy": "vertical plank projection", "normalStrategy": "weighted normals"},
+      "parent": "root",
+      "attachment": {"parentId": "root", "parentSocket": "front-stone-door-openings", "localStart": [-4.5, 0.35, 3.24], "localEnd": [1.7, 3.2, 3.24], "contactType": "surface-contact", "overlap": 0.08, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front"]},
+      "dimensions": {"width": 6.3, "height": 2.85, "depth": 0.35, "units": "world", "confidence": 0.98},
+      "transform": {"position": [-1.35, 1.78, 3.34], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "door-panel", "pivot": {"mode": "hinge-edges", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.97}, "transformChannels": {"translate": false, "rotate": true, "scale": false, "visibility": true}},
+      "material": "timber-material",
+      "materialLayers": ["timber-material", "iron"],
+      "localFeatures": ["plank-grooves", "iron-hardware"],
+      "evidenceRefs": ["ref-main", "ref-front"],
+      "fidelityTier": "form-refinement",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(64, 40, 27, 1.0)", "secondaryAlbedo": "rgba(42, 42, 38, 1.0)", "materialClass": "wood", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "sign-rig",
+      "name": "Perpendicular projecting sign arm and chains",
+      "level": "meso",
+      "role": "architecture",
+      "importance": 0.94,
+      "confidence": 0.99,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "A rigid black wall plate and horizontal arm project along +Z, with two repeated torus-link chain runs hanging beneath.",
+      "geometryDescriptor": {"topologyIntent": "cantilevered arm, wall plate, brace, and chain links", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 1}, "deformationStack": [], "uvStrategy": "box and cylindrical projection", "normalStrategy": "weighted normals"},
+      "parent": "root",
+      "attachment": {"parentId": "root", "parentSocket": "right-front-upper-post", "localStart": [5.35, 6.65, 3.1], "localEnd": [5.35, 6.65, 5.8], "contactType": "embedded", "embedDepth": 0.18, "gapTolerance": 0.01, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 0.45, "height": 1.6, "depth": 2.9, "units": "world", "confidence": 0.99},
+      "transform": {"position": [5.35, 6.65, 4.35], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "wall-socket", "localPosition": [0, 0, -1.45], "axis": [0, 0, 1], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "iron",
+      "materialLayers": ["iron", "gold-metal"],
+      "localFeatures": ["chain-links"],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(45, 46, 43, 1.0)", "secondaryAlbedo": "rgba(194, 151, 54, 1.0)", "materialClass": "metal", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "guild-sign",
+      "name": "Green clipped-shield guild sign",
+      "level": "meso",
+      "role": "panel",
+      "importance": 1.0,
+      "confidence": 1.0,
+      "primitive": "extrude",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "A thick clipped shield plate carries a separate raised border and two separately extruded sword assemblies.",
+      "geometryDescriptor": {"topologyIntent": "beveled shield extrusion with raised emblem", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.035, "segments": 2}, "deformationStack": [], "uvStrategy": "planar projection", "normalStrategy": "weighted normals"},
+      "parent": "sign-rig",
+      "attachment": {"parentId": "sign-rig", "parentSocket": "dual-chain-lower-sockets", "localStart": [-0.55, 0, 0], "localEnd": [0.55, -0.5, 0], "contactType": "hinge", "overlap": 0.06, "gapTolerance": 0.015, "evidenceRefs": ["ref-main", "ref-front", "ref-side"]},
+      "dimensions": {"width": 1.65, "height": 2.25, "depth": 0.18, "units": "world", "confidence": 0.99},
+      "transform": {"position": [5.38, 5.2, 4.95], "rotation": [0, 1.5708, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "swinging-panel", "pivot": {"mode": "top-center", "localPosition": [0, 1.125, 0], "axis": [0, 0, 1], "confidence": 0.99}, "transformChannels": {"translate": false, "rotate": true, "scale": false, "visibility": true}},
+      "material": "green-paint",
+      "materialLayers": ["green-paint", "gold-metal", "timber-material"],
+      "localFeatures": ["gold-border", "crossed-swords"],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "form-refinement",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(24, 72, 51, 1.0)", "secondaryAlbedo": "rgba(207, 165, 62, 1.0)", "materialClass": "wood", "materialClassConfidence": 0.98}
+    },
+    {
+      "id": "quest-board",
+      "name": "Facade-mounted quest board",
+      "level": "meso",
+      "role": "facade-prop",
+      "importance": 0.9,
+      "confidence": 0.99,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "A rigid framed wood panel carries thin raised parchment sheets and pin heads.",
+      "geometryDescriptor": {"topologyIntent": "framed panel with layered paper solids", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.025, "segments": 1}, "deformationStack": ["small deterministic paper rotations"], "uvStrategy": "planar projection", "normalStrategy": "weighted frame and flat cards"},
+      "parent": "root",
+      "dimensions": {"width": 2.5, "height": 2.1, "depth": 0.28, "units": "world", "confidence": 0.98},
+      "transform": {"position": [3.65, 1.65, 3.54], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "detachable-prop", "pivot": {"mode": "base-center", "localPosition": [0, -1.05, 0], "axis": [0, 1, 0], "confidence": 0.97}, "transformChannels": {"translate": true, "rotate": true, "scale": false, "visibility": true}},
+      "material": "timber-material",
+      "materialLayers": ["timber-material", "parchment", "iron"],
+      "localFeatures": ["notices", "pins"],
+      "evidenceRefs": ["ref-main", "ref-front"],
+      "fidelityTier": "form-refinement",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(104, 73, 47, 1.0)", "secondaryAlbedo": "rgba(226, 211, 175, 1.0)", "materialClass": "wood", "materialClassConfidence": 0.98}
+    },
+    {
+      "id": "barrels",
+      "name": "Three-barrel facade cluster",
+      "level": "meso",
+      "role": "facade-prop",
+      "importance": 0.84,
+      "confidence": 0.99,
+      "primitive": "instanced-cluster",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Three rigid lathed staved vessels repeat at different sizes with separate projecting iron hoops.",
+      "geometryDescriptor": {"topologyIntent": "lathed bulged bodies with stave ridges and torus hoops", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.018, "segments": 1}, "deformationStack": ["controlled size variation"], "uvStrategy": "cylindrical projection", "normalStrategy": "smooth bodies and weighted hoop normals"},
+      "parent": "root",
+      "dimensions": {"width": 2.2, "height": 1.65, "depth": 1.15, "units": "world", "confidence": 0.98},
+      "transform": {"position": [-4.8, 0.82, 4.05], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "detachable-prop", "pivot": {"mode": "sole-center", "localPosition": [0, -0.82, 0], "axis": [0, 1, 0], "confidence": 0.97}, "transformChannels": {"translate": true, "rotate": true, "scale": false, "visibility": true}},
+      "material": "timber-material",
+      "materialLayers": ["timber-material", "iron"],
+      "localFeatures": ["staves-and-hoops"],
+      "evidenceRefs": ["ref-main", "ref-front"],
+      "fidelityTier": "form-refinement",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(112, 76, 48, 1.0)", "secondaryAlbedo": "rgba(49, 48, 44, 1.0)", "materialClass": "wood", "materialClassConfidence": 0.99}
+    },
+    {
+      "id": "rear-wall",
+      "name": "Conservative rear wall continuation",
+      "level": "meso",
+      "role": "architecture",
+      "importance": 0.45,
+      "confidence": 0.72,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "The hidden rear is conservatively represented as rigid plaster infill and timber framing continued from the observed side construction.",
+      "geometryDescriptor": {"topologyIntent": "simplified rear plaster and frame shell", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.03, "segments": 1}, "deformationStack": [], "uvStrategy": "box projection", "normalStrategy": "weighted normals"},
+      "parent": "upper-front",
+      "dimensions": {"width": 12.1, "height": 3.35, "depth": 0.28, "units": "world", "confidence": 0.72},
+      "transform": {"position": [0, 0, -3.25], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.72}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "plaster-material",
+      "materialLayers": ["plaster-material", "timber-material"],
+      "localFeatures": [],
+      "evidenceRefs": ["ref-main", "ref-side"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(224, 214, 194, 1.0)", "secondaryAlbedo": "rgba(76, 50, 34, 1.0)", "materialClass": "ceramic", "materialClassConfidence": 0.74}
+    },
+    {
+      "id": "foundation-steps",
+      "name": "Stone plinth and entry steps",
+      "level": "meso",
+      "role": "architecture",
+      "importance": 0.65,
+      "confidence": 0.98,
+      "primitive": "box",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Countable beveled stone slabs form a continuous foundation ring and shallow front entry steps.",
+      "geometryDescriptor": {"topologyIntent": "beveled plinth blocks and step slabs", "edgeTreatment": {"type": "chamfer", "bevelRadius": 0.04, "segments": 1}, "deformationStack": [], "uvStrategy": "box projection", "normalStrategy": "weighted normals"},
+      "parent": "stone-base",
+      "dimensions": {"width": 12.8, "height": 0.35, "depth": 7.05, "units": "world", "confidence": 0.98},
+      "transform": {"position": [0, -1.72, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]},
+      "actionProfile": {"animationRole": "static-part", "pivot": {"mode": "sole-center", "localPosition": [0, -0.175, 0], "axis": [0, 1, 0], "confidence": 0.98}, "transformChannels": {"translate": false, "rotate": false, "scale": false, "visibility": true}},
+      "material": "stone-material",
+      "materialLayers": ["stone-material"],
+      "localFeatures": [],
+      "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+      "fidelityTier": "structural",
+      "colorMaterialRecipe": {"dominantAlbedo": "rgba(149, 141, 125, 1.0)", "secondaryAlbedo": "rgba(116, 109, 97, 1.0)", "materialClass": "stone", "materialClassConfidence": 0.98}
+    }
+  ],
+  "materials": [
+    {
+      "id": "hidden",
+      "name": "Invisible runtime carrier",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#000000",
+      "color": "#000000",
+      "qualityTier": "utility",
+      "opacity": {"base": 0.0},
+      "roughness": {"base": 1.0, "variation": 0.0, "map": "independent-constant"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "ambientOcclusion": {"cavityStrength": 0.0},
+      "localOverrides": []
+    },
+    {
+      "id": "stone-material",
+      "name": "Clean stylized ashlar stone",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#827A6B",
+      "color": "#827A6B",
+      "albedo": {"dominant": "#827A6B", "secondary": ["#71695C", "#9D9584"]},
+      "colorVariation": {"palette": ["#71695C", "#827A6B", "#9D9584"], "pattern": "restrained per-block", "amplitude": 0.09},
+      "roughness": {"base": 0.9, "variation": 0.06, "map": "independent-stone-face-field"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "normal": {"pattern": "very shallow stone face breakup", "strength": 0.08, "scale": 18},
+      "ambientOcclusion": {"cavityStrength": 0.42, "contactShadowBias": 0.35},
+      "localOverrides": [{"id": "cavity-darkening", "region": "mortar gaps and lowest course contacts", "dirtAmount": 0.12, "cavityBias": 0.9, "roughness": 0.95}]
+    },
+    {
+      "id": "mortar",
+      "name": "Recessed dark mortar",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#4F4A42",
+      "color": "#4F4A42",
+      "colorVariation": {"palette": ["#45413B", "#59544B"], "pattern": "uniform cavity block", "amplitude": 0.03},
+      "roughness": {"base": 0.98, "variation": 0.02, "map": "independent-mortar-field"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "ambientOcclusion": {"cavityStrength": 0.5},
+      "localOverrides": []
+    },
+    {
+      "id": "timber-material",
+      "name": "Dark clean beveled timber",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#4C3222",
+      "color": "#4C3222",
+      "albedo": {"dominant": "#4C3222", "secondary": ["#38251A", "#684831"]},
+      "colorVariation": {"palette": ["#38251A", "#4C3222", "#684831"], "pattern": "per-member value shift", "amplitude": 0.1},
+      "roughness": {"base": 0.78, "variation": 0.08, "map": "independent-lengthwise-field"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "normal": {"pattern": "broad lengthwise grain only", "strength": 0.1, "scale": 12},
+      "ambientOcclusion": {"cavityStrength": 0.3},
+      "wear": {"edgeWear": 0.08, "scratches": [], "chips": []},
+      "localOverrides": [{"id": "bevel-wear", "region": "exposed chamfer crests", "fadedMask": 0.06, "roughness": 0.7}]
+    },
+    {
+      "id": "plaster-material",
+      "name": "Warm ivory plaster",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#E2D8C3",
+      "color": "#E2D8C3",
+      "albedo": {"dominant": "#E2D8C3", "secondary": ["#D2C6AF", "#EEE6D5"]},
+      "colorVariation": {"palette": ["#D2C6AF", "#E2D8C3", "#EEE6D5"], "pattern": "bay-level warm variation", "amplitude": 0.05},
+      "roughness": {"base": 0.92, "variation": 0.04, "map": "independent-plaster-field"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "normal": {"pattern": "subtle trowel response", "strength": 0.05, "scale": 16},
+      "ambientOcclusion": {"cavityStrength": 0.18},
+      "localOverrides": [{"id": "warm-variation", "region": "alternating plaster bays", "fadedMask": 0.04, "roughness": 0.94}]
+    },
+    {
+      "id": "roof-material",
+      "name": "Clean terracotta roof tile",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#9D3B2B",
+      "color": "#9D3B2B",
+      "albedo": {"dominant": "#9D3B2B", "secondary": ["#7B2E24", "#B84B37"]},
+      "colorVariation": {"palette": ["#7B2E24", "#9D3B2B", "#B84B37"], "pattern": "regular per-row and per-tile alternation", "amplitude": 0.1},
+      "roughness": {"base": 0.82, "variation": 0.06, "map": "independent-fired-clay-field"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "normal": {"pattern": "tile overlap relief is geometric; micro response nearly flat", "strength": 0.04, "scale": 10},
+      "ambientOcclusion": {"cavityStrength": 0.32},
+      "localOverrides": [{"id": "tile-tone-variation", "region": "alternating deterministic tile modules", "fadedMask": 0.05, "roughness": 0.86}]
+    },
+    {
+      "id": "brick",
+      "name": "Stylized chimney brick",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#844433",
+      "color": "#844433",
+      "colorVariation": {"palette": ["#66362B", "#844433", "#985643"], "pattern": "staggered per-brick", "amplitude": 0.09},
+      "roughness": {"base": 0.9, "variation": 0.05, "map": "independent-brick-field"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "ambientOcclusion": {"cavityStrength": 0.34},
+      "localOverrides": [{"id": "cap-shadow", "region": "under chimney cap", "dirtAmount": 0.08, "cavityBias": 0.8, "roughness": 0.94}]
+    },
+    {
+      "id": "green-paint",
+      "name": "Deep green painted guild sign",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#184833",
+      "color": "#184833",
+      "colorVariation": {"palette": ["#123A2A", "#184833", "#245D43"], "pattern": "subtle center field variation", "amplitude": 0.05},
+      "roughness": {"base": 0.56, "variation": 0.06, "map": "independent-painted-wood-field"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "ambientOcclusion": {"cavityStrength": 0.18},
+      "localOverrides": [{"id": "shield-edge", "region": "clipped perimeter under gold frame", "roughness": 0.62, "fadedMask": 0.04}]
+    },
+    {
+      "id": "gold-metal",
+      "name": "Muted gold emblem and chains",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#CFA53E",
+      "color": "#CFA53E",
+      "colorVariation": {"palette": ["#AE812A", "#CFA53E", "#E2BF60"], "pattern": "raised crest highlight", "amplitude": 0.08},
+      "roughness": {"base": 0.38, "variation": 0.07, "map": "independent-metal-field"},
+      "metalness": {"base": 0.62, "variation": 0.06},
+      "ambientOcclusion": {"cavityStrength": 0.12},
+      "localOverrides": [{"id": "crest-polish", "region": "sword and border crests", "roughness": 0.26}]
+    },
+    {
+      "id": "iron",
+      "name": "Blackened iron hardware",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#2D2E2B",
+      "color": "#2D2E2B",
+      "colorVariation": {"palette": ["#242522", "#2D2E2B", "#42423D"], "pattern": "edge-only variation", "amplitude": 0.06},
+      "roughness": {"base": 0.52, "variation": 0.08, "map": "independent-forged-metal-field"},
+      "metalness": {"base": 0.72, "variation": 0.08},
+      "ambientOcclusion": {"cavityStrength": 0.2},
+      "localOverrides": [{"id": "handled-polish", "region": "ring pulls and bracket edges", "roughness": 0.31}]
+    },
+    {
+      "id": "parchment",
+      "name": "Warm parchment notices",
+      "type": "standard",
+      "shaderModel": "MeshStandardMaterial",
+      "baseColor": "#E2D3AF",
+      "color": "#E2D3AF",
+      "colorVariation": {"palette": ["#CBB98F", "#E2D3AF", "#EFE3C8"], "pattern": "per-sheet warm block", "amplitude": 0.1},
+      "roughness": {"base": 0.92, "variation": 0.04, "map": "independent-paper-field"},
+      "metalness": {"base": 0.0, "variation": 0.0},
+      "ambientOcclusion": {"cavityStrength": 0.1},
+      "localOverrides": [{"id": "ink-and-seals", "region": "paper centers and pin points", "linework": "abstract dark bars and one red wax dot", "roughness": 0.88}]
+    }
+  ],
+  "repetitionSystems": [
+    {"id": "ashlar-block-grid", "componentRef": "masonry-relief", "count": 92, "distribution": "staggered front, side, and rear courses with restrained deterministic width variation", "primitive": "shared beveled box modules"},
+    {"id": "arcade-column-row", "componentRef": "arcade-post-row", "count": 4, "distribution": "front facade supports aligned with lower bay boundaries", "primitive": "stepped square post assemblies"},
+    {"id": "half-timber-network", "componentRef": "upper-front", "count": 46, "distribution": "front six-bay grid plus side rectangular and triangular gable members", "primitive": "oriented beveled box members"},
+    {"id": "roof-tile-grid", "componentRef": "roof-relief", "count": 216, "distribution": "nine overlapping rows on each slope with regular staggered columns", "primitive": "shared thin beveled tile boxes"},
+    {"id": "chimney-brick-grid", "componentRef": "chimney", "count": 32, "distribution": "eight staggered brick courses on four visible faces", "primitive": "shared beveled brick modules"},
+    {"id": "door-plank-and-hardware-grid", "componentRef": "door-system", "count": 28, "distribution": "four leaves with vertical planks, paired strap hinges, rivets, and ring pulls", "primitive": "shared plank, strap, rivet, and torus modules"},
+    {"id": "sign-chain-links", "componentRef": "sign-rig", "count": 12, "distribution": "two short vertical runs with alternating torus orientation", "primitive": "shared torus links"},
+    {"id": "quest-notice-cluster", "componentRef": "quest-board", "count": 7, "distribution": "overlapping sheets with controlled size, tone, and rotation", "primitive": "thin paper solids"},
+    {"id": "barrel-stave-and-hoop-system", "componentRef": "barrels", "count": 45, "distribution": "three lathed barrels with twelve staves and three hoops each", "primitive": "lathed bodies, shared stave ridges, and torus hoops"}
+  ],
+  "buildPasses": [
+    {
+      "id": "blockout",
+      "goal": "Lock y=0 sole, +Z facade, rectangular two-storey mass, one closed gable prism, chimney, perpendicular sign, board, and barrel silhouettes.",
+      "componentRefs": [
+        "root",
+        "stone-base",
+        "upper-front",
+        "roof",
+        "chimney",
+        "guild-sign",
+        "quest-board",
+        "barrels"
+      ],
+      "acceptance": [
+        "Silhouette reads correctly without materials.",
+        "Quality contract has named all required macro feature groups before code generation.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "structural-pass",
+      "goal": "Build ashlar courses, front arcade depth, six-bay upper grid, side framing, gable infill, doors, and the attached sign rig.",
+      "componentRefs": [
+        "stone-base",
+        "masonry-relief",
+        "arcade",
+        "arcade-post-row",
+        "jetty-beam",
+        "upper-front",
+        "upper-side-walls",
+        "side-gables",
+        "door-system",
+        "sign-rig"
+      ],
+      "acceptance": [
+        "Macro, meso, and repeated structures meet qualityContract.minimumSpecDepth.",
+        "Parent-child relations, joints, seams, sockets, and contact points are explicit.",
+        "Every attached child appendage/connector has parentSocket, localStart/localEnd, contactType, embedDepth or overlap, and gapTolerance.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "form-refinement",
+      "goal": "Add clean chamfers, regular tile rows, ridge caps, brick courses, door hardware, shield border, crossed swords, notices, pins, staves, and hoops.",
+      "componentRefs": [
+        "roof-relief",
+        "chimney",
+        "door-system",
+        "guild-sign",
+        "quest-board",
+        "barrels",
+        "foundation-steps"
+      ],
+      "acceptance": [
+        "Important visible forms are represented in component geometryDescriptor, deformations, localFeatures, or repetitionSystems.",
+        "Endpoint-based child parts are rooted at their attachment sockets and do not visibly float away from parents.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "material-pass",
+      "goal": "Separate stylized stone, mortar, timber, plaster, terracotta, brick, green paint, gold, iron, and parchment under neutral light.",
+      "componentRefs": [
+        "stone-base",
+        "arcade",
+        "upper-front",
+        "roof",
+        "chimney",
+        "door-system",
+        "guild-sign",
+        "quest-board",
+        "barrels"
+      ],
+      "acceptance": [
+        "Reference-derived albedo palette records dominant, secondary, and accent colors per visible material.",
+        "Each important material defines roughness variation and at least one normal/bump/displacement response.",
+        "Local material overrides, dirt/wear/stains/moss/chips/scratches or equivalent masks are tied to evidenceRefs.",
+        "Thin, transparent, reflective, wet, or fibrous materials document alpha/transmission/clearcoat/metalness/fiber response when relevant.",
+        "Generated preview uses procedural albedo/roughness/bump texture or vertex color variation instead of one flat color.",
+        "Generated preview keeps albedo, roughness, normal intent, and AO logically independent even though the accepted stylized implementation uses scalar materials rather than image maps.",
+        "Reference crop PBR extraction remains intentionally disabled because flat stylized color blocks and geometric relief are the accepted fidelity target.",
+        "Macro, meso, and micro surface frequency bands are visible at the intended review distance without obvious tiling.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "surface-pass",
+      "goal": "Verify geometric seams and restrained local roughness/value variation without photoreal micro-noise.",
+      "componentRefs": [
+        "masonry-relief",
+        "arcade-post-row",
+        "roof-relief",
+        "chimney",
+        "door-system",
+        "guild-sign",
+        "quest-board",
+        "barrels"
+      ],
+      "acceptance": [
+        "Every required material feature group has local overrides or surfaceDetail tied to evidenceRefs.",
+        "A grazing-angle close-up proves that normal/height detail breaks highlights naturally and does not read as smooth plastic.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "lighting-pass",
+      "goal": "Make material and form readable under neutral turntable lighting plus optional reference lighting.",
+      "componentRefs": [
+        "root",
+        "roof",
+        "stone-base",
+        "upper-front",
+        "guild-sign",
+        "quest-board",
+        "barrels"
+      ],
+      "acceptance": [
+        "lightingFromPhoto identifies key light direction/color/intensity, fill light, rim or environment light, and ambient color.",
+        "Exposure, tone mapping, background color/gradient, shadow softness, and contact shadow behavior are specified.",
+        "Lighting does not hide geometry/material gaps and screenshots can be compared fairly to the reference.",
+        "Neutral, grazing, and reference-matched lighting checks distinguish material errors from lighting errors.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "interaction-pass",
+      "goal": "Expose stable door hinges, sign swing pivot, interaction sockets, colliders, and semantic destruction groups.",
+      "componentRefs": [
+        "root",
+        "door-system",
+        "sign-rig",
+        "guild-sign",
+        "quest-board",
+        "barrels"
+      ],
+      "acceptance": [
+        "Macro and movable meso components have stable pivot nodes.",
+        "Sockets, collider proxies, and destruction metadata are present for future runtime actions.",
+        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
+      ]
+    },
+    {
+      "id": "optimization-pass",
+      "goal": "Share repeated stone/tile geometry and materials while retaining the three-view silhouette and identity details.",
+      "componentRefs": [
+        "root",
+        "masonry-relief",
+        "roof-relief",
+        "arcade-post-row",
+        "chimney",
+        "barrels"
+      ],
+      "acceptance": [
+        "Triangle count, draw calls, instancing, LOD strategy, and FPS target are documented or verified.",
+        "Repeated detail is instanced or simplified where possible without breaking silhouette/material believability."
+      ]
+    }
+  ],
+  "visualEvidence": [],
+  "reviewHistory": [],
+  "lodPlan": [
+    {
+      "tier": "near",
+      "distance": 0,
+      "strategy": "full component tree and material layers"
+    },
+    {
+      "tier": "far",
+      "distance": 30,
+      "strategy": "merge static components and reduce local feature geometry"
+    }
+  ],
+  "performanceBudget": {
+    "qualityPriority": "stylized-reference",
+    "targetTriangles": 140000,
+    "maxDrawCalls": 220,
+    "textureSize": 0,
+    "fpsTarget": 60,
+    "optimizationPolicy": "Share repeated geometries and materials while preserving silhouette, tile rhythm, sign emblem, quest papers, and barrel detail."
+  },
+  "lightingFromPhoto": [
+    "Use a broad warm-neutral key light from upper-front-left at intensity near 2.2 with soft shadows to define roof slopes, chamfers, and timber relief.",
+    "Use a low-intensity cool-neutral fill light from rear-right near 0.45 so stone seams and recessed doors remain readable without flattening contrast.",
+    "Use a subtle hemisphere or rim/environment light near 0.7 to separate the roof and chimney silhouette from a neutral light-gray studio background.",
+    "Use ACES filmic tone mapping at exposure near 1.0 and a soft contact/ground shadow beneath the plinth, quest board, steps, and barrels."
+  ],
+  "proceduralStrategy": [
+    "Build one closed indexed triangular-prism roof mesh; never substitute two rotated box slabs.",
+    "Build the sole, masonry core, arcade, upper wall, side gables, chimney, doors, sign, board, and barrels as named action-ready groups.",
+    "Use shared deterministic repeated geometry for ashlar blocks, timber members, tile rows, bricks, planks, hardware, chains, papers, and barrel parts.",
+    "Use solid MeshStandardMaterial color families with restrained value variation and real geometric seams/chamfers; do not project or display reference photos.",
+    "Expose door hinge pivots, a sign swing pivot, sockets, primitive collider metadata, and material-boundary destruction groups."
+  ],
+  "animationAnchors": [
+    "root pivot node supports whole-object translation, rotation, scale, and visibility changes",
+    "component pivot groups support later local transforms without rebuilding geometry"
+  ],
+  "destructionAnchors": [
+    "actionProfile.destruction.fractureGroup marks detachable or breakable component sets",
+    "component seams and sockets define plausible break points instead of random explosions"
+  ],
+  "risks": []
+}

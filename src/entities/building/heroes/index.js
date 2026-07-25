@@ -22,7 +22,7 @@ export function createHeroBuilding(type) {
   const g = fn();
   if (g) {
     g.userData.heroMode = 'agent-gen';
-    g.userData.heroVersion = type === 'adventurersGuild' ? 'gen-guild-v1' : 'solid-v3';
+    g.userData.heroVersion = type === 'adventurersGuild' ? 'gen-guild-v2' : 'solid-v3';
   }
   return g;
 }

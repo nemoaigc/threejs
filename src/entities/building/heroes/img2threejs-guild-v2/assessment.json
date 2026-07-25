@@ -1,0 +1,451 @@
+{
+  "targetName": "Adventurers Guild v2",
+  "sourceImage": "public/content/buildings/adventurers_guild/ref_main.png",
+  "referenceSet": [
+    {
+      "id": "ref-main",
+      "path": "public/content/buildings/adventurers_guild/ref_main.png",
+      "view": "three-quarter-front",
+      "admitted": true,
+      "confidence": 0.99
+    },
+    {
+      "id": "ref-front",
+      "path": "public/content/buildings/adventurers_guild/ref_front.png",
+      "view": "front",
+      "admitted": true,
+      "confidence": 0.99
+    },
+    {
+      "id": "ref-side",
+      "path": "public/content/buildings/adventurers_guild/ref_side.png",
+      "view": "right-side",
+      "admitted": true,
+      "confidence": 0.98
+    }
+  ],
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "stylized half-timber adventurers guildhall",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "clean architectural hard-surface",
+        "stylized fantasy game prop",
+        "readable beveled color blocks"
+      ],
+      "structureKind": [
+        "compound object",
+        "layered architectural shell",
+        "repeated modules",
+        "action-ready hierarchy"
+      ],
+      "motionPotential": [
+        "static building prop",
+        "hinged doors",
+        "swinging perpendicular sign",
+        "detachable facade props",
+        "material-boundary destruction groups"
+      ],
+      "materialFamilies": [
+        "ashlar stone",
+        "dark stained timber",
+        "warm plaster",
+        "terracotta roof tile",
+        "brick",
+        "painted green wood",
+        "gold metal",
+        "black iron",
+        "parchment"
+      ],
+      "notes": "Three admitted views describe the same clean stylized game prop. The front view fixes six upper timber bays and two lower door bays; the right-side view fixes wall depth, the solid triangular gable profile, and the sign perpendicular to the facade. The hidden rear continues the observed construction system conservatively. This is an explicit stylized reconstruction, not photoreal or survey/manufacturing geometry."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 2,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 2,
+        "occlusionRisk": 1,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 5,
+        "mesoComponents": 17,
+        "microFeatureGroups": 20,
+        "materialLayers": 9,
+        "repetitionSystems": 8
+      },
+      "reasoning": [
+        "The macro silhouette is a two-storey rectangular hall, one closed gable-roof prism, a chimney, a perpendicular hanging sign, and facade props.",
+        "The facade and gable sides require separate stone courses, plaster panels, timber posts, rails, diagonal braces, arcade posts, and two door assemblies.",
+        "Identity depends on regular repeated systems: ashlar courses, roof tile rows, chimney bricks, timber bays, door planks, chain links, notice papers, and barrel staves/hoops.",
+        "Nine distinct color/material blocks must stay legible without photoreal micro-noise.",
+        "Three mutually distinct views reduce occlusion risk, but the rear elevation remains inferred and intentionally conservative."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "The simple outer building mass contains a dense, identity-bearing hierarchy. A shallow facade or pair of roof slabs would lose the solid gable, side evidence, timber depth, and prop systems."
+    },
+    "unknownsToResolveBeforeImplementation": [],
+    "detailInventory": {
+      "scanMethod": "grid-3x3 across three admitted views",
+      "targetMinDetails": 10,
+      "note": "Twenty observed detail systems are consolidated from the main, front, and side inventories. Every item maps to a component localFeature or material localOverride used by the sculpt spec.",
+      "details": [
+        {
+          "id": "solid-gable-volume",
+          "kind": "contour",
+          "description": "One continuous closed gable prism creates both roof slopes, the underside, and both triangular end caps.",
+          "region": {"x": 0.07, "y": 0.07, "width": 0.86, "height": 0.34, "units": "normalized"},
+          "scale": "macro",
+          "affects": "roof silhouette and side-view volume",
+          "mapsTo": {"type": "component.localFeatures", "ref": "roof/solid-gable-volume"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "tile-courses",
+          "kind": "ridge",
+          "description": "Regular overlapping terracotta tile rows step down both roof slopes.",
+          "region": {"x": 0.08, "y": 0.08, "width": 0.84, "height": 0.31, "units": "normalized"},
+          "scale": "meso repeated rows",
+          "affects": "roof relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "roof/tile-courses"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "ridge-caps",
+          "kind": "ridge",
+          "description": "A regular capped ridge follows the roof length and remains thicker than tile relief.",
+          "region": {"x": 0.13, "y": 0.08, "width": 0.72, "height": 0.08, "units": "normalized"},
+          "scale": "meso linear repeat",
+          "affects": "roof crest",
+          "mapsTo": {"type": "component.localFeatures", "ref": "roof/ridge-caps"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.93
+        },
+        {
+          "id": "chimney-brick-courses",
+          "kind": "seam",
+          "description": "The chimney has staggered red brick courses, recessed dark seams, a stone shoulder, and a projecting cap.",
+          "region": {"x": 0.66, "y": 0.02, "width": 0.16, "height": 0.18, "units": "normalized"},
+          "scale": "meso",
+          "affects": "chimney relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "chimney/brick-courses"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "ashlar-courses",
+          "kind": "seam",
+          "description": "Offset rectangular stone blocks create clean recessed mortar lines on front and side walls.",
+          "region": {"x": 0.08, "y": 0.58, "width": 0.84, "height": 0.30, "units": "normalized"},
+          "scale": "meso repeated grid",
+          "affects": "stone wall relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "stone-base/ashlar-courses"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "arcade-columns",
+          "kind": "bevel",
+          "description": "Front timber posts have clean chamfered shafts, stepped collars, broad capitals, and square stone feet.",
+          "region": {"x": 0.10, "y": 0.55, "width": 0.82, "height": 0.33, "units": "normalized"},
+          "scale": "meso repeated supports",
+          "affects": "arcade silhouette and depth",
+          "mapsTo": {"type": "component.localFeatures", "ref": "arcade/stepped-columns"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "front-half-timber",
+          "kind": "ridge",
+          "description": "Six front plaster bays are divided by raised posts, two rails, and alternating diagonal braces.",
+          "region": {"x": 0.10, "y": 0.34, "width": 0.81, "height": 0.25, "units": "normalized"},
+          "scale": "meso structural network",
+          "affects": "upper facade identity",
+          "mapsTo": {"type": "component.localFeatures", "ref": "upper-front/half-timber-grid"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "side-gable-bracing",
+          "kind": "ridge",
+          "description": "The right gable uses a central vertical, a collar beam, and mirrored diagonals over the rectangular side bays.",
+          "region": {"x": 0.24, "y": 0.09, "width": 0.55, "height": 0.50, "units": "normalized"},
+          "scale": "meso structural network",
+          "affects": "side elevation identity",
+          "mapsTo": {"type": "component.localFeatures", "ref": "side-gables/gable-bracing"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.99
+        },
+        {
+          "id": "door-plank-grooves",
+          "kind": "groove",
+          "description": "Two double doors are divided into narrow vertical planks by dark recessed seams.",
+          "region": {"x": 0.18, "y": 0.64, "width": 0.46, "height": 0.23, "units": "normalized"},
+          "scale": "micro linear repeat",
+          "affects": "door face relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "door-system/plank-grooves"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "door-iron-hardware",
+          "kind": "fastener",
+          "description": "Black strap hinges and circular ring pulls sit proud of both double doors.",
+          "region": {"x": 0.19, "y": 0.65, "width": 0.45, "height": 0.21, "units": "normalized"},
+          "scale": "micro repeated hardware",
+          "affects": "door contrast and depth",
+          "mapsTo": {"type": "component.localFeatures", "ref": "door-system/iron-hardware"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "sign-chain-links",
+          "kind": "fastener",
+          "description": "Two short gold chain runs suspend the sign from a black projecting arm.",
+          "region": {"x": 0.74, "y": 0.39, "width": 0.16, "height": 0.12, "units": "normalized"},
+          "scale": "micro repeated links",
+          "affects": "sign attachment and negative space",
+          "mapsTo": {"type": "component.localFeatures", "ref": "sign-rig/chain-links"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.98
+        },
+        {
+          "id": "sign-gold-border",
+          "kind": "ridge",
+          "description": "A raised gold inset border follows the clipped shield outline.",
+          "region": {"x": 0.60, "y": 0.43, "width": 0.16, "height": 0.23, "units": "normalized"},
+          "scale": "meso relief",
+          "affects": "sign face depth",
+          "mapsTo": {"type": "component.localFeatures", "ref": "guild-sign/gold-border"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "crossed-sword-relief",
+          "kind": "ridge",
+          "description": "Two gold swords with tapered blades, guards, grips, and pommels cross as raised geometry.",
+          "region": {"x": 0.61, "y": 0.47, "width": 0.14, "height": 0.16, "units": "normalized"},
+          "scale": "meso emblem",
+          "affects": "primary guild identity",
+          "mapsTo": {"type": "component.localFeatures", "ref": "guild-sign/crossed-swords"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "quest-notices",
+          "kind": "decal",
+          "description": "Varied parchment sheets overlap across the board with simple ink linework.",
+          "region": {"x": 0.66, "y": 0.68, "width": 0.19, "height": 0.14, "units": "normalized"},
+          "scale": "micro paper cluster",
+          "affects": "quest-board identity",
+          "mapsTo": {"type": "component.localFeatures", "ref": "quest-board/notices"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.98
+        },
+        {
+          "id": "quest-board-pins",
+          "kind": "fastener",
+          "description": "Small colored pins and one red wax seal punctuate the paper cluster.",
+          "region": {"x": 0.68, "y": 0.69, "width": 0.16, "height": 0.12, "units": "normalized"},
+          "scale": "micro",
+          "affects": "notice attachment relief",
+          "mapsTo": {"type": "component.localFeatures", "ref": "quest-board/pins"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.93
+        },
+        {
+          "id": "barrel-staves-hoops",
+          "kind": "ridge",
+          "description": "Three bulged wooden barrels use alternating staves and three dark iron hoops.",
+          "region": {"x": 0.10, "y": 0.73, "width": 0.23, "height": 0.19, "units": "normalized"},
+          "scale": "meso repeated props",
+          "affects": "barrel silhouette and material contrast",
+          "mapsTo": {"type": "component.localFeatures", "ref": "barrels/staves-and-hoops"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.99
+        },
+        {
+          "id": "timber-edge-treatment",
+          "kind": "bevel",
+          "description": "Timber beams use small clean chamfers that catch broad studio highlights.",
+          "region": {"x": 0.10, "y": 0.34, "width": 0.81, "height": 0.54, "units": "normalized"},
+          "scale": "micro edge treatment",
+          "affects": "timber highlight response",
+          "mapsTo": {"type": "material.localOverrides", "ref": "timber-material/bevel-wear"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.93
+        },
+        {
+          "id": "stone-cavity-darkening",
+          "kind": "stain",
+          "description": "Mortar gaps are slightly darker than stone faces without noisy surface grain.",
+          "region": {"x": 0.08, "y": 0.58, "width": 0.84, "height": 0.30, "units": "normalized"},
+          "scale": "micro-to-meso cavities",
+          "affects": "stone albedo and AO response",
+          "mapsTo": {"type": "material.localOverrides", "ref": "stone-material/cavity-darkening"},
+          "evidenceRef": "ref-side",
+          "confidence": 0.95
+        },
+        {
+          "id": "plaster-warm-variation",
+          "kind": "stain",
+          "description": "Plaster remains warm ivory with restrained bay-to-bay value variation.",
+          "region": {"x": 0.11, "y": 0.35, "width": 0.79, "height": 0.24, "units": "normalized"},
+          "scale": "macro color blocks",
+          "affects": "plaster albedo",
+          "mapsTo": {"type": "material.localOverrides", "ref": "plaster-material/warm-variation"},
+          "evidenceRef": "ref-front",
+          "confidence": 0.96
+        },
+        {
+          "id": "tile-tone-variation",
+          "kind": "stain",
+          "description": "Tile rows alternate among a restrained red-terracotta palette; no random micro-noise is visible.",
+          "region": {"x": 0.08, "y": 0.08, "width": 0.84, "height": 0.31, "units": "normalized"},
+          "scale": "meso per-tile color variation",
+          "affects": "roof albedo and roughness",
+          "mapsTo": {"type": "material.localOverrides", "ref": "roof-material/tile-tone-variation"},
+          "evidenceRef": "ref-main",
+          "confidence": 0.98
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {
+        "headUnit": 0.0,
+        "torso": 0.0,
+        "legs": 0.0,
+        "shoulderWidth": 0.0,
+        "hipWidth": 0.0
+      },
+      "pose": {
+        "type": "not-applicable",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0.0,
+        "eyeSpacing": 0.0,
+        "noseBase": 0.0,
+        "mouthLine": 0.0,
+        "hairline": 0.0
+      },
+      "features": [],
+      "confidence": 1.0,
+      "note": "Not a character or hybrid subject."
+    },
+    "sourceImage": "public/content/buildings/adventurers_guild/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The model reads immediately as the same clean stylized fantasy guild from front, side, and three-quarter views.",
+      "The building has one closed solid gable-roof prism with a regular relief tile system; two rotated slab roofs are prohibited.",
+      "Stone base, front timber arcade, half-timber upper floor, red tile roof, chimney, perpendicular green sword sign, quest board, and three barrels remain separately readable.",
+      "The factory returns an action-ready THREE.Group with facade +Z and the lowest visible geometry exactly at y=0.",
+      "All materials are MeshStandardMaterial or MeshToonMaterial color blocks with restrained roughness variation and no facade photo, projected photo, or texture billboard."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 5,
+      "mesoComponents": 14,
+      "microFeatureGroups": 10,
+      "materialLayers": 8,
+      "repetitionSystems": 6,
+      "reviewViewpoints": 3
+    },
+    "featureGroups": [
+      {
+        "id": "solid-roof-and-massing",
+        "name": "Solid gable roof and rectangular hall massing",
+        "required": true,
+        "qualityCriteria": [
+          "One closed prism supplies both slopes, underside, and gable caps.",
+          "The width, depth, eave, ridge, and chimney proportions agree across all three views."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+        "failureModes": ["two rotated roof slabs", "extra front cross-gable", "flat side or open roof"]
+      },
+      {
+        "id": "stone-timber-structure",
+        "name": "Stone base, front arcade, and half-timber structure",
+        "required": true,
+        "qualityCriteria": [
+          "Ashlar courses, arcade supports, upper plaster panels, and raised beams remain separate depth layers.",
+          "Front bay spacing and side gable bracing match their orthographic references."
+        ],
+        "evidenceRefs": ["ref-front", "ref-side"],
+        "failureModes": ["painted timber grid", "missing arcade depth", "generic blank side wall"]
+      },
+      {
+        "id": "guild-sign-system",
+        "name": "Perpendicular green guild sign",
+        "required": true,
+        "qualityCriteria": [
+          "The bracket projects beyond the facade and the sign face is perpendicular to the facade.",
+          "The green clipped shield, gold border, two suspension chains, and raised crossed swords remain readable."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+        "failureModes": ["sign parallel to facade", "flat texture emblem", "floating chain attachment"]
+      },
+      {
+        "id": "facade-props",
+        "name": "Doors, quest board, and barrels",
+        "required": true,
+        "qualityCriteria": [
+          "Two double doors include plank seams, strap hinges, and ring pulls.",
+          "Quest papers and pins remain legible beside a three-barrel staved cluster."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front"],
+        "failureModes": ["missing props", "plain cylinders for barrels", "blank quest board"]
+      },
+      {
+        "id": "clean-stylized-materials",
+        "name": "Clean stylized material separation",
+        "required": true,
+        "qualityCriteria": [
+          "Stone, timber, plaster, terracotta, brick, green paint, gold, iron, and parchment stay distinct under neutral light.",
+          "Chamfers and geometric seams carry detail; random photoreal grain and photo-derived billboards are absent."
+        ],
+        "evidenceRefs": ["ref-main", "ref-front", "ref-side"],
+        "failureModes": ["flat unlit color", "photoreal micro-noise", "materials collapse into similar values"]
+      }
+    ],
+    "visualDeltaChecks": [
+      "single roof prism silhouette and side gable slope",
+      "wall-to-roof height and width-to-depth ratios",
+      "front six-bay timber spacing and side gable bracing",
+      "perpendicular sign projection, shield shape, and crossed swords",
+      "door, quest-board, and barrel placement",
+      "clean material color-block separation"
+    ],
+    "antiShallowSpecRules": [
+      "Reject two-slab or open gable roofs.",
+      "Reject the older extra front cross-gable composition.",
+      "Reject facade photo planes, projected reference photos, and billboard substitutes.",
+      "Reject unmapped inventory entries and generic feature review targets.",
+      "Reject a sign without a complete wall/bracket/chain attachment contract.",
+      "Reject material families without independent albedo, roughness, tactile relief intent, and local overrides.",
+      "Reference PBR extraction is intentionally omitted because the accepted target is clean stylized flat-color game-prop material, not patterned/photoreal material recovery; use solid albedo plus procedural geometry and independent scalar PBR response."
+    ],
+    "referencePbrLimitation": "The user explicitly accepts stylized reconstruction and prohibits photoreal micro-noise. The references show largely flat, clean material blocks. Therefore reference crop textures and inferred PBR maps are intentionally not used; important relief is geometric, colors are solid sampled families, and roughness/normal/AO intent stays independent."
+  },
+  "authoringInstruction": "Assessment filled from all three admitted views. Generate the sculpt spec from this completed contract."
+}
