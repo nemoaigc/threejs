@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { createNoise3D } from 'simplex-noise';
 import groundUrl from './assets/ground.png';
 import { MUSHOKU_SLICE_P0 } from './layouts/mushoku-slice-p0.js';
+import { createHeroBuilding } from './entities/building/heroes/index.js';
 
 // Toy planet large enough for a readable town pad, small enough to read as a globe.
 export const PLANET_RADIUS = 2.6;
@@ -1794,11 +1795,11 @@ function buildByType(type, place, assets) {
     case 'well':
       return createWell();
     case 'adventurersGuild':
-      return createAdventurersGuild();
+      return createHeroBuilding('adventurersGuild') || createAdventurersGuild();
     case 'temple':
-      return createTemple();
+      return createHeroBuilding('temple') || createTemple();
     case 'inn':
-      return createInn();
+      return createHeroBuilding('inn') || createInn();
     case 'shopMagic':
       return createMagicShop();
     case 'shopSmithy':

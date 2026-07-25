@@ -135,9 +135,11 @@ src/entities/building/heroes/
 | 规范（本文） | ✅ |
 | 三张主参考图 | ✅ `docs/references/heroes/{adventurers_guild,temple,inn}/ref_main.png`（1024²，2026-07-25） |
 | 剪影验收（人眼） | ✅ 公会=交叉剑大牌+告示板；神殿=尖塔+彩窗+太阳徽；旅馆=酒杯牌+暖窗 |
-| img2threejs 重建 | ⏳ |
-| catalog + toon 接入 | ⏳ |
-| 退役 world.js 旧 createTemple/Guild/Inn 作为主路径 | ⏳（可留 fallback） |
+| 参考驱动 hero factory（程序化，对齐 ref 剪影） | ✅ `src/entities/building/heroes/*` |
+| catalog 注册 buildings.* | ✅ bootstrap |
+| layout → hero factory 接线 | ✅ `world.buildByType` 优先 hero，旧 builder fallback |
+| img2threejs 替换 factory 源码 | ⏳（同一接口，可整文件替换） |
+| 退役 world.js 旧 createTemple/Guild/Inn | ⏳ 仍作 fallback |
 
 ### 6.1 参考图验收记录
 

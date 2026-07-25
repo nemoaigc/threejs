@@ -18,6 +18,17 @@ export function bootstrapContent() {
     actorFactory({ ...hunterManifest, ...m, id: 'actors.hunter_f' }),
   );
 
+  // Hero buildings (layout types still drive placement; catalog ids for direct spawn)
+  register('buildings.adventurers_guild', (m) =>
+    buildingFactory({ ...m, id: 'buildings.adventurers_guild', heroType: 'adventurersGuild' }),
+  );
+  register('buildings.temple', (m) =>
+    buildingFactory({ ...m, id: 'buildings.temple', heroType: 'temple' }),
+  );
+  register('buildings.inn', (m) =>
+    buildingFactory({ ...m, id: 'buildings.inn', heroType: 'inn' }),
+  );
+
   // Placeholders so listIds() shows the pipeline surface area.
   register('animals._template', animalFactory);
   register('buildings._template', buildingFactory);
