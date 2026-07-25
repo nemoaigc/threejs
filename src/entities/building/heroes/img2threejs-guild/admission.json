@@ -1,1 +1,14 @@
-ADMITTED  (reference)  pHash=17275686437299317031
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "reference-three-quarter-front",
+    "sourcePath": "/Users/nemo/Documents/personal/mushoku-tensei/public/content/buildings/adventurers_guild/ref_main.png",
+    "width": 1024,
+    "height": 1024,
+    "foregroundCoverage": 0.5206,
+    "largestComponentFraction": 1.0,
+    "pHash": 17275686437299317031,
+    "duplicateOfHash": null
+  }
+}
