@@ -1812,14 +1812,26 @@ function buildByType(type, place, assets) {
       if (!h) throw new Error('[layout] hero inn failed');
       return h;
     }
-    case 'shopMagic':
-      return createMagicShop();
-    case 'shopSmithy':
-      return createSmithy();
-    case 'shopGeneral':
-      return createGeneralShop();
-    case 'carriageStop':
-      return createCarriageStop();
+    case 'shopMagic': {
+      const h = createHeroBuilding('shopMagic');
+      if (!h) throw new Error('[layout] hero shopMagic failed');
+      return h;
+    }
+    case 'shopSmithy': {
+      const h = createHeroBuilding('shopSmithy');
+      if (!h) throw new Error('[layout] hero shopSmithy failed');
+      return h;
+    }
+    case 'shopGeneral': {
+      const h = createHeroBuilding('shopGeneral');
+      if (!h) throw new Error('[layout] hero shopGeneral failed');
+      return h;
+    }
+    case 'carriageStop': {
+      const h = createHeroBuilding('carriageStop');
+      if (!h) throw new Error('[layout] hero carriageStop failed');
+      return h;
+    }
     case 'questBoard':
       return createQuestBoard();
     case 'skylineKeep':
