@@ -1,5 +1,5 @@
 export {
   createGeneralShopModel,
-  createGeneralShopModel as createGeneralShopHero,
+  createGeneralShopHero,
   createGeneralShopModel as default,
-} from './village_shops_v1.js';
+} from './img2threejs-general_shop-v1/createGeneralShopModel.js';

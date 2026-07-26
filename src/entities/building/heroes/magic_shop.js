@@ -2,4 +2,4 @@ export {
   createMagicShopModel,
   createMagicShopModel as createMagicShopHero,
   createMagicShopModel as default,
-} from './village_shops_v1.js';
+} from './img2threejs-magic_shop-v1/createMagicShopModel.js';
