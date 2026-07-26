@@ -5,6 +5,7 @@ import { createNoise3D } from 'simplex-noise';
 import groundUrl from './assets/ground.png';
 import { MUSHOKU_SLICE_P0 } from './layouts/mushoku-slice-p0.js';
 import { createHeroBuilding } from './entities/building/heroes/index.js';
+import { createProp } from './entities/props/index.js';
 import {
   createMeadowGround,
   createRoadTile as createEnvRoadTile,
@@ -1791,11 +1792,13 @@ function scatterAround(plant, factory, count, { minR = 5, maxR = 28, scale = [0.
  * Layout data lives in src/layouts/* — change coords there, not scatter math.
  */
 function buildByType(type, place, assets) {
+  // Street-dressing props (batch kit) — before hero switch
+  const prop = createProp(type);
+  if (prop) return prop;
+
   switch (type) {
     case 'plaza':
       return createPlazaPad(place.footprintWxD?.[0] ?? MUSHOKU_SLICE_P0.meta.plazaSize);
-    case 'well':
-      return createWell();
     case 'adventurersGuild': {
       // No legacy fallback — if hero fails we want a loud error, not silent old boxes
       const h = createHeroBuilding('adventurersGuild');
@@ -1832,8 +1835,6 @@ function buildByType(type, place, assets) {
       if (!h) throw new Error('[layout] hero carriageStop failed');
       return h;
     }
-    case 'questBoard':
-      return createQuestBoard();
     case 'skylineKeep':
       return createSkylineKeep(place.variant ?? 0);
     case 'cottageSilhouette':
@@ -1841,8 +1842,6 @@ function buildByType(type, place, assets) {
       // Prefer real house GLBs over procedural silhouettes
       if (assets?.gltfHouse) return assets.gltfHouse();
       return createCottageSilhouette();
-    case 'streetLight':
-      return createStreetLight();
     case 'tree':
       return assets?.treePick ? assets.treePick() : createBush();
     default:
@@ -1862,6 +1861,10 @@ function populateFromLayout(plant, layout, assets = {}, { maxR = 55 } = {}) {
 
   for (const road of layout.roads ?? []) {
     if (!inRange(road.x0, road.z0) && !inRange(road.x1, road.z1)) continue;
+    const dx = (road.x1 ?? 0) - (road.x0 ?? 0);
+    const dz = (road.z1 ?? 0) - (road.z0 ?? 0);
+    // Predominantly NS roads yield the junction to EW (kills double-bed z-fight)
+    const yieldCross = Math.abs(dx) < Math.abs(dz) * 0.35;
     plantRoadLine(plant, {
       x0: road.x0,
       z0: road.z0,
@@ -1869,6 +1872,8 @@ function populateFromLayout(plant, layout, assets = {}, { maxR = 55 } = {}) {
       z1: road.z1,
       width: road.width ?? 5.2,
       step: road.step ?? 5,
+      plazaClear: (layout.meta?.plazaSize ?? 12) * 0.55,
+      yieldCross,
     });
   }
 
@@ -1920,37 +1925,66 @@ function createRoadTile(length, width, _color = ROAD) {
   return createEnvRoadTile(length, width);
 }
 
-/** Segment a long road into short flat tiles so each sole can bury into the sphere. */
-function plantRoadLine(plant, { x0, z0, x1, z1, width = 5.2, step = 5.5, color = ROAD }) {
+/**
+ * Segment a long road into short flat tiles.
+ * CRITICAL: tiles must NOT overlap — overlapping bed tops cause ground z-fight flicker.
+ * Axis-aligned NS secondary roads yield the cross to EW (skip strip at z≈0).
+ */
+function plantRoadLine(plant, {
+  x0,
+  z0,
+  x1,
+  z1,
+  width = 5.2,
+  step = 5.5,
+  color = ROAD,
+  plazaClear = 6.4,
+  // When true, skip the EW cross strip (use on NS roads so only one bed owns the junction)
+  yieldCross = false,
+  crossHalf = null,
+} = {}) {
   const dx = x1 - x0;
   const dz = z1 - z0;
   const len = Math.hypot(dx, dz);
   if (len < 1e-4) return;
-  // Tile length along local X; face so local X follows the line.
   const faceYaw = Math.atan2(dz, dx);
+  const ux = dx / len;
+  const uz = dz / len;
+  // Exact partition: no 1.05× length overlap, tiny air gap at joints
   const n = Math.max(1, Math.ceil(len / step));
-  for (let i = 0; i <= n; i++) {
-    const t = i / n;
-    const x = x0 + dx * t;
-    const z = z0 + dz * t;
-    // keep a small clear pad at plaza centre for the character
-    if (Math.hypot(x, z) < 3.2) continue;
-    plant(createRoadTile(step * 1.05, width, color), x, z, faceYaw, 1);
+  const tileLen = len / n;
+  const gap = 0.04;
+  const meshLen = Math.max(0.5, tileLen - gap);
+  const halfCross = crossHalf ?? width * 0.55 + 0.4;
+
+  for (let i = 0; i < n; i++) {
+    const mid = (i + 0.5) * tileLen;
+    const x = x0 + ux * mid;
+    const z = z0 + uz * mid;
+    // Plaza pad — plaza mesh owns the centre
+    if (Math.hypot(x, z) < plazaClear) continue;
+    // Crossroad ownership: NS yields so EW bed is unique in the strip
+    if (yieldCross && Math.abs(z) < halfCross && Math.abs(x) < halfCross + tileLen * 0.5) {
+      continue;
+    }
+    plant(createRoadTile(meshLen, width, color), x, z, faceYaw, 1);
   }
 }
 
 function populateRoads(plant) {
-  // main cross — segmented
+  // main cross — segmented, NS yields junction
   plantRoadLine(plant, { x0: -34, z0: 0, x1: 34, z1: 0, width: 5.2, step: 5 });
-  plantRoadLine(plant, { x0: 0, z0: -34, x1: 0, z1: 34, width: 5.2, step: 5 });
-  // side streets
+  plantRoadLine(plant, {
+    x0: 0, z0: -34, x1: 0, z1: 34, width: 5.2, step: 5, yieldCross: true,
+  });
   for (const z of [-18, 18]) {
     plantRoadLine(plant, { x0: -28, z0: z, x1: 28, z1: z, width: 3.4, step: 5 });
   }
   for (const x of [-18, 18]) {
-    plantRoadLine(plant, { x0: x, z0: -24, x1: x, z1: 24, width: 3.4, step: 5 });
+    plantRoadLine(plant, {
+      x0: x, z0: -24, x1: x, z1: 24, width: 3.4, step: 5, yieldCross: true,
+    });
   }
-  // plaza ring of sidewalk tiles
   plant(createRoadTile(12, 12, SIDEWALK), 0, 0, 0, 1);
 }
 

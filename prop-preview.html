@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prop preview · img2threejs</title>
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #d9d3ca; }
+      canvas { display: block; }
+      #labels {
+        position: fixed;
+        left: 16px;
+        bottom: 16px;
+        z-index: 10;
+        color: #f5f2ed;
+        font: 13px/1.5 ui-sans-serif, system-ui, sans-serif;
+        background: rgba(24, 21, 18, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 10px;
+        padding: 12px 14px;
+        pointer-events: none;
+      }
+      #labels b { color: #ffd495; }
+    </style>
+  </head>
+  <body>
+    <div id="labels">加载中…</div>
+    <script type="module" src="/src/prop-preview.js"></script>
+  </body>
+</html>

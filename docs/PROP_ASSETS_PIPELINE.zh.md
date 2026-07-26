@@ -14,11 +14,11 @@
 
 ## Batch 01
 
-| ID | 场景类型 | 材质/装配覆盖 | 参考状态 |
-|---|---|---|---|
-| `props.village_well.v1` | `well` | 石砌、木构、瓦、卷扬、绳桶 | 三视图通过技术 admission |
-| `props.street_lantern.v1` | `streetLight` | 石座、锻铁、链条、灯笼笼架、发光芯 | 三视图通过技术 admission |
-| `props.handcart.v1` | `handcart` | 木板箱、铁箍、轮轴、辐条、把手 | 三视图通过技术 admission |
+| ID | 场景类型 | 层级 | 材质/装配覆盖 | 状态 |
+|---|---|---|---|---|
+| `props.village_well.v1` | `well` | Hero | 石砌、木构、80 片搭接瓦、卷扬、绳桶 | strict spec + 主/侧视图验收通过 |
+| `props.street_lantern.v1` | `streetLight` | Supporting | 石座、锻铁、链条、六面笼架、发光芯 | intake + 主/侧视图验收通过 |
+| `props.handcart.v1` | `handcart` | Supporting | 木板箱、铁箍、轮轴、24 根辐条、把手 | intake + 主/侧视图验收通过 |
 
 参考图位于 `docs/references/props/<asset>/`：
 
@@ -27,6 +27,8 @@
 - `ref_front.png`：正视/端视；
 - `ref_side.png`：侧视；
 - `PROMPT.md`：最终生成约束。
+
+实现数据与视觉评分见 `src/entities/props/models/BATCH01_RUN_LOG.md`；每件资产的 `compare/` 目录保存浏览器实拍和主参考对照图。
 
 ## 验收闸门
 

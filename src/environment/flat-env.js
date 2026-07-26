@@ -66,8 +66,12 @@ function boxMesh(parent, name, sx, sy, sz, x, y, z, material, { cast = true, rec
 
 // ─── Meadow ────────────────────────────────────────────────────────────────
 
-/** Rolling meadow with clear height — outer hills strong, centre gentler. */
-export function createMeadowGround(size = 200) {
+/**
+ * Rolling meadow with clear height — outer hills strong, centre gentler.
+ * Play corridors (roads / plaza) are forced flat & below road sole so grass
+ * never coplanar-fights volumetric road/plaza tops (z-fighting flash).
+ */
+export function createMeadowGround(size = 200, opts = {}) {
   const t = textures();
   const segs = 128;
   const geo = new THREE.PlaneGeometry(size, size, segs, segs);
@@ -75,13 +79,24 @@ export function createMeadowGround(size = 200) {
 
   const pos = geo.attributes.position;
   const playR = 36;
+  // Must stay under road embankment (~0) / bed top (~0.28)
+  const flatY = -0.12;
+  const roadHalf = opts.roadHalf ?? 3.4; // width/2 + shoulder bleed
+  const ewHalfLen = opts.ewHalfLen ?? 24;
+  const nsZ0 = opts.nsZ0 ?? -38;
+  const nsZ1 = opts.nsZ1 ?? 20;
+  const plazaR = opts.plazaR ?? 9.5;
+  const blend = 1.6; // soft edge so no cliff seam
+
+  // Three.js: MathUtils.smoothstep(x, min, max) — NOT GLSL (edge0, edge1, x)
+  const sm = (x, a, b) => THREE.MathUtils.smoothstep(x, a, b);
 
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i);
     const z = pos.getZ(i);
     const r = Math.hypot(x, z);
     // 0 centre → 1 far field
-    const far = THREE.MathUtils.smoothstep(playR * 0.35, playR * 1.5, r);
+    const far = sm(r, playR * 0.35, playR * 1.5);
     // Additive waves (not products) so hills actually reach full amplitude
     const n =
       Math.sin(x * 0.028 + 0.6) * 0.45 +
@@ -89,12 +104,30 @@ export function createMeadowGround(size = 200) {
       Math.sin((x + z) * 0.055 + 0.2) * 0.35 +
       Math.sin(x * 0.09 - z * 0.07) * 0.22 +
       Math.sin(z * 0.12 + x * 0.04) * 0.15;
-    // Centre: ~10–25 cm roll; outer: 0.8–1.6 m hills — must read from hero cam
-    const amp = 0.22 + far * 1.45;
+    // Outer hills only — play pad stays low so roads read thick
+    const amp = 0.08 + far * 1.55;
     const h = n * amp;
-    const micro = (hash2((x * 1.2) | 0, (z * 1.2) | 0) - 0.5) * (0.04 + far * 0.12);
-    // Sink base so raised roads/plaza stick up above grass
-    pos.setY(i, h + micro - 0.06);
+    const micro = (hash2((x * 1.2) | 0, (z * 1.2) | 0) - 0.5) * (0.02 + far * 0.12);
+    const yHill = h + micro - 0.08;
+
+    // Corridor mask: 1 = fully flattened under roads/plaza (kills grass↔road z-fight)
+    let mask = 0;
+    // plaza disk
+    mask = Math.max(mask, 1 - sm(r, plazaR - blend * 0.5, plazaR + blend));
+    // EW road strip (z≈0)
+    if (Math.abs(x) <= ewHalfLen + blend) {
+      const along = 1 - sm(Math.abs(x), ewHalfLen, ewHalfLen + blend);
+      const across = 1 - sm(Math.abs(z), roadHalf, roadHalf + blend);
+      mask = Math.max(mask, along * across);
+    }
+    // NS road strip (x≈0)
+    if (z >= nsZ0 - blend && z <= nsZ1 + blend) {
+      const along = sm(z, nsZ0 - blend, nsZ0) * (1 - sm(z, nsZ1, nsZ1 + blend));
+      const across = 1 - sm(Math.abs(x), roadHalf, roadHalf + blend);
+      mask = Math.max(mask, along * across);
+    }
+
+    pos.setY(i, THREE.MathUtils.lerp(yHill, flatY, THREE.MathUtils.clamp(mask, 0, 1)));
   }
   pos.needsUpdate = true;
   geo.computeVertexNormals();
@@ -103,10 +136,17 @@ export function createMeadowGround(size = 200) {
   for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 12, uv.getY(i) * 12);
   uv.needsUpdate = true;
 
-  const mesh = new THREE.Mesh(geo, mat(0x7ec85a, t.grass));
+  const grassMat = mat(0x7ec85a, t.grass);
+  // Push grass slightly behind coplanar props in the depth buffer
+  grassMat.polygonOffset = true;
+  grassMat.polygonOffsetFactor = 1;
+  grassMat.polygonOffsetUnits = 4;
+
+  const mesh = new THREE.Mesh(geo, grassMat);
   mesh.name = 'meadow_ground';
   mesh.receiveShadow = true;
-  mesh.castShadow = true; // hills cast — sells volume
+  // No cast — large wavy plane self-shadows / acne-flickers under the sun cascade
+  mesh.castShadow = false;
   mesh.userData.volumetric = true;
   return noOutline(mesh);
 }
@@ -151,14 +191,19 @@ export function createDirtRoadTile(length, width) {
   const topY = embankH + bedH; // ~0.28
   const wallH = topY; // full vertical face height
 
-  // 1) Wide embankment (earth under road)
-  boxMesh(g, 'embankment', L, embankH, W * 1.65, 0, embankH * 0.5, 0, dirtSide, {
+  // Slight depth bias on coplanar-ish top faces (adjacent tiles / apron)
+  dirtTop.polygonOffset = true;
+  dirtTop.polygonOffsetFactor = -1;
+  dirtTop.polygonOffsetUnits = -1;
+
+  // 1) Wide embankment (earth under road) — inset so consecutive tiles don't coplanar-fight
+  boxMesh(g, 'embankment', L * 0.99, embankH, W * 1.65, 0, embankH * 0.5, 0, dirtSide, {
     cast: true,
     receive: true,
   });
 
-  // 2) Main raised bed (lighter top)
-  boxMesh(g, 'bed', L * 0.995, bedH, W, 0, embankH + bedH * 0.5, 0, dirtTop, {
+  // 2) Main raised bed (lighter top) — length already gapped by plantRoadLine
+  boxMesh(g, 'bed', L, bedH, W, 0, embankH + bedH * 0.5, 0, dirtTop, {
     cast: true,
     receive: true,
   });

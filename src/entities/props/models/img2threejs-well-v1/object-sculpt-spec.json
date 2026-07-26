@@ -1,0 +1,2075 @@
+{
+  "targetName": "Village Well v1",
+  "targetId": "village-well-v1",
+  "schemaVersion": "2.1",
+  "sourceImage": "docs/references/props/village_well/ref_main.png",
+  "suitability": "conditional",
+  "scores": {
+    "object_isolation": 3,
+    "silhouette_readability": 3,
+    "depth_inference": 3,
+    "primitive_decomposition": 3,
+    "material_procedurality": 3,
+    "occlusion_risk": 1,
+    "interaction_fit": 3
+  },
+  "coordinateFrame": {
+    "front": "+Z is the crank-visible facade",
+    "up": "+Y",
+    "right": "+X",
+    "sole": "lowest visible masonry at y=0",
+    "scaleReference": "2.97m wide, 3.91m high, 2.47m deep"
+  },
+  "silhouette": {
+    "boundingShape": "wide circular stone drum below a narrow timber gantry and broad gable canopy",
+    "aspectRatios": [
+      "width:height 0.76",
+      "roof:well width 1.26"
+    ],
+    "symmetry": "bilateral timber and roof symmetry; crank creates deliberate +X asymmetry",
+    "dominantCurves": [
+      "circular well rim",
+      "barrel-tile roof ridges",
+      "rope and bucket handle"
+    ],
+    "negativeSpaces": [
+      "deep well opening",
+      "open gantry bay",
+      "gable triangles",
+      "space around hanging bucket"
+    ],
+    "landmarks": [
+      "projecting ashlar rim",
+      "red tiled canopy",
+      "riveted windlass",
+      "offset crank",
+      "hanging black bucket"
+    ]
+  },
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "architectural village prop",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "hard-surface",
+        "architectural",
+        "mechanical",
+        "fiber-strand"
+      ],
+      "structureKind": [
+        "compound object",
+        "branching hierarchy",
+        "repeated modules",
+        "articulated assembly"
+      ],
+      "motionPotential": [
+        "static prop",
+        "articulated windlass",
+        "detachable bucket"
+      ],
+      "materialFamilies": [
+        "stone",
+        "wood",
+        "ceramic",
+        "metal",
+        "rope",
+        "water"
+      ],
+      "notes": "Rear joinery is inferred by symmetry from admitted main/front/side references."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 2,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 2,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 4,
+        "mesoComponents": 8,
+        "microFeatureGroups": 10,
+        "materialLayers": 7,
+        "repetitionSystems": 6
+      },
+      "reasoning": [
+        "Four independent silhouette systems are visible.",
+        "Stone courses, rim blocks, roof tiles, ridge caps, rope coils and rivets require deterministic repetition.",
+        "The windlass, crank and bucket need stable runtime nodes and sockets."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex architectural repetition and mechanical attachment coexist in one foreground prop."
+    },
+    "unknownsToResolveBeforeImplementation": [],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {
+          "id": "well-detail-ashlar",
+          "kind": "bevel",
+          "description": "Broad irregular ashlar chamfers",
+          "region": {
+            "x": 0.08,
+            "y": 0.52,
+            "width": 0.84,
+            "height": 0.45,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "stone silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.stone-ring.chamfered-ashlar"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.98
+        },
+        {
+          "id": "well-detail-rim",
+          "kind": "bevel",
+          "description": "Projecting rim blocks with deeper chamfers",
+          "region": {
+            "x": 0.08,
+            "y": 0.5,
+            "width": 0.84,
+            "height": 0.18,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "opening silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.rim-blocks.projecting-rim-chamfers"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.98
+        },
+        {
+          "id": "well-detail-stone-palette",
+          "kind": "stain",
+          "description": "Warm alternating limestone values and cavity contacts",
+          "region": {
+            "x": 0.08,
+            "y": 0.5,
+            "width": 0.84,
+            "height": 0.47,
+            "units": "normalized"
+          },
+          "scale": "macro",
+          "affects": "stone albedo",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "stone.course-palette"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.93
+        },
+        {
+          "id": "well-detail-tile-courses",
+          "kind": "ridge",
+          "description": "Overlapping barrel-tile highlight ridges",
+          "region": {
+            "x": 0.03,
+            "y": 0.02,
+            "width": 0.92,
+            "height": 0.34,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "roof relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.roof.tile-courses"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.97
+        },
+        {
+          "id": "well-detail-ridge-caps",
+          "kind": "ridge",
+          "description": "Overlapping round ridge caps",
+          "region": {
+            "x": 0.25,
+            "y": 0.0,
+            "width": 0.55,
+            "height": 0.16,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "roof peak",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.roof.ridge-caps"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.94
+        },
+        {
+          "id": "well-detail-pegs",
+          "kind": "fastener",
+          "description": "Iron plates with raised bolts pin the timber",
+          "region": {
+            "x": 0.18,
+            "y": 0.28,
+            "width": 0.7,
+            "height": 0.46,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "frame joints",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.timber-frame.iron-plates-and-bolts"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.92
+        },
+        {
+          "id": "well-detail-wood-wear",
+          "kind": "stain",
+          "description": "Darker joints and lighter worn oak edges",
+          "region": {
+            "x": 0.2,
+            "y": 0.15,
+            "width": 0.68,
+            "height": 0.62,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "oak response",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "oak.joint-and-edge-wear"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.9
+        },
+        {
+          "id": "well-detail-rope-coils",
+          "kind": "ridge",
+          "description": "Seven proud rope coils wrap the drum",
+          "region": {
+            "x": 0.32,
+            "y": 0.35,
+            "width": 0.35,
+            "height": 0.14,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "windlass relief",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.windlass.rope-coils"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.99
+        },
+        {
+          "id": "well-detail-windlass-bands",
+          "kind": "fastener",
+          "description": "Riveted iron end bands",
+          "region": {
+            "x": 0.22,
+            "y": 0.33,
+            "width": 0.57,
+            "height": 0.18,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "windlass identity",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.windlass.riveted-iron-bands"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.98
+        },
+        {
+          "id": "well-detail-crank",
+          "kind": "contour",
+          "description": "Stepped forged crank and oak grip",
+          "region": {
+            "x": 0.73,
+            "y": 0.37,
+            "width": 0.25,
+            "height": 0.2,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "right silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.windlass.offset-crank"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.97
+        },
+        {
+          "id": "well-detail-bucket-bands",
+          "kind": "ridge",
+          "description": "Bucket top/bottom rings and arched handle",
+          "region": {
+            "x": 0.4,
+            "y": 0.47,
+            "width": 0.25,
+            "height": 0.2,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "bucket silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.bucket.bands-and-handle"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.96
+        },
+        {
+          "id": "well-detail-inner-cavity",
+          "kind": "hole",
+          "description": "True deep shaft with recessed water",
+          "region": {
+            "x": 0.24,
+            "y": 0.5,
+            "width": 0.52,
+            "height": 0.23,
+            "units": "normalized"
+          },
+          "scale": "macro",
+          "affects": "negative space",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "well.stone-ring.deep-shaft-cavity"
+          },
+          "evidenceRef": "ref-main",
+          "confidence": 0.94
+        }
+      ]
+    }
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "Three-quarter and side renders read as the same village well: individual ashlar ring, deep opening, timber gantry, tiled canopy, riveted windlass, crank, rope and bucket.",
+      "All child systems visibly contact their parent and the visible sole remains at y=0."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 4,
+      "mesoComponents": 8,
+      "microFeatureGroups": 10,
+      "materialLayers": 7,
+      "repetitionSystems": 6,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "well-silhouette",
+        "name": "Stone drum, gantry and canopy silhouette",
+        "required": true,
+        "qualityCriteria": [
+          "Circular lower mass, open bay and broad gable are all legible."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-side"
+        ],
+        "failureModes": [
+          "reads as a generic cylinder with roof",
+          "roof or ring proportions dominate incorrectly"
+        ]
+      },
+      {
+        "id": "masonry-opening",
+        "name": "Ashlar masonry and true opening",
+        "required": true,
+        "qualityCriteria": [
+          "Individual courses and deep negative space remain visible."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ],
+        "failureModes": [
+          "one smooth cylinder",
+          "dark decal instead of cavity"
+        ]
+      },
+      {
+        "id": "roof-frame",
+        "name": "Timber gable frame and tile system",
+        "required": true,
+        "qualityCriteria": [
+          "A-frame contacts, roof shell, tile courses and ridge caps are structurally readable."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-side"
+        ],
+        "failureModes": [
+          "floating roof",
+          "two blank slabs with no tile relief"
+        ]
+      },
+      {
+        "id": "windlass-system",
+        "name": "Windlass, rope, crank and bucket",
+        "required": true,
+        "qualityCriteria": [
+          "Riveted bands, coil relief, hanging rope and offset crank remain distinct."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ],
+        "failureModes": [
+          "featureless log",
+          "floating bucket or crank"
+        ]
+      },
+      {
+        "id": "material-separation",
+        "name": "Stone, oak, clay, iron, rope and water separation",
+        "required": true,
+        "qualityCriteria": [
+          "Each family has distinct albedo/value and local response."
+        ],
+        "evidenceRefs": [
+          "ref-main",
+          "ref-side"
+        ],
+        "failureModes": [
+          "uniform plastic response",
+          "muddy low-contrast palette"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "silhouette and negative-space delta",
+      "roof/frame attachment delta",
+      "masonry repetition delta",
+      "windlass assembly delta",
+      "material family separation delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not replace the ring with one cylinder.",
+      "Do not replace the roof with two bare rotated slabs.",
+      "Do not omit the deep opening, crank, rope coil or bucket.",
+      "Do not use projected reference textures or billboards."
+    ]
+  },
+  "qualityTargets": {
+    "targetFidelity": 0.82,
+    "mustMatch": [
+      "macro silhouette",
+      "true well opening",
+      "tiled gable canopy",
+      "windlass/crank/bucket identity",
+      "warm material family separation"
+    ],
+    "niceToHave": [
+      "fine stone pits",
+      "subtle wood grain",
+      "water clearcoat"
+    ],
+    "fpsTarget": 60,
+    "reviewViewpoints": [
+      "three-quarter-front",
+      "straight-front",
+      "right-side",
+      "rear-three-quarter"
+    ]
+  },
+  "selfCorrectLoop": {
+    "enabled": true,
+    "visualAcceptance": {
+      "reviewer": "ai-vision",
+      "threshold": 0.72,
+      "comparisonArtifactRequired": true,
+      "layerScoresRequired": true,
+      "codePixelDiffIsAcceptanceAuthority": false,
+      "featureReviewPolicy": {
+        "enabled": true,
+        "reviewUnit": "semantic-subsystem",
+        "maxCriticalFeaturesPerPass": 5,
+        "maxImportantFeaturesPerPass": 3,
+        "criticalDefaultThreshold": 0.78,
+        "importantAverageThreshold": 0.68,
+        "adaptiveEscalation": true,
+        "singleImagePairOnly": true
+      }
+    },
+    "reviewAfterPasses": [
+      "blockout",
+      "structural-pass",
+      "form-refinement",
+      "material-pass",
+      "surface-pass",
+      "lighting-pass",
+      "interaction-pass"
+    ],
+    "allowedActions": [
+      "continue",
+      "refine-spec",
+      "refine-code",
+      "request-input",
+      "stop"
+    ],
+    "specRefineTriggers": [
+      "missing component",
+      "wrong primitive family",
+      "wrong proportions",
+      "missing attachment evidence"
+    ],
+    "codeRefineTriggers": [
+      "floating joint",
+      "silhouette mismatch",
+      "flat material response",
+      "browser render artifact"
+    ],
+    "stopCriteria": [
+      "target fidelity reached",
+      "remaining gaps require manual sculpting"
+    ]
+  },
+  "featureReviewTargets": [
+    {
+      "id": "well-silhouette",
+      "name": "Circular well, open gantry and gable canopy",
+      "tier": "critical",
+      "passIds": [
+        "blockout",
+        "structural-pass"
+      ],
+      "minimumScore": 0.8,
+      "mustPass": true,
+      "componentRefs": [
+        "well.stone-ring",
+        "well.timber-frame",
+        "well.roof"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "masonry-opening",
+      "name": "Individual ashlar and deep opening",
+      "tier": "critical",
+      "passIds": [
+        "structural-pass",
+        "form-refinement",
+        "surface-pass"
+      ],
+      "minimumScore": 0.8,
+      "mustPass": true,
+      "componentRefs": [
+        "well.stone-ring",
+        "well.rim-blocks",
+        "well.water"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    },
+    {
+      "id": "roof-frame",
+      "name": "A-frame, tile courses and ridge caps",
+      "tier": "critical",
+      "passIds": [
+        "structural-pass",
+        "form-refinement"
+      ],
+      "minimumScore": 0.8,
+      "mustPass": true,
+      "componentRefs": [
+        "well.timber-frame",
+        "well.roof",
+        "well.roof-tiles"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "windlass-system",
+      "name": "Riveted drum, rope, crank and bucket",
+      "tier": "critical",
+      "passIds": [
+        "structural-pass",
+        "form-refinement",
+        "interaction-pass"
+      ],
+      "minimumScore": 0.82,
+      "mustPass": true,
+      "componentRefs": [
+        "well.windlass",
+        "well.rope-drop",
+        "well.crank",
+        "well.bucket"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    },
+    {
+      "id": "material-separation",
+      "name": "Warm stone, oak, clay and dark iron palette",
+      "tier": "important",
+      "passIds": [
+        "material-pass",
+        "surface-pass",
+        "lighting-pass"
+      ],
+      "minimumScore": 0.72,
+      "mustPass": false,
+      "componentRefs": [
+        "well.stone-ring",
+        "well.timber-frame",
+        "well.roof",
+        "well.windlass"
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-side"
+      ]
+    }
+  ],
+  "sculptPipeline": {
+    "passGateMode": "locked-sequential",
+    "passOrder": [
+      "blockout",
+      "structural-pass",
+      "form-refinement",
+      "material-pass",
+      "surface-pass",
+      "lighting-pass",
+      "interaction-pass",
+      "optimization-pass"
+    ],
+    "currentPass": "structural-pass",
+    "completedPasses": [
+      "blockout"
+    ],
+    "lastCompletedPass": "blockout",
+    "blockedReason": "",
+    "nextRequiredEvidence": [
+      "No floating joints.",
+      "Opening is true negative space.",
+      "attachment contracts for child appendages/connectors",
+      "no floating child roots/joints in the browser screenshot",
+      "browser render screenshot from your agent's browser/screenshot tool",
+      "single side-by-side full reference/render comparison sheet",
+      "all critical semantic feature scores at or above their thresholds",
+      "self-correction review appended with action=continue before the next pass"
+    ]
+  },
+  "lookDevTargets": {
+    "qualityPriority": "reference-fidelity",
+    "materialPass": {
+      "albedoPaletteRequired": true,
+      "roughnessVariationRequired": true,
+      "normalOrBumpRequired": true,
+      "localOverridesRequired": true,
+      "minimumTextureResolution": 1024,
+      "preferredTextureResolution": 2048,
+      "independentMapChannels": [
+        "albedo",
+        "roughness",
+        "height",
+        "normal",
+        "ambient-occlusion"
+      ],
+      "requiredSurfaceFrequencyBands": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "geometryReliefRequiredWhenSilhouetteAffected": true,
+      "referencePbrExtraction": {
+        "requiredWhenSourceImagePresent": false,
+        "targetThreshold": 0.7,
+        "stopOnLowConfidence": false,
+        "script": "forge/stage1_intake/extract_pbr_evidence.py",
+        "acceptedLimitation": "The references are generated stylized color-block renders; solid palette families plus geometric meso relief are more faithful than inferred photoreal crop maps."
+      },
+      "mustAvoid": [
+        "flat unlit color",
+        "uniform plastic roughness",
+        "aliased PBR channels",
+        "photo projection",
+        "billboard geometry"
+      ]
+    },
+    "lightingPass": {
+      "requiredTerms": [
+        "key light",
+        "fill light",
+        "rim light",
+        "exposure",
+        "ACES tone mapping",
+        "background",
+        "contact shadow"
+      ],
+      "mustAvoid": [
+        "ambient-only lighting",
+        "blown-out clay roof",
+        "black unlit iron"
+      ]
+    }
+  },
+  "actionReadiness": {
+    "contract": "Named masonry, frame, roof, windlass, crank, rope and bucket nodes with sockets and compound collider intent.",
+    "defaultRigType": "action-ready-static-rig",
+    "rootMotionNode": "root",
+    "requiredComponentFields": [
+      "id",
+      "parent",
+      "transform",
+      "actionProfile",
+      "material",
+      "localFeatures"
+    ],
+    "transformChannels": [
+      "translate",
+      "rotate",
+      "scale",
+      "visibility",
+      "material-state"
+    ],
+    "authoringRules": [
+      "Windlass rotation targets well.windlass.",
+      "Bucket attachment targets socket.bucket-grip.",
+      "Collision excludes the deep shaft opening trigger."
+    ],
+    "destructionPolicy": {
+      "defaultBreakable": false
+    }
+  },
+  "viewEvidence": [
+    {
+      "id": "ref-main",
+      "view": "three-quarter-front",
+      "imageRegion": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1,
+        "units": "normalized"
+      },
+      "observations": [
+        "crank-visible silhouette",
+        "roof tile overlap",
+        "stone course staggering"
+      ],
+      "confidence": 0.98
+    },
+    {
+      "id": "ref-front",
+      "view": "straight-front",
+      "imageRegion": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1,
+        "units": "normalized"
+      },
+      "observations": [
+        "bilateral frame spacing",
+        "windlass position",
+        "rim opening"
+      ],
+      "confidence": 0.97
+    },
+    {
+      "id": "ref-side",
+      "view": "right-side",
+      "imageRegion": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1,
+        "units": "normalized"
+      },
+      "observations": [
+        "gable triangle",
+        "roof depth",
+        "post/rim contact"
+      ],
+      "confidence": 0.94
+    },
+    {
+      "id": "ref-rear",
+      "view": "rear-three-quarter-inferred",
+      "imageRegion": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1,
+        "units": "normalized"
+      },
+      "observations": [
+        "symmetry-derived rear joinery"
+      ],
+      "confidence": 0.72
+    }
+  ],
+  "componentTree": [
+    {
+      "id": "root",
+      "name": "Village well runtime root",
+      "level": "macro",
+      "role": "runtime-container",
+      "importance": 1,
+      "confidence": 1,
+      "primitive": "box",
+      "topologyClass": "material-only",
+      "topologyRationale": "Invisible hierarchy and metadata carrier.",
+      "parent": null,
+      "material": "hidden",
+      "materialLayers": [
+        "hidden"
+      ],
+      "localFeatures": [],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "well.stone-ring",
+      "name": "Circular ashlar well wall",
+      "level": "macro",
+      "role": "masonry-shell",
+      "importance": 1,
+      "confidence": 0.99,
+      "primitive": "instanced-cluster",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Four staggered courses of discrete chamfered blocks define the circular lower mass.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(182, 147, 100, 1)",
+        "secondaryAlbedo": "rgba(141, 107, 73, 1)",
+        "materialClass": "stone",
+        "materialClassConfidence": 0.98
+      },
+      "parent": "root",
+      "material": "stone",
+      "materialLayers": [
+        "stone",
+        "inner-stone"
+      ],
+      "localFeatures": [
+        {
+          "id": "well.stone-ring.chamfered-ashlar",
+          "geometryEffect": "56 individual chamfered blocks with deterministic value variation"
+        },
+        {
+          "id": "well.stone-ring.deep-shaft-cavity",
+          "geometryEffect": "open inner cylinder with back-face shaft wall and recessed water"
+        }
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "well.timber-frame",
+      "name": "Oak gantry and A-frame",
+      "level": "macro",
+      "role": "architectural-frame",
+      "importance": 1,
+      "confidence": 0.98,
+      "primitive": "instanced-cluster",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Discrete posts, feet, braces, ties and rafters visibly join at hard contacts.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(95, 53, 31, 1)",
+        "secondaryAlbedo": "rgba(76, 44, 28, 1)",
+        "materialClass": "wood",
+        "materialClassConfidence": 0.97
+      },
+      "parent": "root",
+      "material": "oak",
+      "materialLayers": [
+        "oak",
+        "iron"
+      ],
+      "localFeatures": [
+        {
+          "id": "well.timber-frame.iron-plates-and-bolts",
+          "geometryEffect": "paired iron plates with raised repeated bolt heads"
+        }
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "well.roof",
+      "name": "Closed gable canopy",
+      "level": "macro",
+      "role": "roof-shell",
+      "importance": 0.96,
+      "confidence": 0.98,
+      "primitive": "extrude",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "A closed rigid gable prism supports visible clay tile relief.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(165, 79, 61, 1)",
+        "secondaryAlbedo": "rgba(141, 63, 52, 1)",
+        "materialClass": "ceramic",
+        "materialClassConfidence": 0.96
+      },
+      "parent": "well.timber-frame",
+      "material": "clay",
+      "materialLayers": [
+        "clay"
+      ],
+      "localFeatures": [
+        {
+          "id": "well.roof.tile-courses",
+          "geometryEffect": "80 overlapping half-cylinder barrel tiles"
+        },
+        {
+          "id": "well.roof.ridge-caps",
+          "geometryEffect": "seven round overlapping ridge modules"
+        }
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "well.rim-blocks",
+      "name": "Projecting top rim blocks",
+      "level": "meso",
+      "role": "masonry-rim",
+      "importance": 0.88,
+      "confidence": 0.99,
+      "primitive": "instanced-cluster",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "Fourteen discrete oversized blocks project beyond the shaft courses.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(199, 165, 116, 1)",
+        "secondaryAlbedo": "rgba(161, 127, 85, 1)",
+        "materialClass": "stone",
+        "materialClassConfidence": 0.98
+      },
+      "parent": "well.stone-ring",
+      "material": "stone",
+      "materialLayers": [
+        "stone"
+      ],
+      "localFeatures": [
+        {
+          "id": "well.rim-blocks.projecting-rim-chamfers",
+          "geometryEffect": "large 0.065m chamfers and visible inner faces"
+        }
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    },
+    {
+      "id": "well.windlass",
+      "name": "Wooden windlass drum",
+      "level": "meso",
+      "role": "mechanical-assembly",
+      "importance": 0.95,
+      "confidence": 0.99,
+      "primitive": "cylinder",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "A discrete horizontal timber cylinder is held by two riveted iron bands.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(116, 66, 38, 1)",
+        "secondaryAlbedo": "rgba(60, 57, 54, 1)",
+        "materialClass": "wood",
+        "materialClassConfidence": 0.97
+      },
+      "parent": "well.timber-frame",
+      "attachment": {
+        "parentId": "well.timber-frame",
+        "parentSocket": "socket.windlass.left",
+        "localStart": [
+          -0.84,
+          2.18,
+          0
+        ],
+        "localEnd": [
+          0.84,
+          2.18,
+          0
+        ],
+        "contactType": "socket",
+        "overlap": 0.04,
+        "gapTolerance": 0.01,
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ]
+      },
+      "material": "oak",
+      "materialLayers": [
+        "oak",
+        "iron",
+        "rope"
+      ],
+      "localFeatures": [
+        {
+          "id": "well.windlass.rope-coils",
+          "geometryEffect": "seven torus coils proud of the drum"
+        },
+        {
+          "id": "well.windlass.riveted-iron-bands",
+          "geometryEffect": "two cylindrical end bands with radial rivet rows"
+        },
+        {
+          "id": "well.windlass.offset-crank",
+          "geometryEffect": "stepped forged tube path with separate oak grip"
+        }
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    },
+    {
+      "id": "well.bucket",
+      "name": "Hanging tapered iron bucket",
+      "level": "meso",
+      "role": "detachable-vessel",
+      "importance": 0.8,
+      "confidence": 0.97,
+      "primitive": "cylinder",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "A rigid open tapered bucket carries separate bands and an arched handle.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(48, 47, 45, 1)",
+        "secondaryAlbedo": "rgba(76, 73, 69, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.96
+      },
+      "parent": "well.windlass",
+      "attachment": {
+        "parentId": "well.windlass",
+        "parentSocket": "socket.rope-drop",
+        "localStart": [
+          0.02,
+          1.42,
+          0
+        ],
+        "localEnd": [
+          0.02,
+          1.06,
+          0
+        ],
+        "contactType": "socket",
+        "overlap": 0.03,
+        "gapTolerance": 0.01,
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ]
+      },
+      "material": "iron",
+      "materialLayers": [
+        "iron"
+      ],
+      "localFeatures": [
+        {
+          "id": "well.bucket.bands-and-handle",
+          "geometryEffect": "two raised rings and one semicircular torus handle"
+        }
+      ],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    },
+    {
+      "id": "well.crank",
+      "name": "Offset forged crank",
+      "level": "meso",
+      "role": "mechanical-control",
+      "importance": 0.82,
+      "confidence": 0.98,
+      "primitive": "tube",
+      "topologyClass": "fiber-strand",
+      "topologyRationale": "A thin forged member follows a stepped path from the axle to the grip.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(48, 47, 45, 1)",
+        "secondaryAlbedo": "rgba(104, 98, 91, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.97
+      },
+      "parent": "well.windlass",
+      "attachment": {
+        "parentId": "well.windlass",
+        "parentSocket": "socket.windlass.right",
+        "localStart": [
+          0.84,
+          2.18,
+          0
+        ],
+        "localEnd": [
+          1.39,
+          1.86,
+          0
+        ],
+        "contactType": "socket",
+        "overlap": 0.04,
+        "gapTolerance": 0.01,
+        "evidenceRefs": [
+          "ref-main"
+        ]
+      },
+      "material": "iron",
+      "materialLayers": [
+        "iron",
+        "oak"
+      ],
+      "localFeatures": [],
+      "evidenceRefs": [
+        "ref-main"
+      ]
+    },
+    {
+      "id": "well.rope-drop",
+      "name": "Hanging rope",
+      "level": "meso",
+      "role": "cable",
+      "importance": 0.78,
+      "confidence": 0.98,
+      "primitive": "tube",
+      "topologyClass": "fiber-strand",
+      "topologyRationale": "A thin fiber member descends from the drum to the bucket grip.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(184, 154, 100, 1)",
+        "secondaryAlbedo": "rgba(142, 113, 69, 1)",
+        "materialClass": "fabric",
+        "materialClassConfidence": 0.91
+      },
+      "parent": "well.windlass",
+      "attachment": {
+        "parentId": "well.windlass",
+        "parentSocket": "socket.rope-drop",
+        "localStart": [
+          0.02,
+          2.18,
+          0
+        ],
+        "localEnd": [
+          0.02,
+          1.42,
+          0
+        ],
+        "contactType": "socket",
+        "overlap": 0.03,
+        "gapTolerance": 0.01,
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ]
+      },
+      "material": "rope",
+      "materialLayers": [
+        "rope"
+      ],
+      "localFeatures": [],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    },
+    {
+      "id": "well.roof-tiles",
+      "name": "Barrel tile repetition system",
+      "level": "meso",
+      "role": "surface-relief-system",
+      "importance": 0.84,
+      "confidence": 0.96,
+      "primitive": "instanced-cluster",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "Curved repeated modules change the roof silhouette at eaves and ridge.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(165, 79, 61, 1)",
+        "secondaryAlbedo": "rgba(196, 106, 80, 1)",
+        "materialClass": "ceramic",
+        "materialClassConfidence": 0.95
+      },
+      "parent": "well.roof",
+      "material": "clay",
+      "materialLayers": [
+        "clay"
+      ],
+      "localFeatures": [],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "well.frame-fasteners",
+      "name": "Frame plate and bolt system",
+      "level": "meso",
+      "role": "fastener-system",
+      "importance": 0.7,
+      "confidence": 0.92,
+      "primitive": "instanced-cluster",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "Small repeated metal plates and bolt heads sit proud of the oak posts.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(48, 47, 45, 1)",
+        "secondaryAlbedo": "rgba(141, 107, 56, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.94
+      },
+      "parent": "well.timber-frame",
+      "material": "iron",
+      "materialLayers": [
+        "iron",
+        "brass"
+      ],
+      "localFeatures": [],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-side"
+      ]
+    },
+    {
+      "id": "well.water",
+      "name": "Recessed water plane",
+      "level": "meso",
+      "role": "liquid-surface",
+      "importance": 0.52,
+      "confidence": 0.78,
+      "primitive": "plane-card",
+      "topologyClass": "conforming-shell",
+      "topologyRationale": "A thin circular surface sits below and conforms to the shaft opening.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(56, 91, 98, 0.78)",
+        "secondaryAlbedo": "rgba(91, 130, 137, 0.78)",
+        "materialClass": "glass",
+        "materialClassConfidence": 0.74
+      },
+      "parent": "well.stone-ring",
+      "material": "water",
+      "materialLayers": [
+        "water"
+      ],
+      "localFeatures": [],
+      "evidenceRefs": [
+        "ref-main"
+      ]
+    },
+    {
+      "id": "well.inner-shaft",
+      "name": "Dark inner stone shaft",
+      "level": "meso",
+      "role": "cavity-wall",
+      "importance": 0.68,
+      "confidence": 0.84,
+      "primitive": "cylinder",
+      "topologyClass": "conforming-shell",
+      "topologyRationale": "A thin back-faced cylinder follows the inside of the open masonry ring.",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(110, 93, 73, 1)",
+        "secondaryAlbedo": "rgba(61, 50, 39, 1)",
+        "materialClass": "stone",
+        "materialClassConfidence": 0.88
+      },
+      "parent": "well.stone-ring",
+      "attachment": {
+        "parentId": "well.stone-ring",
+        "parentSocket": "well-opening",
+        "localStart": [
+          0,
+          0.1,
+          0
+        ],
+        "localEnd": [
+          0,
+          1.05,
+          0
+        ],
+        "contactType": "embedded",
+        "embedDepth": 0.03,
+        "gapTolerance": 0.01,
+        "evidenceRefs": [
+          "ref-main",
+          "ref-front"
+        ]
+      },
+      "material": "inner-stone",
+      "materialLayers": [
+        "inner-stone"
+      ],
+      "localFeatures": [],
+      "evidenceRefs": [
+        "ref-main",
+        "ref-front"
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "id": "hidden",
+      "name": "Invisible runtime carrier",
+      "type": "standard",
+      "qualityTier": "utility",
+      "baseColor": "#000000",
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "utility",
+        "texelDensityIntent": "runtime carrier; never rendered"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "frequency": 1,
+          "amplitude": 0.01
+        },
+        {
+          "id": "meso",
+          "frequency": 2,
+          "amplitude": 0.01
+        },
+        {
+          "id": "micro",
+          "frequency": 4,
+          "amplitude": 0.01
+        }
+      ],
+      "roughness": {
+        "base": 1,
+        "variation": 0,
+        "map": "independent-constant"
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.01
+      },
+      "localOverrides": []
+    },
+    {
+      "id": "stone",
+      "name": "Warm chamfered limestone",
+      "type": "toon",
+      "baseColor": "#b69364",
+      "colorVariation": {
+        "palette": [
+          "#b69364",
+          "#a17f55",
+          "#c7a574",
+          "#8d6b49"
+        ],
+        "pattern": "per-module deterministic",
+        "amplitude": 0.15
+      },
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "procedural-per-block",
+        "texelDensityIntent": "stable block-scale palette"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "role": "course palette",
+          "frequency": 2,
+          "amplitude": 0.35
+        },
+        {
+          "id": "meso",
+          "role": "chamfer and joint relief",
+          "frequency": 12,
+          "amplitude": 0.18
+        },
+        {
+          "id": "micro",
+          "role": "subtle pore breakup",
+          "frequency": 48,
+          "amplitude": 0.06
+        }
+      ],
+      "roughness": {
+        "base": 0.88,
+        "variation": 0.1,
+        "map": "independent-procedural-stone-field"
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.72,
+        "contactShadowBias": 0.55
+      },
+      "localOverrides": [
+        {
+          "id": "stone.course-palette",
+          "region": "individual ashlar modules",
+          "palette": [
+            "#b69364",
+            "#a17f55",
+            "#c7a574",
+            "#8d6b49"
+          ],
+          "cavityBias": 0.7,
+          "evidenceRefs": [
+            "ref-main",
+            "ref-side"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inner-stone",
+      "name": "Recessed shaft stone",
+      "type": "standard",
+      "baseColor": "#6e5d49",
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "cylindrical-procedural",
+        "texelDensityIntent": "dark inner-course scale"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "frequency": 2,
+          "amplitude": 0.25
+        },
+        {
+          "id": "meso",
+          "frequency": 10,
+          "amplitude": 0.12
+        },
+        {
+          "id": "micro",
+          "frequency": 36,
+          "amplitude": 0.04
+        }
+      ],
+      "roughness": {
+        "base": 0.96,
+        "variation": 0.06,
+        "map": "independent-cavity-field"
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.95
+      },
+      "localOverrides": [
+        {
+          "id": "inner-stone.deep-cavity",
+          "region": "shaft interior",
+          "cavityBias": 1,
+          "evidenceRefs": [
+            "ref-main"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "oak",
+      "name": "Aged oak frame",
+      "type": "toon",
+      "baseColor": "#5f351f",
+      "colorVariation": {
+        "palette": [
+          "#5f351f",
+          "#744226",
+          "#4c2c1c",
+          "#875034"
+        ],
+        "pattern": "per-member deterministic",
+        "amplitude": 0.14
+      },
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "object-aligned-procedural",
+        "texelDensityIntent": "grain follows member axis"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "role": "member palette",
+          "frequency": 1.5,
+          "amplitude": 0.3
+        },
+        {
+          "id": "meso",
+          "role": "joinery and grain ridges",
+          "frequency": 10,
+          "amplitude": 0.18
+        },
+        {
+          "id": "micro",
+          "role": "worn highlight breakup",
+          "frequency": 50,
+          "amplitude": 0.06
+        }
+      ],
+      "roughness": {
+        "base": 0.78,
+        "variation": 0.14,
+        "map": "independent-directional-grain-field"
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.58
+      },
+      "localOverrides": [
+        {
+          "id": "oak.joint-and-edge-wear",
+          "region": "feet, beam contacts and grip areas",
+          "roughness": 0.62,
+          "edgeWear": 0.22,
+          "cavityBias": 0.65,
+          "evidenceRefs": [
+            "ref-main",
+            "ref-side"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clay",
+      "name": "Muted terracotta tiles",
+      "type": "toon",
+      "baseColor": "#a54f3d",
+      "colorVariation": {
+        "palette": [
+          "#a54f3d",
+          "#8d3f34",
+          "#c46a50",
+          "#76372f"
+        ],
+        "pattern": "per-tile deterministic",
+        "amplitude": 0.16
+      },
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "per-tile-procedural",
+        "texelDensityIntent": "tile-scale variation"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "role": "four-color tile palette",
+          "frequency": 2,
+          "amplitude": 0.28
+        },
+        {
+          "id": "meso",
+          "role": "barrel curvature and overlap",
+          "frequency": 9,
+          "amplitude": 0.16
+        },
+        {
+          "id": "micro",
+          "role": "matte clay breakup",
+          "frequency": 40,
+          "amplitude": 0.05
+        }
+      ],
+      "roughness": {
+        "base": 0.84,
+        "variation": 0.09,
+        "map": "independent-clay-field"
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.7
+      },
+      "localOverrides": [
+        {
+          "id": "clay.tile-overlap-shadow",
+          "region": "lower tile edges and ridge overlaps",
+          "roughness": 0.9,
+          "cavityBias": 0.86,
+          "evidenceRefs": [
+            "ref-main",
+            "ref-side"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "iron",
+      "name": "Forged iron hardware",
+      "type": "standard",
+      "baseColor": "#3c3936",
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "object-space-procedural",
+        "texelDensityIntent": "hardware-scale wear"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "role": "dark hardware mass",
+          "frequency": 2,
+          "amplitude": 0.15
+        },
+        {
+          "id": "meso",
+          "role": "bands, plates and tube path",
+          "frequency": 18,
+          "amplitude": 0.1
+        },
+        {
+          "id": "micro",
+          "role": "edge highlight breakup",
+          "frequency": 64,
+          "amplitude": 0.04
+        }
+      ],
+      "roughness": {
+        "base": 0.4,
+        "variation": 0.14,
+        "map": "independent-forged-metal-field"
+      },
+      "metalness": {
+        "base": 0.86,
+        "variation": 0.08
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.62
+      },
+      "localOverrides": [
+        {
+          "id": "iron.worn-edge-polish",
+          "region": "band crests, crank bends and bucket rims",
+          "roughness": 0.28,
+          "edgeWear": 0.25,
+          "evidenceRefs": [
+            "ref-main"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brass",
+      "name": "Aged brass fasteners",
+      "type": "standard",
+      "baseColor": "#8d6b38",
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "object-space-procedural",
+        "texelDensityIntent": "bolt-head scale"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "frequency": 3,
+          "amplitude": 0.12
+        },
+        {
+          "id": "meso",
+          "frequency": 20,
+          "amplitude": 0.08
+        },
+        {
+          "id": "micro",
+          "frequency": 70,
+          "amplitude": 0.03
+        }
+      ],
+      "roughness": {
+        "base": 0.34,
+        "variation": 0.08,
+        "map": "independent-brass-field"
+      },
+      "metalness": {
+        "base": 0.76,
+        "variation": 0.1
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.35
+      },
+      "localOverrides": [
+        {
+          "id": "brass.head-polish",
+          "region": "raised bolt crowns",
+          "roughness": 0.24,
+          "evidenceRefs": [
+            "ref-main"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rope",
+      "name": "Twisted hemp rope",
+      "type": "toon",
+      "baseColor": "#b89a64",
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "curve-aligned-procedural",
+        "texelDensityIntent": "fiber ridges follow rope path"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "role": "rope silhouette",
+          "frequency": 2,
+          "amplitude": 0.18
+        },
+        {
+          "id": "meso",
+          "role": "coil spacing",
+          "frequency": 14,
+          "amplitude": 0.2
+        },
+        {
+          "id": "micro",
+          "role": "fiber highlight breakup",
+          "frequency": 72,
+          "amplitude": 0.08
+        }
+      ],
+      "roughness": {
+        "base": 0.92,
+        "variation": 0.06,
+        "map": "independent-fiber-field"
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.48
+      },
+      "localOverrides": [
+        {
+          "id": "rope.fiber-ridges",
+          "region": "coil crests and hanging strand",
+          "roughness": 0.86,
+          "evidenceRefs": [
+            "ref-main",
+            "ref-front"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "water",
+      "name": "Deep well water",
+      "type": "physical",
+      "baseColor": "#385b62",
+      "textureResolution": 1024,
+      "textureProjection": {
+        "mode": "planar-procedural",
+        "texelDensityIntent": "subtle broad ripple scale"
+      },
+      "surfaceFrequencyBands": [
+        {
+          "id": "macro",
+          "frequency": 1,
+          "amplitude": 0.08
+        },
+        {
+          "id": "meso",
+          "frequency": 8,
+          "amplitude": 0.04
+        },
+        {
+          "id": "micro",
+          "frequency": 40,
+          "amplitude": 0.015
+        }
+      ],
+      "roughness": {
+        "base": 0.22,
+        "variation": 0.05,
+        "map": "independent-ripple-field"
+      },
+      "ambientOcclusion": {
+        "cavityStrength": 0.1
+      },
+      "localOverrides": [
+        {
+          "id": "water.recess-darkening",
+          "region": "entire recessed disk",
+          "roughness": 0.18,
+          "evidenceRefs": [
+            "ref-main"
+          ]
+        }
+      ]
+    }
+  ],
+  "repetitionSystems": [
+    {
+      "id": "stone-course-grid",
+      "componentRef": "well.stone-ring",
+      "count": 56,
+      "distribution": "four staggered 14-block circular courses",
+      "primitive": "shared chamfered extrusions"
+    },
+    {
+      "id": "rim-block-ring",
+      "componentRef": "well.rim-blocks",
+      "count": 14,
+      "distribution": "one circular projecting course",
+      "primitive": "shared deep chamfered extrusion"
+    },
+    {
+      "id": "roof-tile-grid",
+      "componentRef": "well.roof-tiles",
+      "count": 80,
+      "distribution": "five overlapping rows per slope, eight dense columns",
+      "primitive": "shared half-cylinder tiles"
+    },
+    {
+      "id": "ridge-cap-line",
+      "componentRef": "well.roof",
+      "count": 7,
+      "distribution": "overlapping along ridge +Z",
+      "primitive": "shared half-cylinder caps"
+    },
+    {
+      "id": "windlass-rivet-rings",
+      "componentRef": "well.windlass",
+      "count": 16,
+      "distribution": "eight radial rivets per end band",
+      "primitive": "shared low-segment spheres"
+    },
+    {
+      "id": "rope-coil-stack",
+      "componentRef": "well.windlass",
+      "count": 7,
+      "distribution": "even axial coil offsets with no gaps",
+      "primitive": "shared torus rings"
+    }
+  ],
+  "buildPasses": [
+    {
+      "id": "blockout",
+      "goal": "Match stone-ring, gantry and canopy silhouette.",
+      "componentRefs": [
+        "well.stone-ring",
+        "well.timber-frame",
+        "well.roof"
+      ],
+      "acceptance": [
+        "All macro identity systems are present.",
+        "AI vision score reaches threshold."
+      ]
+    },
+    {
+      "id": "structural-pass",
+      "goal": "Build masonry, frame, roof and windlass hierarchy.",
+      "componentRefs": [
+        "well.rim-blocks",
+        "well.windlass",
+        "well.bucket",
+        "well.inner-shaft"
+      ],
+      "acceptance": [
+        "No floating joints.",
+        "Opening is true negative space."
+      ]
+    },
+    {
+      "id": "form-refinement",
+      "goal": "Add chamfers, tile relief, crank path, rope and fasteners.",
+      "componentRefs": [
+        "well.roof-tiles",
+        "well.crank",
+        "well.rope-drop",
+        "well.frame-fasteners"
+      ],
+      "acceptance": [
+        "Reference-critical meso detail is geometric."
+      ]
+    },
+    {
+      "id": "material-pass",
+      "goal": "Separate warm stone, oak, clay, iron, brass, rope and water.",
+      "componentRefs": [
+        "well.stone-ring",
+        "well.timber-frame",
+        "well.roof",
+        "well.windlass"
+      ],
+      "acceptance": [
+        "Palette and value hierarchy match references."
+      ]
+    },
+    {
+      "id": "surface-pass",
+      "goal": "Verify bevel, overlap, cavity and wear response.",
+      "componentRefs": [
+        "well.stone-ring",
+        "well.roof-tiles",
+        "well.windlass"
+      ],
+      "acceptance": [
+        "Relief survives grazing light."
+      ]
+    },
+    {
+      "id": "lighting-pass",
+      "goal": "Match studio key/fill/rim and contact grounding.",
+      "componentRefs": [
+        "root"
+      ],
+      "acceptance": [
+        "Materials remain readable without washed highlights."
+      ]
+    },
+    {
+      "id": "interaction-pass",
+      "goal": "Expose windlass, bucket and grip sockets.",
+      "componentRefs": [
+        "well.windlass",
+        "well.bucket",
+        "well.crank"
+      ],
+      "acceptance": [
+        "Runtime nodes and colliders are stable."
+      ]
+    },
+    {
+      "id": "optimization-pass",
+      "goal": "Protect runtime performance.",
+      "componentRefs": [
+        "root"
+      ],
+      "acceptance": [
+        "Repeated systems share geometry or deterministic templates."
+      ]
+    }
+  ],
+  "proceduralStrategy": [
+    "Build individual chamfered ashlar modules rather than a cylinder texture.",
+    "Use a closed indexed gable shell plus repeated curved tile relief.",
+    "Use named timber/frame/windlass/bucket runtime groups with explicit sockets.",
+    "Use tube geometry only for crank and rope paths; use torus repetition for rope coils.",
+    "Keep all generated variation deterministic."
+  ],
+  "lightingFromPhoto": [
+    "Warm-neutral key light from upper-front-right at intensity near 3.2 defines stone chamfers, tile curvature and wood frame contacts.",
+    "Cool-neutral fill from upper-left near 0.8 preserves the dark shaft, bucket and back faces.",
+    "Warm rear rim near 1.0 separates the broad clay roof and dark hardware from a light warm-gray background.",
+    "Use ACES filmic tone mapping at exposure near 1.1 and a soft contact ground shadow under the masonry sole."
+  ],
+  "visualEvidence": [
+    {
+      "timestamp": "2026-07-26T16:30:29.072958+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.82,
+      "aiVisionScore": 0.82,
+      "visualAcceptanceThreshold": 0.72,
+      "layerScores": {
+        "silhouette": 0.87,
+        "structure": 0.84,
+        "form": 0.8,
+        "material": 0.72,
+        "lighting": 0.79
+      },
+      "featureReviews": [
+        {
+          "id": "well-silhouette",
+          "score": 0.87,
+          "notes": "Circular lower mass, open gantry and broad canopy are all unambiguous."
+        }
+      ],
+      "referenceScreenshot": "docs/references/props/village_well/ref_main.png",
+      "renderScreenshot": "docs/references/props/village_well/compare/render_main.png",
+      "comparisonImage": "docs/references/props/village_well/compare/comparison_main.png",
+      "cameraView": "three-quarter-front",
+      "notes": "Side view also confirms sole contact and non-floating frame/roof assembly.",
+      "aiVisionNotes": "Compared the same full three-quarter image pair. The hero silhouette and major negative spaces match strongly; the largest residual delta is roof-tile surface character."
+    }
+  ],
+  "reviewHistory": [
+    {
+      "timestamp": "2026-07-26T16:30:29.072958+00:00",
+      "passId": "blockout",
+      "estimatedFidelity": 0.82,
+      "aiVisionScore": 0.82,
+      "visualAcceptanceThreshold": 0.72,
+      "layerScores": {
+        "silhouette": 0.87,
+        "structure": 0.84,
+        "form": 0.8,
+        "material": 0.72,
+        "lighting": 0.79
+      },
+      "featureReviews": [
+        {
+          "id": "well-silhouette",
+          "score": 0.87,
+          "notes": "Circular lower mass, open gantry and broad canopy are all unambiguous."
+        }
+      ],
+      "action": "continue",
+      "summary": "Macro silhouette, masonry drum, open gantry, gable canopy and windlass all read as the same village-well asset.",
+      "matched": [
+        "circular masonry drum",
+        "open timber bay",
+        "broad gable canopy",
+        "offset crank and hanging bucket"
+      ],
+      "mismatches": [
+        "procedural clay tiles remain cleaner and more rectilinear than the textured reference"
+      ],
+      "specFixes": [],
+      "codeFixes": [],
+      "evidence": [
+        "docs/references/props/village_well/compare/render_main.png",
+        "docs/references/props/village_well/compare/render_side.png"
+      ],
+      "visualEvidence": {
+        "referenceScreenshot": "docs/references/props/village_well/ref_main.png",
+        "renderScreenshot": "docs/references/props/village_well/compare/render_main.png",
+        "comparisonImage": "docs/references/props/village_well/compare/comparison_main.png",
+        "cameraView": "three-quarter-front",
+        "notes": "Side view also confirms sole contact and non-floating frame/roof assembly.",
+        "aiVisionNotes": "Compared the same full three-quarter image pair. The hero silhouette and major negative spaces match strongly; the largest residual delta is roof-tile surface character."
+      }
+    }
+  ],
+  "lodPlan": [
+    {
+      "tier": "near",
+      "distance": 0,
+      "strategy": "all blocks, tiles, coils and rivets"
+    },
+    {
+      "tier": "mid",
+      "distance": 18,
+      "strategy": "retain silhouette, reduce stone and fastener repetition"
+    },
+    {
+      "tier": "far",
+      "distance": 35,
+      "strategy": "merge static families and remove micro fasteners"
+    }
+  ],
+  "performanceBudget": {
+    "qualityPriority": "reference-fidelity",
+    "targetTriangles": 18000,
+    "maxDrawCalls": 220,
+    "textureSize": 1024,
+    "fpsTarget": 60,
+    "optimizationPolicy": "Accept silhouette and attachment first; merge repeated static meshes only after visual approval."
+  },
+  "risks": []
+}

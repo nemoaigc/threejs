@@ -49,8 +49,9 @@ const sun = new THREE.DirectionalLight(0xfff6e8, 2.1);
 sun.position.set(14, 24, 11);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
-sun.shadow.bias = -0.00025;
-sun.shadow.normalBias = 0.04;
+// Slightly stronger bias — large ground receivers were shadow-acne flickering
+sun.shadow.bias = -0.00045;
+sun.shadow.normalBias = 0.055;
 sun.shadow.radius = 3.5;
 Object.assign(sun.shadow.camera, {
   left: -48,
