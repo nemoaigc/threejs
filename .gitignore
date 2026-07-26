@@ -2,8 +2,13 @@ node_modules/
 dist/
 .playwright-mcp/
 .screenshots/
+.DS_Store
 *.log
 .env
 /tmp-gen/
+# Local agent skills and session research are tooling, not project assets.
+/.agents/
+/research/cursor-sessions/
+/research/img2threejs/
 # Cloned third-party research trees (large; may contain proprietary mirrors)
 /research/messenger-ecosystem/
