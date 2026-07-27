@@ -4,7 +4,10 @@
  */
 import {
   createAnvilWorkstationModel,
+  createApothecaryHerbRackModel,
   createBarrelClusterModel,
+  createBeehiveSkepClusterModel,
+  createCoveredTradeWagonModel,
   createCrateStackModel,
   createCrystalCrateModel,
   createFenceSectionModel,
@@ -14,6 +17,7 @@ import {
   createHayBaleStackModel,
   createHitchingPostModel,
   createHorseWaterTroughModel,
+  createOrchardCiderPressModel,
   createProduceMarketStallModel,
   createQuestBoardModel,
   createSignpostModel,
@@ -44,6 +48,10 @@ export const PROP_BUILDERS = {
   hayBale: createHayBaleStackModel,
   marketStall: createProduceMarketStallModel,
   horseTrough: createHorseWaterTroughModel,
+  coveredWagon: createCoveredTradeWagonModel,
+  ciderPress: createOrchardCiderPressModel,
+  herbRack: createApothecaryHerbRackModel,
+  beehiveCluster: createBeehiveSkepClusterModel,
 
   // craft / structure
   woodpile: createWoodpileModel,

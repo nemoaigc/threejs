@@ -74,6 +74,17 @@ Batch 04 的首次对照仍暴露出“默认几何/玩具感”：铁砧圆锥�
 
 Batch 05 完成了 `batch_p0` 最后两件可见货运占位的替换，并新增两件单次稀疏布置的村庄功能道具。粮袋首版因“旋转体陶罐感”、硬质袋口和错误铲面被直接否决，改为偏心环带软体网格后才准入；干草表面也由规则织纹改为多尺度非周期纤维场。实现、返工证据与评分见 `src/entities/props/models/BATCH05_RUN_LOG.md`。
 
+## Batch 06
+
+| ID | 场景类型 | 层级 | 材质/装配覆盖 | 状态 |
+|---|---|---|---|---|
+| `props.covered_trade_wagon.v1-pbr` | `coveredWagon` | Hero | 四轮辐条/铁胎/轮毂、前转向架、板簧、九板车床、曲面蜡帆布/五道篷骨、同端货舱与双车辕、货箱/麻袋/灯笼 | 开口方向结构返工 + 主/长侧视图验收通过 |
+| `props.orchard_cider_press.v1-pbr` | `ciderPress` | Hero | 外撇四柱承压框、木螺杆与九圈牙、八段压盘、二十二板压榨篮、三道铆箍、棘轮摇柄、苹果/果浆/汁流/木桶 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.apothecary_herb_rack.v1-pbr` | `herbRack` | Hero | 四柱开放木架、99 片曲面陶瓦、三道铁杆、十六束多种草药/蒜头、五只标记陶罐、黄铜臼杵、羊皮纸、柳篮、剪刀/皮袋 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.beehive_skep_cluster.v1-pbr` | `beehiveCluster` | Hero | 三种不等草编轮廓、54 道外凸草绳、拱形巢口/落蜂板/符号、蜡布雨帽、木凳石脚、水碟/熏蜂器/蜂巢框/蜜罐/少量蜜蜂 | 工具层可见性返工 + 主/侧视图验收通过 |
+
+Batch 06 把“参考图看起来精致”和“真实 Three.js 也成立”分开验收。马车首版虽然通过几何烟测，但货舱开口与车辕处于相反两端；蜂巢首版工具虽存在却被凳架遮住。两者都按实际浏览器像素返工后才准入。四件仅各布置一次并放在东侧稀疏功能区，避免重回道具挤堆。完整评分与证据见 `src/entities/props/models/BATCH06_RUN_LOG.md`。
+
 ## 验收闸门
 
 1. intake：单主体、完整轮廓、主体占比合理、无裁切；

@@ -26,6 +26,10 @@ Small countryside details for the Mushoku Buena/Roa slice. **Not** hero building
 | `sackPile` | models/grain_sack_pile | six asymmetric burlap sacks + open grain + repair seams + iron scoop |
 | `marketStall` | models/produce_market_stall | braced oak stall + curved striped canopy + three produce crates + brass balance |
 | `horseTrough` | models/horse_water_trough | hollow iron-bound oak trough + water + hand pump + stave bucket |
+| `coveredWagon` | models/covered_trade_wagon | four-wheel oak wagon + steering gear + waxed canvas + open cargo + paired shafts |
+| `ciderPress` | models/orchard_cider_press | splayed oak press + threaded screw + slatted basket + ratchet + cider catch |
+| `herbRack` | models/apothecary_herb_rack | roofed oak drying rack + sixteen herb/garlic bundles + jars and pharmacy tools |
+| `beehiveCluster` | models/beehive_skep_cluster | three woven skeps + raised bench + smoker + comb + honey crock |
 | `bench` | models/village_bench | splayed timber frame + ten-slat back + forged scroll arms |
 | `fenceSection` | models/fence_section | stone-footed oak frame + varied pickets + projected iron straps |
 | `hitchingPost` | models/hitching_post | braced two-post rail + four tie rings + attached hemp coil |

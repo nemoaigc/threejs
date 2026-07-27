@@ -1,0 +1,123 @@
+{
+  "targetName": "Apothecary Herb Drying Rack",
+  "sourceImage": "docs/references/props/apothecary_herb_rack/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "roofed freestanding apothecary herb rack with drying bundles and tools",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "tall open oak rack",
+        "shallow red terracotta canopy",
+        "three horizontal iron drying rods",
+        "dense layered herb and garlic bundles",
+        "low shelves with ceramic and brass tools"
+      ],
+      "structureKind": [
+        "four-post stone-footed timber frame",
+        "braced lintels and two plank shelves",
+        "board-backed overlapping tile canopy",
+        "individually looped and bound plant bundles",
+        "separate jars, mortar, parchment, basket, shears and leather pouch"
+      ],
+      "motionPotential": [
+        "center bundle, mortar, basket and canopy expose sockets",
+        "foundation, frame, canopy, herbs and tools are independent runtime nodes",
+        "foundation, frame and canopy expose colliders while soft contents remain nonblocking"
+      ],
+      "materialFamilies": [
+        "aged oak and terracotta",
+        "blackened iron and aged brass",
+        "dried green and brown herbs",
+        "garlic, twine, ceramic, cork and parchment",
+        "wicker and leather"
+      ],
+      "notes": "The rack must remain visibly open. Dense bundles may overlap, but they cannot collapse into one foliage wall that hides rods, jars and shelf depth."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 3,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 5,
+        "mesoComponents": 82,
+        "microFeatureGroups": 24,
+        "materialLayers": 12,
+        "repetitionSystems": 9
+      },
+      "reasoning": [
+        "The frame itself is simple, but the identity depends on many separated small organic bundles and pharmacy tools.",
+        "Three hanging rows, multiple herb palettes, garlic, jars and roof tiles create high repetition and occlusion density.",
+        "The rack needs independent front and narrow-side review to prove it is open and structurally braced."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the organic bundle variation, tile assembly and multi-material apothecary tool shelf."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Plant species are stylized into five readable leaf/flower families instead of botanical simulation.",
+      "The tile canopy uses repeated curved shells rather than a baked roof mesh."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 12,
+      "details": [
+        {"id":"herb-four-post-frame","kind":"structure","description":"Four slender oak posts rise from iron shoes on individual limestone feet.","region":{"x":0.15,"y":0.12,"width":0.66,"height":0.74,"units":"normalized"},"scale":"macro","affects":"rack silhouette","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.frame.posts-shoes-feet"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"herb-braces-lintels","kind":"joint","description":"Front and rear lintels, side rails and four diagonal braces keep the open frame rigid.","region":{"x":0.17,"y":0.19,"width":0.62,"height":0.57,"units":"normalized"},"scale":"meso","affects":"open structural read","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.frame.lintels-and-braces"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"herb-tile-canopy","kind":"repetition","description":"Eighty-eight curved terracotta field tiles overlap on two slopes.","region":{"x":0.13,"y":0.06,"width":0.7,"height":0.24,"units":"normalized"},"scale":"macro","affects":"weather canopy identity","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.canopy.overlapping-field-tiles"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"herb-ridge-tiles","kind":"repetition","description":"Eleven half-round ridge tiles cap a projected oak ridge beam.","region":{"x":0.16,"y":0.04,"width":0.65,"height":0.14,"units":"normalized"},"scale":"meso","affects":"roof finish","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.canopy.ridge-tiles"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.98},
+        {"id":"herb-three-rods","kind":"structure","description":"Three black iron rods span the front plane and terminate in side eyes.","region":{"x":0.22,"y":0.25,"width":0.55,"height":0.41,"units":"normalized"},"scale":"meso","affects":"drying system","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.frame.three-hanging-rods"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"herb-bundle-loops","kind":"attachment","description":"Sixteen separated bundles hang from individual rope loops and knots.","region":{"x":0.22,"y":0.24,"width":0.55,"height":0.48,"units":"normalized"},"scale":"meso","affects":"bundle separation","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.herbs.individual-loops-and-knots"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"herb-stem-leaf-systems","kind":"repetition","description":"Each bundle carries curved stems and alternating dimensional leaves in several dry-green palettes.","region":{"x":0.23,"y":0.31,"width":0.53,"height":0.42,"units":"normalized"},"scale":"micro","affects":"organic density","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.herbs.stems-and-leaves"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"herb-flowers","kind":"repetition","description":"Lavender, rose and chamomile-like petal clusters interrupt the foliage rows.","region":{"x":0.24,"y":0.3,"width":0.5,"height":0.38,"units":"normalized"},"scale":"micro","affects":"species variation","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.herbs.flower-clusters"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.96},
+        {"id":"herb-garlic","kind":"repetition","description":"Two pale garlic bundles use lobed bulbs and separate stems.","region":{"x":0.35,"y":0.35,"width":0.3,"height":0.31,"units":"normalized"},"scale":"meso","affects":"apothecary identity","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.herbs.garlic-bundles"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"herb-two-shelves","kind":"structure","description":"Two open plank shelves and side rails preserve visible depth beneath the bundles.","region":{"x":0.19,"y":0.62,"width":0.59,"height":0.25,"units":"normalized"},"scale":"macro","affects":"tool storage","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.frame.two-plank-shelves"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"herb-jars","kind":"repetition","description":"Five individually shaped and colored ceramic jars carry corks, raised rims, parchment labels and ink marks.","region":{"x":0.22,"y":0.57,"width":0.54,"height":0.18,"units":"normalized"},"scale":"meso","affects":"pharmacy read","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.tools.five-labeled-jars"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"herb-mortar","kind":"attachment","description":"A brass mortar with raised rim and angled pestle occupies the upper shelf.","region":{"x":0.61,"y":0.58,"width":0.17,"height":0.16,"units":"normalized"},"scale":"meso","affects":"apothecary tool identity","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.tools.brass-mortar-and-pestle"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"herb-parchment","kind":"attachment","description":"Five irregular folded parchment leaves are bound by a twine loop.","region":{"x":0.43,"y":0.6,"width":0.18,"height":0.12,"units":"normalized"},"scale":"micro","affects":"recipe context","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.tools.parchment-stack"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.97},
+        {"id":"herb-basket","kind":"repetition","description":"A tapered wicker basket uses four woven rings, fourteen ribs and an arched handle.","region":{"x":0.08,"y":0.63,"width":0.2,"height":0.27,"units":"normalized"},"scale":"meso","affects":"side silhouette","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.tools.wicker-basket"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.99},
+        {"id":"herb-shears-pouch","kind":"attachment","description":"Projected pruning shears hang opposite a stitched leather pouch with flap and brass clasp.","region":{"x":0.1,"y":0.42,"width":0.78,"height":0.3,"units":"normalized"},"scale":"meso","affects":"working-rack context","mapsTo":{"type":"component.localFeatures","ref":"herb-rack.tools.shears-and-leather-pouch"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.98}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/apothecary_herb_rack/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The rack reads as an open, weather-protected drying station with separated plant bundles and a recognizable apothecary shelf in main and narrow-side views."
+    ],
+    "minimumSpecDepth": {"macroComponents":4,"mesoComponents":12,"microFeatureGroups":10,"materialLayers":8,"repetitionSystems":5,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"open-frame","required":true,"qualityCriteria":["Posts, braces, rods and shelf depth remain visible through the contents."]},
+      {"id":"organic-bundles","required":true,"qualityCriteria":["Bundles separate into stems, leaves, flowers, garlic and bindings."]},
+      {"id":"apothecary-tools","required":true,"qualityCriteria":["Jars, mortar, parchment, basket, shears and pouch read as distinct tools."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Oak, clay, iron, plants, ceramic, brass, cork, parchment, wicker and leather respond independently."]}
+    ],
+    "visualDeltaChecks": ["canopy tile overlap","rod visibility","bundle separation","garlic identity","jar labels","shelf depth","side openness"],
+    "antiShallowSpecRules": ["No flat foliage curtain may pass.","The canopy may not be one orange slab.","Jars and tools may not be painted onto the shelf."]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference and direct main/side browser renders."
+}

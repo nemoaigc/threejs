@@ -1,0 +1,123 @@
+{
+  "targetName": "Beehive Skep Cluster",
+  "sourceImage": "docs/references/props/beehive_skep_cluster/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "three woven straw bee skeps on a raised oak bench with beekeeper tools",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "three unequal domed straw skeps",
+        "strong horizontal coil rhythm",
+        "wide raised plank bench on limestone feet",
+        "arched dark entrances with landing boards",
+        "low tool layer with smoker, honeycomb, water and crock"
+      ],
+      "structureKind": [
+        "lathed backing forms wrapped by visible straw coils",
+        "separate entrance trims, boards and carved symbols",
+        "nine-plank top bench with lower shelf and four stone supports",
+        "cloth-capped small hive with tied drape",
+        "independent beekeeper tools and flying bee group"
+      ],
+      "motionPotential": [
+        "three hive entrances and smoker expose sockets",
+        "foundation, bench, skeps, tools and bees are independent runtime nodes",
+        "foundation, bench and skep cluster expose colliders while bees remain nonblocking"
+      ],
+      "materialFamilies": [
+        "woven straw and dark bindings",
+        "aged oak and limestone",
+        "faded waxed cloth",
+        "blackened iron and leather",
+        "clay, water, beeswax and amber honey"
+      ],
+      "notes": "The coils must read as woven straw volume, not smooth yellow pottery. The three hive profiles and entrances must remain individually readable."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 3,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 5,
+        "mesoComponents": 70,
+        "microFeatureGroups": 23,
+        "materialLayers": 11,
+        "repetitionSystems": 11
+      },
+      "reasoning": [
+        "Three similar but non-identical organic profiles require controlled variation instead of simple duplication.",
+        "Fifty-four visible coils, bindings, entrances, symbols, honeycomb cells and bees create high repetition density.",
+        "The lower tool layer is prone to bench occlusion and therefore requires direct main-view review and repositioning."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the straw construction, three individualized hives, cloth cap, multi-part bench and beekeeper tool set."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Hive interiors remain dark implied cavities rather than boolean cut-throughs.",
+      "Bees are restrained symbolic-scale meshes rather than particle sprites."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 12,
+      "details": [
+        {"id":"beehive-three-profiles","kind":"profile","description":"Three hives use unequal height, radius and shoulder profiles rather than scaled duplicates.","region":{"x":0.12,"y":0.12,"width":0.7,"height":0.5,"units":"normalized"},"scale":"macro","affects":"cluster silhouette","mapsTo":{"type":"component.localFeatures","ref":"beehives.skeps.three-unequal-profiles"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"beehive-coils","kind":"repetition","description":"Each hive carries eighteen projected straw coils with slight radius and color variation.","region":{"x":0.13,"y":0.14,"width":0.68,"height":0.48,"units":"normalized"},"scale":"meso","affects":"woven identity","mapsTo":{"type":"component.localFeatures","ref":"beehives.skeps.fifty-four-spiral-coils"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"beehive-bindings","kind":"repetition","description":"Short vertical binding stitches interrupt the horizontal coil rhythm.","region":{"x":0.15,"y":0.18,"width":0.64,"height":0.42,"units":"normalized"},"scale":"micro","affects":"woven construction","mapsTo":{"type":"component.localFeatures","ref":"beehives.skeps.binding-stitches"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.97},
+        {"id":"beehive-entrances","kind":"attachment","description":"All three hives have dark arched entrances with thick straw rope trim.","region":{"x":0.17,"y":0.42,"width":0.6,"height":0.2,"units":"normalized"},"scale":"meso","affects":"hive identity","mapsTo":{"type":"component.localFeatures","ref":"beehives.skeps.arched-entrances-and-trim"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"beehive-landing-boards","kind":"attachment","description":"Separate oak landing boards project below each entrance with visible nails.","region":{"x":0.16,"y":0.52,"width":0.61,"height":0.15,"units":"normalized"},"scale":"meso","affects":"bee traffic read","mapsTo":{"type":"component.localFeatures","ref":"beehives.skeps.landing-boards-and-nails"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"beehive-symbols","kind":"mark","description":"Three number-free carved symbols distinguish the hives beside their entrances.","region":{"x":0.15,"y":0.38,"width":0.62,"height":0.18,"units":"normalized"},"scale":"micro","affects":"individual identity","mapsTo":{"type":"component.localFeatures","ref":"beehives.skeps.carved-symbols"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.96},
+        {"id":"beehive-cloth-cap","kind":"surface","description":"The smallest hive carries a faded red waxed-cloth cap with irregular draped hem.","region":{"x":0.61,"y":0.14,"width":0.24,"height":0.29,"units":"normalized"},"scale":"macro","affects":"right-hive silhouette","mapsTo":{"type":"component.localFeatures","ref":"beehives.skeps.waxed-cloth-cap"},"evidenceRef":"detail-zones/zone-r0c2.png","confidence":0.99},
+        {"id":"beehive-cap-ties","kind":"attachment","description":"Two rope ties pull the cloth cap down against the straw body.","region":{"x":0.62,"y":0.27,"width":0.22,"height":0.21,"units":"normalized"},"scale":"micro","affects":"cloth contact","mapsTo":{"type":"component.localFeatures","ref":"beehives.skeps.cap-ties"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.97},
+        {"id":"beehive-bench","kind":"structure","description":"Nine top planks sit on two long runners with projected nails and a lower shelf.","region":{"x":0.09,"y":0.57,"width":0.76,"height":0.23,"units":"normalized"},"scale":"macro","affects":"raised foundation","mapsTo":{"type":"component.localFeatures","ref":"beehives.bench.planks-runners-lower-shelf"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"beehive-stone-feet","kind":"foundation","description":"Four mossed limestone feet isolate the bench from damp meadow ground.","region":{"x":0.11,"y":0.75,"width":0.73,"height":0.18,"units":"normalized"},"scale":"meso","affects":"grounding","mapsTo":{"type":"component.localFeatures","ref":"beehives.foundation.four-limestone-feet"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"beehive-water-dish","kind":"attachment","description":"A clay water dish contains a recessed clear surface and eight stepping pebbles.","region":{"x":0.11,"y":0.68,"width":0.2,"height":0.18,"units":"normalized"},"scale":"meso","affects":"bee utility","mapsTo":{"type":"component.localFeatures","ref":"beehives.tools.water-dish-pebbles"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.98},
+        {"id":"beehive-smoker","kind":"attachment","description":"A black iron smoker uses three cage rings, eight rails, cone spout, leather bellows and smoke wisps.","region":{"x":0.25,"y":0.57,"width":0.19,"height":0.31,"units":"normalized"},"scale":"meso","affects":"beekeeper identity","mapsTo":{"type":"component.localFeatures","ref":"beehives.tools.smoker-cage-bellows-smoke"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.99},
+        {"id":"beehive-honey-frame","kind":"repetition","description":"A framed comb contains more than forty separate hexagonal wax cells and amber drops.","region":{"x":0.39,"y":0.58,"width":0.22,"height":0.31,"units":"normalized"},"scale":"meso","affects":"honey production read","mapsTo":{"type":"component.localFeatures","ref":"beehives.tools.honeycomb-frame-and-cells"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"beehive-honey-crock","kind":"attachment","description":"A separate clay crock exposes amber honey beneath a cloth cover and rope tie.","region":{"x":0.65,"y":0.62,"width":0.18,"height":0.26,"units":"normalized"},"scale":"meso","affects":"harvest context","mapsTo":{"type":"component.localFeatures","ref":"beehives.tools.honey-crock-cover-and-tie"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"beehive-bees","kind":"scatter","description":"Eight restrained worker bees use striped bodies and paired translucent wings around entrances.","region":{"x":0.11,"y":0.11,"width":0.75,"height":0.52,"units":"normalized"},"scale":"micro","affects":"life and scale","mapsTo":{"type":"component.localFeatures","ref":"beehives.bees.worker-swarm"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.97}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; tiny bees are decorative subcomponents, not character reconstruction targets."
+    },
+    "sourceImage": "docs/references/props/beehive_skep_cluster/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "Three individualized woven hives, entrances, cap, bench and a visible beekeeper tool layer remain readable in main and side review."
+    ],
+    "minimumSpecDepth": {"macroComponents":4,"mesoComponents":12,"microFeatureGroups":9,"materialLayers":7,"repetitionSystems":5,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"skep-profiles","required":true,"qualityCriteria":["Three unequal hive profiles and entrance positions remain distinct."]},
+      {"id":"woven-surface","required":true,"qualityCriteria":["Projected coils, bindings and rough straw response prevent pottery read."]},
+      {"id":"tool-layer","required":true,"qualityCriteria":["Water dish, smoker, comb and crock remain visible instead of being hidden by the bench."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Straw, oak, stone, cloth, iron, leather, clay, water, wax and honey respond independently."]}
+    ],
+    "visualDeltaChecks": ["profile variation","coil rhythm","entrance readability","cap drape","bench contact","tool visibility","bee restraint"],
+    "antiShallowSpecRules": ["No three yellow spheres may pass as skeps.","The tool layer may not be hidden behind the bench.","The cloth cap may not be a rigid cone."]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference and a direct browser correction that moved the occluded tool layer into view."
+}

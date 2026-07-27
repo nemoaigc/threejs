@@ -17,3 +17,7 @@ export { createHayBaleStackModel } from './hay_bale_stack.js';
 export { createGrainSackPileModel } from './grain_sack_pile.js';
 export { createProduceMarketStallModel } from './produce_market_stall.js';
 export { createHorseWaterTroughModel } from './horse_water_trough.js';
+export { createCoveredTradeWagonModel } from './covered_trade_wagon.js';
+export { createOrchardCiderPressModel } from './orchard_cider_press.js';
+export { createApothecaryHerbRackModel } from './apothecary_herb_rack.js';
+export { createBeehiveSkepClusterModel } from './beehive_skep_cluster.js';
