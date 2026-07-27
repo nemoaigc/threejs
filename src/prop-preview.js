@@ -3,7 +3,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import {
   createAnvilWorkstationModel,
+  createApothecaryHerbRackModel,
   createBarrelClusterModel,
+  createBeehiveSkepClusterModel,
+  createCoveredTradeWagonModel,
   createCrateStackModel,
   createCrystalCrateModel,
   createFenceSectionModel,
@@ -13,6 +16,7 @@ import {
   createHayBaleStackModel,
   createHitchingPostModel,
   createHorseWaterTroughModel,
+  createOrchardCiderPressModel,
   createProduceMarketStallModel,
   createQuestBoardModel,
   createSignpostModel,
@@ -46,6 +50,10 @@ const factories = {
   sackPile: createGrainSackPileModel,
   marketStall: createProduceMarketStallModel,
   horseTrough: createHorseWaterTroughModel,
+  coveredWagon: createCoveredTradeWagonModel,
+  ciderPress: createOrchardCiderPressModel,
+  herbRack: createApothecaryHerbRackModel,
+  beehiveCluster: createBeehiveSkepClusterModel,
 };
 const factory = factories[assetId] ?? factories.well;
 
@@ -83,6 +91,14 @@ const camera = new THREE.PerspectiveCamera(34, innerWidth / innerHeight, 0.05, 1
 const distance = maxDim * (
   assetId === 'lantern'
     ? 2.08
+    : assetId === 'coveredWagon'
+      ? 1.2
+    : assetId === 'ciderPress'
+      ? 1.75
+    : assetId === 'herbRack'
+      ? 1.78
+    : assetId === 'beehiveCluster'
+      ? 1.72
     : assetId === 'fence'
       ? 1.86
       : 2.15
@@ -95,10 +111,19 @@ const cameraDirections = {
 };
 const assetMainDirections = {
   fence: new THREE.Vector3(0.3, 0.25, 1.4).normalize(),
+  coveredWagon: new THREE.Vector3(1.15, 0.62, 1.25).normalize(),
+  ciderPress: new THREE.Vector3(1.05, 0.62, 1.45).normalize(),
+  herbRack: new THREE.Vector3(1.05, 0.5, 1.55).normalize(),
+  beehiveCluster: new THREE.Vector3(1.0, 0.48, 1.55).normalize(),
+};
+const assetSideDirections = {
+  coveredWagon: new THREE.Vector3(0.03, 0.3, 1).normalize(),
 };
 const cameraDirection = view === 'main'
   ? assetMainDirections[assetId] ?? cameraDirections.main
-  : cameraDirections[view] ?? cameraDirections.main;
+  : view === 'side'
+    ? assetSideDirections[assetId] ?? cameraDirections.side
+    : cameraDirections[view] ?? cameraDirections.main;
 camera.position.copy(center).addScaledVector(cameraDirection, distance);
 camera.lookAt(center);
 

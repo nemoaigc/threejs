@@ -1,0 +1,123 @@
+{
+  "targetName": "Orchard Cider Press",
+  "sourceImage": "docs/references/props/orchard_cider_press/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "heavy oak orchard cider press with slatted basket, screw, ratchet and juice catch",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "splayed four-post A-frame",
+        "massive strapped crossbeam",
+        "deep vertical wooden screw",
+        "circular iron-bound pressing basket",
+        "offset apple crate, bucket and crank"
+      ],
+      "structureKind": [
+        "limestone-isolated post foundation",
+        "braced oak load frame and bed beam",
+        "threaded press screw with segmented pressure plate",
+        "twenty-two-stave basket on a collection tray",
+        "spout, bucket, ratchet and cargo attachments"
+      ],
+      "motionPotential": [
+        "turning bar, press basket, bucket and apple crate expose sockets",
+        "frame, screw, basket, juice catch and cargo remain separate runtime nodes",
+        "foundation, frame, screw, basket and bucket expose colliders"
+      ],
+      "materialFamilies": [
+        "heavy aged oak",
+        "blackened and worn iron",
+        "limestone and moss",
+        "russet apples and crushed pulp",
+        "amber cider, rope and stained cloth"
+      ],
+      "notes": "The reference is a compression machine. The screw must visibly connect crossbeam to pressure plate and the basket must remain hollow/slatted."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 3,
+        "actionReadinessNeed": 3
+      },
+      "estimatedCounts": {
+        "macroComponents": 7,
+        "mesoComponents": 65,
+        "microFeatureGroups": 19,
+        "materialLayers": 10,
+        "repetitionSystems": 9
+      },
+      "reasoning": [
+        "The splayed frame, screw, round basket, side ratchet and front bucket create multiple overlapping action systems.",
+        "Twenty-two basket staves, multiple hoops, visible thread, apple cargo and fasteners require explicit repetition systems.",
+        "Juice flow, wet wood and fruit must read separately from dry structural oak and iron."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the load path, circular stave basket, threaded mechanism, crank and visible liquid path."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Internal crushed fruit is inferred as a compact pulp mass with partial apples.",
+      "The juice stream is a controlled transparent mesh rather than fluid simulation."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 12,
+      "details": [
+        {"id":"press-splayed-posts","kind":"structure","description":"Four thick oak posts lean inward from independent limestone feet.","region":{"x":0.2,"y":0.13,"width":0.51,"height":0.69,"units":"normalized"},"scale":"macro","affects":"load-frame silhouette","mapsTo":{"type":"component.localFeatures","ref":"cider-press.frame.splayed-posts"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"press-stone-feet","kind":"foundation","description":"Four irregular limestone blocks isolate the oak from ground moisture and carry moss.","region":{"x":0.2,"y":0.73,"width":0.52,"height":0.18,"units":"normalized"},"scale":"meso","affects":"grounding","mapsTo":{"type":"component.localFeatures","ref":"cider-press.foundation.limestone-feet"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"press-crossbeam","kind":"structure","description":"An oversized crossbeam spans the frame with two projected iron straps and rivets.","region":{"x":0.23,"y":0.12,"width":0.46,"height":0.2,"units":"normalized"},"scale":"macro","affects":"compression load path","mapsTo":{"type":"component.localFeatures","ref":"cider-press.frame.heavy-crossbeam-and-straps"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"press-bracing","kind":"joint","description":"Four lower diagonal braces and side rails prevent rack deformation.","region":{"x":0.21,"y":0.42,"width":0.5,"height":0.35,"units":"normalized"},"scale":"meso","affects":"frame credibility","mapsTo":{"type":"component.localFeatures","ref":"cider-press.frame.braces-and-rails"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"press-screw","kind":"repetition","description":"A carved wooden core carries a continuous nine-turn projected thread beneath an octagonal nut.","region":{"x":0.41,"y":0.14,"width":0.16,"height":0.37,"units":"normalized"},"scale":"macro","affects":"machine identity","mapsTo":{"type":"component.localFeatures","ref":"cider-press.screw.carved-thread-and-nut"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"press-turning-bar","kind":"joint","description":"A long iron turning bar ends in two wood grips with ferrules.","region":{"x":0.25,"y":0.08,"width":0.42,"height":0.12,"units":"normalized"},"scale":"meso","affects":"operator action","mapsTo":{"type":"component.localFeatures","ref":"cider-press.screw.turning-bar-and-grips"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"press-pressure-plate","kind":"structure","description":"Eight oak segments and two iron hoops form a layered circular pressure plate.","region":{"x":0.34,"y":0.38,"width":0.28,"height":0.17,"units":"normalized"},"scale":"meso","affects":"compression contact","mapsTo":{"type":"component.localFeatures","ref":"cider-press.screw.segmented-pressure-plate"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"press-basket-staves","kind":"repetition","description":"Twenty-two tapered vertical staves form a truly slatted round basket.","region":{"x":0.31,"y":0.45,"width":0.34,"height":0.27,"units":"normalized"},"scale":"macro","affects":"container structure","mapsTo":{"type":"component.localFeatures","ref":"cider-press.basket.twenty-two-staves"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"press-basket-hoops","kind":"fastener","description":"Three black iron hoops and distributed rivets clamp the basket staves.","region":{"x":0.3,"y":0.45,"width":0.35,"height":0.27,"units":"normalized"},"scale":"meso","affects":"basket load read","mapsTo":{"type":"component.localFeatures","ref":"cider-press.basket.hoops-and-rivets"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"press-pulp-apples","kind":"material-override","description":"Dark crushed pulp and partial russet apples remain visible beneath the plate.","region":{"x":0.36,"y":0.43,"width":0.25,"height":0.15,"units":"normalized"},"scale":"meso","affects":"process state","mapsTo":{"type":"material.localOverrides","ref":"fruit.crushed-pulp-and-apples"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.97},
+        {"id":"press-tray-spout","kind":"attachment","description":"A circular collection tray terminates in a carved front spout with a wet groove.","region":{"x":0.33,"y":0.64,"width":0.32,"height":0.18,"units":"normalized"},"scale":"meso","affects":"liquid path","mapsTo":{"type":"component.localFeatures","ref":"cider-press.juice.tray-spout-and-wet-groove"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"press-juice-bucket","kind":"attachment","description":"Amber cider drips into a separate fourteen-stave iron-hooped bucket.","region":{"x":0.39,"y":0.72,"width":0.22,"height":0.25,"units":"normalized"},"scale":"meso","affects":"output identity","mapsTo":{"type":"component.localFeatures","ref":"cider-press.juice.stream-and-stave-bucket"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"press-ratchet","kind":"joint","description":"A toothed side ratchet, pawl, crank arm and wood grip form a complete control system.","region":{"x":0.65,"y":0.36,"width":0.2,"height":0.37,"units":"normalized"},"scale":"meso","affects":"mechanical action","mapsTo":{"type":"component.localFeatures","ref":"cider-press.crank.ratchet-pawl-and-grip"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"press-apple-crate","kind":"attachment","description":"A slatted side crate carries fifteen varied russet apples with several loose fruit nearby.","region":{"x":0.05,"y":0.57,"width":0.25,"height":0.32,"units":"normalized"},"scale":"meso","affects":"orchard context","mapsTo":{"type":"component.localFeatures","ref":"cider-press.cargo.apple-crate-and-loose-fruit"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.99},
+        {"id":"press-rope-cloth","kind":"material-override","description":"A tied rope coil and folded cider-stained cloth occupy the opposite ground corner.","region":{"x":0.7,"y":0.67,"width":0.24,"height":0.24,"units":"normalized"},"scale":"micro","affects":"workstation age","mapsTo":{"type":"material.localOverrides","ref":"cargo.rope-and-stained-cloth"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.96}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/orchard_cider_press/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The frame visibly carries screw load into a slatted basket and tray; crank, fruit and juice output remain readable in main and side review."
+    ],
+    "minimumSpecDepth": {"macroComponents":5,"mesoComponents":12,"microFeatureGroups":7,"materialLayers":6,"repetitionSystems":4,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"load-frame","required":true,"qualityCriteria":["Splayed posts, braces, crossbeam and stone feet form a credible compression frame."]},
+      {"id":"press-mechanism","required":true,"qualityCriteria":["Threaded screw, turning bar and segmented plate connect without gaps."]},
+      {"id":"basket-and-liquid-path","required":true,"qualityCriteria":["Slatted basket, tray, spout, stream and bucket remain distinct."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Dry/wet oak, iron, fruit, cider, stone, rope and cloth respond independently."]}
+    ],
+    "visualDeltaChecks": ["frame splay","thread visibility","basket stave count","hoop contact","spout alignment","ratchet silhouette","apple context"],
+    "antiShallowSpecRules": ["No barrel with a screw floating above it may pass.","The basket may not be a solid cylinder.","The juice path must terminate in a separate catch bucket."]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference and direct main/side browser renders."
+}
