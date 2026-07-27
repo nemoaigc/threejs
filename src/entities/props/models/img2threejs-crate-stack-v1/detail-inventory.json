@@ -1,0 +1,132 @@
+{
+  "sourceImage": "docs/references/props/crate_stack/ref_main.png",
+  "zonesDir": "src/entities/props/models/img2threejs-crate-stack-v1/detail-zones",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 10,
+    "details": [
+      {
+        "id": "crate-stack-arrangement",
+        "kind": "contour",
+        "description": "Two broad base crates support one middle crate and one smaller open produce crate.",
+        "region": {"x": 0.18, "y": 0.12, "width": 0.64, "height": 0.78, "units": "normalized"},
+        "scale": "macro",
+        "affects": "stable silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crate-stack.four-crate-arrangement"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "crate-separated-planks",
+        "kind": "seam",
+        "description": "Every face is built from separated chamfered planks with narrow real gaps.",
+        "region": {"x": 0.2, "y": 0.2, "width": 0.62, "height": 0.66, "units": "normalized"},
+        "scale": "meso",
+        "affects": "construction depth",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crates.separated-face-planks"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "crate-corner-cleats",
+        "kind": "bevel",
+        "description": "Thick vertical corner cleats project beyond faces and carry paired nail heads.",
+        "region": {"x": 0.18, "y": 0.2, "width": 0.66, "height": 0.66, "units": "normalized"},
+        "scale": "meso",
+        "affects": "load-bearing read",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crates.corner-cleats"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "crate-diagonal-braces",
+        "kind": "ridge",
+        "description": "Alternating diagonal oak braces cross the visible front faces.",
+        "region": {"x": 0.2, "y": 0.35, "width": 0.62, "height": 0.48, "units": "normalized"},
+        "scale": "meso",
+        "affects": "front-face identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crates.diagonal-braces"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "crate-fasteners",
+        "kind": "fastener",
+        "description": "Dark forged nail heads attach cleats and braces at regular intervals.",
+        "region": {"x": 0.2, "y": 0.2, "width": 0.62, "height": 0.66, "units": "normalized"},
+        "scale": "micro",
+        "affects": "construction scale",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crates.forged-nails"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.94
+      },
+      {
+        "id": "crate-finger-slots",
+        "kind": "hole",
+        "description": "Dark inset hand slots interrupt upper face planks.",
+        "region": {"x": 0.26, "y": 0.35, "width": 0.5, "height": 0.38, "units": "normalized"},
+        "scale": "micro",
+        "affects": "container usability",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crates.finger-slots"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.93
+      },
+      {
+        "id": "crate-rope-handles",
+        "kind": "contour",
+        "description": "Hemp U-handles attach to side faces with curved sag.",
+        "region": {"x": 0.14, "y": 0.46, "width": 0.72, "height": 0.32, "units": "normalized"},
+        "scale": "meso",
+        "affects": "side silhouette and interaction",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crates.rope-handles"},
+        "evidenceRef": "detail-zones/zone-r1c0.png",
+        "confidence": 0.92
+      },
+      {
+        "id": "crate-open-rim",
+        "kind": "ridge",
+        "description": "The top crate has a raised four-piece rim and open interior rather than a lid.",
+        "region": {"x": 0.34, "y": 0.08, "width": 0.36, "height": 0.3, "units": "normalized"},
+        "scale": "meso",
+        "affects": "produce-container read",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crate.top-produce.open-rim"},
+        "evidenceRef": "detail-zones/zone-r0c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "crate-apples",
+        "kind": "gloss",
+        "description": "Nine irregular red apples with individual stems crown the open crate.",
+        "region": {"x": 0.36, "y": 0.04, "width": 0.32, "height": 0.22, "units": "normalized"},
+        "scale": "meso",
+        "affects": "top silhouette and color accent",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crate.top-produce.apples-and-stems"},
+        "evidenceRef": "detail-zones/zone-r0c1.png",
+        "confidence": 0.97
+      },
+      {
+        "id": "crate-burlap",
+        "kind": "stitch",
+        "description": "A woven burlap sheet bends over the front rim and ends in separated fringe strands.",
+        "region": {"x": 0.48, "y": 0.12, "width": 0.22, "height": 0.34, "units": "normalized"},
+        "scale": "meso",
+        "affects": "soft-material contrast",
+        "mapsTo": {"type": "component.localFeatures", "ref": "crate.top-produce.burlap-drape"},
+        "evidenceRef": "detail-zones/zone-r0c1.png",
+        "confidence": 0.9
+      },
+      {
+        "id": "crate-wood-grain",
+        "kind": "scratch",
+        "description": "Wood grain rotates with each plank direction and darkens in gaps and worn edges.",
+        "region": {"x": 0.2, "y": 0.2, "width": 0.62, "height": 0.66, "units": "normalized"},
+        "scale": "micro",
+        "affects": "timber realism",
+        "mapsTo": {"type": "material.localOverrides", "ref": "crate-oak.directional-grain"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.95
+      }
+    ]
+  },
+  "authoringInstruction": "Inventory completed from direct visual inspection; all entries map to implemented component or material features."
+}

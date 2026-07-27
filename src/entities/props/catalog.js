@@ -3,11 +3,7 @@
  * Layout `type` keys map here. Unknown types stay off the stage (empty > junk).
  */
 import {
-  createQuestBoard,
-  createCrateStack,
-  createBarrelCluster,
   createWoodpile,
-  createBench,
   createFenceSection,
   createHitchingPost,
   createWaystone,
@@ -19,8 +15,12 @@ import {
   createCrystalCrate,
 } from './batch_p0.js';
 import {
+  createBarrelClusterModel,
+  createCrateStackModel,
   createHandcartModel,
+  createQuestBoardModel,
   createStreetLanternModel,
+  createVillageBenchModel,
   createVillageWellModel,
 } from './models/index.js';
 
@@ -29,16 +29,16 @@ export const PROP_BUILDERS = {
   // plaza / street furniture
   streetLight: createStreetLanternModel,
   lanternPost: createStreetLanternModel,
-  questBoard: createQuestBoard,
+  questBoard: createQuestBoardModel,
   well: createVillageWellModel,
-  bench: createBench,
+  bench: createVillageBenchModel,
   signpost: createSignpost,
   waystone: createWaystone,
   planter: createPlanter,
 
   // cargo / market
-  crateStack: createCrateStack,
-  barrelCluster: createBarrelCluster,
+  crateStack: createCrateStackModel,
+  barrelCluster: createBarrelClusterModel,
   sackPile: createSackPile,
   handcart: createHandcartModel,
   hayBale: createHayBale,

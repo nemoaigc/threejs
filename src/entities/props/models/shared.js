@@ -104,6 +104,12 @@ const SURFACE_RECIPES = {
   'worn-iron': { roughness: 0.38, metalness: 0.84, normalScale: 0.42, repeat: [3.2, 3.2] },
   brass: { roughness: 0.34, metalness: 0.72, normalScale: 0.24, repeat: [3, 3] },
   rope: { roughness: 0.93, metalness: 0, normalScale: 0.86, repeat: [3.5, 2] },
+  cork: { roughness: 0.96, metalness: 0, normalScale: 0.84, repeat: [3.2, 3.2] },
+  parchment: { roughness: 0.91, metalness: 0, normalScale: 0.24, repeat: [2.2, 3.4] },
+  burlap: { roughness: 0.98, metalness: 0, normalScale: 1.12, repeat: [5.2, 5.2] },
+  moss: { roughness: 1, metalness: 0, normalScale: 1.18, repeat: [4.2, 4.2] },
+  fruit: { roughness: 0.38, metalness: 0, normalScale: 0.16, repeat: [2.8, 2.8] },
+  wax: { roughness: 0.46, metalness: 0, normalScale: 0.14, repeat: [3, 3] },
   generic: { roughness: 0.72, metalness: 0, normalScale: 0.35, repeat: [2, 2] },
 };
 
@@ -195,6 +201,59 @@ function surfaceSignal(kind, u, v, channelSeed) {
       roughness: clamp01(0.84 + meso * 0.1 + fiber * 0.06),
       height: clamp01(0.32 + twist * 0.43 + fiber * 0.18 + micro * 0.07),
       ao: clamp01(0.65 + twist * 0.23 + macro * 0.1),
+    };
+  }
+
+  if (kind === 'parchment') {
+    const fiber = 0.5 + 0.5 * Math.sin(v * 430 + macro * 15);
+    const foxing = speck > 0.986 ? (speck - 0.986) * 28 : 0;
+    return {
+      albedo: clamp01(0.76 + macro * 0.16 + fiber * 0.035 - foxing * 0.14),
+      roughness: clamp01(0.82 + meso * 0.12 + fiber * 0.06),
+      height: clamp01(0.45 + fiber * 0.16 + meso * 0.1),
+      ao: clamp01(0.78 + macro * 0.15 - foxing * 0.08),
+    };
+  }
+
+  if (kind === 'burlap') {
+    const warp = 0.5 + 0.5 * Math.sin(u * Math.PI * 170);
+    const weft = 0.5 + 0.5 * Math.sin(v * Math.PI * 170);
+    const weave = warp * 0.52 + weft * 0.48;
+    return {
+      albedo: clamp01(0.68 + macro * 0.12 + weave * 0.12),
+      roughness: clamp01(0.88 + meso * 0.08 + weave * 0.04),
+      height: clamp01(0.28 + weave * 0.58 + micro * 0.08),
+      ao: clamp01(0.62 + weave * 0.28 + macro * 0.08),
+    };
+  }
+
+  if (kind === 'cork') {
+    const pit = speck > 0.96 ? (speck - 0.96) * 14 : 0;
+    return {
+      albedo: clamp01(0.62 + macro * 0.22 + meso * 0.11 - pit * 0.18),
+      roughness: clamp01(0.88 + meso * 0.1),
+      height: clamp01(0.36 + macro * 0.24 + meso * 0.22 - pit * 0.3),
+      ao: clamp01(0.66 + macro * 0.2 + meso * 0.1 - pit * 0.18),
+    };
+  }
+
+  if (kind === 'moss') {
+    const tuft = Math.pow(meso, 1.55);
+    return {
+      albedo: clamp01(0.38 + macro * 0.28 + tuft * 0.22),
+      roughness: clamp01(0.9 + micro * 0.1),
+      height: clamp01(0.2 + tuft * 0.66 + micro * 0.12),
+      ao: clamp01(0.5 + macro * 0.24 + tuft * 0.2),
+    };
+  }
+
+  if (kind === 'fruit' || kind === 'wax') {
+    const dimple = speck > 0.985 ? 0.24 : 0;
+    return {
+      albedo: clamp01(0.68 + macro * 0.18 + meso * 0.08 - dimple * 0.18),
+      roughness: clamp01((kind === 'wax' ? 0.4 : 0.3) + meso * 0.25),
+      height: clamp01(0.5 + meso * 0.12 + micro * 0.07 - dimple),
+      ao: clamp01(0.75 + macro * 0.16 - dimple * 0.12),
     };
   }
 
@@ -296,6 +355,11 @@ function referenceAlbedo(kind, repeat) {
         const rotated = loaded.clone();
         rotated.center.set(0.5, 0.5);
         rotated.rotation = assignment.rotation;
+        rotated.offset.set(assignment.offset[0], assignment.offset[1]);
+        rotated.repeat.multiply(new THREE.Vector2(
+          assignment.repeatScale[0],
+          assignment.repeatScale[1],
+        ));
         rotated.needsUpdate = true;
         assignment.material[assignment.key] = rotated;
         assignment.material.needsUpdate = true;
@@ -355,7 +419,11 @@ export function surfaceMaterial(kind, color, options = {}) {
   return material;
 }
 
-export function rotateMaterialMaps(material, rotation) {
+export function transformMaterialMaps(material, {
+  rotation = 0,
+  offset = [0, 0],
+  repeatScale = [1, 1],
+} = {}) {
   const clone = material.clone();
   for (const key of ['map', 'roughnessMap', 'metalnessMap', 'normalMap', 'aoMap']) {
     const source = material[key];
@@ -366,6 +434,8 @@ export function rotateMaterialMaps(material, rotation) {
         material: clone,
         key,
         rotation,
+        offset,
+        repeatScale,
       });
       REFERENCE_ROTATION_ASSIGNMENTS.set(source, assignments);
       clone[key] = source;
@@ -374,11 +444,17 @@ export function rotateMaterialMaps(material, rotation) {
     const texture = source.clone();
     texture.center.set(0.5, 0.5);
     texture.rotation = rotation;
+    texture.offset.set(offset[0], offset[1]);
+    texture.repeat.multiply(new THREE.Vector2(repeatScale[0], repeatScale[1]));
     texture.needsUpdate = true;
     clone[key] = texture;
   }
   clone.name = `${material.name}.rotated-${rotation.toFixed(3)}`;
   return clone;
+}
+
+export function rotateMaterialMaps(material, rotation) {
+  return transformMaterialMaps(material, { rotation });
 }
 
 export function makePropRoot(name, version) {

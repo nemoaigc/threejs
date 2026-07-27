@@ -1,0 +1,449 @@
+{
+  "targetName": "Market Crate Stack",
+  "sourceImage": "docs/references/props/crate_stack/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "stacked medieval market cargo crates",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "asymmetric four-box stack",
+        "visible plank gaps",
+        "thick corner cleats",
+        "diagonal face braces",
+        "open produce crown"
+      ],
+      "structureKind": [
+        "plank-and-cleat crates",
+        "load-bearing stable stack",
+        "open slatted produce crate",
+        "rope side handles"
+      ],
+      "motionPotential": [
+        "each crate detachable",
+        "produce socket",
+        "rope handles",
+        "loose burlap attachment"
+      ],
+      "materialFamilies": [
+        "aged oak",
+        "worn iron",
+        "hemp rope",
+        "burlap",
+        "red fruit"
+      ],
+      "notes": "The target is a stable stack of four separately modeled containers, not one box with painted seams."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 2,
+        "componentCount": 3,
+        "hierarchyDepth": 2,
+        "repetitionDensity": 3,
+        "materialLayerCount": 2,
+        "localDetailDensity": 3,
+        "occlusionRisk": 2,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 4,
+        "mesoComponents": 22,
+        "microFeatureGroups": 12,
+        "materialLayers": 5,
+        "repetitionSystems": 6
+      },
+      "reasoning": [
+        "Two broad base crates support a centered middle crate and smaller open produce crate.",
+        "Every crate exposes separated face planks, corner cleats, diagonal braces, fasteners and usable side handles.",
+        "Fruit, stems and burlap create the top silhouette and must remain distinct from the crate body."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by four independent containers, six repetition systems and cloth/fruit attachments."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Hidden rear bracing is mirrored from visible faces.",
+      "Apple count is reduced for real-time clarity while preserving the crown silhouette.",
+      "Burlap weave is procedural rather than image-projected."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {
+          "id": "crate-stack-arrangement",
+          "kind": "contour",
+          "description": "Two broad base crates support one middle crate and one smaller open produce crate.",
+          "region": {
+            "x": 0.18,
+            "y": 0.12,
+            "width": 0.64,
+            "height": 0.78,
+            "units": "normalized"
+          },
+          "scale": "macro",
+          "affects": "stable silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crate-stack.four-crate-arrangement"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crate-separated-planks",
+          "kind": "seam",
+          "description": "Every face is built from separated chamfered planks with narrow real gaps.",
+          "region": {
+            "x": 0.2,
+            "y": 0.2,
+            "width": 0.62,
+            "height": 0.66,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "construction depth",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crates.separated-face-planks"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "crate-corner-cleats",
+          "kind": "bevel",
+          "description": "Thick vertical corner cleats project beyond faces and carry paired nail heads.",
+          "region": {
+            "x": 0.18,
+            "y": 0.2,
+            "width": 0.66,
+            "height": 0.66,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "load-bearing read",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crates.corner-cleats"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crate-diagonal-braces",
+          "kind": "ridge",
+          "description": "Alternating diagonal oak braces cross the visible front faces.",
+          "region": {
+            "x": 0.2,
+            "y": 0.35,
+            "width": 0.62,
+            "height": 0.48,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "front-face identity",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crates.diagonal-braces"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crate-fasteners",
+          "kind": "fastener",
+          "description": "Dark forged nail heads attach cleats and braces at regular intervals.",
+          "region": {
+            "x": 0.2,
+            "y": 0.2,
+            "width": 0.62,
+            "height": 0.66,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "construction scale",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crates.forged-nails"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.94
+        },
+        {
+          "id": "crate-finger-slots",
+          "kind": "hole",
+          "description": "Dark inset hand slots interrupt upper face planks.",
+          "region": {
+            "x": 0.26,
+            "y": 0.35,
+            "width": 0.5,
+            "height": 0.38,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "container usability",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crates.finger-slots"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.93
+        },
+        {
+          "id": "crate-rope-handles",
+          "kind": "contour",
+          "description": "Hemp U-handles attach to side faces with curved sag.",
+          "region": {
+            "x": 0.14,
+            "y": 0.46,
+            "width": 0.72,
+            "height": 0.32,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "side silhouette and interaction",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crates.rope-handles"
+          },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.92
+        },
+        {
+          "id": "crate-open-rim",
+          "kind": "ridge",
+          "description": "The top crate has a raised four-piece rim and open interior rather than a lid.",
+          "region": {
+            "x": 0.34,
+            "y": 0.08,
+            "width": 0.36,
+            "height": 0.3,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "produce-container read",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crate.top-produce.open-rim"
+          },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crate-apples",
+          "kind": "gloss",
+          "description": "Nine irregular red apples with individual stems crown the open crate.",
+          "region": {
+            "x": 0.36,
+            "y": 0.04,
+            "width": 0.32,
+            "height": 0.22,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "top silhouette and color accent",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crate.top-produce.apples-and-stems"
+          },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.97
+        },
+        {
+          "id": "crate-burlap",
+          "kind": "stitch",
+          "description": "A woven burlap sheet bends over the front rim and ends in separated fringe strands.",
+          "region": {
+            "x": 0.48,
+            "y": 0.12,
+            "width": 0.22,
+            "height": 0.34,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "soft-material contrast",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "crate.top-produce.burlap-drape"
+          },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.9
+        },
+        {
+          "id": "crate-wood-grain",
+          "kind": "scratch",
+          "description": "Wood grain rotates with each plank direction and darkens in gaps and worn edges.",
+          "region": {
+            "x": 0.2,
+            "y": 0.2,
+            "width": 0.62,
+            "height": 0.66,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "timber realism",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "crate-oak.directional-grain"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {
+        "headUnit": 0,
+        "torso": 0,
+        "legs": 0,
+        "shoulderWidth": 0,
+        "hipWidth": 0
+      },
+      "pose": {
+        "type": "unassessed",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0,
+        "eyeSpacing": 0,
+        "noseBase": 0,
+        "mouthLine": 0,
+        "hairline": 0
+      },
+      "features": [],
+      "confidence": 0,
+      "note": "Only meaningful when objectClass.primaryDomain is character or hybrid. Set applies=true and fill from forge/stage1_intake/extract_landmarks.py. See grimoire/character/reconstruction.md and grimoire/character/likeness_maximization.md."
+    },
+    "sourceImage": "docs/references/props/crate_stack/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The rendered model matches the reference silhouette, primary proportions, visible component hierarchy, material response, and most recognizable local features for the selected fidelity tier."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 3,
+      "mesoComponents": 8,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "overall-silhouette",
+        "name": "Overall silhouette and proportions",
+        "required": true,
+        "qualityCriteria": [
+          "Bounding shape, dominant curves, negative spaces, and scale relationships are explicitly described."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model reads as a generic placeholder instead of the reference object",
+          "major proportions are guessed without evidence"
+        ]
+      },
+      {
+        "id": "primary-structure",
+        "name": "Primary structure and hierarchy",
+        "required": true,
+        "qualityCriteria": [
+          "Major parts, joints, seams, contact points, and parent-child relationships are named before code generation."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "large visible parts are merged into one mesh",
+          "component hierarchy is too shallow for the observed complexity"
+        ]
+      },
+      {
+        "id": "attachment-joint-correctness",
+        "name": "Attachment and joint correctness",
+        "required": true,
+        "qualityCriteria": [
+          "Every visible child appendage, branch, limb, handle, connector, tube, cable, horn, wing, leg, or hinged part has an attachment contract with parent socket, localStart/localEnd, contact type, embed/overlap, and gap tolerance."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "child part root floats away from the parent",
+          "branch/limb/tube is centered in space instead of pivoting from its root",
+          "parent-child transform mixes world and local coordinates"
+        ]
+      },
+      {
+        "id": "surface-material-response",
+        "name": "Surface material response",
+        "required": true,
+        "qualityCriteria": [
+          "Albedo zones, roughness, normal/bump/displacement intent, cavity dirt, edge wear, and local overrides are specified where visible.",
+          "Important materials define independent albedo, roughness, height/normal, and AO responses instead of reusing one texture for unrelated PBR channels.",
+          "Surface response is decomposed into macro, meso, and micro frequency bands with scale and amplitude tied to object scale."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "surface looks like flat plastic",
+          "local material variation is missing or not tied to image evidence"
+        ]
+      },
+      {
+        "id": "reference-lookdev",
+        "name": "Reference color, material, and lighting response",
+        "required": true,
+        "qualityCriteria": [
+          "Material-pass names the reference-derived albedo palette, roughness variation, tactile normal/bump/displacement response, and local masks.",
+          "When a source image is available, run reference PBR extraction and require confidence >= 0.7 before treating maps as implementation-ready.",
+          "Lighting-pass names key/fill/rim or environment light, exposure, tone mapping, background, and contact shadow behavior.",
+          "Neutral, grazing-angle, and reference-matched renders prove that surface relief survives relighting and is not painted into albedo."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model has acceptable shape but reads as flat shaded or plastic",
+          "colors are a generic average instead of reference-observed local color zones",
+          "lighting is evenly ambient and cannot reproduce the source value range"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "silhouette and negative-space delta",
+      "component hierarchy depth delta",
+      "repetition density and distribution delta",
+      "material albedo/roughness/normal response delta",
+      "local feature placement and scale delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not proceed to code if qualityContract.qualityBar is unassessed.",
+      "Do not proceed to code if the spec only contains a root component for a moderate or complex object.",
+      "Do not proceed to code if required featureGroups are not represented by componentTree, materials, or repetitionSystems.",
+      "Do not proceed to code if visible local features are described only in prose and not attached to components/materials/evidenceRefs.",
+      "Do not proceed past structural-pass if attached child parts lack attachment.parentSocket, localStart, localEnd, embedDepth/overlap, and gapTolerance.",
+      "Do not pass material look-dev when albedo is reused as roughness, height, normal, or AO.",
+      "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
+      "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
+      "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity."
+    ]
+  },
+  "authoringInstruction": "Fill observed object class, complexity reasoning, featureGroups, visualDeltaChecks, and unknowns before generating or implementing ObjectSculptSpec."
+}

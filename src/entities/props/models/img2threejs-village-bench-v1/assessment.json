@@ -1,0 +1,445 @@
+{
+  "targetName": "Forged Oak Village Bench",
+  "sourceImage": "docs/references/props/village_bench/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "forged-oak village bench",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "long horizontal seat",
+        "high slatted back",
+        "splayed timber legs",
+        "curled iron armrests",
+        "pegged vernacular joinery"
+      ],
+      "structureKind": [
+        "mortise-and-tenon timber frame",
+        "three-plank seat",
+        "rail-and-slat back",
+        "forged iron reinforcement"
+      ],
+      "motionPotential": [
+        "seat interaction socket",
+        "back and frame destruction groups",
+        "armrest attachment groups"
+      ],
+      "materialFamilies": [
+        "aged oak",
+        "worn forged iron",
+        "moss"
+      ],
+      "notes": "Load paths and side-view stance must be credible; the reference depends on real joinery rather than a box silhouette."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 2,
+        "componentCount": 3,
+        "hierarchyDepth": 2,
+        "repetitionDensity": 2,
+        "materialLayerCount": 2,
+        "localDetailDensity": 3,
+        "occlusionRisk": 1,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 4,
+        "mesoComponents": 18,
+        "microFeatureGroups": 10,
+        "materialLayers": 3,
+        "repetitionSystems": 5
+      },
+      "reasoning": [
+        "The identity combines a broad three-plank seat, ten vertical back slats, heavy end posts and scroll-shaped iron arms.",
+        "Four visibly splayed legs, long stretcher and diagonal braces must form a credible load-bearing frame.",
+        "Raised leaf motif, iron straps, rivets, pegs and foot moss provide the reference-specific micro read."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is justified by the joined timber hierarchy, repeated slats, paired scroll arms and dense reinforcement hardware."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Rear joinery is inferred from the front three-quarter reference.",
+      "The shallow carved motif is represented by low-relief geometry for real-time readability."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {
+          "id": "bench-seat-planks",
+          "kind": "seam",
+          "description": "Three separated long oak seat planks terminate in thicker end caps.",
+          "region": {
+            "x": 0.13,
+            "y": 0.46,
+            "width": 0.76,
+            "height": 0.24,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "seat depth and usable silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.seat.three-plank-deck"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "bench-back-slats",
+          "kind": "contour",
+          "description": "Ten narrow vertical slats bridge the lower and top back rails.",
+          "region": {
+            "x": 0.2,
+            "y": 0.22,
+            "width": 0.62,
+            "height": 0.32,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "back negative-space rhythm",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.back.vertical-slats"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "bench-scroll-arms",
+          "kind": "contour",
+          "description": "Paired iron arms leave the back posts, sweep forward and curl down into open scrolls.",
+          "region": {
+            "x": 0.08,
+            "y": 0.25,
+            "width": 0.84,
+            "height": 0.42,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "signature silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.armrests.scroll-curves"
+          },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "bench-splayed-legs",
+          "kind": "contour",
+          "description": "Four rectangular legs splay outward in both side and front views.",
+          "region": {
+            "x": 0.13,
+            "y": 0.62,
+            "width": 0.76,
+            "height": 0.3,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "load path and stance",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.legs.splayed-members"
+          },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "bench-stretcher",
+          "kind": "contour",
+          "description": "A long pegged stretcher links the leg frames beneath the seat.",
+          "region": {
+            "x": 0.22,
+            "y": 0.68,
+            "width": 0.58,
+            "height": 0.18,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "side-view frame credibility",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.legs.long-stretcher"
+          },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.94
+        },
+        {
+          "id": "bench-diagonal-braces",
+          "kind": "ridge",
+          "description": "Diagonal oak braces transfer seat load into each leg frame.",
+          "region": {
+            "x": 0.16,
+            "y": 0.58,
+            "width": 0.7,
+            "height": 0.26,
+            "units": "normalized"
+          },
+          "scale": "meso",
+          "affects": "joinery and attachment read",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.legs.diagonal-braces"
+          },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.94
+        },
+        {
+          "id": "bench-iron-straps",
+          "kind": "fastener",
+          "description": "Iron straps reinforce back posts, front apron and legs with paired rivets.",
+          "region": {
+            "x": 0.12,
+            "y": 0.26,
+            "width": 0.78,
+            "height": 0.58,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "construction scale and wear",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.ironwork.straps-and-rivets"
+          },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.96
+        },
+        {
+          "id": "bench-post-caps",
+          "kind": "bevel",
+          "description": "Chamfered block caps terminate the two tall back posts.",
+          "region": {
+            "x": 0.1,
+            "y": 0.1,
+            "width": 0.82,
+            "height": 0.18,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "top silhouette",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.back.post-caps"
+          },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.96
+        },
+        {
+          "id": "bench-leaf-carving",
+          "kind": "groove",
+          "description": "A shallow dark leaf-and-vine motif spans the center of the top back rail.",
+          "region": {
+            "x": 0.34,
+            "y": 0.18,
+            "width": 0.34,
+            "height": 0.13,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "reference-specific ornament",
+          "mapsTo": {
+            "type": "component.localFeatures",
+            "ref": "bench.back.leaf-motif"
+          },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.9
+        },
+        {
+          "id": "bench-moss",
+          "kind": "stain",
+          "description": "Small moss tufts cluster only at ground-contact feet.",
+          "region": {
+            "x": 0.14,
+            "y": 0.82,
+            "width": 0.72,
+            "height": 0.14,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "grounding and age",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "bench-moss.foot-contact-only"
+          },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.88
+        },
+        {
+          "id": "bench-oak-finish",
+          "kind": "scratch",
+          "description": "Directional grain follows each member with softened chipped edges and dark joinery cavities.",
+          "region": {
+            "x": 0.12,
+            "y": 0.18,
+            "width": 0.78,
+            "height": 0.72,
+            "units": "normalized"
+          },
+          "scale": "micro",
+          "affects": "aged timber realism",
+          "mapsTo": {
+            "type": "material.localOverrides",
+            "ref": "bench-oak.directional-grain-and-edge-wear"
+          },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.95
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {
+        "headUnit": 0,
+        "torso": 0,
+        "legs": 0,
+        "shoulderWidth": 0,
+        "hipWidth": 0
+      },
+      "pose": {
+        "type": "unassessed",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0,
+        "eyeSpacing": 0,
+        "noseBase": 0,
+        "mouthLine": 0,
+        "hairline": 0
+      },
+      "features": [],
+      "confidence": 0,
+      "note": "Only meaningful when objectClass.primaryDomain is character or hybrid. Set applies=true and fill from forge/stage1_intake/extract_landmarks.py. See grimoire/character/reconstruction.md and grimoire/character/likeness_maximization.md."
+    },
+    "sourceImage": "docs/references/props/village_bench/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The rendered model matches the reference silhouette, primary proportions, visible component hierarchy, material response, and most recognizable local features for the selected fidelity tier."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 3,
+      "mesoComponents": 8,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "overall-silhouette",
+        "name": "Overall silhouette and proportions",
+        "required": true,
+        "qualityCriteria": [
+          "Bounding shape, dominant curves, negative spaces, and scale relationships are explicitly described."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model reads as a generic placeholder instead of the reference object",
+          "major proportions are guessed without evidence"
+        ]
+      },
+      {
+        "id": "primary-structure",
+        "name": "Primary structure and hierarchy",
+        "required": true,
+        "qualityCriteria": [
+          "Major parts, joints, seams, contact points, and parent-child relationships are named before code generation."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "large visible parts are merged into one mesh",
+          "component hierarchy is too shallow for the observed complexity"
+        ]
+      },
+      {
+        "id": "attachment-joint-correctness",
+        "name": "Attachment and joint correctness",
+        "required": true,
+        "qualityCriteria": [
+          "Every visible child appendage, branch, limb, handle, connector, tube, cable, horn, wing, leg, or hinged part has an attachment contract with parent socket, localStart/localEnd, contact type, embed/overlap, and gap tolerance."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "child part root floats away from the parent",
+          "branch/limb/tube is centered in space instead of pivoting from its root",
+          "parent-child transform mixes world and local coordinates"
+        ]
+      },
+      {
+        "id": "surface-material-response",
+        "name": "Surface material response",
+        "required": true,
+        "qualityCriteria": [
+          "Albedo zones, roughness, normal/bump/displacement intent, cavity dirt, edge wear, and local overrides are specified where visible.",
+          "Important materials define independent albedo, roughness, height/normal, and AO responses instead of reusing one texture for unrelated PBR channels.",
+          "Surface response is decomposed into macro, meso, and micro frequency bands with scale and amplitude tied to object scale."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "surface looks like flat plastic",
+          "local material variation is missing or not tied to image evidence"
+        ]
+      },
+      {
+        "id": "reference-lookdev",
+        "name": "Reference color, material, and lighting response",
+        "required": true,
+        "qualityCriteria": [
+          "Material-pass names the reference-derived albedo palette, roughness variation, tactile normal/bump/displacement response, and local masks.",
+          "When a source image is available, run reference PBR extraction and require confidence >= 0.7 before treating maps as implementation-ready.",
+          "Lighting-pass names key/fill/rim or environment light, exposure, tone mapping, background, and contact shadow behavior.",
+          "Neutral, grazing-angle, and reference-matched renders prove that surface relief survives relighting and is not painted into albedo."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model has acceptable shape but reads as flat shaded or plastic",
+          "colors are a generic average instead of reference-observed local color zones",
+          "lighting is evenly ambient and cannot reproduce the source value range"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "silhouette and negative-space delta",
+      "component hierarchy depth delta",
+      "repetition density and distribution delta",
+      "material albedo/roughness/normal response delta",
+      "local feature placement and scale delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not proceed to code if qualityContract.qualityBar is unassessed.",
+      "Do not proceed to code if the spec only contains a root component for a moderate or complex object.",
+      "Do not proceed to code if required featureGroups are not represented by componentTree, materials, or repetitionSystems.",
+      "Do not proceed to code if visible local features are described only in prose and not attached to components/materials/evidenceRefs.",
+      "Do not proceed past structural-pass if attached child parts lack attachment.parentSocket, localStart, localEnd, embedDepth/overlap, and gapTolerance.",
+      "Do not pass material look-dev when albedo is reused as roughness, height, normal, or AO.",
+      "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
+      "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
+      "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity."
+    ]
+  },
+  "authoringInstruction": "Fill observed object class, complexity reasoning, featureGroups, visualDeltaChecks, and unknowns before generating or implementing ObjectSculptSpec."
+}

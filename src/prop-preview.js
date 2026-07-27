@@ -2,8 +2,12 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import {
+  createBarrelClusterModel,
+  createCrateStackModel,
   createHandcartModel,
+  createQuestBoardModel,
   createStreetLanternModel,
+  createVillageBenchModel,
   createVillageWellModel,
 } from './entities/props/models/index.js';
 
@@ -14,6 +18,10 @@ const factories = {
   well: createVillageWellModel,
   lantern: createStreetLanternModel,
   handcart: createHandcartModel,
+  questBoard: createQuestBoardModel,
+  barrelCluster: createBarrelClusterModel,
+  crateStack: createCrateStackModel,
+  bench: createVillageBenchModel,
 };
 const factory = factories[assetId] ?? factories.well;
 

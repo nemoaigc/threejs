@@ -1,0 +1,110 @@
+{
+  "sourceImage": "docs/references/props/barrel_cluster/ref_main.png",
+  "zonesDir": "src/entities/props/models/img2threejs-barrel-cluster-v1/detail-zones",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 8,
+    "details": [
+      {
+        "id": "barrel-cluster-silhouette",
+        "kind": "contour",
+        "description": "One large and one small upright barrel back a lower horizontal dispensing barrel.",
+        "region": {"x": 0.12, "y": 0.12, "width": 0.76, "height": 0.76, "units": "normalized"},
+        "scale": "macro",
+        "affects": "cluster identity",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrel-cluster.three-barrel-arrangement"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "barrel-bulged-staves",
+        "kind": "seam",
+        "description": "Eighteen to twenty separated tapered staves bulge at each barrel belly.",
+        "region": {"x": 0.14, "y": 0.2, "width": 0.7, "height": 0.58, "units": "normalized"},
+        "scale": "meso",
+        "affects": "coopered form and vertical seam rhythm",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrels.radial-stave-shells"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.97
+      },
+      {
+        "id": "barrel-hoops",
+        "kind": "ridge",
+        "description": "Five projected iron hoops follow each body radius and remain separate from the wood.",
+        "region": {"x": 0.12, "y": 0.18, "width": 0.76, "height": 0.62, "units": "normalized"},
+        "scale": "meso",
+        "affects": "horizontal rhythm",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrels.compression-hoops"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "barrel-hoop-rivets",
+        "kind": "fastener",
+        "description": "Eight raised rivets punctuate each hoop with mixed dark and rubbed metal values.",
+        "region": {"x": 0.18, "y": 0.18, "width": 0.68, "height": 0.62, "units": "normalized"},
+        "scale": "micro",
+        "affects": "iron scale and wear",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrels.hoop-rivets"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.9
+      },
+      {
+        "id": "barrel-heads",
+        "kind": "bevel",
+        "description": "Recessed circular timber heads sit behind raised iron head rims.",
+        "region": {"x": 0.48, "y": 0.42, "width": 0.38, "height": 0.38, "units": "normalized"},
+        "scale": "meso",
+        "affects": "end-view volume",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrels.recessed-heads"},
+        "evidenceRef": "detail-zones/zone-r1c2.png",
+        "confidence": 0.97
+      },
+      {
+        "id": "barrel-tap",
+        "kind": "contour",
+        "description": "A collared timber spigot and cross handle project from the visible horizontal head.",
+        "region": {"x": 0.34, "y": 0.62, "width": 0.28, "height": 0.18, "units": "normalized"},
+        "scale": "micro",
+        "affects": "dispensing action",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrel.horizontal.tap"},
+        "evidenceRef": "detail-zones/zone-r2c1.png",
+        "confidence": 0.92
+      },
+      {
+        "id": "barrel-chocks",
+        "kind": "bevel",
+        "description": "Two pegged oak chocks contact the horizontal barrel and floor.",
+        "region": {"x": 0.43, "y": 0.72, "width": 0.4, "height": 0.2, "units": "normalized"},
+        "scale": "meso",
+        "affects": "grounding and load path",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrel.horizontal.support-chocks"},
+        "evidenceRef": "detail-zones/zone-r2c2.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "barrel-rope-loop",
+        "kind": "contour",
+        "description": "A closed hemp loop rests across the horizontal body with visible depth.",
+        "region": {"x": 0.54, "y": 0.34, "width": 0.24, "height": 0.2, "units": "normalized"},
+        "scale": "micro",
+        "affects": "material accent and asymmetry",
+        "mapsTo": {"type": "component.localFeatures", "ref": "barrel.horizontal.rope-loop"},
+        "evidenceRef": "detail-zones/zone-r1c2.png",
+        "confidence": 0.88
+      },
+      {
+        "id": "barrel-oak-finish",
+        "kind": "scratch",
+        "description": "Dark directional oak has lower values in seams and rubbed highlights at stave edges.",
+        "region": {"x": 0.16, "y": 0.2, "width": 0.7, "height": 0.58, "units": "normalized"},
+        "scale": "micro",
+        "affects": "aged wood realism",
+        "mapsTo": {"type": "material.localOverrides", "ref": "barrel-oak.directional-grain-and-cavity-dirt"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.94
+      }
+    ]
+  },
+  "authoringInstruction": "Inventory completed from direct visual inspection; all entries map to implemented component or material features."
+}

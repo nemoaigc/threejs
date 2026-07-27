@@ -30,6 +30,17 @@
 
 实现数据与视觉评分见 `src/entities/props/models/BATCH01_RUN_LOG.md`；每件资产的 `compare/` 目录保存浏览器实拍和主参考对照图。
 
+## Batch 02
+
+| ID | 场景类型 | 层级 | 材质/装配覆盖 | 状态 |
+|---|---|---|---|---|
+| `props.quest_board.v1-pbr` | `questBoard` | Supporting | 石砌双脚、旧木框、三排瓦顶、卷边纸张、图钉/蜡封、铁钩与公会徽 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.barrel_cluster.v1-pbr` | `barrelCluster` | Supporting | 三只独立桶、56 根独立鼓腹桶板、15 道铆钉铁箍、桶盖、木龙头、支撑楔与绳圈 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.crate_stack.v1-pbr` | `crateStack` | Supporting | 四只可拆货箱、独立木板、角撑/斜撑/铁钉、绳把、苹果与粗麻布 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.village_bench.v1-pbr` | `bench` | Supporting | 三块座板、十根背条、四条外撇腿、长撑、斜撑、卷曲铁扶手、铆钉与脚部苔藓 | intake + detail inventory + 主/侧视图验收通过 |
+
+Batch 02 参考采用单主体 3D 产品渲染。`ref_source.png` 保留生成原图，`ref_main.png` 增加白色技术边界以通过确定性剪影 admission；这不会修改主体。实现数据与视觉评分见 `src/entities/props/models/BATCH02_RUN_LOG.md`。
+
 ## 验收闸门
 
 1. intake：单主体、完整轮廓、主体占比合理、无裁切；
@@ -43,6 +54,6 @@
 ## 批量扩展原则
 
 - 批量的是共享部件和质量合同，不是一次生成大量低质外形；
-- 石材、木构、轮组、铁件、绳索、灯笼六类已通过模板可复用于后续道具；
+- 石材、木构、轮组、桶板、货箱、铁件、纸张、粗麻布、绳索、灯笼等模板已可复用于后续道具；
 - 新道具仍须有自己的身份特征和至少一张合格主参考；
 - 每完成一个可运行批次就独立 commit + push。

@@ -1,0 +1,132 @@
+{
+  "sourceImage": "docs/references/props/village_bench/ref_main.png",
+  "zonesDir": "src/entities/props/models/img2threejs-village-bench-v1/detail-zones",
+  "detailInventory": {
+    "scanMethod": "grid-3x3",
+    "targetMinDetails": 10,
+    "details": [
+      {
+        "id": "bench-seat-planks",
+        "kind": "seam",
+        "description": "Three separated long oak seat planks terminate in thicker end caps.",
+        "region": {"x": 0.13, "y": 0.46, "width": 0.76, "height": 0.24, "units": "normalized"},
+        "scale": "meso",
+        "affects": "seat depth and usable silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.seat.three-plank-deck"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "bench-back-slats",
+        "kind": "contour",
+        "description": "Ten narrow vertical slats bridge the lower and top back rails.",
+        "region": {"x": 0.2, "y": 0.22, "width": 0.62, "height": 0.32, "units": "normalized"},
+        "scale": "meso",
+        "affects": "back negative-space rhythm",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.back.vertical-slats"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.99
+      },
+      {
+        "id": "bench-scroll-arms",
+        "kind": "contour",
+        "description": "Paired iron arms leave the back posts, sweep forward and curl down into open scrolls.",
+        "region": {"x": 0.08, "y": 0.25, "width": 0.84, "height": 0.42, "units": "normalized"},
+        "scale": "meso",
+        "affects": "signature silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.armrests.scroll-curves"},
+        "evidenceRef": "detail-zones/zone-r1c0.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "bench-splayed-legs",
+        "kind": "contour",
+        "description": "Four rectangular legs splay outward in both side and front views.",
+        "region": {"x": 0.13, "y": 0.62, "width": 0.76, "height": 0.3, "units": "normalized"},
+        "scale": "meso",
+        "affects": "load path and stance",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.legs.splayed-members"},
+        "evidenceRef": "detail-zones/zone-r2c1.png",
+        "confidence": 0.98
+      },
+      {
+        "id": "bench-stretcher",
+        "kind": "contour",
+        "description": "A long pegged stretcher links the leg frames beneath the seat.",
+        "region": {"x": 0.22, "y": 0.68, "width": 0.58, "height": 0.18, "units": "normalized"},
+        "scale": "meso",
+        "affects": "side-view frame credibility",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.legs.long-stretcher"},
+        "evidenceRef": "detail-zones/zone-r2c1.png",
+        "confidence": 0.94
+      },
+      {
+        "id": "bench-diagonal-braces",
+        "kind": "ridge",
+        "description": "Diagonal oak braces transfer seat load into each leg frame.",
+        "region": {"x": 0.16, "y": 0.58, "width": 0.7, "height": 0.26, "units": "normalized"},
+        "scale": "meso",
+        "affects": "joinery and attachment read",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.legs.diagonal-braces"},
+        "evidenceRef": "detail-zones/zone-r2c1.png",
+        "confidence": 0.94
+      },
+      {
+        "id": "bench-iron-straps",
+        "kind": "fastener",
+        "description": "Iron straps reinforce back posts, front apron and legs with paired rivets.",
+        "region": {"x": 0.12, "y": 0.26, "width": 0.78, "height": 0.58, "units": "normalized"},
+        "scale": "micro",
+        "affects": "construction scale and wear",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.ironwork.straps-and-rivets"},
+        "evidenceRef": "detail-zones/zone-r1c0.png",
+        "confidence": 0.96
+      },
+      {
+        "id": "bench-post-caps",
+        "kind": "bevel",
+        "description": "Chamfered block caps terminate the two tall back posts.",
+        "region": {"x": 0.1, "y": 0.1, "width": 0.82, "height": 0.18, "units": "normalized"},
+        "scale": "micro",
+        "affects": "top silhouette",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.back.post-caps"},
+        "evidenceRef": "detail-zones/zone-r0c1.png",
+        "confidence": 0.96
+      },
+      {
+        "id": "bench-leaf-carving",
+        "kind": "groove",
+        "description": "A shallow dark leaf-and-vine motif spans the center of the top back rail.",
+        "region": {"x": 0.34, "y": 0.18, "width": 0.34, "height": 0.13, "units": "normalized"},
+        "scale": "micro",
+        "affects": "reference-specific ornament",
+        "mapsTo": {"type": "component.localFeatures", "ref": "bench.back.leaf-motif"},
+        "evidenceRef": "detail-zones/zone-r0c1.png",
+        "confidence": 0.9
+      },
+      {
+        "id": "bench-moss",
+        "kind": "stain",
+        "description": "Small moss tufts cluster only at ground-contact feet.",
+        "region": {"x": 0.14, "y": 0.82, "width": 0.72, "height": 0.14, "units": "normalized"},
+        "scale": "micro",
+        "affects": "grounding and age",
+        "mapsTo": {"type": "material.localOverrides", "ref": "bench-moss.foot-contact-only"},
+        "evidenceRef": "detail-zones/zone-r2c1.png",
+        "confidence": 0.88
+      },
+      {
+        "id": "bench-oak-finish",
+        "kind": "scratch",
+        "description": "Directional grain follows each member with softened chipped edges and dark joinery cavities.",
+        "region": {"x": 0.12, "y": 0.18, "width": 0.78, "height": 0.72, "units": "normalized"},
+        "scale": "micro",
+        "affects": "aged timber realism",
+        "mapsTo": {"type": "material.localOverrides", "ref": "bench-oak.directional-grain-and-edge-wear"},
+        "evidenceRef": "detail-zones/zone-r1c1.png",
+        "confidence": 0.95
+      }
+    ]
+  },
+  "authoringInstruction": "Inventory completed from direct visual inspection; all entries map to implemented component or material features."
+}

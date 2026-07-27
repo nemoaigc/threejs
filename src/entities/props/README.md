@@ -14,14 +14,16 @@ Small countryside details for the Mushoku Buena/Roa slice. **Not** hero building
 | type | file | identity |
 |------|------|----------|
 | `streetLight` / `lanternPost` | models/street_lantern | forged-iron post + chain + caged amber light |
-| `questBoard` | batch_p0 | papers + green header |
+| `questBoard` | models/quest_board | tiled canopy + stone feet + curled notices + wax seals |
 | `well` | models/village_well | individual stone courses + timber frame + tiled roof + windlass |
-| `crateStack` / `barrelCluster` | batch_p0 | market cargo |
+| `crateStack` | models/crate_stack | four detachable plank crates + rope handles + produce + burlap |
+| `barrelCluster` | models/barrel_cluster | individual staves + riveted hoops + visible tap + timber chocks |
 | `woodpile` / `anvilProp` | batch_p0 | smithy porch |
 | `crystalCrate` | batch_p0 | magic shop porch |
 | `handcart` | models/handcart | empty plank cargo bed + 12-spoke wheels + iron running gear |
 | `hayBale` / `sackPile` | batch_p0 | street cargo |
-| `bench` / `fenceSection` / `hitchingPost` | batch_p0 | furniture |
+| `bench` | models/village_bench | splayed timber frame + ten-slat back + forged scroll arms |
+| `fenceSection` / `hitchingPost` | batch_p0 | lightweight furniture |
 | `signpost` / `waystone` / `planter` | batch_p0 | path markers |
 
 ## Add a scatter/supporting prop
