@@ -1,0 +1,123 @@
+{
+  "targetName": "Covered Trade Wagon",
+  "sourceImage": "docs/references/props/covered_trade_wagon/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "four-wheel covered oak trade wagon with open cargo end and paired shafts",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "long timber cargo body",
+        "arched cream canvas canopy",
+        "four spoked wheels with iron tires",
+        "open cargo end aligned with paired horse shafts",
+        "layered blackened iron running gear"
+      ],
+      "structureKind": [
+        "separate undercarriage, cargo body, canopy, cargo and shafts",
+        "rear rigid axle plus front steering axle and turntable",
+        "plank floor and wall courses with post-and-bracket reinforcement",
+        "bent canopy hoops supporting a continuous fabric shell",
+        "wheel-spoke-hub assemblies with projected collars and linchpins"
+      ],
+      "motionPotential": [
+        "front and rear axles expose sockets",
+        "shaft hitch and hanging lantern expose attachment sockets",
+        "undercarriage, body, canopy and shafts have independent colliders and destruction groups"
+      ],
+      "materialFamilies": [
+        "aged oak and wheel oak",
+        "waxed woven canvas",
+        "blackened and worn iron",
+        "hemp rope and heavy thread",
+        "dark leather, burlap, brass and limestone"
+      ],
+      "notes": "The open cargo end and shafts must occupy the same end. Reversing them destroys the reference structure and is not a camera issue."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 3,
+        "actionReadinessNeed": 3
+      },
+      "estimatedCounts": {
+        "macroComponents": 6,
+        "mesoComponents": 72,
+        "microFeatureGroups": 20,
+        "materialLayers": 10,
+        "repetitionSystems": 10
+      },
+      "reasoning": [
+        "The long shaft silhouette, unequal wheel sizes and arched canopy create a strongly directional multi-scale object.",
+        "A credible wagon requires real axle, steering, spring, spoke, hub, floor, wall, canopy and cargo structures rather than a decorated box.",
+        "The reference exposes a partially occluded interior, so open-end orientation and attachment order require independent main and side review."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the running gear, four wheel assemblies, fabric support system, open cargo bay and long hitch structure."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Hidden underside joinery is inferred from axle and frame contact.",
+      "The canvas is a controlled arched surface rather than cloth simulation."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 12,
+      "details": [
+        {"id":"wagon-canvas-shell","kind":"surface","description":"Cream waxed canvas forms one continuous arched shell with a visibly softened ridge.","region":{"x":0.13,"y":0.08,"width":0.55,"height":0.35,"units":"normalized"},"scale":"macro","affects":"canopy silhouette","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.canopy.waxed-canvas-shell"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"wagon-hoops-seams","kind":"repetition","description":"Five dark bent hoops and raised seams divide the canopy into readable bays.","region":{"x":0.12,"y":0.08,"width":0.58,"height":0.35,"units":"normalized"},"scale":"meso","affects":"canopy construction","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.canopy.bent-hoops-and-seams"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"wagon-open-end-roll","kind":"attachment","description":"The shaft end is open beneath a rolled canvas flap secured by two leather straps.","region":{"x":0.51,"y":0.17,"width":0.27,"height":0.3,"units":"normalized"},"scale":"meso","affects":"cargo access identity","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.canopy.rolled-front-flap"},"evidenceRef":"detail-zones/zone-r0c2.png","confidence":0.99},
+        {"id":"wagon-body-planks","kind":"structure","description":"Three side plank courses sit on a separate nine-plank floor with projected upper caps.","region":{"x":0.16,"y":0.34,"width":0.55,"height":0.34,"units":"normalized"},"scale":"macro","affects":"cargo body volume","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.body.plank-courses-and-floor"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"wagon-post-brackets","kind":"fastener","description":"Vertical oak posts, black corner straps and paired rivets reinforce every body edge.","region":{"x":0.15,"y":0.32,"width":0.6,"height":0.37,"units":"normalized"},"scale":"meso","affects":"load-bearing read","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.body.posts-brackets-rivets"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"wagon-wheel-tires","kind":"repetition","description":"Four wheels use separate iron tires, wooden felloes, fourteen spokes and deep hubs.","region":{"x":0.08,"y":0.48,"width":0.68,"height":0.4,"units":"normalized"},"scale":"macro","affects":"mobility silhouette","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.undercarriage.four-wheel-assemblies"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"wagon-hub-hardware","kind":"fastener","description":"Each hub has two worn-iron collars and projected linchpins.","region":{"x":0.1,"y":0.55,"width":0.57,"height":0.28,"units":"normalized"},"scale":"micro","affects":"wheel credibility","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.undercarriage.hub-collars-and-linchpins"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.98},
+        {"id":"wagon-steering-turntable","kind":"joint","description":"The front axle is separated by an iron turntable ring and brass kingpin.","region":{"x":0.48,"y":0.54,"width":0.24,"height":0.22,"units":"normalized"},"scale":"meso","affects":"steering readiness","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.undercarriage.front-steering-turntable"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.97},
+        {"id":"wagon-leaf-springs","kind":"tube","description":"Layered curved iron spring lines bridge the rear axle and longitudinal frame.","region":{"x":0.16,"y":0.56,"width":0.37,"height":0.18,"units":"normalized"},"scale":"meso","affects":"suspension read","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.undercarriage.leaf-springs"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.96},
+        {"id":"wagon-paired-shafts","kind":"attachment","description":"Two long tapered oak shafts converge slightly and carry iron tip bands and a crossbar.","region":{"x":0.56,"y":0.57,"width":0.42,"height":0.32,"units":"normalized"},"scale":"macro","affects":"direction and hitch identity","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.shafts.paired-shafts"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"wagon-shaft-support","kind":"foundation","description":"A hinged iron ground support and foot hold the empty shafts above grade.","region":{"x":0.69,"y":0.71,"width":0.18,"height":0.18,"units":"normalized"},"scale":"meso","affects":"ground contact","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.shafts.ground-support"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.98},
+        {"id":"wagon-brake-step","kind":"joint","description":"A side brake lever, linkage, leather grip and rear step remain visibly separate.","region":{"x":0.09,"y":0.46,"width":0.31,"height":0.35,"units":"normalized"},"scale":"meso","affects":"operator utility","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.shafts.brake-and-step"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.97},
+        {"id":"wagon-cargo","kind":"attachment","description":"Two slatted crates, a gathered burlap sack and rope coil fill the open bay without sealing it.","region":{"x":0.48,"y":0.31,"width":0.24,"height":0.28,"units":"normalized"},"scale":"meso","affects":"trade identity","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.cargo.crates-sack-rope"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.98},
+        {"id":"wagon-lantern","kind":"attachment","description":"A guarded amber lantern hangs from a short chain at the open cargo end.","region":{"x":0.48,"y":0.25,"width":0.15,"height":0.25,"units":"normalized"},"scale":"micro","affects":"open-end focal read","mapsTo":{"type":"component.localFeatures","ref":"covered-wagon.cargo.hanging-lantern"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"wagon-canvas-patches","kind":"material-override","description":"Raised seams, edge hems, side lashings and stitched repair patches break the clean fabric field.","region":{"x":0.16,"y":0.15,"width":0.52,"height":0.31,"units":"normalized"},"scale":"micro","affects":"fabric age","mapsTo":{"type":"material.localOverrides","ref":"canvas.seams-hems-patches"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.97}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/covered_trade_wagon/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "Open cargo end, long shafts, four credible wheel assemblies, canvas bay rhythm and layered running gear remain readable in main and independent long-side views."
+    ],
+    "minimumSpecDepth": {"macroComponents":5,"mesoComponents":12,"microFeatureGroups":8,"materialLayers":6,"repetitionSystems":4,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"overall-silhouette","required":true,"qualityCriteria":["Long shafts, arched canopy and unequal wheel pairs read immediately."]},
+      {"id":"running-gear","required":true,"qualityCriteria":["Axles, steering turntable, springs, hubs and spokes are separate contact structures."]},
+      {"id":"open-cargo-end","required":true,"qualityCriteria":["Opening, rolled flap, cargo and lantern align with the hitch end."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Oak, canvas, iron, rope, leather and burlap respond independently."]}
+    ],
+    "visualDeltaChecks": ["opening orientation","shaft length","wheel construction","canopy bay rhythm","cargo visibility","iron-to-wood contact"],
+    "antiShallowSpecRules": ["No solid vehicle box or four cylinder wheels may pass.","The cargo opening may not be placed opposite the horse shafts.","Canvas may not be a flat roof slab."]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference and two browser-render correction loops."
+}
