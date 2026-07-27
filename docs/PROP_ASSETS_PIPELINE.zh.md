@@ -85,6 +85,17 @@ Batch 05 完成了 `batch_p0` 最后两件可见货运占位的替换，并新�
 
 Batch 06 把“参考图看起来精致”和“真实 Three.js 也成立”分开验收。马车首版虽然通过几何烟测，但货舱开口与车辕处于相反两端；蜂巢首版工具虽存在却被凳架遮住。两者都按实际浏览器像素返工后才准入。四件仅各布置一次并放在东侧稀疏功能区，避免重回道具挤堆。完整评分与证据见 `src/entities/props/models/BATCH06_RUN_LOG.md`。
 
+## Batch 07
+
+| ID | 场景类型 | 层级 | 材质/装配覆盖 | 状态 |
+|---|---|---|---|---|
+| `props.potters_kick_wheel.v1-pbr` | `pottersWheel` | Hero-density craft prop | 飞轮/铁胎/辐条/轮毂、轴承与曲柄、脚踏联动、投坯盘、湿陶器、釉陶置物台、水桶/凳/塑形工具 | 操作区遮挡返工 + 主/侧视图验收通过 |
+| `props.village_dyeing_station.v1-pbr` | `dyeingStation` | Hero-density craft prop | 四柱晾染架、三组厚布垂褶、双木板染缸、独立染液/湿布、手摇轧水器、火圈、柳篮与染具 | 染液可见性/桶板闭合返工 + 主/侧视图验收通过 |
+| `props.coopers_workbench.v1-pbr` | `coopersBench` | Hero-density craft prop | 横置弧形桶板、深色桶腔、六道铁箍、绳夹/绳尾/结、承桶架、制桶长凳、桶板架、工具与火盆 | 桶体闭合/内腔返工 + 主/侧视图验收通过 |
+| `props.village_bake_oven.v1-pbr` | `bakeOven` | Hero-density craft prop | 田野石基、灰泥穹顶、深炉腔、烟熏拱砖、炉门、面包/余烬、4×7 搭接陶瓦、烟囱帽、案台与烘焙工具 | 炉口深度/屋瓦横条两轮返工 + 主/侧视图验收通过 |
+
+Batch 07 继续用“参考图、真实浏览器正侧视图、生产落位”三层证据验收。四件均有复杂对象 assessment、15 项细节清单与 3×3 证据区。自动生成的独立 ObjectSculptSpec 脚手架未通过 strict validation，因此没有保留，也没有被写成已通过；实际通过的门禁、返工和几何数据见 `src/entities/props/models/BATCH07_RUN_LOG.md`。
+
 ## 验收闸门
 
 1. intake：单主体、完整轮廓、主体占比合理、无裁切；

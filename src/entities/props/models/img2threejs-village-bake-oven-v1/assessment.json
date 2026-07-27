@@ -1,0 +1,90 @@
+{
+  "targetName": "Village Bake Oven",
+  "sourceImage": "docs/references/props/village_bake_oven/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "freestanding domed medieval masonry bake oven with attached preparation table",
+      "primaryDomain": "object",
+      "formLanguage": ["architectural masonry", "continuous plastered dome", "arched openings", "assembled timber furniture", "repeated tile and brick systems"],
+      "structureKind": ["fieldstone plinth", "domed oven shell", "brick mouth and tunnel", "hinged iron door", "tiled hood and chimney", "braced baker table", "food and fire tool cluster"],
+      "motionPotential": ["oven door hinge", "removable peel and tools", "ember emitter", "detachable loaves and firewood", "masonry destruction groups"],
+      "materialFamilies": ["limestone", "terracotta brick and tile", "lime plaster and mortar", "soot", "forged iron", "aged oak", "bread and dough", "linen", "wicker", "embers"],
+      "notes": "The dark arched cavity, thick dome profile and open iron door must read as a real oven volume; a flat facade or black painted arch is a hard failure."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {"silhouetteComplexity":3,"componentCount":3,"hierarchyDepth":3,"repetitionDensity":3,"materialLayerCount":3,"localDetailDensity":3,"occlusionRisk":3,"actionReadinessNeed":3},
+      "estimatedCounts": {"macroComponents":7,"mesoComponents":50,"microFeatureGroups":18,"materialLayers":10,"repetitionSystems":8},
+      "reasoning": [
+        "The object combines a continuous dome with discrete stone courses, brick arches, roof tiles, chimney and timber worktable.",
+        "A believable mouth requires tunnel depth, interior floor, embers, loaves, door thickness, hinge alignment and soot response.",
+        "Preparation, cooling and firewood zones must remain visible without turning the footprint into scattered clutter."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro","meso","micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by masonry repetition, true arched cavity, hinged door, tiled roof, chimney and food/tool material systems."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "The hidden rear dome and flue path are inferred from standard masonry construction.",
+      "Embers use emissive geometry and a restrained local light rather than volumetric fire."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 15,
+      "details": [
+        {"id":"oven-dome","kind":"continuous-sculpt","description":"A broad asymmetrical plastered dome swells behind the brick facade with chipped edges and soot-darkened crown contact.","region":{"x":0.28,"y":0.12,"width":0.43,"height":0.45,"units":"normalized"},"scale":"macro","affects":"oven volume silhouette","mapsTo":{"type":"component.localFeatures","ref":"oven.shell.plastered-dome"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"oven-stone-plinth","kind":"repetition","description":"Irregular fieldstone blocks form the raised plinth, lower firewood arch, side walls and projected ledge.","region":{"x":0.45,"y":0.5,"width":0.47,"height":0.42,"units":"normalized"},"scale":"macro","affects":"masonry foundation","mapsTo":{"type":"component.localFeatures","ref":"oven.masonry.fieldstone-plinth-courses"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"oven-brick-mouth","kind":"repetition","description":"Wedge-like terracotta voussoirs form a full arched mouth with separate jambs, threshold and mortar seams.","region":{"x":0.52,"y":0.27,"width":0.25,"height":0.35,"units":"normalized"},"scale":"macro","affects":"oven identity","mapsTo":{"type":"component.localFeatures","ref":"oven.masonry.brick-arch-and-jambs"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"oven-cavity","kind":"hole","description":"The mouth opens into a deep soot-blackened tunnel with a tiled floor and visible rear darkness.","region":{"x":0.57,"y":0.34,"width":0.19,"height":0.23,"units":"normalized"},"scale":"macro","affects":"true volume read","mapsTo":{"type":"component.localFeatures","ref":"oven.fire.deep-arched-cavity"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"oven-door","kind":"joint","description":"A thick arched iron door swings open from aligned side hinges and has a central strap, rivet row and latch handle.","region":{"x":0.74,"y":0.31,"width":0.2,"height":0.28,"units":"normalized"},"scale":"meso","affects":"action-ready focal silhouette","mapsTo":{"type":"component.localFeatures","ref":"oven.hardware.hinged-arched-door"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"oven-embers-bread","kind":"emissive","description":"Restrained orange coals and charred logs illuminate two browned loaves inside without filling the cavity with flame.","region":{"x":0.58,"y":0.4,"width":0.18,"height":0.16,"units":"normalized"},"scale":"meso","affects":"active oven state","mapsTo":{"type":"component.localFeatures","ref":"oven.fire.embers-logs-interior-loaves"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"oven-tile-hood","kind":"repetition","description":"Rows of curved chipped terracotta tiles overlap across the short rain hood and chimney cap.","region":{"x":0.48,"y":0.02,"width":0.32,"height":0.26,"units":"normalized"},"scale":"meso","affects":"roof silhouette","mapsTo":{"type":"component.localFeatures","ref":"oven.roof.curved-tile-system"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"oven-chimney","kind":"hole","description":"A square lime-mortar chimney has four open vent gaps, soot-darkened inner walls and a small tiled cap.","region":{"x":0.54,"y":0.0,"width":0.16,"height":0.18,"units":"normalized"},"scale":"meso","affects":"upper silhouette","mapsTo":{"type":"component.localFeatures","ref":"oven.roof.vented-chimney-cap"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.98},
+        {"id":"oven-soot","kind":"stain","description":"Black soot blooms around the mouth, under the hood and down the chimney while leaving irregular plaster islands.","region":{"x":0.48,"y":0.08,"width":0.35,"height":0.48,"units":"normalized"},"scale":"micro","affects":"heat history","mapsTo":{"type":"material.localOverrides","ref":"masonry.soot-cavity-streaks"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"oven-prep-table","kind":"bevel","description":"The attached table uses a thick flour-worn top, four legs, lower shelf, stretchers and visible iron pegs.","region":{"x":0.03,"y":0.48,"width":0.54,"height":0.45,"units":"normalized"},"scale":"macro","affects":"asymmetric workstation silhouette","mapsTo":{"type":"component.localFeatures","ref":"oven.table.braced-preparation-bench"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.99},
+        {"id":"oven-proofing-set","kind":"repetition","description":"A wicker proofing basket, scored raw dough, open flour sack and earthenware jug use distinct silhouettes and surfaces.","region":{"x":0.07,"y":0.35,"width":0.42,"height":0.23,"units":"normalized"},"scale":"meso","affects":"baker trade identity","mapsTo":{"type":"component.localFeatures","ref":"oven.food.proofing-dough-flour-jug"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.99},
+        {"id":"oven-peel-roller","kind":"attachment","description":"A long wooden peel, rolling pin and handle lie fully supported across the preparation surface without floating.","region":{"x":0.09,"y":0.51,"width":0.48,"height":0.17,"units":"normalized"},"scale":"meso","affects":"baker tool read","mapsTo":{"type":"component.localFeatures","ref":"oven.tools.peel-and-rolling-pin"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.99},
+        {"id":"oven-cooling-loaves","kind":"repetition","description":"Three irregular browned loaves rest on a separate iron-bar cooling rack under the table.","region":{"x":0.18,"y":0.69,"width":0.3,"height":0.18,"units":"normalized"},"scale":"meso","affects":"finished food read","mapsTo":{"type":"component.localFeatures","ref":"oven.food.cooling-rack-loaves"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"oven-firewood","kind":"repetition","description":"Split logs with pale end grain stack inside the lower stone arch and retain visible air gaps.","region":{"x":0.58,"y":0.69,"width":0.21,"height":0.19,"units":"normalized"},"scale":"meso","affects":"fuel storage","mapsTo":{"type":"component.localFeatures","ref":"oven.fuel.split-log-stack"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"oven-fire-tools","kind":"attachment","description":"A long iron rake and poker lean against the right ledge with dimensional tines, shaft and wooden grip contact.","region":{"x":0.81,"y":0.55,"width":0.15,"height":0.35,"units":"normalized"},"scale":"meso","affects":"fire tending utility","mapsTo":{"type":"component.localFeatures","ref":"oven.tools.ash-rake-and-poker"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.98}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/village_bake_oven/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": ["The deep arched oven cavity, dome, brick and stone construction, hinged door, restrained embers, tile/chimney system and complete baker workstation remain readable from main and side views."],
+    "minimumSpecDepth": {"macroComponents":6,"mesoComponents":15,"microFeatureGroups":9,"materialLayers":8,"repetitionSystems":6,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"masonry-volume","required":true,"qualityCriteria":["Fieldstone plinth, plaster dome, brick arch and chimney form a believable thick oven volume."]},
+      {"id":"mouth-door-fire","required":true,"qualityCriteria":["Deep cavity, threshold, soot, hinged door, restrained embers and interior loaves remain distinct."]},
+      {"id":"roof-chimney","required":true,"qualityCriteria":["Curved tile rows and vented chimney cap retain overlap, thickness and open gaps."]},
+      {"id":"baker-workstation","required":true,"qualityCriteria":["Braced table, dough, flour, baskets, peel, cooling loaves, firewood and tools remain supported and visible."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Stone, brick, mortar, plaster, soot, iron, oak, bread, linen, wicker and embers respond independently."]}
+    ],
+    "visualDeltaChecks": ["dome depth","true mouth cavity","door hinge alignment","brick arch rhythm","tile overlap","prep-zone visibility","firewood/tool grounding","soot locality"],
+    "antiShallowSpecRules": [
+      "A flat masonry facade with a dark painted arch may not pass.",
+      "The door may not float or hinge from its center.",
+      "Roof tiles may not be one corrugated slab.",
+      "Embers may not overexpose the cavity or hide the bread."
+    ]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference before implementation."
+}

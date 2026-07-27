@@ -6,6 +6,7 @@ import {
   createApothecaryHerbRackModel,
   createBarrelClusterModel,
   createBeehiveSkepClusterModel,
+  createCoopersWorkbenchModel,
   createCoveredTradeWagonModel,
   createCrateStackModel,
   createCrystalCrateModel,
@@ -17,11 +18,14 @@ import {
   createHitchingPostModel,
   createHorseWaterTroughModel,
   createOrchardCiderPressModel,
+  createPottersKickWheelModel,
   createProduceMarketStallModel,
   createQuestBoardModel,
   createSignpostModel,
   createStreetLanternModel,
   createVillageBenchModel,
+  createVillageBakeOvenModel,
+  createVillageDyeingStationModel,
   createVillageWellModel,
   createWaystoneModel,
   createWoodpileModel,
@@ -54,6 +58,10 @@ const factories = {
   ciderPress: createOrchardCiderPressModel,
   herbRack: createApothecaryHerbRackModel,
   beehiveCluster: createBeehiveSkepClusterModel,
+  pottersWheel: createPottersKickWheelModel,
+  dyeingStation: createVillageDyeingStationModel,
+  coopersBench: createCoopersWorkbenchModel,
+  bakeOven: createVillageBakeOvenModel,
 };
 const factory = factories[assetId] ?? factories.well;
 
@@ -99,6 +107,14 @@ const distance = maxDim * (
       ? 1.78
     : assetId === 'beehiveCluster'
       ? 1.72
+    : assetId === 'pottersWheel'
+      ? 1.65
+    : assetId === 'dyeingStation'
+      ? 1.64
+    : assetId === 'coopersBench'
+      ? 1.72
+    : assetId === 'bakeOven'
+      ? 1.68
     : assetId === 'fence'
       ? 1.86
       : 2.15
@@ -115,9 +131,17 @@ const assetMainDirections = {
   ciderPress: new THREE.Vector3(1.05, 0.62, 1.45).normalize(),
   herbRack: new THREE.Vector3(1.05, 0.5, 1.55).normalize(),
   beehiveCluster: new THREE.Vector3(1.0, 0.48, 1.55).normalize(),
+  pottersWheel: new THREE.Vector3(1.05, 0.56, 1.42).normalize(),
+  dyeingStation: new THREE.Vector3(1.0, 0.68, 1.62).normalize(),
+  coopersBench: new THREE.Vector3(1.45, 0.52, 1.1).normalize(),
+  bakeOven: new THREE.Vector3(1.08, 0.55, 1.52).normalize(),
 };
 const assetSideDirections = {
   coveredWagon: new THREE.Vector3(0.03, 0.3, 1).normalize(),
+  pottersWheel: new THREE.Vector3(0.05, 0.3, 1).normalize(),
+  dyeingStation: new THREE.Vector3(-1.2, 0.62, 1.35).normalize(),
+  coopersBench: new THREE.Vector3(0.08, 0.3, 1).normalize(),
+  bakeOven: new THREE.Vector3(-1.2, 0.4, 1.08).normalize(),
 };
 const cameraDirection = view === 'main'
   ? assetMainDirections[assetId] ?? cameraDirections.main

@@ -1,0 +1,264 @@
+{
+  "targetName": "Potter's Kick-Wheel Workstation",
+  "sourceImage": "docs/references/props/potters_kick_wheel/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "medieval timber kick-wheel pottery workstation with vessel shelf and tools",
+      "primaryDomain": "object",
+      "formLanguage": ["mechanical", "hard-surface", "continuous-sculpt vessels", "layered craft clutter"],
+      "structureKind": ["articulated wheel-and-treadle assembly", "braced timber bench", "repeated lathed vessels", "detached but supported work tools"],
+      "motionPotential": ["flywheel rotation", "throwing-wheel rotation", "treadle pivot", "removable vessels and tools"],
+      "materialFamilies": ["aged oak", "forged iron", "wet clay", "terracotta", "glazed ceramic", "rope", "water"],
+      "notes": "The large lower flywheel, upper throwing wheel and treadle linkage must read as one load path; the object may not collapse into a generic table with pottery."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 2,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 2,
+        "actionReadinessNeed": 3
+      },
+      "estimatedCounts": {
+        "macroComponents": 6,
+        "mesoComponents": 38,
+        "microFeatureGroups": 16,
+        "materialLayers": 8,
+        "repetitionSystems": 6
+      },
+      "reasoning": [
+        "The wheel mechanism, splayed frame, side shelf and distributed tools create a strongly interrupted silhouette.",
+        "Several ceramic profiles require continuous lathed geometry and distinct wet, matte and glazed surface responses.",
+        "The treadle, axle and wheels require stable pivots and attachment sockets rather than decorative placement."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the coupled wheel mechanism, repeated vessel system, wet-clay focal area and separate tools."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "The rear side of the axle housing is inferred from the visible hub and bench braces.",
+      "Wet clay and water use restrained clearcoat rather than true fluid simulation."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 15,
+      "details": [
+        {
+          "id": "potter-wet-vessel",
+          "kind": "gloss",
+          "description": "A half-thrown clay jug has an irregular lathed belly, narrow neck, rolled lip and wet slip highlights.",
+          "region": {"x": 0.34, "y": 0.02, "width": 0.25, "height": 0.28, "units": "normalized"},
+          "scale": "macro",
+          "affects": "focal pottery silhouette",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.clay.wet-thrown-jug"},
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "potter-wheel-rings",
+          "kind": "groove",
+          "description": "The upper throwing wheel shows concentric throwing grooves, a raised outer rim and clay splash buildup.",
+          "region": {"x": 0.26, "y": 0.2, "width": 0.4, "height": 0.2, "units": "normalized"},
+          "scale": "meso",
+          "affects": "throwing-wheel construction",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.wheel.concentric-rings-and-rim"},
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "potter-flywheel",
+          "kind": "repetition",
+          "description": "The large lower flywheel uses a separate iron tire, wooden rim, eight spokes and a deep projected hub.",
+          "region": {"x": 0.28, "y": 0.42, "width": 0.38, "height": 0.39, "units": "normalized"},
+          "scale": "macro",
+          "affects": "mechanical identity",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.drive.flywheel-rim-spokes-hub"},
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "potter-flywheel-rivets",
+          "kind": "fastener",
+          "description": "Raised worn-iron rivets repeat around the flywheel tire and axle plates.",
+          "region": {"x": 0.31, "y": 0.46, "width": 0.32, "height": 0.33, "units": "normalized"},
+          "scale": "micro",
+          "affects": "wheel credibility",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.drive.radial-rivet-system"},
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "potter-axle-linkage",
+          "kind": "attachment",
+          "description": "A projected axle, iron bearing plate and vertical crank link connect the flywheel to the treadle.",
+          "region": {"x": 0.42, "y": 0.55, "width": 0.2, "height": 0.3, "units": "normalized"},
+          "scale": "meso",
+          "affects": "mechanical load path",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.drive.axle-bearing-crank"},
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.97
+        },
+        {
+          "id": "potter-treadle",
+          "kind": "joint",
+          "description": "A broad foot treadle pivots from the lower rail and is visibly tied to the crank linkage.",
+          "region": {"x": 0.35, "y": 0.75, "width": 0.31, "height": 0.2, "units": "normalized"},
+          "scale": "meso",
+          "affects": "action readiness",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.drive.hinged-foot-treadle"},
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "potter-frame",
+          "kind": "bevel",
+          "description": "Four splayed legs, lower stretchers and diagonal braces carry rounded worn edges and pegged joints.",
+          "region": {"x": 0.12, "y": 0.35, "width": 0.57, "height": 0.55, "units": "normalized"},
+          "scale": "macro",
+          "affects": "bench silhouette and contact",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.frame.splayed-joinery"},
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "potter-iron-straps",
+          "kind": "fastener",
+          "description": "Black iron corner straps, bearing plates and paired bolt heads reinforce the bench and rails.",
+          "region": {"x": 0.16, "y": 0.34, "width": 0.5, "height": 0.42, "units": "normalized"},
+          "scale": "micro",
+          "affects": "load-bearing read",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.frame.straps-and-bolts"},
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "potter-clay-splatter",
+          "kind": "stain",
+          "description": "Cream clay slip accumulates along the wheel rim, bench edge and tool zone with downward drips.",
+          "region": {"x": 0.18, "y": 0.25, "width": 0.52, "height": 0.28, "units": "normalized"},
+          "scale": "micro",
+          "affects": "used-workshop surface",
+          "mapsTo": {"type": "material.localOverrides", "ref": "oak.clay-splatter-and-edge-wear"},
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "potter-shelf-braces",
+          "kind": "attachment",
+          "description": "The vessel shelf projects from the right bench on two visible diagonal braces and short legs.",
+          "region": {"x": 0.61, "y": 0.27, "width": 0.34, "height": 0.38, "units": "normalized"},
+          "scale": "meso",
+          "affects": "asymmetric silhouette",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.shelf.braced-side-platform"},
+          "evidenceRef": "detail-zones/zone-r1c2.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "potter-vessel-set",
+          "kind": "repetition",
+          "description": "Seven distinct lathed cups, bowls and jugs use visibly different profiles, sizes and glaze colors.",
+          "region": {"x": 0.57, "y": 0.15, "width": 0.4, "height": 0.42, "units": "normalized"},
+          "scale": "meso",
+          "affects": "potter trade identity",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.shelf.varied-vessel-system"},
+          "evidenceRef": "detail-zones/zone-r0c2.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "potter-glaze",
+          "kind": "gloss",
+          "description": "Teal, ochre and terracotta vessels alternate matte fired clay with low-roughness pooled glaze and dark rims.",
+          "region": {"x": 0.65, "y": 0.16, "width": 0.31, "height": 0.34, "units": "normalized"},
+          "scale": "micro",
+          "affects": "ceramic material contrast",
+          "mapsTo": {"type": "material.localOverrides", "ref": "ceramic.pooled-glaze-and-fired-clay"},
+          "evidenceRef": "detail-zones/zone-r0c2.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "potter-tools",
+          "kind": "attachment",
+          "description": "A tool cup, wire loop, sponge and several wooden shaping sticks remain individually dimensional.",
+          "region": {"x": 0.48, "y": 0.22, "width": 0.28, "height": 0.27, "units": "normalized"},
+          "scale": "micro",
+          "affects": "workbench use",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.tools.shaping-tool-cluster"},
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.97
+        },
+        {
+          "id": "potter-water-bucket",
+          "kind": "repetition",
+          "description": "The water bucket has individual staves, two iron hoops, a rope handle and a visible dark water surface.",
+          "region": {"x": 0.76, "y": 0.54, "width": 0.2, "height": 0.32, "units": "normalized"},
+          "scale": "meso",
+          "affects": "wet-work utility",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.tools.water-bucket"},
+          "evidenceRef": "detail-zones/zone-r2c2.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "potter-stool",
+          "kind": "attachment",
+          "description": "A round worn seat sits on three outward-canted legs with visible underside contact.",
+          "region": {"x": 0.62, "y": 0.62, "width": 0.2, "height": 0.32, "units": "normalized"},
+          "scale": "meso",
+          "affects": "foreground silhouette",
+          "mapsTo": {"type": "component.localFeatures", "ref": "potter.tools.three-leg-stool"},
+          "evidenceRef": "detail-zones/zone-r2c2.png",
+          "confidence": 0.99
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit": 0, "torso": 0, "legs": 0, "shoulderWidth": 0, "hipWidth": 0},
+      "pose": {"type": "not-applicable", "jointAngles": {}},
+      "faceLandmarks": {"eyeLine": 0, "eyeSpacing": 0, "noseBase": 0, "mouthLine": 0, "hairline": 0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/potters_kick_wheel/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The coupled flywheel, axle, throwing wheel and treadle read as a functioning mechanism while wet clay, varied pottery, supported tools and timber joinery remain visible in main and side views."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 5,
+      "mesoComponents": 12,
+      "microFeatureGroups": 8,
+      "materialLayers": 6,
+      "repetitionSystems": 4,
+      "reviewViewpoints": 2
+    },
+    "featureGroups": [
+      {"id": "wheel-load-path", "required": true, "qualityCriteria": ["Flywheel, axle, upper wheel and treadle form one attached readable mechanism."]},
+      {"id": "timber-workstation", "required": true, "qualityCriteria": ["Splayed legs, stretchers, braces, shelf and straps visibly support the loads."]},
+      {"id": "ceramic-system", "required": true, "qualityCriteria": ["Wet vessel and varied fired vessels use non-generic lathed profiles and distinct finishes."]},
+      {"id": "craft-tools", "required": true, "qualityCriteria": ["Bucket, stool and shaping tools are dimensional, grounded and unobscured."]},
+      {"id": "surface-material-response", "required": true, "qualityCriteria": ["Oak, iron, wet clay, terracotta, glaze, water and rope respond independently."]}
+    ],
+    "visualDeltaChecks": ["wheel ratio", "mechanical attachment", "bench silhouette", "vessel profile variety", "wet-dry ceramic contrast", "tool visibility"],
+    "antiShallowSpecRules": [
+      "A generic table with pottery may not pass.",
+      "The flywheel may not be a flat disk or hide its spokes and axle.",
+      "The treadle may not float or terminate without linkage.",
+      "Ceramics may not share one cylinder profile or one plastic material."
+    ]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference before implementation."
+}

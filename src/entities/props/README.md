@@ -30,6 +30,10 @@ Small countryside details for the Mushoku Buena/Roa slice. **Not** hero building
 | `ciderPress` | models/orchard_cider_press | splayed oak press + threaded screw + slatted basket + ratchet + cider catch |
 | `herbRack` | models/apothecary_herb_rack | roofed oak drying rack + sixteen herb/garlic bundles + jars and pharmacy tools |
 | `beehiveCluster` | models/beehive_skep_cluster | three woven skeps + raised bench + smoker + comb + honey crock |
+| `pottersWheel` | models/potters_kick_wheel | flywheel-and-treadle pottery bench + wet vessel + glaze shelf + tools |
+| `dyeingStation` | models/village_dyeing_station | timber drying rack + three cloth runs + paired dye vats + wringer and fire ring |
+| `coopersBench` | models/coopers_workbench | horizontal stave barrel + rope clamp + cradle bench + hoop and stave tools |
+| `bakeOven` | models/village_bake_oven | plaster dome oven + soot-dark arch + tiled hood + bake table and bread |
 | `bench` | models/village_bench | splayed timber frame + ten-slat back + forged scroll arms |
 | `fenceSection` | models/fence_section | stone-footed oak frame + varied pickets + projected iron straps |
 | `hitchingPost` | models/hitching_post | braced two-post rail + four tie rings + attached hemp coil |
@@ -54,7 +58,7 @@ Requirements:
 
 Then add sparse rows to `src/layouts/mushoku-slice-p0.js` `places[]`.
 
-Identity-bearing foreground props do not use this lightweight path. They require admitted reference views, an object-specific intake assessment, semantic runtime nodes/sockets, browser main + side renders, and a saved comparison sheet. Hero props additionally require a strict-quality ObjectSculptSpec.
+Identity-bearing foreground props do not use this lightweight path. They require admitted reference views, an object-specific intake assessment, semantic runtime nodes/sockets, browser main + side renders, and a saved comparison sheet. Hero props target a strict-quality ObjectSculptSpec. A batch must not retain or claim a generated spec that fails validation; the run log must state the gate honestly and preserve the visual evidence that actually ran.
 
 ## Wire path
 

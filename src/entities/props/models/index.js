@@ -21,3 +21,7 @@ export { createCoveredTradeWagonModel } from './covered_trade_wagon.js';
 export { createOrchardCiderPressModel } from './orchard_cider_press.js';
 export { createApothecaryHerbRackModel } from './apothecary_herb_rack.js';
 export { createBeehiveSkepClusterModel } from './beehive_skep_cluster.js';
+export { createPottersKickWheelModel } from './potters_kick_wheel.js';
+export { createVillageDyeingStationModel } from './village_dyeing_station.js';
+export { createCoopersWorkbenchModel } from './coopers_workbench.js';
+export { createVillageBakeOvenModel } from './village_bake_oven.js';

@@ -1,0 +1,90 @@
+{
+  "targetName": "Village Dyeing Station",
+  "sourceImage": "docs/references/props/village_dyeing_station/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "open-air medieval cloth-dyeing rack with two heated banded vats",
+      "primaryDomain": "object",
+      "formLanguage": ["architectural timber frame", "fabric-like hanging shells", "cylindrical vessels", "fiber-strand lashings", "liquid surfaces"],
+      "structureKind": ["pegged post-and-beam rack", "two stave-vat assemblies", "hinged wringer axle", "repeated draped textile system", "supported pigment and linen tools"],
+      "motionPotential": ["wringer axle rotation", "stirring paddle", "removable cloth", "heated dye emitter", "detachable jars and basket"],
+      "materialFamilies": ["weathered oak", "wool cloth", "linen", "forged iron", "dye liquid", "wicker", "ceramic", "rope", "stone and ash"],
+      "notes": "Three cloth colors, two readable dye vats and the wringer must remain separate; no flat banner wall may substitute for draped textiles."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {"silhouetteComplexity": 3, "componentCount": 3, "hierarchyDepth": 3, "repetitionDensity": 3, "materialLayerCount": 3, "localDetailDensity": 3, "occlusionRisk": 3, "actionReadinessNeed": 3},
+      "estimatedCounts": {"macroComponents": 7, "mesoComponents": 44, "microFeatureGroups": 18, "materialLayers": 10, "repetitionSystems": 7},
+      "reasoning": [
+        "The broad post-and-beam silhouette is interrupted by three hanging cloth masses, two vats, a wringer and a foreground tool cluster.",
+        "Cloth must show gravity sag, fold depth, hems and wet/dry material contrast rather than planar cards.",
+        "The heated vat requires supported legs, stone fire ring, ash, liquid and a safe contact hierarchy."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by draped cloth geometry, banded vats, wringer mechanics, fire foundation and mixed-fiber tool cluster."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Back-side rack joints are inferred from the symmetrical post-and-beam construction.",
+      "Dye liquids are restrained reflective surfaces and not simulated fluids."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 15,
+      "details": [
+        {"id":"dye-rack-posts","kind":"bevel","description":"Two heavy posts, base shoes and paired top beams use pegged joints, rounded wear and projected end grain.","region":{"x":0.04,"y":0.04,"width":0.9,"height":0.78,"units":"normalized"},"scale":"macro","affects":"rack silhouette","mapsTo":{"type":"component.localFeatures","ref":"dye.rack.post-beam-joinery"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"dye-rack-lashings","kind":"fiber-strand","description":"Multiple rope collars bind the main posts and display twisted strand relief.","region":{"x":0.06,"y":0.08,"width":0.88,"height":0.55,"units":"normalized"},"scale":"meso","affects":"hand-built construction","mapsTo":{"type":"component.localFeatures","ref":"dye.rack.rope-lashing-system"},"evidenceRef":"detail-zones/zone-r0c0.png","confidence":0.98},
+        {"id":"dye-rack-braces-pegs","kind":"fastener","description":"Diagonal knee braces and projecting round pegs lock the upper rack and create small silhouette breaks.","region":{"x":0.08,"y":0.08,"width":0.86,"height":0.45,"units":"normalized"},"scale":"meso","affects":"rack load path","mapsTo":{"type":"component.localFeatures","ref":"dye.rack.braces-and-pegs"},"evidenceRef":"detail-zones/zone-r0c2.png","confidence":0.98},
+        {"id":"dye-cloth-indigo","kind":"seam","description":"Indigo wool hangs in a broad U-shaped double layer with irregular vertical folds and a frayed hem.","region":{"x":0.2,"y":0.08,"width":0.2,"height":0.44,"units":"normalized"},"scale":"macro","affects":"textile silhouette","mapsTo":{"type":"component.localFeatures","ref":"dye.textile.indigo-drape"},"evidenceRef":"detail-zones/zone-r0c0.png","confidence":0.99},
+        {"id":"dye-cloth-madder","kind":"seam","description":"Madder-red cloth has deeper asymmetric folds, a lower staggered hem and a visible secondary layer.","region":{"x":0.4,"y":0.07,"width":0.2,"height":0.48,"units":"normalized"},"scale":"macro","affects":"textile rhythm","mapsTo":{"type":"component.localFeatures","ref":"dye.textile.madder-drape"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"dye-cloth-saffron","kind":"seam","description":"Saffron cloth forms a narrower drape with softened folds and frayed lower corners.","region":{"x":0.58,"y":0.06,"width":0.18,"height":0.43,"units":"normalized"},"scale":"macro","affects":"textile color sequence","mapsTo":{"type":"component.localFeatures","ref":"dye.textile.saffron-drape"},"evidenceRef":"detail-zones/zone-r0c2.png","confidence":0.99},
+        {"id":"dye-cloth-weave","kind":"material-override","description":"Dry wool uses coarse woven normal relief, matte cavities and slightly polished fold crests.","region":{"x":0.2,"y":0.07,"width":0.56,"height":0.48,"units":"normalized"},"scale":"micro","affects":"cloth tactile response","mapsTo":{"type":"material.localOverrides","ref":"wool.weave-fold-crest-roughness"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.97},
+        {"id":"dye-indigo-vat","kind":"repetition","description":"The left vat uses individual tapered staves, three iron hoops, side handles, four feet and a deep projected rim.","region":{"x":0.14,"y":0.45,"width":0.38,"height":0.42,"units":"normalized"},"scale":"macro","affects":"primary vessel construction","mapsTo":{"type":"component.localFeatures","ref":"dye.vat.indigo-staves-hoops-handles"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.99},
+        {"id":"dye-madder-vat","kind":"repetition","description":"The right vat repeats the stave-and-hoop system at a distinct size beneath the wringer.","region":{"x":0.54,"y":0.44,"width":0.35,"height":0.41,"units":"normalized"},"scale":"macro","affects":"secondary vessel construction","mapsTo":{"type":"component.localFeatures","ref":"dye.vat.madder-staves-hoops-handles"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"dye-liquid-surfaces","kind":"gloss","description":"Indigo and madder liquids show low-roughness dark surfaces, wet rims and color-matched downward drips.","region":{"x":0.18,"y":0.46,"width":0.67,"height":0.22,"units":"normalized"},"scale":"meso","affects":"dye identity","mapsTo":{"type":"material.localOverrides","ref":"dye-liquid.wet-rim-and-drips"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"dye-paddle","kind":"attachment","description":"A long wooden paddle embeds into the indigo liquid and leans against the vat rim without floating.","region":{"x":0.18,"y":0.33,"width":0.18,"height":0.37,"units":"normalized"},"scale":"meso","affects":"working state","mapsTo":{"type":"component.localFeatures","ref":"dye.tools.stirring-paddle"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.99},
+        {"id":"dye-wringer","kind":"joint","description":"Two supported posts carry a horizontal roller, crank handle and dripping folded wet cloth above the madder vat.","region":{"x":0.53,"y":0.32,"width":0.36,"height":0.28,"units":"normalized"},"scale":"meso","affects":"mechanical process","mapsTo":{"type":"component.localFeatures","ref":"dye.wringer.roller-crank-wet-cloth"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"dye-fire-ring","kind":"repetition","description":"Irregular fieldstones form a complete fire ring with dark ash, charred supports and restrained embers beneath the indigo vat.","region":{"x":0.12,"y":0.7,"width":0.38,"height":0.2,"units":"normalized"},"scale":"meso","affects":"heated-vat foundation","mapsTo":{"type":"component.localFeatures","ref":"dye.fire.stone-ring-ash-embers"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.98},
+        {"id":"dye-linen-basket","kind":"repetition","description":"A wicker basket uses interlaced vertical ribs and horizontal weave around folded cream cloth with deep folds.","region":{"x":0.78,"y":0.62,"width":0.2,"height":0.29,"units":"normalized"},"scale":"meso","affects":"undyed textile supply","mapsTo":{"type":"component.localFeatures","ref":"dye.tools.wicker-linen-basket"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"dye-pigment-tools","kind":"repetition","description":"Four earthenware jars and a pigment bowl use separate profiles, colored residues and grouped placement beside a rope coil.","region":{"x":0.48,"y":0.65,"width":0.31,"height":0.28,"units":"normalized"},"scale":"micro","affects":"dye chemistry read","mapsTo":{"type":"component.localFeatures","ref":"dye.tools.pigment-jars-rope-coil"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.98}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/village_dyeing_station/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": ["Three dimensional cloth masses, two functioning banded vats, wringer mechanics, heated foundation and fiber/ceramic tools remain legible from main and side views with distinct wet and dry material response."],
+    "minimumSpecDepth": {"macroComponents":6,"mesoComponents":14,"microFeatureGroups":9,"materialLayers":8,"repetitionSystems":5,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"rack-load-path","required":true,"qualityCriteria":["Post shoes, posts, braces, beams, pegs and lashings form a credible supported rack."]},
+      {"id":"draped-textile-system","required":true,"qualityCriteria":["Indigo, madder and saffron cloths have gravity folds, thickness, separate hems and clear spacing."]},
+      {"id":"vat-and-fire-system","required":true,"qualityCriteria":["Both stave vats, liquids, hoops, handles and the stone fire foundation remain readable."]},
+      {"id":"wringer-and-tools","required":true,"qualityCriteria":["Roller, crank, wet cloth, paddle, basket, jars and rope are supported and visible."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Dry wool, wet cloth, liquid dye, oak, iron, wicker, ceramic, stone and ash respond independently."]}
+    ],
+    "visualDeltaChecks": ["rack proportions","cloth fold depth","vat stave rhythm","wringer visibility","wet-dry contrast","fire foundation contact","tool visibility"],
+    "antiShallowSpecRules": [
+      "Flat rectangular cloth cards may not pass.",
+      "The two vats may not merge into generic cylinders.",
+      "The wringer may not float above the vat.",
+      "Dye liquid may not be opaque flat paint."
+    ]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference before implementation."
+}

@@ -1,0 +1,90 @@
+{
+  "targetName": "Cooper's Barrel-Making Workbench",
+  "sourceImage": "docs/references/props/coopers_workbench/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "medieval cooper's bench with open horizontal barrel, stave rack, cask and hoop-heating tools",
+      "primaryDomain": "object",
+      "formLanguage": ["mechanical craft assembly", "radial stave repetition", "hard-surface timber furniture", "curved iron bands", "distributed hand tools"],
+      "structureKind": ["heavy shaving bench", "horizontal barrel cradle", "radial stave shell", "separate hoop systems", "vertical spare-stave rack", "completed cask and brazier"],
+      "motionPotential": ["barrel roll pivot", "rope clamp release", "removable hoops and staves", "detachable tools", "ember emitter"],
+      "materialFamilies": ["aged oak", "fresh-cut oak", "forged iron", "rope", "leather", "charcoal", "embers", "wood shavings"],
+      "notes": "The open barrel interior, individual stave ends and separate hoop layers define the trade; a closed generic barrel on a table is a hard failure."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {"silhouetteComplexity":3,"componentCount":3,"hierarchyDepth":3,"repetitionDensity":3,"materialLayerCount":3,"localDetailDensity":3,"occlusionRisk":3,"actionReadinessNeed":3},
+      "estimatedCounts": {"macroComponents":7,"mesoComponents":48,"microFeatureGroups":18,"materialLayers":8,"repetitionSystems":8},
+      "reasoning": [
+        "The partly assembled barrel depends on a radial array of tapered curved staves and a visible hollow interior.",
+        "Cradle, rope clamp, fitted hoops, loose hoops, tools, brazier and spare-stave rack form multiple overlapping but distinct workflow systems.",
+        "Fresh-cut wood, aged bench wood, iron, rope, soot and pale shavings require independent surfaces."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro","meso","micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the radial barrel shell, tool set, stave rack, hoop system and action-ready clamp/cradle hierarchy."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "The barrel's hidden rear stave joints are inferred by radial continuation.",
+      "Loose floor tools are retained only where they strengthen recognition without destroying sparse placement."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 15,
+      "details": [
+        {"id":"cooper-open-barrel","kind":"hole","description":"The horizontal unfinished barrel has a deep visible cavity and a jagged ring of individually projecting stave ends.","region":{"x":0.2,"y":0.05,"width":0.43,"height":0.42,"units":"normalized"},"scale":"macro","affects":"trade identity","mapsTo":{"type":"component.localFeatures","ref":"cooper.barrel.open-hollow-stave-shell"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"cooper-barrel-staves","kind":"repetition","description":"Twenty curved tapered oak staves form a bulged radial shell with visible seams and fresh-cut front grain.","region":{"x":0.2,"y":0.04,"width":0.45,"height":0.44,"units":"normalized"},"scale":"macro","affects":"barrel construction","mapsTo":{"type":"component.localFeatures","ref":"cooper.barrel.radial-stave-system"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"cooper-fitted-hoops","kind":"repetition","description":"Four dark forged hoops wrap the barrel at distinct axial positions and sit proud of the oak shell.","region":{"x":0.22,"y":0.04,"width":0.45,"height":0.4,"units":"normalized"},"scale":"meso","affects":"compression structure","mapsTo":{"type":"component.localFeatures","ref":"cooper.barrel.fitted-hoop-system"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"cooper-rope-clamp","kind":"fiber-strand","description":"A thick rope clamp crosses the barrel and winds around a projected windlass with a visible knot and tail.","region":{"x":0.43,"y":0.24,"width":0.28,"height":0.22,"units":"normalized"},"scale":"meso","affects":"assembly workflow","mapsTo":{"type":"component.localFeatures","ref":"cooper.barrel.rope-windlass-clamp"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"cooper-cradle","kind":"attachment","description":"Two notched cradle blocks and raised end stops fully contact and support the horizontal barrel.","region":{"x":0.18,"y":0.31,"width":0.52,"height":0.24,"units":"normalized"},"scale":"meso","affects":"barrel support","mapsTo":{"type":"component.localFeatures","ref":"cooper.bench.notched-barrel-cradle"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"cooper-bench","kind":"bevel","description":"A thick shaving bench uses broad beams, splayed legs, pegs, a drawer and strongly worn chamfered edges.","region":{"x":0.15,"y":0.33,"width":0.56,"height":0.42,"units":"normalized"},"scale":"macro","affects":"workstation mass","mapsTo":{"type":"component.localFeatures","ref":"cooper.bench.heavy-joined-frame"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"cooper-stave-rack","kind":"repetition","description":"A braced rack holds twelve spare staves at varied height, width, color and lean angle.","region":{"x":0.61,"y":0.14,"width":0.25,"height":0.42,"units":"normalized"},"scale":"macro","affects":"fresh stock silhouette","mapsTo":{"type":"component.localFeatures","ref":"cooper.stock.spare-stave-rack"},"evidenceRef":"detail-zones/zone-r0c2.png","confidence":0.99},
+        {"id":"cooper-complete-cask","kind":"repetition","description":"The finished side cask uses its own sixteen-stave body, three hoops, lid, bung, tap and support feet.","region":{"x":0.8,"y":0.29,"width":0.18,"height":0.36,"units":"normalized"},"scale":"meso","affects":"completed-product contrast","mapsTo":{"type":"component.localFeatures","ref":"cooper.stock.completed-tapped-cask"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"cooper-brazier","kind":"emissive","description":"A banded iron brazier on four feet contains black charcoal and restrained orange ember cores.","region":{"x":0.03,"y":0.42,"width":0.16,"height":0.29,"units":"normalized"},"scale":"meso","affects":"hoop-heating process","mapsTo":{"type":"component.localFeatures","ref":"cooper.fire.hoop-heating-brazier"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.98},
+        {"id":"cooper-drawknife","kind":"attachment","description":"A curved dark drawknife with two wooden handles lies fully dimensional across the foreground.","region":{"x":0.08,"y":0.77,"width":0.31,"height":0.17,"units":"normalized"},"scale":"meso","affects":"cooper tool identity","mapsTo":{"type":"component.localFeatures","ref":"cooper.tools.drawknife"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.99},
+        {"id":"cooper-planes-mallets","kind":"repetition","description":"A croze plane, hoop driver and two distinct mallets use separate bodies, blades and handle profiles.","region":{"x":0.34,"y":0.55,"width":0.37,"height":0.34,"units":"normalized"},"scale":"meso","affects":"tool workflow","mapsTo":{"type":"component.localFeatures","ref":"cooper.tools.planes-mallets-drivers"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.98},
+        {"id":"cooper-auger-brace","kind":"attachment","description":"A spiral auger and U-shaped brace expose twisted metal shafts and separate turned wooden grips.","region":{"x":0.48,"y":0.75,"width":0.34,"height":0.2,"units":"normalized"},"scale":"micro","affects":"boring tools","mapsTo":{"type":"component.localFeatures","ref":"cooper.tools.auger-and-brace"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.97},
+        {"id":"cooper-loose-hoops","kind":"repetition","description":"Three independent forged hoops overlap on the ground with visible band thickness and edge highlights.","region":{"x":0.68,"y":0.68,"width":0.26,"height":0.22,"units":"normalized"},"scale":"meso","affects":"assembly staging","mapsTo":{"type":"component.localFeatures","ref":"cooper.stock.loose-hoop-stack"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"cooper-shavings","kind":"repetition","description":"Pale curled shavings scatter in controlled clusters under the bench and around the planes.","region":{"x":0.17,"y":0.58,"width":0.63,"height":0.33,"units":"normalized"},"scale":"micro","affects":"fresh cutting read","mapsTo":{"type":"component.localFeatures","ref":"cooper.debris.curled-shaving-system"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.96},
+        {"id":"cooper-wood-finishes","kind":"material-override","description":"Fresh pale staves and end grain contrast with dark aged bench wood, soot-darkened brazier contact and polished tool handles.","region":{"x":0.14,"y":0.05,"width":0.74,"height":0.73,"units":"normalized"},"scale":"micro","affects":"material age hierarchy","mapsTo":{"type":"material.localOverrides","ref":"oak.fresh-aged-endgrain-and-soot"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/coopers_workbench/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": ["The open radial stave shell, separate hoops, attached cradle and clamp, stave stock, completed cask, heating brazier and dimensional cooper tools remain recognizable from main and side views."],
+    "minimumSpecDepth": {"macroComponents":6,"mesoComponents":15,"microFeatureGroups":9,"materialLayers":6,"repetitionSystems":6,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"open-barrel-system","required":true,"qualityCriteria":["Hollow interior, projecting stave ends, radial seams, bulge and four separate hoops are all visible."]},
+      {"id":"bench-cradle-clamp","required":true,"qualityCriteria":["Heavy bench, notched cradle and rope windlass visibly support the barrel."]},
+      {"id":"stave-and-cask-stock","required":true,"qualityCriteria":["Spare stave rack and completed tapped cask use distinct construction and scale."]},
+      {"id":"cooper-tool-system","required":true,"qualityCriteria":["Brazier, drawknife, planes, mallets, auger, brace, loose hoops and shavings remain dimensional and readable."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Fresh oak, aged oak, end grain, iron, rope, soot, embers and shavings respond independently."]}
+    ],
+    "visualDeltaChecks": ["open barrel depth","radial stave rhythm","hoop spacing","cradle contact","stave rack variation","tool silhouette","fresh-aged wood contrast"],
+    "antiShallowSpecRules": [
+      "A closed generic barrel may not replace the unfinished open shell.",
+      "The barrel may not be a cylinder with painted seam lines.",
+      "Tools may not be flat plates or hidden under the bench.",
+      "Loose hoops and shavings must not dominate the footprint."
+    ]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference before implementation."
+}
