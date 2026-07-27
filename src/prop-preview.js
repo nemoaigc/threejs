@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import {
   createHandcartModel,
   createStreetLanternModel,
@@ -24,15 +25,20 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.VSMShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.12;
-renderer.setClearColor(0xd9d3ca, 1);
+renderer.toneMappingExposure = 0.94;
+renderer.setClearColor(0xbeb9b0, 1);
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0xd9d3ca, 24, 42);
+scene.fog = new THREE.Fog(0xbeb9b0, 24, 42);
+const pmrem = new THREE.PMREMGenerator(renderer);
+const room = new RoomEnvironment();
+scene.environment = pmrem.fromScene(room, 0.028).texture;
+room.dispose();
+pmrem.dispose();
 
 const model = factory();
 scene.add(model);
@@ -58,13 +64,14 @@ controls.target.copy(center);
 controls.minDistance = maxDim * 1.1;
 controls.maxDistance = maxDim * 5;
 
-const key = new THREE.DirectionalLight(0xfff3df, 3.2);
-key.position.set(7, 11, 9);
+const key = new THREE.DirectionalLight(0xffe9cf, 3.0);
+key.position.set(7, 10, 8);
 key.castShadow = true;
 key.shadow.mapSize.set(2048, 2048);
-key.shadow.radius = 3;
+key.shadow.radius = 5;
+key.shadow.blurSamples = 18;
 key.shadow.bias = -0.00035;
-key.shadow.normalBias = 0.035;
+key.shadow.normalBias = 0.045;
 Object.assign(key.shadow.camera, {
   left: -8,
   right: 8,
@@ -75,17 +82,17 @@ Object.assign(key.shadow.camera, {
 });
 scene.add(key, key.target);
 
-const fill = new THREE.DirectionalLight(0xbfd7e6, 0.82);
-fill.position.set(-8, 6, 3);
+const fill = new THREE.DirectionalLight(0xb9d4e6, 0.48);
+fill.position.set(-8, 5, 4);
 scene.add(fill);
-const rim = new THREE.DirectionalLight(0xffd5a2, 1.0);
+const rim = new THREE.DirectionalLight(0xffc98f, 1.15);
 rim.position.set(-4, 8, -8);
 scene.add(rim);
-scene.add(new THREE.HemisphereLight(0xe6f1f5, 0x7f7463, 1.05));
+scene.add(new THREE.HemisphereLight(0xdce7ec, 0x655b50, 0.42));
 
 const floor = new THREE.Mesh(
   new THREE.CircleGeometry(maxDim * 5, 72),
-  new THREE.MeshStandardMaterial({ color: 0xcac4ba, roughness: 0.96, metalness: 0 }),
+  new THREE.MeshStandardMaterial({ color: 0xa9a49b, roughness: 0.86, metalness: 0 }),
 );
 floor.name = 'preview.floor';
 floor.rotation.x = -Math.PI * 0.5;
@@ -93,11 +100,63 @@ floor.position.y = -0.015;
 floor.receiveShadow = true;
 scene.add(floor);
 
+const shadowResolution = 128;
+const shadowBytes = new Uint8Array(shadowResolution * shadowResolution * 4);
+for (let y = 0; y < shadowResolution; y += 1) {
+  for (let x = 0; x < shadowResolution; x += 1) {
+    const nx = x / (shadowResolution - 1) * 2 - 1;
+    const ny = y / (shadowResolution - 1) * 2 - 1;
+    const radius = Math.hypot(nx, ny);
+    const alpha = Math.pow(Math.max(0, 1 - radius), 2.2);
+    const index = (y * shadowResolution + x) * 4;
+    shadowBytes[index] = 38;
+    shadowBytes[index + 1] = 33;
+    shadowBytes[index + 2] = 29;
+    shadowBytes[index + 3] = Math.round(alpha * 255);
+  }
+}
+const shadowTexture = new THREE.DataTexture(
+  shadowBytes,
+  shadowResolution,
+  shadowResolution,
+  THREE.RGBAFormat,
+);
+shadowTexture.needsUpdate = true;
+const contactShadow = new THREE.Mesh(
+  new THREE.PlaneGeometry(Math.max(size.x, size.z) * 1.45, Math.max(size.x, size.z) * 1.05),
+  new THREE.MeshBasicMaterial({
+    map: shadowTexture,
+    transparent: true,
+    opacity: 0.28,
+    depthWrite: false,
+    toneMapped: false,
+  }),
+);
+contactShadow.name = 'preview.contact-shadow';
+contactShadow.rotation.x = -Math.PI * 0.5;
+contactShadow.position.set(center.x, -0.006, center.z);
+scene.add(contactShadow);
+
 let meshCount = 0;
 let triangleCount = 0;
 model.traverse((object) => {
   if (!object.isMesh) return;
   meshCount += 1;
+  const materials = Array.isArray(object.material) ? object.material : [object.material];
+  for (const material of materials) {
+    if (!material) continue;
+    for (const keyName of [
+      'map',
+      'roughnessMap',
+      'metalnessMap',
+      'normalMap',
+      'aoMap',
+      'emissiveMap',
+    ]) {
+      const texture = material[keyName];
+      if (texture) texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    }
+  }
   if (object.geometry?.index) triangleCount += object.geometry.index.count / 3;
   else if (object.geometry?.attributes?.position) triangleCount += object.geometry.attributes.position.count / 3;
 });

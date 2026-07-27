@@ -16,9 +16,9 @@
 
 | ID | 场景类型 | 层级 | 材质/装配覆盖 | 状态 |
 |---|---|---|---|---|
-| `props.village_well.v1` | `well` | Hero | 石砌、木构、80 片搭接瓦、卷扬、绳桶 | strict spec + 主/侧视图验收通过 |
-| `props.street_lantern.v1` | `streetLight` | Supporting | 石座、锻铁、链条、六面笼架、发光芯 | intake + 主/侧视图验收通过 |
-| `props.handcart.v1` | `handcart` | Supporting | 木板箱、铁箍、轮轴、24 根辐条、把手 | intake + 主/侧视图验收通过 |
+| `props.village_well.v2-pbr` | `well` | Hero | 暖石 PBR、旧木、80 片曲面搭接瓦、卷扬、绳桶 | strict spec + 主/侧视图验收通过 |
+| `props.street_lantern.v2-pbr` | `streetLight` | Supporting | 石座、参考驱动锻铁、链条、六面玻璃、局部发光 | intake + 主/侧视图验收通过 |
+| `props.handcart.v2-pbr` | `handcart` | Supporting | 定向木纹、铁箍旧化、轮轴、24 根辐条、把手 | intake + 主/侧视图验收通过 |
 
 参考图位于 `docs/references/props/<asset>/`：
 

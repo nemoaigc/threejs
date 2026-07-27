@@ -8,12 +8,12 @@ import {
   finishHeroProp,
   makePropRoot,
   registerNode,
-  standard,
-  toon,
+  rotateMaterialMaps,
+  surfaceMaterial,
   torus,
 } from './shared.js';
 
-const VERSION = 'img2threejs-handcart-v1';
+const VERSION = 'img2threejs-handcart-v2-pbr';
 
 function buildCargoBed(root, materials) {
   const bed = registerNode(root, 'cart.cargo-bed', new THREE.Group(), {
@@ -58,14 +58,14 @@ function buildCargoBed(root, materials) {
         1.43,
         0.235,
         0.085,
-        materials.oak[(row + (z > 0 ? 2 : 0)) % 4],
+        materials.oakCross[(row + (z > 0 ? 2 : 0)) % 4],
         0.025,
       );
       plank.name = `bed.${label}.plank.${row}`;
       plank.position.set(0, 0.84 + row * 0.225, z);
       bed.add(plank);
     }
-    const topRail = chamferedBox(1.52, 0.11, 0.115, materials.oak[2], 0.03);
+    const topRail = chamferedBox(1.52, 0.11, 0.115, materials.oakCross[2], 0.03);
     topRail.name = `bed.${label}.top-rail`;
     topRail.position.set(0, 0.84 + (rows - 1) * 0.225 + 0.17, z);
     bed.add(topRail);
@@ -76,6 +76,7 @@ function buildCargoBed(root, materials) {
     [0, -0.842],
     [0.58, -0.842],
     [-0.58, 0.822],
+    [0, 0.822],
     [0.58, 0.822],
   ];
   for (const [x, z] of verticalStraps) {
@@ -94,6 +95,20 @@ function buildCargoBed(root, materials) {
       fastener.position.set(x, y, z + (z < 0 ? -0.045 : 0.045));
       bed.add(fastener);
     }
+  }
+
+  const frontLowerStrap = chamferedBox(1.34, 0.075, 0.035, materials.ironEdge, 0.014);
+  frontLowerStrap.name = 'bed.front.lower-cross-strap';
+  frontLowerStrap.position.set(0, 0.79, 0.844);
+  bed.add(frontLowerStrap);
+  for (const x of [-0.48, -0.16, 0.16, 0.48]) {
+    const rivet = new THREE.Mesh(
+      new THREE.SphereGeometry(0.026, 7, 5),
+      materials.brass,
+    );
+    rivet.name = 'bed.front.lower-cross-rivet';
+    rivet.position.set(x, 0.79, 0.87);
+    bed.add(rivet);
   }
 
   for (const side of [-1, 1]) {
@@ -136,7 +151,7 @@ function buildWheel(root, materials, side) {
   root.add(wheel);
   wheel.position.set(side * 0.88, 0.67, -0.12);
 
-  const tire = torus(0.61, 0.055, materials.iron, 8, 36);
+  const tire = torus(0.61, 0.055, materials.ironEdge, 8, 36);
   tire.name = `wheel.${sideName}.iron-tire`;
   tire.rotation.y = Math.PI * 0.5;
   wheel.add(tire);
@@ -278,22 +293,20 @@ function buildHandles(root, materials) {
 
 export function createHandcartModel() {
   const root = makePropRoot('prop.handcart', VERSION);
+  const oak = PROP_PALETTE.oak.map((color, index) => surfaceMaterial('wood', color, {
+    name: `cart-oak-${index}`,
+  }));
   const materials = {
-    oak: PROP_PALETTE.oak.map((color, index) => toon(color, { name: `cart-oak-${index}` })),
-    iron: standard(PROP_PALETTE.iron, {
+    oak,
+    oakCross: oak.map((material) => rotateMaterialMaps(material, Math.PI * 0.5)),
+    iron: surfaceMaterial('forged-iron', PROP_PALETTE.iron, {
       name: 'cart-forged-iron',
-      roughness: 0.4,
-      metalness: 0.86,
     }),
-    ironEdge: standard(PROP_PALETTE.ironEdge, {
+    ironEdge: surfaceMaterial('worn-iron', PROP_PALETTE.ironEdge, {
       name: 'cart-worn-iron',
-      roughness: 0.3,
-      metalness: 0.9,
     }),
-    brass: standard(PROP_PALETTE.brass, {
+    brass: surfaceMaterial('brass', PROP_PALETTE.brass, {
       name: 'cart-brass-pegs',
-      roughness: 0.36,
-      metalness: 0.72,
     }),
   };
 

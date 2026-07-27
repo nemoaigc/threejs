@@ -8,14 +8,13 @@ import {
   finishHeroProp,
   makePropRoot,
   registerNode,
-  standard,
+  surfaceMaterial,
   taperedBoxGeometry,
-  toon,
   torus,
   tubeFromPoints,
 } from './shared.js';
 
-const VERSION = 'img2threejs-lantern-v1';
+const VERSION = 'img2threejs-lantern-v2-pbr';
 
 function addHexRing(group, y, radius, material, name) {
   const vertices = Array.from({ length: 6 }, (_, index) => {
@@ -240,6 +239,11 @@ function buildCage(root, materials) {
   core.scale.set(0.72, 1.55, 0.72);
   core.position.y = 1.95;
   cage.add(core);
+  const glow = new THREE.PointLight(0xffa93b, 5.2, 3.1, 2);
+  glow.name = 'cage.amber-point-light';
+  glow.position.y = 1.96;
+  glow.castShadow = false;
+  cage.add(glow);
   const candle = new THREE.Mesh(
     new THREE.CylinderGeometry(0.07, 0.085, 0.24, 12),
     materials.candle,
@@ -254,33 +258,37 @@ function buildCage(root, materials) {
 export function createStreetLanternModel() {
   const root = makePropRoot('prop.street-lantern', VERSION);
   const materials = {
-    stone: toon(0x92785b, { name: 'dressed-stone' }),
-    iron: toon(0x302f2d, {
+    stone: surfaceMaterial('stone', 0x92785b, { name: 'dressed-stone' }),
+    iron: surfaceMaterial('forged-iron', 0x302f2d, {
       name: 'forged-iron',
       emissive: new THREE.Color(0x080807),
-      emissiveIntensity: 0.1,
+      emissiveIntensity: 0.04,
     }),
-    ironEdge: toon(0x4c4945, {
+    ironEdge: surfaceMaterial('worn-iron', 0x4c4945, {
       name: 'worn-iron-edge',
       emissive: new THREE.Color(0x0b0a09),
-      emissiveIntensity: 0.08,
+      emissiveIntensity: 0.03,
     }),
-    brass: standard(PROP_PALETTE.brass, {
+    brass: surfaceMaterial('brass', PROP_PALETTE.brass, {
       name: 'aged-brass-fastener',
-      roughness: 0.32,
-      metalness: 0.8,
     }),
     glass: new THREE.MeshPhysicalMaterial({
       name: 'amber-glass',
-      color: PROP_PALETTE.glass,
-      emissive: 0x8f4c0d,
-      emissiveIntensity: 0.4,
-      roughness: 0.18,
+      color: 0xf0a93f,
+      emissive: 0x6d2f08,
+      emissiveIntensity: 0.18,
+      roughness: 0.12,
       metalness: 0,
       transparent: true,
-      opacity: 0.48,
-      transmission: 0.15,
-      thickness: 0.08,
+      opacity: 0.52,
+      transmission: 0.42,
+      thickness: 0.12,
+      attenuationColor: new THREE.Color(0xffa23a),
+      attenuationDistance: 0.72,
+      ior: 1.48,
+      clearcoat: 0.75,
+      clearcoatRoughness: 0.1,
+      envMapIntensity: 0.8,
       side: THREE.DoubleSide,
       depthWrite: false,
     }),
@@ -288,14 +296,14 @@ export function createStreetLanternModel() {
       name: 'amber-light-core',
       color: 0xffcc62,
       emissive: PROP_PALETTE.ember,
-      emissiveIntensity: 2.1,
-      roughness: 0.15,
+      emissiveIntensity: 3.4,
+      roughness: 0.12,
       toneMapped: true,
     }),
-    candle: toon(0x7d3d1c, {
+    candle: surfaceMaterial('clay', 0x7d3d1c, {
       name: 'candle-cup',
       emissive: 0x3a1808,
-      emissiveIntensity: 0.3,
+      emissiveIntensity: 0.16,
     }),
     void: new THREE.MeshBasicMaterial({ name: 'vent-cavity', color: 0x100e0c }),
   };

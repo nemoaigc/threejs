@@ -9,13 +9,74 @@ import {
   gablePrismGeometry,
   makePropRoot,
   registerNode,
-  standard,
-  toon,
+  surfaceMaterial,
   torus,
   tubeFromPoints,
 } from './shared.js';
 
-const VERSION = 'img2threejs-well-v1';
+const VERSION = 'img2threejs-well-v2-pbr';
+
+function barrelTileGeometry(length, width, thickness = 0.035, crown = 0.065, segments = 8) {
+  const positions = [];
+  const indices = [];
+  for (const x of [-length * 0.5, length * 0.5]) {
+    for (let segment = 0; segment <= segments; segment += 1) {
+      const t = segment / segments;
+      const z = THREE.MathUtils.lerp(-width * 0.5, width * 0.5, t);
+      const arch = Math.sin(t * Math.PI);
+      positions.push(x, thickness + crown * arch, z);
+    }
+  }
+  const topStride = segments + 1;
+  for (let segment = 0; segment < segments; segment += 1) {
+    const a = segment;
+    const b = segment + 1;
+    const c = topStride + segment;
+    const d = topStride + segment + 1;
+    indices.push(a, c, b, b, c, d);
+  }
+
+  const bottomStart = positions.length / 3;
+  positions.push(
+    -length * 0.5, 0, -width * 0.5,
+    length * 0.5, 0, -width * 0.5,
+    -length * 0.5, 0, width * 0.5,
+    length * 0.5, 0, width * 0.5,
+  );
+  indices.push(
+    bottomStart, bottomStart + 2, bottomStart + 1,
+    bottomStart + 1, bottomStart + 2, bottomStart + 3,
+  );
+
+  for (const side of [0, segments]) {
+    const topA = side;
+    const topB = topStride + side;
+    const bottomA = bottomStart + (side === 0 ? 0 : 2);
+    const bottomB = bottomStart + (side === 0 ? 1 : 3);
+    indices.push(topA, bottomA, topB, topB, bottomA, bottomB);
+  }
+  for (const end of [0, 1]) {
+    const topBase = end * topStride;
+    const bottomLeft = bottomStart + end;
+    const bottomRight = bottomStart + 2 + end;
+    for (let segment = 0; segment < segments; segment += 1) {
+      indices.push(
+        topBase + segment,
+        bottomLeft,
+        topBase + segment + 1,
+        topBase + segment + 1,
+        bottomLeft,
+        bottomRight,
+      );
+    }
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  return geometry;
+}
 
 function buildStoneRing(root, materials) {
   const group = registerNode(root, 'well.stone-ring', new THREE.Group(), {
@@ -190,32 +251,24 @@ function buildRoof(root, materials) {
   const slopeLength = Math.hypot(halfWidth, rise);
   const rows = 5;
   const columns = 8;
+  const tileLength = slopeLength / rows + 0.145;
+  const tileWidth = 0.29;
+  const tileGeometry = barrelTileGeometry(tileLength, tileWidth);
+  const slopeAngle = Math.atan2(rise, halfWidth);
   for (const side of [-1, 1]) {
     for (let row = 0; row < rows; row += 1) {
       const t = (row + 0.5) / rows;
       for (let column = 0; column < columns; column += 1) {
         const tile = new THREE.Mesh(
-          new THREE.CylinderGeometry(
-            0.145,
-            0.16,
-            slopeLength / rows + 0.16,
-            10,
-            1,
-            false,
-            0,
-            Math.PI,
-          ),
+          tileGeometry,
           materials.clay[(row + column + (side > 0 ? 1 : 0)) % materials.clay.length],
         );
         tile.name = `roof.tile.${side}.${row}.${column}`;
         const x = side * halfWidth * t;
-        const y = 2.98 + rise * (1 - t) + 0.11;
+        const y = 2.98 + rise * (1 - t) + 0.055;
         const z = -0.875 + column * 0.25;
         tile.position.set(x, y, z);
-        tile.quaternion.setFromUnitVectors(
-          new THREE.Vector3(0, 1, 0),
-          new THREE.Vector3(side * halfWidth, -rise, 0).normalize(),
-        );
+        tile.rotation.z = -side * slopeAngle;
         roof.add(tile);
       }
     }
@@ -337,38 +390,40 @@ function buildWindlass(root, materials) {
 export function createVillageWellModel() {
   const root = makePropRoot('prop.village-well', VERSION);
   const materials = {
-    stone: PROP_PALETTE.limestone.map((color, index) => toon(color, { name: `stone-${index}` })),
-    innerStone: standard(PROP_PALETTE.limestoneDark, {
+    stone: PROP_PALETTE.limestone.map((color, index) => surfaceMaterial('stone', color, {
+      name: `stone-${index}`,
+    })),
+    innerStone: surfaceMaterial('inner-stone', PROP_PALETTE.limestoneDark, {
       name: 'inner-stone',
-      roughness: 0.96,
     }),
-    oak: PROP_PALETTE.oak.map((color, index) => toon(color, { name: `oak-${index}` })),
-    clay: PROP_PALETTE.terracotta.map((color, index) => toon(color, { name: `clay-${index}` })),
-    iron: standard(PROP_PALETTE.iron, {
+    oak: PROP_PALETTE.oak.map((color, index) => surfaceMaterial('wood', color, {
+      name: `oak-${index}`,
+    })),
+    clay: PROP_PALETTE.terracotta.map((color, index) => surfaceMaterial('clay', color, {
+      name: `clay-${index}`,
+    })),
+    iron: surfaceMaterial('forged-iron', PROP_PALETTE.iron, {
       name: 'forged-iron',
-      roughness: 0.42,
-      metalness: 0.82,
     }),
-    ironEdge: standard(PROP_PALETTE.ironEdge, {
+    ironEdge: surfaceMaterial('worn-iron', PROP_PALETTE.ironEdge, {
       name: 'worn-iron-edge',
-      roughness: 0.3,
-      metalness: 0.88,
     }),
-    brass: standard(PROP_PALETTE.brass, {
+    brass: surfaceMaterial('brass', PROP_PALETTE.brass, {
       name: 'brass-fastener',
-      roughness: 0.34,
-      metalness: 0.76,
     }),
-    rope: toon(PROP_PALETTE.rope, { name: 'rope' }),
+    rope: surfaceMaterial('rope', PROP_PALETTE.rope, { name: 'rope' }),
     water: new THREE.MeshPhysicalMaterial({
       name: 'deep-water',
       color: 0x385b62,
-      roughness: 0.22,
+      roughness: 0.16,
       metalness: 0,
       transparent: true,
-      opacity: 0.78,
-      clearcoat: 0.8,
-      clearcoatRoughness: 0.18,
+      opacity: 0.72,
+      transmission: 0.16,
+      ior: 1.333,
+      clearcoat: 1,
+      clearcoatRoughness: 0.12,
+      envMapIntensity: 0.8,
       side: THREE.DoubleSide,
     }),
   };
