@@ -1,0 +1,3 @@
+# Reference generation prompt — Merchant Grain Sack Pile
+
+Create one isolated medieval village merchant prop in a premium grounded fantasy 3D product-render style: an asymmetric pile of five soft filled burlap grain sacks and one open grain sack on a weathered oak pallet. Include gathered tied mouths, thick stitched seams, small repair patches, restrained wheat marks, visible weave, an open folded rim full of grain, scattered kernels and a worn concave iron scoop. Sacks must visibly sag, bulge and compress against one another; avoid rotational symmetry or pottery-like bodies. Show the complete object in a three-quarter front view on a neutral warm studio background. No people, text, buildings, extra goods, crop, blur, toy shapes or glossy fabric.

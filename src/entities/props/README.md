@@ -22,7 +22,10 @@ Small countryside details for the Mushoku Buena/Roa slice. **Not** hero building
 | `anvilProp` | models/anvil_workstation | custom forged horn + split stump + hanging hammer/tongs |
 | `crystalCrate` | models/crystal_crate_magic | hinged iron-bound cargo crate + restrained translucent minerals + bottles |
 | `handcart` | models/handcart | empty plank cargo bed + 12-spoke wheels + iron running gear |
-| `hayBale` / `sackPile` | batch_p0 | street cargo |
+| `hayBale` | models/hay_bale_stack | three bound compressed bales + pallet + four-tine pitchfork + loose straw |
+| `sackPile` | models/grain_sack_pile | six asymmetric burlap sacks + open grain + repair seams + iron scoop |
+| `marketStall` | models/produce_market_stall | braced oak stall + curved striped canopy + three produce crates + brass balance |
+| `horseTrough` | models/horse_water_trough | hollow iron-bound oak trough + water + hand pump + stave bucket |
 | `bench` | models/village_bench | splayed timber frame + ten-slat back + forged scroll arms |
 | `fenceSection` | models/fence_section | stone-footed oak frame + varied pickets + projected iron straps |
 | `hitchingPost` | models/hitching_post | braced two-post rail + four tie rings + attached hemp coil |

@@ -116,6 +116,8 @@ const SURFACE_RECIPES = {
   soil: { roughness: 1, metalness: 0, normalScale: 1.45, repeat: [5.2, 5.2] },
   leaf: { roughness: 0.62, metalness: 0, normalScale: 0.48, repeat: [3.4, 3.4] },
   petal: { roughness: 0.7, metalness: 0, normalScale: 0.28, repeat: [3, 3] },
+  hay: { roughness: 0.97, metalness: 0, normalScale: 1.2, repeat: [5.8, 3.2] },
+  grain: { roughness: 0.64, metalness: 0, normalScale: 0.42, repeat: [5, 5] },
   generic: { roughness: 0.72, metalness: 0, normalScale: 0.35, repeat: [2, 2] },
 };
 
@@ -275,6 +277,60 @@ function surfaceSignal(kind, u, v, channelSeed) {
       roughness: clamp01((petal ? 0.58 : 0.5) + meso * 0.22),
       height: clamp01(0.42 + vein * 0.23 + sideVeins * 0.12 + micro * 0.08),
       ao: clamp01(0.72 + macro * 0.14 + vein * 0.08),
+    };
+  }
+
+  if (kind === 'hay') {
+    const flowWarp = (macro - 0.5) * 15;
+    const longFiber = Math.pow(
+      0.5 + 0.5 * Math.sin(v * 205 + u * 18 + flowWarp),
+      5.5,
+    );
+    const brokenFiber = Math.pow(
+      0.5 + 0.5 * Math.sin(v * 117 - u * 39 + meso * 12),
+      8,
+    );
+    const crossFiber = Math.pow(
+      0.5 + 0.5 * Math.sin(u * 146 - v * 12 + macro * 8),
+      9,
+    );
+    const bundle = meso;
+    const hollowStem = speck > 0.955 ? (speck - 0.955) * 14 : 0;
+    return {
+      albedo: clamp01(
+        0.58
+        + macro * 0.13
+        + bundle * 0.12
+        + longFiber * 0.18
+        + brokenFiber * 0.08
+        + crossFiber * 0.045
+        - hollowStem * 0.1,
+      ),
+      roughness: clamp01(0.86 + meso * 0.1 + micro * 0.04),
+      height: clamp01(
+        0.14
+        + bundle * 0.15
+        + longFiber * 0.47
+        + brokenFiber * 0.18
+        + crossFiber * 0.09
+        + micro * 0.07
+        - hollowStem * 0.13,
+      ),
+      ao: clamp01(0.48 + macro * 0.16 + bundle * 0.13 + longFiber * 0.18 + brokenFiber * 0.05),
+    };
+  }
+
+  if (kind === 'grain') {
+    const kernel = Math.pow(meso, 1.9);
+    const crease = Math.pow(
+      Math.max(0, 1 - Math.abs(Math.sin((u * 13 + v * 19) * Math.PI)) * 8),
+      2,
+    );
+    return {
+      albedo: clamp01(0.68 + macro * 0.13 + kernel * 0.14 - crease * 0.08),
+      roughness: clamp01(0.52 + meso * 0.18 + micro * 0.08),
+      height: clamp01(0.3 + kernel * 0.46 + micro * 0.12 - crease * 0.1),
+      ao: clamp01(0.62 + macro * 0.16 + kernel * 0.17),
     };
   }
 

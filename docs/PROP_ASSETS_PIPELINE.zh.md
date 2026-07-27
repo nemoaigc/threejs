@@ -63,6 +63,17 @@ Batch 03 延续单主体 3D 产品参考，并在浏览器对照中完成了三�
 
 Batch 04 的首次对照仍暴露出“默认几何/玩具感”：铁砧圆锥角、乳白晶体、方短花箱与稀疏柴堆。四件均完成第二轮本体雕刻后才准入；生产场景保持原 catalog key 和既有稀疏布置。实现数据与评分见 `src/entities/props/models/BATCH04_RUN_LOG.md`。
 
+## Batch 05
+
+| ID | 场景类型 | 层级 | 材质/装配覆盖 | 状态 |
+|---|---|---|---|---|
+| `props.hay_bale_stack.v1-pbr` | `hayBale` | Supporting | 三块压缩草捆、六套闭合麻绳束缚、276 处表面碎草、七板木托盘、四齿叉与铁套 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.grain_sack_pile.v1-pbr` | `sackPile` | Supporting | 六只非对称软体麻袋、横置顶袋、收束袋口、缝线/补丁/麦穗印、开口谷物、凹面铁铲与散落颗粒 | 两轮本体重塑 + 主/侧视图验收通过 |
+| `props.produce_market_stall.v1-pbr` | `marketStall` | Hero | 开放式四柱橡木承重框、曲面红白帆布与十一片垂边、石脚/铁靴、苹果/卷心菜/胡萝卜三箱、四链黄铜秤 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.horse_water_trough.v1-pbr` | `horseTrough` | Hero | 分板中空橡木槽、三道闭合铆接铁箍、凹入透明水面/涟漪/浮叶、手压泵、十二板木桶与石基 | intake + detail inventory + 主/侧视图验收通过 |
+
+Batch 05 完成了 `batch_p0` 最后两件可见货运占位的替换，并新增两件单次稀疏布置的村庄功能道具。粮袋首版因“旋转体陶罐感”、硬质袋口和错误铲面被直接否决，改为偏心环带软体网格后才准入；干草表面也由规则织纹改为多尺度非周期纤维场。实现、返工证据与评分见 `src/entities/props/models/BATCH05_RUN_LOG.md`。
+
 ## 验收闸门
 
 1. intake：单主体、完整轮廓、主体占比合理、无裁切；

@@ -1,0 +1,3 @@
+# Reference generation prompt — Produce Market Stall
+
+Create one isolated village produce stall in a premium grounded fantasy 3D product-render style: an open four-post weathered oak frame on limestone feet, structurally braced, with a curved cream-and-dusty-red striped canvas canopy and scalloped front valance. Build a wide plank counter and lower shelf, then place three open wooden crates of red apples, layered green cabbages and leafy orange carrots. Hang a complete aged-brass two-pan balance scale on the right. Show convincing joinery, iron shoes, rivets, canopy ties, fabric weave and wood grain. Full-object three-quarter front view on a neutral warm studio background. No vendor, text, building, street scene, crop, blur, flat slab canopy or solid produce blocks.

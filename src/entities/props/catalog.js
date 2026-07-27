@@ -3,18 +3,18 @@
  * Layout `type` keys map here. Unknown types stay off the stage (empty > junk).
  */
 import {
-  createHayBale,
-  createSackPile,
-} from './batch_p0.js';
-import {
   createAnvilWorkstationModel,
   createBarrelClusterModel,
   createCrateStackModel,
   createCrystalCrateModel,
   createFenceSectionModel,
   createFlowerPlanterModel,
+  createGrainSackPileModel,
   createHandcartModel,
+  createHayBaleStackModel,
   createHitchingPostModel,
+  createHorseWaterTroughModel,
+  createProduceMarketStallModel,
   createQuestBoardModel,
   createSignpostModel,
   createStreetLanternModel,
@@ -39,9 +39,11 @@ export const PROP_BUILDERS = {
   // cargo / market
   crateStack: createCrateStackModel,
   barrelCluster: createBarrelClusterModel,
-  sackPile: createSackPile,
+  sackPile: createGrainSackPileModel,
   handcart: createHandcartModel,
-  hayBale: createHayBale,
+  hayBale: createHayBaleStackModel,
+  marketStall: createProduceMarketStallModel,
+  horseTrough: createHorseWaterTroughModel,
 
   // craft / structure
   woodpile: createWoodpileModel,

@@ -1,0 +1,120 @@
+{
+  "targetName": "Horse Water Trough",
+  "sourceImage": "docs/references/props/horse_water_trough/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "iron-bound oak horse trough with hand pump and bucket",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "long flared hollow timber basin",
+        "three wrap iron bands",
+        "recessed reflective water",
+        "tall left-side hand pump",
+        "small right-side stave bucket"
+      ],
+      "structureKind": [
+        "two-course side planks and trapezoid end panels",
+        "thick top rim and wet inner bottom",
+        "closed iron bands with rivets",
+        "stone foundation and pump footing",
+        "pump body, spout, lever and bucket"
+      ],
+      "motionPotential": [
+        "foundation, basin, water, pump and bucket are independent runtime nodes",
+        "water, pump handle and bucket expose action sockets",
+        "basin, foundation, pump and bucket have independent colliders"
+      ],
+      "materialFamilies": [
+        "waterlogged aged oak",
+        "clear water",
+        "blackened and worn iron",
+        "limestone",
+        "hemp rope",
+        "moss and floating leaves"
+      ],
+      "notes": "The trough must read as a deep hollow container; a solid wood block with a blue strip is not acceptable."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 2,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 2,
+        "actionReadinessNeed": 3
+      },
+      "estimatedCounts": {
+        "macroComponents": 5,
+        "mesoComponents": 44,
+        "microFeatureGroups": 17,
+        "materialLayers": 8,
+        "repetitionSystems": 8
+      },
+      "reasoning": [
+        "The long basin, tall pump lever and side bucket create an asymmetric multi-scale silhouette.",
+        "A credible hollow requires separate bottom, two plank courses per side, end panels, top caps and a recessed water plane.",
+        "Three closed bands, rivets, water ripples, leaves, pump flange hardware, twelve bucket staves and rope handle provide close-range structure."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the hollow basin topology, water look-dev, articulated pump and stave-built bucket."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "The hidden interior bottom is inferred from the waterline and visible rim.",
+      "Water is a controlled transparent physical plane rather than a fluid simulation."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {"id":"trough-flared-basin","kind":"structure","description":"Two long two-course side walls flare outward above a separate bottom plank.","region":{"x":0.15,"y":0.34,"width":0.68,"height":0.43,"units":"normalized"},"scale":"macro","affects":"basin silhouette","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.basin.flared-side-planks"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"trough-end-panels","kind":"profile","description":"Thick trapezoid end panels close both ends beneath oversized rim caps.","region":{"x":0.13,"y":0.37,"width":0.72,"height":0.38,"units":"normalized"},"scale":"meso","affects":"hollow volume","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.basin.trapezoid-ends-and-caps"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"trough-wet-interior","kind":"material-override","description":"The interior bottom and local side stains are substantially darker and wetter than exterior oak.","region":{"x":0.23,"y":0.38,"width":0.52,"height":0.28,"units":"normalized"},"scale":"meso","affects":"water contact","mapsTo":{"type":"material.localOverrides","ref":"oak.wet-interior-and-stains"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"trough-iron-bands","kind":"fastener","description":"Three closed black iron wraps follow the basin cross-section with projected rivets.","region":{"x":0.17,"y":0.35,"width":0.64,"height":0.4,"units":"normalized"},"scale":"meso","affects":"structural reinforcement","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.basin.three-closed-bands"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"trough-stone-supports","kind":"foundation","description":"Two irregular limestone blocks support the basin while a third block carries the pump.","region":{"x":0.12,"y":0.7,"width":0.7,"height":0.2,"units":"normalized"},"scale":"meso","affects":"grounding","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.foundation.limestone-supports"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"trough-moss","kind":"scatter","description":"Low moss pads collect along the upper edges of both basin supports.","region":{"x":0.19,"y":0.68,"width":0.53,"height":0.13,"units":"normalized"},"scale":"micro","affects":"age and moisture","mapsTo":{"type":"material.localOverrides","ref":"limestone.support-moss"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.96},
+        {"id":"trough-water","kind":"surface","description":"A recessed transparent water plane exposes the rim depth and reflects a pale sky tint.","region":{"x":0.25,"y":0.4,"width":0.46,"height":0.2,"units":"normalized"},"scale":"macro","affects":"container identity","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.water.recessed-physical-surface"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"trough-ripples-leaves","kind":"repetition","description":"Three elliptical ripple rings and seven floating leaves break the water surface.","region":{"x":0.27,"y":0.4,"width":0.43,"height":0.18,"units":"normalized"},"scale":"micro","affects":"water life","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.water.ripples-and-leaves"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"trough-pump-body","kind":"attachment","description":"A riveted flange, tapered iron barrel, collar and domed cap form the left pump body.","region":{"x":0.07,"y":0.17,"width":0.25,"height":0.52,"units":"normalized"},"scale":"macro","affects":"utility silhouette","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.pump.flange-body-cap"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.99},
+        {"id":"trough-pump-spout","kind":"tube","description":"A thick curved iron spout projects from the pump over the water and ends in a worn lip.","region":{"x":0.18,"y":0.32,"width":0.24,"height":0.25,"units":"normalized"},"scale":"meso","affects":"water path","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.pump.curved-spout-and-lip"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.99},
+        {"id":"trough-pump-lever","kind":"joint","description":"A long oak lever pivots from a projected iron pin and ends in a darker grip.","region":{"x":0.04,"y":0.12,"width":0.29,"height":0.28,"units":"normalized"},"scale":"macro","affects":"action readiness","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.pump.pivoting-wood-lever"},"evidenceRef":"detail-zones/zone-r0c0.png","confidence":0.99},
+        {"id":"trough-bucket-staves","kind":"repetition","description":"Twelve tapered oak staves form a separate bucket with two riveted hoops.","region":{"x":0.77,"y":0.55,"width":0.18,"height":0.33,"units":"normalized"},"scale":"meso","affects":"side silhouette","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.bucket.twelve-staves-and-hoops"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"trough-bucket-rope","kind":"attachment","description":"A thick arched hemp handle connects to two iron lugs on the bucket rim.","region":{"x":0.76,"y":0.48,"width":0.2,"height":0.24,"units":"normalized"},"scale":"micro","affects":"bucket handling","mapsTo":{"type":"component.localFeatures","ref":"horse-trough.bucket.rope-handle-and-lugs"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.98}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/horse_water_trough/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": ["The basin reads as a deep water-bearing structure with credible bands and supports; pump and bucket attachments remain action-ready in main and side review."],
+    "minimumSpecDepth": {"macroComponents":3,"mesoComponents":8,"microFeatureGroups":5,"materialLayers":3,"repetitionSystems":1,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"overall-silhouette","required":true,"qualityCriteria":["Long trough, tall pump and side bucket read as one utility station."]},
+      {"id":"hollow-structure","required":true,"qualityCriteria":["Separate planks, ends, rim and recessed water prove real depth."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Dry/wet oak, water, iron, stone, rope and moss respond independently."]},
+      {"id":"action-readiness","required":true,"qualityCriteria":["Pump handle, water and bucket expose distinct runtime sockets."]}
+    ],
+    "visualDeltaChecks": ["basin depth","band contact","water recess","pump proportion","bucket stave construction"],
+    "antiShallowSpecRules": ["No solid wood block with a blue top may pass.","No pump or bucket may float or merge into the basin."]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference and direct main/side render review."
+}

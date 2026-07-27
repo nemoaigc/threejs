@@ -8,8 +8,12 @@ import {
   createCrystalCrateModel,
   createFenceSectionModel,
   createFlowerPlanterModel,
+  createGrainSackPileModel,
   createHandcartModel,
+  createHayBaleStackModel,
   createHitchingPostModel,
+  createHorseWaterTroughModel,
+  createProduceMarketStallModel,
   createQuestBoardModel,
   createSignpostModel,
   createStreetLanternModel,
@@ -38,6 +42,10 @@ const factories = {
   crystalCrate: createCrystalCrateModel,
   planter: createFlowerPlanterModel,
   woodpile: createWoodpileModel,
+  hayBale: createHayBaleStackModel,
+  sackPile: createGrainSackPileModel,
+  marketStall: createProduceMarketStallModel,
+  horseTrough: createHorseWaterTroughModel,
 };
 const factory = factories[assetId] ?? factories.well;
 

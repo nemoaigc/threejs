@@ -1,0 +1,120 @@
+{
+  "targetName": "Produce Market Stall",
+  "sourceImage": "docs/references/props/produce_market_stall/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "timber village produce stall with striped canopy and balance scale",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "open four-post oak frame",
+        "arched cream and dusty-red canopy",
+        "scalloped striped valance",
+        "wide plank counter and lower shelf",
+        "three color-blocked produce crates"
+      ],
+      "structureKind": [
+        "four stone-footed posts",
+        "lintels, side rails, ridge and braces",
+        "curved canvas strip system",
+        "slatted counter and shelves",
+        "three open produce crates and hanging scale"
+      ],
+      "motionPotential": [
+        "foundation, frame, counter, canopy, produce and scale are independent runtime nodes",
+        "counter and hanging-sign locations expose sockets",
+        "foundation/frame and counter have separate colliders"
+      ],
+      "materialFamilies": [
+        "aged oak",
+        "woven striped canvas",
+        "limestone",
+        "blackened iron",
+        "aged brass",
+        "fresh fruit and leafy produce"
+      ],
+      "notes": "The stall must remain open and structurally legible; oversized solid panels or hidden produce would destroy the market identity."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 3,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 6,
+        "mesoComponents": 58,
+        "microFeatureGroups": 18,
+        "materialLayers": 10,
+        "repetitionSystems": 9
+      },
+      "reasoning": [
+        "The frame, counter and curved canopy form a deep open structure with braces and repeated slats.",
+        "Eleven alternating canopy strips and eleven scallops must stay aligned without becoming a flat board.",
+        "Three open crates contain individually modeled apples, layered cabbages and leafy carrots; the brass scale adds a separate hanging assembly."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the open timber hierarchy, curved cloth system, three produce systems and articulated scale."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "The rear counter dressing is inferred from the visible front view.",
+      "The canopy uses modeled curved strips rather than real-time cloth simulation."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {"id":"stall-four-post-frame","kind":"structure","description":"Four tall oak posts carry front and rear lintels, side rails and a central ridge.","region":{"x":0.12,"y":0.12,"width":0.76,"height":0.78,"units":"normalized"},"scale":"macro","affects":"stall silhouette","mapsTo":{"type":"component.localFeatures","ref":"market-stall.frame.four-post-load-path"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"stall-stone-feet","kind":"foundation","description":"Four unequal limestone pads with moss isolate iron-shod posts from the ground.","region":{"x":0.12,"y":0.78,"width":0.76,"height":0.17,"units":"normalized"},"scale":"meso","affects":"grounding","mapsTo":{"type":"component.localFeatures","ref":"market-stall.foundation.stone-feet-and-moss"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"stall-post-shoes","kind":"fastener","description":"Black iron shoes and projected rivets wrap the lower post ends.","region":{"x":0.13,"y":0.7,"width":0.74,"height":0.16,"units":"normalized"},"scale":"micro","affects":"joinery credibility","mapsTo":{"type":"component.localFeatures","ref":"market-stall.frame.iron-post-shoes"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.98},
+        {"id":"stall-diagonal-braces","kind":"joint","description":"Long diagonal timber braces stabilize both side frames.","region":{"x":0.1,"y":0.28,"width":0.8,"height":0.5,"units":"normalized"},"scale":"meso","affects":"frame hierarchy","mapsTo":{"type":"component.localFeatures","ref":"market-stall.frame.side-diagonal-braces"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.98},
+        {"id":"stall-striped-canopy","kind":"cover","description":"Eleven curved depth-spanning canvas strips alternate dusty red and warm cream.","region":{"x":0.14,"y":0.1,"width":0.72,"height":0.3,"units":"normalized"},"scale":"macro","affects":"market identity","mapsTo":{"type":"component.localFeatures","ref":"market-stall.canopy.eleven-curved-strips"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.99},
+        {"id":"stall-scalloped-valance","kind":"fold","description":"The front canopy edge ends in eleven alternating rounded scallops.","region":{"x":0.15,"y":0.29,"width":0.7,"height":0.16,"units":"normalized"},"scale":"meso","affects":"front silhouette","mapsTo":{"type":"component.localFeatures","ref":"market-stall.canopy.scalloped-valance"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"stall-grommets-ties","kind":"fastener","description":"Brass grommets and side hemp ties anchor the canopy to its frame.","region":{"x":0.12,"y":0.25,"width":0.76,"height":0.2,"units":"normalized"},"scale":"micro","affects":"cloth attachment","mapsTo":{"type":"component.localFeatures","ref":"market-stall.canopy.grommets-and-ties"},"evidenceRef":"detail-zones/zone-r0c2.png","confidence":0.97},
+        {"id":"stall-counter-planks","kind":"structure","description":"Seven individual top planks, a front apron and six lower shelf slats form the selling surface.","region":{"x":0.16,"y":0.48,"width":0.68,"height":0.36,"units":"normalized"},"scale":"meso","affects":"counter depth","mapsTo":{"type":"component.localFeatures","ref":"market-stall.counter.slatted-counter-and-shelf"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"stall-produce-crates","kind":"container","description":"Three open nailed slat crates separate apples, cabbages and carrots.","region":{"x":0.2,"y":0.43,"width":0.6,"height":0.29,"units":"normalized"},"scale":"meso","affects":"merchandise hierarchy","mapsTo":{"type":"component.localFeatures","ref":"market-stall.produce.three-open-crates"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"stall-apples","kind":"repetition","description":"Twelve varied red apples include short dark stems and two stacked rows.","region":{"x":0.21,"y":0.43,"width":0.21,"height":0.22,"units":"normalized"},"scale":"micro","affects":"produce identity","mapsTo":{"type":"component.localFeatures","ref":"market-stall.produce.apples-and-stems"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.99},
+        {"id":"stall-cabbages","kind":"repetition","description":"Five cabbages use faceted cores surrounded by six overlapping leaves.","region":{"x":0.4,"y":0.43,"width":0.22,"height":0.23,"units":"normalized"},"scale":"micro","affects":"produce identity","mapsTo":{"type":"component.localFeatures","ref":"market-stall.produce.layered-cabbages"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"stall-carrots","kind":"repetition","description":"Ten orange tapered roots carry three green leaves each in the right crate.","region":{"x":0.59,"y":0.43,"width":0.2,"height":0.25,"units":"normalized"},"scale":"micro","affects":"produce identity","mapsTo":{"type":"component.localFeatures","ref":"market-stall.produce.carrots-and-leaves"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99},
+        {"id":"stall-balance-scale","kind":"attachment","description":"A brass post and balance beam suspend two shallow pans on four chains.","region":{"x":0.72,"y":0.35,"width":0.18,"height":0.39,"units":"normalized"},"scale":"meso","affects":"merchant storytelling","mapsTo":{"type":"component.localFeatures","ref":"market-stall.scale.two-pan-balance"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.99}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/produce_market_stall/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": ["Open timber load path, curved striped canvas, produce hierarchy and hanging scale match the admitted reference and survive main/side review."],
+    "minimumSpecDepth": {"macroComponents":3,"mesoComponents":8,"microFeatureGroups":5,"materialLayers":3,"repetitionSystems":1,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"overall-silhouette","required":true,"qualityCriteria":["Striped canopy and open four-post frame read immediately."]},
+      {"id":"primary-structure","required":true,"qualityCriteria":["Posts, lintels, braces, counter and feet form a credible load path."]},
+      {"id":"merchandise-density","required":true,"qualityCriteria":["Three produce families stay distinct at the production camera scale."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Canvas, oak, stone, iron, brass and produce have independent response."]}
+    ],
+    "visualDeltaChecks": ["canopy curvature","valance rhythm","open frame depth","produce separation","scale visibility"],
+    "antiShallowSpecRules": ["A flat awning slab cannot pass.","Solid produce blocks or a closed counter cannot pass."]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference and direct main/side render review."
+}

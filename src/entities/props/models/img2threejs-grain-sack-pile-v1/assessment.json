@@ -1,0 +1,119 @@
+{
+  "targetName": "Merchant Grain Sack Pile",
+  "sourceImage": "docs/references/props/grain_sack_pile/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "palletized merchant grain sack pile with open sack and scoop",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "asymmetric soft sack pile",
+        "bulged and compressed cloth bodies",
+        "one horizontal top sack",
+        "open grain-filled foreground sack",
+        "low oak pallet and iron scoop"
+      ],
+      "structureKind": [
+        "five tied closed sacks",
+        "one folded-rim open sack",
+        "slatted pallet and runners",
+        "stitched seams and repair patches",
+        "scoop and spilled kernels"
+      ],
+      "motionPotential": [
+        "closed stack, open sack and spill are independent runtime nodes",
+        "top load and open grain expose action sockets",
+        "pallet and sack groups carry separate colliders"
+      ],
+      "materialFamilies": [
+        "woven burlap",
+        "hemp rope",
+        "thick seam thread",
+        "golden grain",
+        "aged oak",
+        "worn iron"
+      ],
+      "notes": "The critical failure mode is rotationally symmetric vase-like bodies; every sack must show soft asymmetry, compression and uneven shoulders."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 2,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 3,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 6,
+        "mesoComponents": 42,
+        "microFeatureGroups": 15,
+        "materialLayers": 6,
+        "repetitionSystems": 7
+      },
+      "reasoning": [
+        "Six soft cloth volumes overlap in a deliberately asymmetric load with significant mutual occlusion.",
+        "Each tied sack requires a deformed body, gathered neck, tie, short tails, compression creases and optional stencil or patch.",
+        "The open grain surface, individual kernels, double-sided scoop bowl, seam stitches and pallet joinery supply close-range evidence."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by soft-body variation, stacked occlusion, visible stitching and the independent grain/spill interaction."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Rear sack markings are inferred from the visible fronts.",
+      "Cloth deformation is a deterministic ring mesh rather than simulated fabric."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {"id":"sacks-asymmetric-pile","kind":"structure","description":"Five closed sacks overlap behind one lower open sack in an asymmetric merchant load.","region":{"x":0.17,"y":0.17,"width":0.66,"height":0.62,"units":"normalized"},"scale":"macro","affects":"pile silhouette","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.closed-sacks.asymmetric-stack"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"sacks-soft-bodies","kind":"profile","description":"Every closed sack has an offset centerline, flattened base, uneven bulge and collapsed shoulder.","region":{"x":0.2,"y":0.22,"width":0.62,"height":0.53,"units":"normalized"},"scale":"meso","affects":"cloth realism","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.closed-sacks.soft-deformed-bodies"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"sacks-horizontal-top","kind":"placement","description":"One closed sack lies sideways across the rear shoulders with its tied mouth exposed.","region":{"x":0.27,"y":0.13,"width":0.45,"height":0.25,"units":"normalized"},"scale":"macro","affects":"top silhouette","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.closed-sacks.horizontal-top-load"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.97},
+        {"id":"sacks-gathered-necks","kind":"fold","description":"Tied mouths use lobed gathered cloth with irregular pointed crests rather than rigid teeth.","region":{"x":0.2,"y":0.13,"width":0.6,"height":0.32,"units":"normalized"},"scale":"meso","affects":"bag closure identity","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.closed-sacks.gathered-necks"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.98},
+        {"id":"sacks-hemp-ties","kind":"fastener","description":"Each closed mouth is circled by hemp rope with a compact knot and hanging tails.","region":{"x":0.2,"y":0.2,"width":0.6,"height":0.3,"units":"normalized"},"scale":"micro","affects":"closure assembly","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.closed-sacks.rope-ties"},"evidenceRef":"detail-zones/zone-r0c1.png","confidence":0.98},
+        {"id":"sacks-side-seams","kind":"seam","description":"Front sacks show raised curved seams with nine projected stitches.","region":{"x":0.2,"y":0.38,"width":0.62,"height":0.36,"units":"normalized"},"scale":"micro","affects":"construction credibility","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.closed-sacks.side-seams-and-stitches"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"sacks-patches","kind":"repair","description":"Dark burlap repair patches are perimeter-stitched onto two lower sacks.","region":{"x":0.19,"y":0.48,"width":0.62,"height":0.28,"units":"normalized"},"scale":"micro","affects":"wear storytelling","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.closed-sacks.repair-patches"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.97},
+        {"id":"sacks-wheat-stencil","kind":"mark","description":"A simplified dark wheat-ear stencil identifies the grain cargo.","region":{"x":0.3,"y":0.31,"width":0.38,"height":0.28,"units":"normalized"},"scale":"micro","affects":"cargo identity","mapsTo":{"type":"material.localOverrides","ref":"burlap.wheat-stencil"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"sacks-open-rim","kind":"opening","description":"The foreground sack has an irregular folded rim and visible deep grain surface.","region":{"x":0.31,"y":0.48,"width":0.34,"height":0.31,"units":"normalized"},"scale":"meso","affects":"open-container read","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.open-sack.folded-rim"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"sacks-grain-kernels","kind":"repetition","description":"Golden kernels sit above the grain mass and scatter onto the ground.","region":{"x":0.34,"y":0.54,"width":0.45,"height":0.36,"units":"normalized"},"scale":"micro","affects":"material scale","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.grain.individual-kernels"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"sacks-iron-scoop","kind":"attachment","description":"A double-sided worn iron scoop rests open-side-up beside the pallet with a long handle.","region":{"x":0.65,"y":0.67,"width":0.25,"height":0.25,"units":"normalized"},"scale":"meso","affects":"merchant activity","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.spill.concave-iron-scoop"},"evidenceRef":"detail-zones/zone-r2c2.png","confidence":0.99},
+        {"id":"sacks-pallet","kind":"structure","description":"Seven nailed oak slats span three runners and six feet under the cargo.","region":{"x":0.15,"y":0.72,"width":0.72,"height":0.19,"units":"normalized"},"scale":"meso","affects":"grounding","mapsTo":{"type":"component.localFeatures","ref":"grain-sacks.pallet.slats-runners-feet"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/grain_sack_pile/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": ["The pile reads as soft filled burlap, not pottery; body deformation, closures, seams, open grain, scoop and pallet contacts survive main and side review."],
+    "minimumSpecDepth": {"macroComponents":3,"mesoComponents":8,"microFeatureGroups":5,"materialLayers":3,"repetitionSystems":1,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"overall-silhouette","required":true,"qualityCriteria":["Asymmetric upright and horizontal sacks form a credible load."]},
+      {"id":"soft-form","required":true,"qualityCriteria":["No closed sack remains rotationally symmetric or vase-like."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Burlap, rope, grain, oak and iron have independent PBR response."]},
+      {"id":"interaction-detail","required":true,"qualityCriteria":["Open grain, kernels and concave scoop read as one continuous spill action."]}
+    ],
+    "visualDeltaChecks": ["soft-body silhouette","stack contact","gathered neck shape","seam scale","open grain and scoop"],
+    "antiShallowSpecRules": ["No cylinder or lathe vase may pass as a filled sack.","No rigid bowl may pass as a folded burlap mouth."]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference and two visible correction passes."
+}

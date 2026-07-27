@@ -13,3 +13,7 @@ export { createAnvilWorkstationModel } from './anvil_workstation.js';
 export { createCrystalCrateModel } from './crystal_crate_magic.js';
 export { createFlowerPlanterModel } from './flower_planter.js';
 export { createWoodpileModel } from './woodpile.js';
+export { createHayBaleStackModel } from './hay_bale_stack.js';
+export { createGrainSackPileModel } from './grain_sack_pile.js';
+export { createProduceMarketStallModel } from './produce_market_stall.js';
+export { createHorseWaterTroughModel } from './horse_water_trough.js';

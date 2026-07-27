@@ -1,0 +1,3 @@
+# Reference generation prompt — Bound Hay Bale Stack
+
+Create one isolated, animation-ready village prop in a premium grounded fantasy 3D product-render style: three tightly compressed rectangular hay bales stacked two below and one above on a rough oak pallet. Every bale has two continuous hemp-twine bands, small front knots, frayed corners, directional straw fibers and loose stems. Lean a correctly proportioned four-tine pitchfork against the left side and scatter a few stems in front. Show the full object, including pallet feet and tool, in a three-quarter front view on a neutral warm studio background. No text, people, buildings, extra cargo, crop, blur, depth-of-field loss, flat toon shading or glossy plastic hay.

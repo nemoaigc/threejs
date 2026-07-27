@@ -1,0 +1,117 @@
+{
+  "targetName": "Bound Hay Bale Stack",
+  "sourceImage": "docs/references/props/hay_bale_stack/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "palletized rectangular hay bale stack with pitchfork",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "three compressed chamfered bales",
+        "two-over-one stepped load silhouette",
+        "continuous twine compression bands",
+        "low rough oak pallet",
+        "leaning forged pitchfork"
+      ],
+      "structureKind": [
+        "three independent bound bale volumes",
+        "slatted pallet and runners",
+        "closed twine loops with knots",
+        "fork head, ferrule and long handle",
+        "loose straw spill"
+      ],
+      "motionPotential": [
+        "bale group and pitchfork are independent runtime nodes",
+        "top load and pitchfork expose action sockets",
+        "pallet and bale stack have separate colliders"
+      ],
+      "materialFamilies": [
+        "compressed dry hay",
+        "loose straw",
+        "hemp twine",
+        "aged oak",
+        "blackened and worn iron"
+      ],
+      "notes": "The identity depends on compressed fiber density and imperfect bale edges; smooth yellow boxes are not acceptable."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 2,
+        "componentCount": 2,
+        "hierarchyDepth": 2,
+        "repetitionDensity": 3,
+        "materialLayerCount": 2,
+        "localDetailDensity": 3,
+        "occlusionRisk": 2,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 5,
+        "mesoComponents": 34,
+        "microFeatureGroups": 13,
+        "materialLayers": 5,
+        "repetitionSystems": 6
+      },
+      "reasoning": [
+        "Three separate bale masses and the diagonal pitchfork define the silhouette.",
+        "Six closed compression loops must contact the bale surfaces and remain readable from the main camera.",
+        "Directional PBR fibers, 276 modeled surface strands, edge tufts, pallet nails and loose straw carry close-range scale."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": ["macro", "meso", "micro"],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the dense fiber repetition, binding topology, open pallet structure and independent tool."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "The reference back faces are occluded; rear fibers mirror the observed front material logic.",
+      "Hay deformation is modeled procedurally rather than with strand-level simulation."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {"id":"hay-three-bales","kind":"structure","description":"Two lower rectangular bales support one centered upper bale.","region":{"x":0.2,"y":0.2,"width":0.62,"height":0.56,"units":"normalized"},"scale":"macro","affects":"load silhouette","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.bales.three-volume-stack"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"hay-chamfered-edges","kind":"profile","description":"Compressed bale corners are rounded and frayed rather than perfectly sharp.","region":{"x":0.24,"y":0.26,"width":0.55,"height":0.45,"units":"normalized"},"scale":"meso","affects":"bale softness","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.bales.compressed-chamfers"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.98},
+        {"id":"hay-fiber-field","kind":"material-override","description":"Golden fibers run in broken directional bundles with darker cavities.","region":{"x":0.24,"y":0.25,"width":0.56,"height":0.48,"units":"normalized"},"scale":"micro","affects":"hay material identity","mapsTo":{"type":"material.localOverrides","ref":"hay.directional-broken-fibers"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"hay-twine-loops","kind":"fastener","description":"Two complete hemp loops compress every bale across front, top, rear and underside.","region":{"x":0.26,"y":0.24,"width":0.5,"height":0.48,"units":"normalized"},"scale":"meso","affects":"binding credibility","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.bales.closed-twine-loops"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.99},
+        {"id":"hay-twine-knots","kind":"fastener","description":"Each front loop terminates in a small knot and two short tails.","region":{"x":0.31,"y":0.38,"width":0.42,"height":0.3,"units":"normalized"},"scale":"micro","affects":"binding finish","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.bales.knots-and-tails"},"evidenceRef":"detail-zones/zone-r1c1.png","confidence":0.97},
+        {"id":"hay-edge-tufts","kind":"relief","description":"Unequal straw tufts break the side and top silhouettes.","region":{"x":0.2,"y":0.2,"width":0.62,"height":0.55,"units":"normalized"},"scale":"micro","affects":"silhouette naturalism","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.bales.edge-tuft-system"},"evidenceRef":"detail-zones/zone-r1c2.png","confidence":0.98},
+        {"id":"hay-pallet-slats","kind":"structure","description":"Seven upper slats sit across three long runners with visible gaps.","region":{"x":0.2,"y":0.7,"width":0.64,"height":0.18,"units":"normalized"},"scale":"meso","affects":"grounding","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.pallet.slats-and-runners"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.99},
+        {"id":"hay-pallet-nails","kind":"fastener","description":"Dark iron nail heads project from both ends of each upper slat.","region":{"x":0.22,"y":0.72,"width":0.6,"height":0.14,"units":"normalized"},"scale":"micro","affects":"joinery scale","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.pallet.projected-nails"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.98},
+        {"id":"hay-pitchfork","kind":"attachment","description":"A four-tine iron fork leans against the left side on a long wood handle.","region":{"x":0.08,"y":0.18,"width":0.24,"height":0.66,"units":"normalized"},"scale":"macro","affects":"worksite storytelling","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.pitchfork.four-tine-tool"},"evidenceRef":"detail-zones/zone-r1c0.png","confidence":0.99},
+        {"id":"hay-ferrule","kind":"joint","description":"A dark metal ferrule reinforces the handle-to-fork-head transition.","region":{"x":0.14,"y":0.63,"width":0.14,"height":0.15,"units":"normalized"},"scale":"micro","affects":"tool assembly","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.pitchfork.iron-ferrule"},"evidenceRef":"detail-zones/zone-r2c0.png","confidence":0.96},
+        {"id":"hay-straw-spill","kind":"scatter","description":"Loose stems spread across the ground in front of the pallet.","region":{"x":0.26,"y":0.82,"width":0.45,"height":0.12,"units":"normalized"},"scale":"micro","affects":"scene contact","mapsTo":{"type":"component.localFeatures","ref":"hay-stack.spill.loose-stems"},"evidenceRef":"detail-zones/zone-r2c1.png","confidence":0.98}
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0,
+      "proportions": {"headUnit":0,"torso":0,"legs":0,"shoulderWidth":0,"hipWidth":0},
+      "pose": {"type":"not-applicable","jointAngles":{}},
+      "faceLandmarks": {"eyeLine":0,"eyeSpacing":0,"noseBase":0,"mouthLine":0,"hairline":0},
+      "features": [],
+      "confidence": 0,
+      "note": "Object domain; character anatomy is not applicable."
+    },
+    "sourceImage": "docs/references/props/hay_bale_stack/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": ["Reference silhouette, structural contacts, directional hay fibers, bindings, pallet joinery and tool assembly remain readable in main and side renders."],
+    "minimumSpecDepth": {"macroComponents":3,"mesoComponents":8,"microFeatureGroups":5,"materialLayers":3,"repetitionSystems":1,"reviewViewpoints":2},
+    "featureGroups": [
+      {"id":"overall-silhouette","required":true,"qualityCriteria":["Stepped three-bale stack and diagonal pitchfork read immediately."]},
+      {"id":"primary-structure","required":true,"qualityCriteria":["Bales contact the pallet and each other; closed twine loops follow their surfaces."]},
+      {"id":"surface-material-response","required":true,"qualityCriteria":["Hay, rope, oak and iron have independent PBR response at object scale."]},
+      {"id":"runtime-hierarchy","required":true,"qualityCriteria":["Pallet, bales, pitchfork and spill are independent semantic nodes."]}
+    ],
+    "visualDeltaChecks": ["stack silhouette","fiber density","twine placement","pitchfork proportion","pallet contact"],
+    "antiShallowSpecRules": ["No smooth yellow box may pass as a bale.","No floating strand, tool or binding may pass review."]
+  },
+  "authoringInstruction": "Assessment completed from the admitted reference and direct main/side render review."
+}
