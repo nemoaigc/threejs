@@ -1,0 +1,335 @@
+{
+  "targetName": "Village Fence Section",
+  "sourceImage": "docs/references/props/fence_section/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "freestanding medieval timber fence section",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "broad horizontal rail silhouette",
+        "uneven hand-cut pickets",
+        "tall capped end posts",
+        "diagonal load brace",
+        "masonry footings"
+      ],
+      "structureKind": [
+        "mortised timber frame",
+        "picket infill",
+        "forged strap reinforcement",
+        "paired stone foundations"
+      ],
+      "motionPotential": [
+        "pickets and brace form separate destruction groups",
+        "end sockets allow repeated fence runs"
+      ],
+      "materialFamilies": [
+        "aged oak",
+        "warm limestone",
+        "blackened iron",
+        "moss"
+      ],
+      "notes": "Single repeatable fence module with real depth, front-facing hardware and clear side-view construction."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 2,
+        "componentCount": 3,
+        "hierarchyDepth": 2,
+        "repetitionDensity": 3,
+        "materialLayerCount": 2,
+        "localDetailDensity": 2,
+        "occlusionRisk": 1,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 4,
+        "mesoComponents": 18,
+        "microFeatureGroups": 10,
+        "materialLayers": 4,
+        "repetitionSystems": 3
+      },
+      "reasoning": [
+        "Identity depends on the paired tall posts, two rails, seven irregular pickets and one diagonal brace.",
+        "Repeated pickets, straps and rivets require controlled variation rather than duplicated cubes.",
+        "Stone feet and projecting ironwork must remain legible from the side and at production-scene distance."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex supporting depth is required because four structural groups, three repetition systems and projected hardware jointly define the silhouette."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Rear-face strap detail is inferred from the front three-quarter reference.",
+      "Individual picket height variance is art-directed while retaining the observed rhythm."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {
+          "id": "fence-faceted-caps",
+          "kind": "bevel",
+          "description": "Both tall end posts terminate in faceted pointed caps over square neck blocks.",
+          "region": { "x": 0.05, "y": 0.08, "width": 0.9, "height": 0.23, "units": "normalized" },
+          "scale": "meso",
+          "affects": "upper silhouette",
+          "mapsTo": { "type": "component.localFeatures", "ref": "fence.timber-frame.post-caps" },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.97
+        },
+        {
+          "id": "fence-picket-rhythm",
+          "kind": "repetition",
+          "description": "Seven narrow pickets alternate height, lean and spacing behind the rails.",
+          "region": { "x": 0.24, "y": 0.25, "width": 0.53, "height": 0.56, "units": "normalized" },
+          "scale": "meso",
+          "affects": "negative-space rhythm",
+          "mapsTo": { "type": "component.localFeatures", "ref": "fence.pickets.varied-array" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "fence-mixed-picket-tips",
+          "kind": "bevel",
+          "description": "Picket crowns mix pointed, rounded and asymmetrically cut profiles.",
+          "region": { "x": 0.25, "y": 0.18, "width": 0.52, "height": 0.3, "units": "normalized" },
+          "scale": "micro",
+          "affects": "handmade silhouette",
+          "mapsTo": { "type": "component.localFeatures", "ref": "fence.pickets.crown-profiles" },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.95
+        },
+        {
+          "id": "fence-diagonal-brace",
+          "kind": "ridge",
+          "description": "A thick diagonal timber crosses both rails and anchors near opposite posts.",
+          "region": { "x": 0.2, "y": 0.3, "width": 0.65, "height": 0.46, "units": "normalized" },
+          "scale": "macro",
+          "affects": "structural read",
+          "mapsTo": { "type": "component.localFeatures", "ref": "fence.timber-frame.diagonal-brace" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "fence-post-straps",
+          "kind": "fastener",
+          "description": "Broad blackened straps wrap the post-and-rail joints.",
+          "region": { "x": 0.06, "y": 0.25, "width": 0.88, "height": 0.52, "units": "normalized" },
+          "scale": "meso",
+          "affects": "joint credibility",
+          "mapsTo": { "type": "component.localFeatures", "ref": "fence.hardware.post-straps" },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "fence-square-rivets",
+          "kind": "fastener",
+          "description": "Square-headed rivets punctuate straps and rail plates.",
+          "region": { "x": 0.05, "y": 0.28, "width": 0.9, "height": 0.5, "units": "normalized" },
+          "scale": "micro",
+          "affects": "ironwork scale",
+          "mapsTo": { "type": "component.localFeatures", "ref": "fence.hardware.square-rivets" },
+          "evidenceRef": "detail-zones/zone-r1c2.png",
+          "confidence": 0.96
+        },
+        {
+          "id": "fence-oak-grain",
+          "kind": "scratch",
+          "description": "Directional oak grain follows each member and changes orientation on cross rails.",
+          "region": { "x": 0.08, "y": 0.1, "width": 0.84, "height": 0.72, "units": "normalized" },
+          "scale": "micro",
+          "affects": "timber response",
+          "mapsTo": { "type": "material.localOverrides", "ref": "aged-oak.directional-grain" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.94
+        },
+        {
+          "id": "fence-stone-stack",
+          "kind": "seam",
+          "description": "Each post sits on a two-course stack of separately dressed limestone blocks.",
+          "region": { "x": 0.03, "y": 0.72, "width": 0.94, "height": 0.25, "units": "normalized" },
+          "scale": "meso",
+          "affects": "ground contact",
+          "mapsTo": { "type": "component.localFeatures", "ref": "fence.foundations.block-courses" },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "fence-stone-chips",
+          "kind": "bevel",
+          "description": "Stone feet carry broad chipped chamfers and uneven block rotation.",
+          "region": { "x": 0.03, "y": 0.74, "width": 0.94, "height": 0.23, "units": "normalized" },
+          "scale": "micro",
+          "affects": "masonry age",
+          "mapsTo": { "type": "material.localOverrides", "ref": "limestone.chipped-edges" },
+          "evidenceRef": "detail-zones/zone-r2c0.png",
+          "confidence": 0.92
+        },
+        {
+          "id": "fence-foot-moss",
+          "kind": "surface-patch",
+          "description": "Sparse moss appears only along lower block seams and shaded contact points.",
+          "region": { "x": 0.04, "y": 0.83, "width": 0.92, "height": 0.14, "units": "normalized" },
+          "scale": "micro",
+          "affects": "grounding and age",
+          "mapsTo": { "type": "material.localOverrides", "ref": "moss.lower-crevice-mask" },
+          "evidenceRef": "detail-zones/zone-r2c2.png",
+          "confidence": 0.86
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {
+        "headUnit": 0.0,
+        "torso": 0.0,
+        "legs": 0.0,
+        "shoulderWidth": 0.0,
+        "hipWidth": 0.0
+      },
+      "pose": {
+        "type": "not-applicable",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0.0,
+        "eyeSpacing": 0.0,
+        "noseBase": 0.0,
+        "mouthLine": 0.0,
+        "hairline": 0.0
+      },
+      "features": [],
+      "confidence": 0.0,
+      "note": "Only meaningful when objectClass.primaryDomain is character or hybrid. Set applies=true and fill from forge/stage1_intake/extract_landmarks.py. See grimoire/character/reconstruction.md and grimoire/character/likeness_maximization.md."
+    },
+    "sourceImage": "docs/references/props/fence_section/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The rendered model matches the reference silhouette, primary proportions, visible component hierarchy, material response, and most recognizable local features for the selected fidelity tier."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 3,
+      "mesoComponents": 8,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "overall-silhouette",
+        "name": "Overall silhouette and proportions",
+        "required": true,
+        "qualityCriteria": [
+          "Bounding shape, dominant curves, negative spaces, and scale relationships are explicitly described."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model reads as a generic placeholder instead of the reference object",
+          "major proportions are guessed without evidence"
+        ]
+      },
+      {
+        "id": "primary-structure",
+        "name": "Primary structure and hierarchy",
+        "required": true,
+        "qualityCriteria": [
+          "Major parts, joints, seams, contact points, and parent-child relationships are named before code generation."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "large visible parts are merged into one mesh",
+          "component hierarchy is too shallow for the observed complexity"
+        ]
+      },
+      {
+        "id": "attachment-joint-correctness",
+        "name": "Attachment and joint correctness",
+        "required": true,
+        "qualityCriteria": [
+          "Every visible child appendage, branch, limb, handle, connector, tube, cable, horn, wing, leg, or hinged part has an attachment contract with parent socket, localStart/localEnd, contact type, embed/overlap, and gap tolerance."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "child part root floats away from the parent",
+          "branch/limb/tube is centered in space instead of pivoting from its root",
+          "parent-child transform mixes world and local coordinates"
+        ]
+      },
+      {
+        "id": "surface-material-response",
+        "name": "Surface material response",
+        "required": true,
+        "qualityCriteria": [
+          "Albedo zones, roughness, normal/bump/displacement intent, cavity dirt, edge wear, and local overrides are specified where visible.",
+          "Important materials define independent albedo, roughness, height/normal, and AO responses instead of reusing one texture for unrelated PBR channels.",
+          "Surface response is decomposed into macro, meso, and micro frequency bands with scale and amplitude tied to object scale."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "surface looks like flat plastic",
+          "local material variation is missing or not tied to image evidence"
+        ]
+      },
+      {
+        "id": "reference-lookdev",
+        "name": "Reference color, material, and lighting response",
+        "required": true,
+        "qualityCriteria": [
+          "Material-pass names the reference-derived albedo palette, roughness variation, tactile normal/bump/displacement response, and local masks.",
+          "When a source image is available, run reference PBR extraction and require confidence >= 0.7 before treating maps as implementation-ready.",
+          "Lighting-pass names key/fill/rim or environment light, exposure, tone mapping, background, and contact shadow behavior.",
+          "Neutral, grazing-angle, and reference-matched renders prove that surface relief survives relighting and is not painted into albedo."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model has acceptable shape but reads as flat shaded or plastic",
+          "colors are a generic average instead of reference-observed local color zones",
+          "lighting is evenly ambient and cannot reproduce the source value range"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "silhouette and negative-space delta",
+      "component hierarchy depth delta",
+      "repetition density and distribution delta",
+      "material albedo/roughness/normal response delta",
+      "local feature placement and scale delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not proceed to code if qualityContract.qualityBar is unassessed.",
+      "Do not proceed to code if the spec only contains a root component for a moderate or complex object.",
+      "Do not proceed to code if required featureGroups are not represented by componentTree, materials, or repetitionSystems.",
+      "Do not proceed to code if visible local features are described only in prose and not attached to components/materials/evidenceRefs.",
+      "Do not proceed past structural-pass if attached child parts lack attachment.parentSocket, localStart, localEnd, embedDepth/overlap, and gapTolerance.",
+      "Do not pass material look-dev when albedo is reused as roughness, height, normal, or AO.",
+      "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
+      "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
+      "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity."
+    ]
+  },
+  "authoringInstruction": "Fill observed object class, complexity reasoning, featureGroups, visualDeltaChecks, and unknowns before generating or implementing ObjectSculptSpec."
+}

@@ -23,8 +23,11 @@ Small countryside details for the Mushoku Buena/Roa slice. **Not** hero building
 | `handcart` | models/handcart | empty plank cargo bed + 12-spoke wheels + iron running gear |
 | `hayBale` / `sackPile` | batch_p0 | street cargo |
 | `bench` | models/village_bench | splayed timber frame + ten-slat back + forged scroll arms |
-| `fenceSection` / `hitchingPost` | batch_p0 | lightweight furniture |
-| `signpost` / `waystone` / `planter` | batch_p0 | path markers |
+| `fenceSection` | models/fence_section | stone-footed oak frame + varied pickets + projected iron straps |
+| `hitchingPost` | models/hitching_post | braced two-post rail + four tie rings + attached hemp coil |
+| `signpost` | models/signpost | three oriented arrow boards + carved emblems + brass route medallions |
+| `waystone` | models/waystone | irregular banded monolith + inset cyan travel rune + offerings |
+| `planter` | batch_p0 | path marker planting |
 
 ## Add a scatter/supporting prop
 

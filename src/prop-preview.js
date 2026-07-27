@@ -4,11 +4,15 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import {
   createBarrelClusterModel,
   createCrateStackModel,
+  createFenceSectionModel,
   createHandcartModel,
+  createHitchingPostModel,
   createQuestBoardModel,
+  createSignpostModel,
   createStreetLanternModel,
   createVillageBenchModel,
   createVillageWellModel,
+  createWaystoneModel,
 } from './entities/props/models/index.js';
 
 const params = new URLSearchParams(location.search);
@@ -22,6 +26,10 @@ const factories = {
   barrelCluster: createBarrelClusterModel,
   crateStack: createCrateStackModel,
   bench: createVillageBenchModel,
+  fence: createFenceSectionModel,
+  hitchingPost: createHitchingPostModel,
+  signpost: createSignpostModel,
+  waystone: createWaystoneModel,
 };
 const factory = factories[assetId] ?? factories.well;
 
@@ -56,14 +64,26 @@ const center = bounds.getCenter(new THREE.Vector3());
 const maxDim = Math.max(size.x, size.y, size.z);
 
 const camera = new THREE.PerspectiveCamera(34, innerWidth / innerHeight, 0.05, 100);
-const distance = maxDim * (assetId === 'lantern' ? 2.08 : 2.15);
+const distance = maxDim * (
+  assetId === 'lantern'
+    ? 2.08
+    : assetId === 'fence'
+      ? 1.86
+      : 2.15
+);
 const cameraDirections = {
   main: new THREE.Vector3(1.15, 0.72, 1.45).normalize(),
   front: new THREE.Vector3(0, 0.22, 1).normalize(),
   side: new THREE.Vector3(1, 0.22, 0).normalize(),
   rear: new THREE.Vector3(-1.1, 0.5, -1.4).normalize(),
 };
-camera.position.copy(center).addScaledVector(cameraDirections[view] ?? cameraDirections.main, distance);
+const assetMainDirections = {
+  fence: new THREE.Vector3(0.3, 0.25, 1.4).normalize(),
+};
+const cameraDirection = view === 'main'
+  ? assetMainDirections[assetId] ?? cameraDirections.main
+  : cameraDirections[view] ?? cameraDirections.main;
+camera.position.copy(center).addScaledVector(cameraDirection, distance);
 camera.lookAt(center);
 
 const controls = new OrbitControls(camera, renderer.domElement);

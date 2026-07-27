@@ -5,3 +5,7 @@ export { createQuestBoardModel } from './quest_board.js';
 export { createBarrelClusterModel } from './barrel_cluster.js';
 export { createCrateStackModel } from './crate_stack.js';
 export { createVillageBenchModel } from './village_bench.js';
+export { createFenceSectionModel } from './fence_section.js';
+export { createHitchingPostModel } from './hitching_post.js';
+export { createSignpostModel } from './signpost.js';
+export { createWaystoneModel } from './waystone.js';

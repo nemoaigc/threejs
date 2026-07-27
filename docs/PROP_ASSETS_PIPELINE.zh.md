@@ -41,6 +41,17 @@
 
 Batch 02 参考采用单主体 3D 产品渲染。`ref_source.png` 保留生成原图，`ref_main.png` 增加白色技术边界以通过确定性剪影 admission；这不会修改主体。实现数据与视觉评分见 `src/entities/props/models/BATCH02_RUN_LOG.md`。
 
+## Batch 03
+
+| ID | 场景类型 | 层级 | 材质/装配覆盖 | 状态 |
+|---|---|---|---|---|
+| `props.fence_section.v1-pbr` | `fenceSection` | Supporting | 双石脚、旧木立柱/横梁、七根不等高栅条、矩形斜撑、外凸铁带与方铆钉 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.hitching_post.v1-pbr` | `hitchingPost` | Supporting | 双立柱承重框、阶梯柱帽、上下横撑、双斜撑、四套拴马环、独立 socket 与麻绳圈 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.signpost.v1-pbr` | `signpost` | Supporting | 三向厚木箭牌、非文字路线刻纹、L 形铁托、黄铜章、布符与阶梯石座 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.waystone.v1-pbr` | `waystone` | Supporting | 不规则厚石碑、双层砌块、包覆铁带、裂纹、暗槽包边的青蓝嵌入式符文、供奉币与苔藓 | intake + detail inventory + 主/侧视图验收通过 |
+
+Batch 03 延续单主体 3D 产品参考，并在浏览器对照中完成了三次可见返工：栅栏默认白材质错位、路牌侧边化遮挡、界碑符文过曝/供奉币方向。实现数据与评分见 `src/entities/props/models/BATCH03_RUN_LOG.md`。
+
 ## 验收闸门
 
 1. intake：单主体、完整轮廓、主体占比合理、无裁切；

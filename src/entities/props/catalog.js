@@ -4,12 +4,8 @@
  */
 import {
   createWoodpile,
-  createFenceSection,
-  createHitchingPost,
-  createWaystone,
   createHayBale,
   createSackPile,
-  createSignpost,
   createPlanter,
   createAnvilProp,
   createCrystalCrate,
@@ -17,11 +13,15 @@ import {
 import {
   createBarrelClusterModel,
   createCrateStackModel,
+  createFenceSectionModel,
   createHandcartModel,
+  createHitchingPostModel,
   createQuestBoardModel,
+  createSignpostModel,
   createStreetLanternModel,
   createVillageBenchModel,
   createVillageWellModel,
+  createWaystoneModel,
 } from './models/index.js';
 
 /** @type {Record<string, () => import('three').Group>} */
@@ -32,8 +32,8 @@ export const PROP_BUILDERS = {
   questBoard: createQuestBoardModel,
   well: createVillageWellModel,
   bench: createVillageBenchModel,
-  signpost: createSignpost,
-  waystone: createWaystone,
+  signpost: createSignpostModel,
+  waystone: createWaystoneModel,
   planter: createPlanter,
 
   // cargo / market
@@ -45,8 +45,8 @@ export const PROP_BUILDERS = {
 
   // craft / structure
   woodpile: createWoodpile,
-  fenceSection: createFenceSection,
-  hitchingPost: createHitchingPost,
+  fenceSection: createFenceSectionModel,
+  hitchingPost: createHitchingPostModel,
   anvilProp: createAnvilProp,
   crystalCrate: createCrystalCrate,
 };

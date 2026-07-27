@@ -1,0 +1,336 @@
+{
+  "targetName": "Village Direction Signpost",
+  "sourceImage": "docs/references/props/signpost/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "freestanding medieval direction signpost",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "tall vertical landmark",
+        "three staggered arrow boards",
+        "faceted cap",
+        "stepped stone plinth",
+        "small hanging cloth charm"
+      ],
+      "structureKind": [
+        "single timber mast",
+        "mortised rotating route arms",
+        "forged bracket reinforcement",
+        "masonry foundation"
+      ],
+      "motionPotential": [
+        "each route arm has a named endpoint socket",
+        "cloth charm and boards form separate destruction groups"
+      ],
+      "materialFamilies": [
+        "aged oak",
+        "warm limestone",
+        "forged iron",
+        "aged brass",
+        "woven cloth"
+      ],
+      "notes": "A three-direction landmark designed to remain readable as a silhouette before carved details resolve."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 2,
+        "repetitionDensity": 2,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 2,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 4,
+        "mesoComponents": 17,
+        "microFeatureGroups": 12,
+        "materialLayers": 5,
+        "repetitionSystems": 3
+      },
+      "reasoning": [
+        "The silhouette requires three arms at distinct heights and world directions, not stacked coplanar boards.",
+        "Each board combines an arrow profile, projected iron bracket, brass medallion and shallow route emblem.",
+        "The mast, base collar, cap and two-tier stone footing must remain substantial from independent views."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required because silhouette and identity are distributed across three oriented board groups and five material families."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Emblems are intentionally abstract rather than readable route text.",
+      "Back faces retain structural thickness but simplify decorative medallions."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {
+          "id": "signpost-faceted-cap",
+          "kind": "bevel",
+          "description": "The mast terminates in a broad neck and four-sided pointed cap.",
+          "region": { "x": 0.42, "y": 0.03, "width": 0.2, "height": 0.18, "units": "normalized" },
+          "scale": "meso",
+          "affects": "top silhouette",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.mast.faceted-cap" },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "signpost-three-directions",
+          "kind": "repetition",
+          "description": "Three arms sit at staggered heights and point toward distinct compass directions.",
+          "region": { "x": 0.08, "y": 0.1, "width": 0.84, "height": 0.44, "units": "normalized" },
+          "scale": "macro",
+          "affects": "landmark silhouette",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.direction-boards.oriented-array" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "signpost-arrow-tips",
+          "kind": "bevel",
+          "description": "Each thick timber board ends in an irregular hand-cut arrow point.",
+          "region": { "x": 0.08, "y": 0.12, "width": 0.84, "height": 0.4, "units": "normalized" },
+          "scale": "meso",
+          "affects": "directional read",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.direction-boards.arrow-profiles" },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "signpost-route-emblems",
+          "kind": "linework",
+          "description": "Mountain, wheat and bridge marks are carved as shallow non-text route emblems.",
+          "region": { "x": 0.12, "y": 0.12, "width": 0.76, "height": 0.4, "units": "normalized" },
+          "scale": "micro",
+          "affects": "board identity",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.direction-boards.carved-emblems" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.96
+        },
+        {
+          "id": "signpost-iron-brackets",
+          "kind": "fastener",
+          "description": "L-shaped forged brackets project across the mast and board roots.",
+          "region": { "x": 0.36, "y": 0.12, "width": 0.34, "height": 0.42, "units": "normalized" },
+          "scale": "meso",
+          "affects": "attachment credibility",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.direction-boards.iron-brackets" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "signpost-brass-medallions",
+          "kind": "fastener",
+          "description": "Round aged-brass medallions sit proud of the board roots.",
+          "region": { "x": 0.36, "y": 0.15, "width": 0.3, "height": 0.4, "units": "normalized" },
+          "scale": "micro",
+          "affects": "material accent rhythm",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.direction-boards.brass-medallions" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.96
+        },
+        {
+          "id": "signpost-square-rivets",
+          "kind": "fastener",
+          "description": "Dark square-headed rivets punctuate brackets and the base collar.",
+          "region": { "x": 0.34, "y": 0.12, "width": 0.34, "height": 0.68, "units": "normalized" },
+          "scale": "micro",
+          "affects": "ironwork scale",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.mast.square-rivets" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.93
+        },
+        {
+          "id": "signpost-cloth-charm",
+          "kind": "attachment",
+          "description": "A red-brown woven charm hangs from an iron ring beneath the lowest arm.",
+          "region": { "x": 0.31, "y": 0.42, "width": 0.22, "height": 0.25, "units": "normalized" },
+          "scale": "meso",
+          "affects": "secondary silhouette",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.charm.ring-cord-cloth" },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.97
+        },
+        {
+          "id": "signpost-oak-grain",
+          "kind": "scratch",
+          "description": "Vertical mast grain and horizontal board grain preserve member orientation.",
+          "region": { "x": 0.1, "y": 0.05, "width": 0.8, "height": 0.82, "units": "normalized" },
+          "scale": "micro",
+          "affects": "timber response",
+          "mapsTo": { "type": "material.localOverrides", "ref": "aged-oak.directional-grain" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.94
+        },
+        {
+          "id": "signpost-stepped-base",
+          "kind": "seam",
+          "description": "Four lower blocks and one upper plinth form a stepped chipped limestone foundation.",
+          "region": { "x": 0.28, "y": 0.74, "width": 0.44, "height": 0.24, "units": "normalized" },
+          "scale": "meso",
+          "affects": "grounding",
+          "mapsTo": { "type": "component.localFeatures", "ref": "signpost.foundation.stepped-blocks" },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.98
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {
+        "headUnit": 0.0,
+        "torso": 0.0,
+        "legs": 0.0,
+        "shoulderWidth": 0.0,
+        "hipWidth": 0.0
+      },
+      "pose": {
+        "type": "not-applicable",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0.0,
+        "eyeSpacing": 0.0,
+        "noseBase": 0.0,
+        "mouthLine": 0.0,
+        "hairline": 0.0
+      },
+      "features": [],
+      "confidence": 0.0,
+      "note": "Only meaningful when objectClass.primaryDomain is character or hybrid. Set applies=true and fill from forge/stage1_intake/extract_landmarks.py. See grimoire/character/reconstruction.md and grimoire/character/likeness_maximization.md."
+    },
+    "sourceImage": "docs/references/props/signpost/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The rendered model matches the reference silhouette, primary proportions, visible component hierarchy, material response, and most recognizable local features for the selected fidelity tier."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 3,
+      "mesoComponents": 8,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "overall-silhouette",
+        "name": "Overall silhouette and proportions",
+        "required": true,
+        "qualityCriteria": [
+          "Bounding shape, dominant curves, negative spaces, and scale relationships are explicitly described."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model reads as a generic placeholder instead of the reference object",
+          "major proportions are guessed without evidence"
+        ]
+      },
+      {
+        "id": "primary-structure",
+        "name": "Primary structure and hierarchy",
+        "required": true,
+        "qualityCriteria": [
+          "Major parts, joints, seams, contact points, and parent-child relationships are named before code generation."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "large visible parts are merged into one mesh",
+          "component hierarchy is too shallow for the observed complexity"
+        ]
+      },
+      {
+        "id": "attachment-joint-correctness",
+        "name": "Attachment and joint correctness",
+        "required": true,
+        "qualityCriteria": [
+          "Every visible child appendage, branch, limb, handle, connector, tube, cable, horn, wing, leg, or hinged part has an attachment contract with parent socket, localStart/localEnd, contact type, embed/overlap, and gap tolerance."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "child part root floats away from the parent",
+          "branch/limb/tube is centered in space instead of pivoting from its root",
+          "parent-child transform mixes world and local coordinates"
+        ]
+      },
+      {
+        "id": "surface-material-response",
+        "name": "Surface material response",
+        "required": true,
+        "qualityCriteria": [
+          "Albedo zones, roughness, normal/bump/displacement intent, cavity dirt, edge wear, and local overrides are specified where visible.",
+          "Important materials define independent albedo, roughness, height/normal, and AO responses instead of reusing one texture for unrelated PBR channels.",
+          "Surface response is decomposed into macro, meso, and micro frequency bands with scale and amplitude tied to object scale."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "surface looks like flat plastic",
+          "local material variation is missing or not tied to image evidence"
+        ]
+      },
+      {
+        "id": "reference-lookdev",
+        "name": "Reference color, material, and lighting response",
+        "required": true,
+        "qualityCriteria": [
+          "Material-pass names the reference-derived albedo palette, roughness variation, tactile normal/bump/displacement response, and local masks.",
+          "When a source image is available, run reference PBR extraction and require confidence >= 0.7 before treating maps as implementation-ready.",
+          "Lighting-pass names key/fill/rim or environment light, exposure, tone mapping, background, and contact shadow behavior.",
+          "Neutral, grazing-angle, and reference-matched renders prove that surface relief survives relighting and is not painted into albedo."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model has acceptable shape but reads as flat shaded or plastic",
+          "colors are a generic average instead of reference-observed local color zones",
+          "lighting is evenly ambient and cannot reproduce the source value range"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "silhouette and negative-space delta",
+      "component hierarchy depth delta",
+      "repetition density and distribution delta",
+      "material albedo/roughness/normal response delta",
+      "local feature placement and scale delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not proceed to code if qualityContract.qualityBar is unassessed.",
+      "Do not proceed to code if the spec only contains a root component for a moderate or complex object.",
+      "Do not proceed to code if required featureGroups are not represented by componentTree, materials, or repetitionSystems.",
+      "Do not proceed to code if visible local features are described only in prose and not attached to components/materials/evidenceRefs.",
+      "Do not proceed past structural-pass if attached child parts lack attachment.parentSocket, localStart, localEnd, embedDepth/overlap, and gapTolerance.",
+      "Do not pass material look-dev when albedo is reused as roughness, height, normal, or AO.",
+      "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
+      "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
+      "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity."
+    ]
+  },
+  "authoringInstruction": "Fill observed object class, complexity reasoning, featureGroups, visualDeltaChecks, and unknowns before generating or implementing ObjectSculptSpec."
+}

@@ -229,57 +229,6 @@ export function createBench() {
   return done(g);
 }
 
-// ─── fence section ─────────────────────────────────────────────────────────
-
-/** Short wooden fence run (~2.2m) — plant several for a line. */
-export function createFenceSection() {
-  const g = root('prop.fence_section', GEN);
-  const posts = [-1.0, 0, 1.0];
-  for (const x of posts) {
-    box(g, 'post', 0.1, 1.05, 0.1, x, 0.52, 0, P.timberDark);
-    // cap
-    box(g, 'cap', 0.14, 0.06, 0.14, x, 1.08, 0, P.timber);
-  }
-  // rails
-  box(g, 'rail.hi', 2.15, 0.08, 0.05, 0, 0.85, 0, P.timber);
-  box(g, 'rail.lo', 2.15, 0.08, 0.05, 0, 0.4, 0, P.timber);
-  // diagonal brace
-  const brace = box(g, 'brace', 1.1, 0.05, 0.04, -0.35, 0.6, 0.02, P.timberLight);
-  brace.rotation.z = 0.4;
-  return done(g);
-}
-
-// ─── hitching post ─────────────────────────────────────────────────────────
-
-export function createHitchingPost() {
-  const g = root('prop.hitching_post', GEN);
-  box(g, 'post', 0.12, 1.25, 0.12, 0, 0.62, 0, P.timberDark);
-  box(g, 'base', 0.28, 0.12, 0.28, 0, 0.06, 0, P.stone);
-  box(g, 'rail', 1.4, 0.08, 0.08, 0, 1.05, 0, P.timber);
-  box(g, 'post.L', 0.1, 1.1, 0.1, -0.7, 0.55, 0, P.timber);
-  box(g, 'post.R', 0.1, 1.1, 0.1, 0.7, 0.55, 0, P.timber);
-  // iron rings
-  torus(g, 'ring.L', 0.07, 0.015, -0.35, 1.05, 0.06, P.iron, { segs: 8 });
-  torus(g, 'ring.R', 0.07, 0.015, 0.35, 1.05, 0.06, P.iron, { segs: 8 });
-  return done(g);
-}
-
-// ─── waystone / road marker ────────────────────────────────────────────────
-
-export function createWaystone() {
-  const g = root('prop.waystone', GEN);
-  // rough stacked stone
-  box(g, 'base', 0.55, 0.25, 0.4, 0, 0.12, 0, P.stoneDark);
-  box(g, 'mid', 0.42, 0.55, 0.32, 0, 0.5, 0, P.stone);
-  box(g, 'top', 0.35, 0.4, 0.28, 0, 0.95, 0, P.stoneLight);
-  // carved face plate
-  box(g, 'glyph', 0.2, 0.28, 0.04, 0, 0.95, 0.16, makeGlow(P.magicRing, 0xa0e8ff, 0.25));
-  // moss tufts
-  sphere(g, 'moss', 0.08, 0.15, 1.2, 0.05, P.foliage, 5);
-  sphere(g, 'moss2', 0.06, -0.12, 0.35, 0.12, P.foliageDark, 5);
-  return done(g);
-}
-
 // ─── hay bale ──────────────────────────────────────────────────────────────
 
 export function createHayBale() {
@@ -319,27 +268,6 @@ export function createSackPile() {
     cyl(g, `sack.${i}`, r * 0.9, r, h, x, y, z, i % 2 ? P.sack : P.paperTan, 8);
     // tied top
     sphere(g, `tie.${i}`, r * 0.35, x, y + h * 0.5, z, P.rope, 5);
-  });
-  return done(g);
-}
-
-// ─── direction signpost ────────────────────────────────────────────────────
-
-export function createSignpost() {
-  const g = root('prop.signpost', GEN);
-  cyl(g, 'post', 0.06, 0.08, 2.4, 0, 1.2, 0, P.timberDark, 7);
-  box(g, 'base', 0.25, 0.12, 0.25, 0, 0.06, 0, P.stone);
-  // finger boards
-  const boards = [
-    { y: 2.1, yaw: 0.2, label: P.guildGreen, len: 0.85 },
-    { y: 1.85, yaw: -1.1, label: P.clay, len: 0.75 },
-    { y: 1.6, yaw: 2.2, label: 0x5a6a90, len: 0.7 },
-  ];
-  boards.forEach((b, i) => {
-    const board = box(g, `board.${i}`, b.len, 0.14, 0.05, b.len * 0.35, b.y, 0, P.plank);
-    board.rotation.y = b.yaw;
-    const tip = box(g, `tip.${i}`, 0.12, 0.14, 0.05, b.len * 0.7, b.y, 0, b.label);
-    tip.rotation.y = b.yaw;
   });
   return done(g);
 }

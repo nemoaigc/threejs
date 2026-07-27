@@ -555,6 +555,47 @@ export function chamferedBox(width, height, depth, material, chamfer = 0.04) {
   );
 }
 
+export function rectangularMemberBetween(
+  start,
+  end,
+  width,
+  depth,
+  material,
+  chamfer = 0.025,
+) {
+  const direction = new THREE.Vector3().subVectors(end, start);
+  const mesh = chamferedBox(width, direction.length(), depth, material, chamfer);
+  mesh.position.copy(start).addScaledVector(direction, 0.5);
+  mesh.quaternion.setFromUnitVectors(
+    new THREE.Vector3(0, 1, 0),
+    direction.clone().normalize(),
+  );
+  return mesh;
+}
+
+export function extrudedSilhouette(points, depth, material, {
+  bevel = 0.018,
+  bevelSegments = 1,
+} = {}) {
+  const shape = new THREE.Shape();
+  shape.moveTo(points[0][0], points[0][1]);
+  for (let index = 1; index < points.length; index += 1) {
+    shape.lineTo(points[index][0], points[index][1]);
+  }
+  shape.closePath();
+  const geometry = new THREE.ExtrudeGeometry(shape, {
+    depth,
+    steps: 1,
+    bevelEnabled: bevel > 0,
+    bevelThickness: Math.min(bevel * 0.42, depth * 0.12),
+    bevelSize: bevel,
+    bevelSegments,
+  });
+  geometry.translate(0, 0, -depth * 0.5);
+  geometry.computeVertexNormals();
+  return new THREE.Mesh(geometry, material);
+}
+
 export function taperedBoxGeometry(bottomWidth, bottomDepth, topWidth, topDepth, height) {
   const bw = bottomWidth * 0.5;
   const bd = bottomDepth * 0.5;
