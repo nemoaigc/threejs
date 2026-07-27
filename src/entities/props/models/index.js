@@ -9,3 +9,7 @@ export { createFenceSectionModel } from './fence_section.js';
 export { createHitchingPostModel } from './hitching_post.js';
 export { createSignpostModel } from './signpost.js';
 export { createWaystoneModel } from './waystone.js';
+export { createAnvilWorkstationModel } from './anvil_workstation.js';
+export { createCrystalCrateModel } from './crystal_crate_magic.js';
+export { createFlowerPlanterModel } from './flower_planter.js';
+export { createWoodpileModel } from './woodpile.js';

@@ -1,0 +1,3 @@
+# Blacksmith anvil workstation reference prompt
+
+Create one premium physically modeled medieval blacksmith anvil workstation as a studio-quality 3D reconstruction reference. Use a massive dark forged-steel anvil with a broad worn work face, square hardy hole, round pritchel hole, long elliptical horn, block heel, concave waist and four mounting feet. Mount it on a thick split round oak stump with vertical bark fissures, one riveted iron hoop, radial end-grain cracks and four uneven limestone shims. Hang a leather-wrapped hammer on the left and long iron tongs on the right. Three-quarter front view, complete object, generous margin, warm-neutral seamless studio ground. No characters, forge building, scenery, text, watermark, floating objects or cropped parts.

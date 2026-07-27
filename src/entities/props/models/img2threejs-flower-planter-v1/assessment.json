@@ -1,0 +1,373 @@
+{
+  "targetName": "Village Flower Planter",
+  "sourceImage": "docs/references/props/flower_planter/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "village flower planter",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "long reinforced oak planting box",
+        "dense central rosette foliage",
+        "asymmetric three-color flower groups",
+        "trailing corner ivy",
+        "small brass watering emblem"
+      ],
+      "structureKind": [
+        "planked timber container",
+        "stone-supported foundation",
+        "soil bed",
+        "layered botanical assemblies",
+        "front decorative attachment"
+      ],
+      "motionPotential": [
+        "soil and flower crown expose named sockets",
+        "foundation, box, foliage, flowers and ivy are separate runtime groups"
+      ],
+      "materialFamilies": [
+        "aged oak",
+        "blackened iron",
+        "limestone",
+        "damp soil",
+        "waxy leaves",
+        "matte petals",
+        "stems",
+        "aged brass"
+      ],
+      "notes": "The botanical mass must remain dense and irregular; sparse upright paper shapes would read as a toy bouquet rather than a planted bed."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 3,
+        "actionReadinessNeed": 2
+      },
+      "estimatedCounts": {
+        "macroComponents": 5,
+        "mesoComponents": 72,
+        "microFeatureGroups": 18,
+        "materialLayers": 8,
+        "repetitionSystems": 8
+      },
+      "reasoning": [
+        "The long low oak box establishes the prop scale before the foliage is read.",
+        "Thirty-six serrated broad leaves create a layered central rosette instead of a sparse radial fan.",
+        "Cream bells, golden daisies, dusty-rose flowers and trailing ivy require independent repeated systems and material responses."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the reinforced container, highly occluded botanical crown, three bloom systems and trailing vine hierarchy."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "Individual plant species are interpreted from a stylized reference rather than botanically exact taxonomy.",
+      "Hidden rear foliage distribution is inferred to maintain a complete side silhouette."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {
+          "id": "planter-long-box",
+          "kind": "proportion",
+          "description": "The oak container is nearly twice as wide as it is deep, with a low three-plank wall.",
+          "region": { "x": 0.12, "y": 0.48, "width": 0.76, "height": 0.38, "units": "normalized" },
+          "scale": "macro",
+          "affects": "container silhouette",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.box.long-three-plank-shell" },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "planter-corner-posts",
+          "kind": "joint",
+          "description": "Four projected oak posts lock the side and long wall planks together.",
+          "region": { "x": 0.12, "y": 0.48, "width": 0.76, "height": 0.38, "units": "normalized" },
+          "scale": "meso",
+          "affects": "box construction",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.box.corner-posts" },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "planter-iron-straps",
+          "kind": "fastener",
+          "description": "Blackened corner straps and paired rivets reinforce every post.",
+          "region": { "x": 0.1, "y": 0.52, "width": 0.8, "height": 0.3, "units": "normalized" },
+          "scale": "micro",
+          "affects": "joinery credibility",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.box.riveted-corner-straps" },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "planter-stone-feet",
+          "kind": "foundation",
+          "description": "Four warm limestone blocks lift the box clear of the ground.",
+          "region": { "x": 0.13, "y": 0.78, "width": 0.74, "height": 0.2, "units": "normalized" },
+          "scale": "meso",
+          "affects": "grounding",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.foundation.stone-feet" },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "planter-soil-bed",
+          "kind": "material-override",
+          "description": "A dark raised soil bed sits just inside the thick top rim.",
+          "region": { "x": 0.18, "y": 0.43, "width": 0.64, "height": 0.16, "units": "normalized" },
+          "scale": "meso",
+          "affects": "plant grounding",
+          "mapsTo": { "type": "material.localOverrides", "ref": "damp-soil.clumps-and-grit" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "planter-broad-rosette",
+          "kind": "repetition",
+          "description": "Thirty-six serrated leaves overlap in a broad center-left rosette with visible midribs.",
+          "region": { "x": 0.22, "y": 0.14, "width": 0.45, "height": 0.46, "units": "normalized" },
+          "scale": "macro",
+          "affects": "botanical crown density",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.foliage.layered-broad-rosette" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "planter-pink-blooms",
+          "kind": "repetition",
+          "description": "Four dusty-rose flowers rise on the right at varied heights and scales.",
+          "region": { "x": 0.55, "y": 0.12, "width": 0.28, "height": 0.42, "units": "normalized" },
+          "scale": "meso",
+          "affects": "right-side color mass",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.flowers.dusty-rose-group" },
+          "evidenceRef": "detail-zones/zone-r1c2.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "planter-double-petals",
+          "kind": "layering",
+          "description": "Each daisy-like bloom uses eleven outer petals, seven inner petals and a raised center.",
+          "region": { "x": 0.4, "y": 0.13, "width": 0.42, "height": 0.38, "units": "normalized" },
+          "scale": "micro",
+          "affects": "flower depth",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.flowers.double-petal-corollas" },
+          "evidenceRef": "detail-zones/zone-r1c2.png",
+          "confidence": 0.97
+        },
+        {
+          "id": "planter-pollen-grains",
+          "kind": "micro-detail",
+          "description": "Ten small golden grains ring every raised brown flower center.",
+          "region": { "x": 0.42, "y": 0.16, "width": 0.38, "height": 0.3, "units": "normalized" },
+          "scale": "micro",
+          "affects": "close-range flower scale",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.flowers.pollen-rings" },
+          "evidenceRef": "detail-zones/zone-r1c2.png",
+          "confidence": 0.94
+        },
+        {
+          "id": "planter-golden-flowers",
+          "kind": "repetition",
+          "description": "Three smaller golden flowers form a low front-center band.",
+          "region": { "x": 0.38, "y": 0.35, "width": 0.28, "height": 0.22, "units": "normalized" },
+          "scale": "meso",
+          "affects": "foreground color accent",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.flowers.golden-front-group" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "planter-cream-bells",
+          "kind": "repetition",
+          "description": "Four cream bell flowers hang from hooked stems on the left.",
+          "region": { "x": 0.15, "y": 0.14, "width": 0.27, "height": 0.42, "units": "normalized" },
+          "scale": "meso",
+          "affects": "left-side silhouette",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.flowers.cream-bell-group" },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "planter-trailing-ivy",
+          "kind": "attachment",
+          "description": "A thin ivy vine with eleven alternating leaves trails over the front-left corner.",
+          "region": { "x": 0.08, "y": 0.42, "width": 0.22, "height": 0.5, "units": "normalized" },
+          "scale": "meso",
+          "affects": "asymmetric overhang",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.ivy.trailing-vine" },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "planter-brass-emblem",
+          "kind": "attachment",
+          "description": "A small aged-brass watering-can emblem is centered on the front wall.",
+          "region": { "x": 0.43, "y": 0.64, "width": 0.14, "height": 0.12, "units": "normalized" },
+          "scale": "micro",
+          "affects": "decorative identity",
+          "mapsTo": { "type": "component.localFeatures", "ref": "planter.box.brass-watering-emblem" },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.97
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {
+        "headUnit": 0.0,
+        "torso": 0.0,
+        "legs": 0.0,
+        "shoulderWidth": 0.0,
+        "hipWidth": 0.0
+      },
+      "pose": {
+        "type": "not-applicable",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0.0,
+        "eyeSpacing": 0.0,
+        "noseBase": 0.0,
+        "mouthLine": 0.0,
+        "hairline": 0.0
+      },
+      "features": [],
+      "confidence": 0.0,
+      "note": "Only meaningful when objectClass.primaryDomain is character or hybrid. Set applies=true and fill from forge/stage1_intake/extract_landmarks.py. See grimoire/character/reconstruction.md and grimoire/character/likeness_maximization.md."
+    },
+    "sourceImage": "docs/references/props/flower_planter/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The rendered model matches the reference silhouette, primary proportions, visible component hierarchy, material response, and most recognizable local features for the selected fidelity tier."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 3,
+      "mesoComponents": 8,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "overall-silhouette",
+        "name": "Overall silhouette and proportions",
+        "required": true,
+        "qualityCriteria": [
+          "Bounding shape, dominant curves, negative spaces, and scale relationships are explicitly described."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model reads as a generic placeholder instead of the reference object",
+          "major proportions are guessed without evidence"
+        ]
+      },
+      {
+        "id": "primary-structure",
+        "name": "Primary structure and hierarchy",
+        "required": true,
+        "qualityCriteria": [
+          "Major parts, joints, seams, contact points, and parent-child relationships are named before code generation."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "large visible parts are merged into one mesh",
+          "component hierarchy is too shallow for the observed complexity"
+        ]
+      },
+      {
+        "id": "attachment-joint-correctness",
+        "name": "Attachment and joint correctness",
+        "required": true,
+        "qualityCriteria": [
+          "Every visible child appendage, branch, limb, handle, connector, tube, cable, horn, wing, leg, or hinged part has an attachment contract with parent socket, localStart/localEnd, contact type, embed/overlap, and gap tolerance."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "child part root floats away from the parent",
+          "branch/limb/tube is centered in space instead of pivoting from its root",
+          "parent-child transform mixes world and local coordinates"
+        ]
+      },
+      {
+        "id": "surface-material-response",
+        "name": "Surface material response",
+        "required": true,
+        "qualityCriteria": [
+          "Albedo zones, roughness, normal/bump/displacement intent, cavity dirt, edge wear, and local overrides are specified where visible.",
+          "Important materials define independent albedo, roughness, height/normal, and AO responses instead of reusing one texture for unrelated PBR channels.",
+          "Surface response is decomposed into macro, meso, and micro frequency bands with scale and amplitude tied to object scale."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "surface looks like flat plastic",
+          "local material variation is missing or not tied to image evidence"
+        ]
+      },
+      {
+        "id": "reference-lookdev",
+        "name": "Reference color, material, and lighting response",
+        "required": true,
+        "qualityCriteria": [
+          "Material-pass names the reference-derived albedo palette, roughness variation, tactile normal/bump/displacement response, and local masks.",
+          "When a source image is available, run reference PBR extraction and require confidence >= 0.7 before treating maps as implementation-ready.",
+          "Lighting-pass names key/fill/rim or environment light, exposure, tone mapping, background, and contact shadow behavior.",
+          "Neutral, grazing-angle, and reference-matched renders prove that surface relief survives relighting and is not painted into albedo."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model has acceptable shape but reads as flat shaded or plastic",
+          "colors are a generic average instead of reference-observed local color zones",
+          "lighting is evenly ambient and cannot reproduce the source value range"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "silhouette and negative-space delta",
+      "component hierarchy depth delta",
+      "repetition density and distribution delta",
+      "material albedo/roughness/normal response delta",
+      "local feature placement and scale delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not proceed to code if qualityContract.qualityBar is unassessed.",
+      "Do not proceed to code if the spec only contains a root component for a moderate or complex object.",
+      "Do not proceed to code if required featureGroups are not represented by componentTree, materials, or repetitionSystems.",
+      "Do not proceed to code if visible local features are described only in prose and not attached to components/materials/evidenceRefs.",
+      "Do not proceed past structural-pass if attached child parts lack attachment.parentSocket, localStart, localEnd, embedDepth/overlap, and gapTolerance.",
+      "Do not pass material look-dev when albedo is reused as roughness, height, normal, or AO.",
+      "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
+      "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
+      "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity."
+    ]
+  },
+  "authoringInstruction": "Fill observed object class, complexity reasoning, featureGroups, visualDeltaChecks, and unknowns before generating or implementing ObjectSculptSpec."
+}

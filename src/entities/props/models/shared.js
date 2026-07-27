@@ -110,6 +110,12 @@ const SURFACE_RECIPES = {
   moss: { roughness: 1, metalness: 0, normalScale: 1.18, repeat: [4.2, 4.2] },
   fruit: { roughness: 0.38, metalness: 0, normalScale: 0.16, repeat: [2.8, 2.8] },
   wax: { roughness: 0.46, metalness: 0, normalScale: 0.14, repeat: [3, 3] },
+  bark: { roughness: 0.98, metalness: 0, normalScale: 1.35, repeat: [4.5, 2.2] },
+  'split-wood': { roughness: 0.86, metalness: 0, normalScale: 0.72, repeat: [2.4, 2.4] },
+  leather: { roughness: 0.72, metalness: 0, normalScale: 0.54, repeat: [4, 4] },
+  soil: { roughness: 1, metalness: 0, normalScale: 1.45, repeat: [5.2, 5.2] },
+  leaf: { roughness: 0.62, metalness: 0, normalScale: 0.48, repeat: [3.4, 3.4] },
+  petal: { roughness: 0.7, metalness: 0, normalScale: 0.28, repeat: [3, 3] },
   generic: { roughness: 0.72, metalness: 0, normalScale: 0.35, repeat: [2, 2] },
 };
 
@@ -201,6 +207,74 @@ function surfaceSignal(kind, u, v, channelSeed) {
       roughness: clamp01(0.84 + meso * 0.1 + fiber * 0.06),
       height: clamp01(0.32 + twist * 0.43 + fiber * 0.18 + micro * 0.07),
       ao: clamp01(0.65 + twist * 0.23 + macro * 0.1),
+    };
+  }
+
+  if (kind === 'bark') {
+    const warp = (fbm(u * 1.2, v * 3.4, channelSeed + 43, 4) - 0.5) * 5;
+    const furrow = Math.pow(0.5 + 0.5 * Math.sin((u * 17 + warp) * Math.PI), 1.8);
+    const split = speck > 0.982 ? (speck - 0.982) * 34 : 0;
+    return {
+      albedo: clamp01(0.5 + macro * 0.2 + furrow * 0.16 - split * 0.2),
+      roughness: clamp01(0.88 + meso * 0.1 + split * 0.08),
+      height: clamp01(0.18 + furrow * 0.54 + meso * 0.2 - split * 0.3),
+      ao: clamp01(0.5 + furrow * 0.3 + macro * 0.14 - split * 0.2),
+    };
+  }
+
+  if (kind === 'split-wood') {
+    const dx = u - 0.5;
+    const dy = v - 0.5;
+    const radius = Math.hypot(dx * 1.1, dy);
+    const rings = 0.5 + 0.5 * Math.sin(radius * 118 + macro * 4);
+    const angle = Math.atan2(dy, dx);
+    const radial = Math.pow(Math.max(0, Math.cos(angle * 7 + macro * 5)), 12);
+    return {
+      albedo: clamp01(0.72 + macro * 0.12 + rings * 0.1 - radial * 0.08),
+      roughness: clamp01(0.76 + meso * 0.15 + rings * 0.05),
+      height: clamp01(0.38 + rings * 0.2 + meso * 0.16 - radial * 0.16),
+      ao: clamp01(0.72 + macro * 0.14 + rings * 0.08 - radial * 0.1),
+    };
+  }
+
+  if (kind === 'leather') {
+    const pore = speck > 0.96 ? (speck - 0.96) * 12 : 0;
+    const crease = Math.pow(
+      Math.max(0, 1 - Math.abs(Math.sin((u + v * 0.37) * 87 + macro * 6)) * 15),
+      2,
+    );
+    return {
+      albedo: clamp01(0.62 + macro * 0.18 + meso * 0.08 - pore * 0.08),
+      roughness: clamp01(0.62 + meso * 0.22 + pore * 0.08 - crease * 0.1),
+      height: clamp01(0.44 + meso * 0.2 + micro * 0.1 + crease * 0.08 - pore * 0.16),
+      ao: clamp01(0.7 + macro * 0.16 + meso * 0.1 - pore * 0.08),
+    };
+  }
+
+  if (kind === 'soil') {
+    const clump = Math.pow(meso, 1.7);
+    const grit = speck > 0.91 ? (speck - 0.91) * 5 : 0;
+    return {
+      albedo: clamp01(0.34 + macro * 0.2 + clump * 0.16 + grit * 0.08),
+      roughness: clamp01(0.92 + micro * 0.08),
+      height: clamp01(0.16 + clump * 0.62 + grit * 0.22),
+      ao: clamp01(0.46 + macro * 0.23 + clump * 0.23),
+    };
+  }
+
+  if (kind === 'leaf' || kind === 'petal') {
+    const center = Math.abs(u - 0.5);
+    const vein = Math.pow(Math.max(0, 1 - center * 18), 2);
+    const sideVeins = Math.pow(
+      Math.max(0, 1 - Math.abs(Math.sin((v * 10 + u * 2) * Math.PI)) * 9),
+      2,
+    );
+    const petal = kind === 'petal';
+    return {
+      albedo: clamp01((petal ? 0.73 : 0.58) + macro * 0.17 + vein * 0.08),
+      roughness: clamp01((petal ? 0.58 : 0.5) + meso * 0.22),
+      height: clamp01(0.42 + vein * 0.23 + sideVeins * 0.12 + micro * 0.08),
+      ao: clamp01(0.72 + macro * 0.14 + vein * 0.08),
     };
   }
 

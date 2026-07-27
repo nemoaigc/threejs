@@ -166,29 +166,6 @@ export function createBarrelCluster() {
   return done(g);
 }
 
-// ─── woodpile (smithy / cottage) ────────────────────────────────────────────
-
-export function createWoodpile() {
-  const g = root('prop.woodpile', GEN);
-  // ground plank
-  box(g, 'base', 1.4, 0.08, 0.7, 0, 0.04, 0, P.timberDark);
-  let n = 0;
-  for (let row = 0; row < 3; row++) {
-    for (let i = 0; i < 5 - row; i++) {
-      const x = (i - (4 - row) * 0.5) * 0.26;
-      const y = 0.12 + row * 0.16;
-      const yaw = (hash01(row, i) - 0.5) * 0.2;
-      const log = cyl(g, `log.${n++}`, 0.07, 0.08, 0.65, x, y, 0, row % 2 ? P.timber : P.timberLight, 7);
-      log.rotation.z = Math.PI / 2;
-      log.rotation.y = yaw;
-    }
-  }
-  // upright end stakes
-  box(g, 'stake.L', 0.06, 0.55, 0.06, -0.72, 0.28, 0, P.timberDark);
-  box(g, 'stake.R', 0.06, 0.55, 0.06, 0.72, 0.28, 0, P.timberDark);
-  return done(g);
-}
-
 // ─── handcart ──────────────────────────────────────────────────────────────
 
 export function createHandcart() {
@@ -269,56 +246,5 @@ export function createSackPile() {
     // tied top
     sphere(g, `tie.${i}`, r * 0.35, x, y + h * 0.5, z, P.rope, 5);
   });
-  return done(g);
-}
-
-// ─── flower planter ────────────────────────────────────────────────────────
-
-export function createPlanter() {
-  const g = root('prop.planter', GEN);
-  box(g, 'box', 0.7, 0.35, 0.45, 0, 0.2, 0, P.timber);
-  box(g, 'rim', 0.74, 0.05, 0.49, 0, 0.38, 0, P.timberDark);
-  box(g, 'soil', 0.62, 0.08, 0.38, 0, 0.36, 0, P.dirt);
-  // foliage blobs
-  for (let i = 0; i < 5; i++) {
-    const a = (i / 5) * Math.PI * 2;
-    const x = Math.cos(a) * 0.15;
-    const z = Math.sin(a) * 0.1;
-    sphere(g, `leaf.${i}`, 0.1 + hash01(i) * 0.04, x, 0.5, z, i % 2 ? P.foliage : P.foliageDark, 5);
-  }
-  sphere(g, 'flower', 0.06, 0.05, 0.58, 0.02, 0xe06080, 5);
-  sphere(g, 'flower2', 0.05, -0.1, 0.55, -0.05, 0xf0c040, 5);
-  return done(g);
-}
-
-// ─── anvil prop (smithy porch) ──────────────────────────────────────────────
-
-export function createAnvilProp() {
-  const g = root('prop.anvil', GEN);
-  box(g, 'block', 0.55, 0.25, 0.35, 0, 0.45, 0, P.iron);
-  box(g, 'horn', 0.35, 0.12, 0.12, 0.35, 0.52, 0, P.ironLight);
-  box(g, 'heel', 0.15, 0.14, 0.2, -0.3, 0.5, 0, P.iron);
-  box(g, 'stand', 0.35, 0.35, 0.28, 0, 0.18, 0, P.timberDark);
-  // hammer on side
-  box(g, 'hammer.head', 0.18, 0.1, 0.1, 0.4, 0.65, 0.2, P.iron);
-  box(g, 'hammer.haft', 0.05, 0.35, 0.05, 0.4, 0.48, 0.2, P.timber);
-  return done(g);
-}
-
-// ─── crystal crate (magic shop porch) ──────────────────────────────────────
-
-export function createCrystalCrate() {
-  const g = root('prop.crystal_crate', GEN);
-  addCrate(g, 'box', 0, 0, 0, 0.5, 0.4, 0.48, 0);
-  const crystal = makeGlow(0x88e0ff, 0x40c0ff, 0.7);
-  sphere(g, 'orb', 0.12, 0, 0.55, 0, crystal, 10);
-  // small bottles
-  for (const [x, z, c] of [
-    [-0.12, 0.1, 0xe040d0],
-    [0.12, 0.08, 0x40e8a0],
-    [0.0, -0.12, 0xf0a030],
-  ]) {
-    cyl(g, 'bottle', 0.04, 0.05, 0.14, x, 0.5, z, makeGlow(c, c, 0.5), 6);
-  }
   return done(g);
 }

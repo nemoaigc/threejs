@@ -18,8 +18,9 @@ Small countryside details for the Mushoku Buena/Roa slice. **Not** hero building
 | `well` | models/village_well | individual stone courses + timber frame + tiled roof + windlass |
 | `crateStack` | models/crate_stack | four detachable plank crates + rope handles + produce + burlap |
 | `barrelCluster` | models/barrel_cluster | individual staves + riveted hoops + visible tap + timber chocks |
-| `woodpile` / `anvilProp` | batch_p0 | smithy porch |
-| `crystalCrate` | batch_p0 | magic shop porch |
+| `woodpile` | models/woodpile | splayed oak rack + 22 split logs + canvas roll + sheathed hatchet |
+| `anvilProp` | models/anvil_workstation | custom forged horn + split stump + hanging hammer/tongs |
+| `crystalCrate` | models/crystal_crate_magic | hinged iron-bound cargo crate + restrained translucent minerals + bottles |
 | `handcart` | models/handcart | empty plank cargo bed + 12-spoke wheels + iron running gear |
 | `hayBale` / `sackPile` | batch_p0 | street cargo |
 | `bench` | models/village_bench | splayed timber frame + ten-slat back + forged scroll arms |
@@ -27,7 +28,7 @@ Small countryside details for the Mushoku Buena/Roa slice. **Not** hero building
 | `hitchingPost` | models/hitching_post | braced two-post rail + four tie rings + attached hemp coil |
 | `signpost` | models/signpost | three oriented arrow boards + carved emblems + brass route medallions |
 | `waystone` | models/waystone | irregular banded monolith + inset cyan travel rune + offerings |
-| `planter` | batch_p0 | path marker planting |
+| `planter` | models/flower_planter | reinforced long oak box + dense layered foliage + three bloom systems + trailing ivy |
 
 ## Add a scatter/supporting prop
 

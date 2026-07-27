@@ -2,9 +2,12 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import {
+  createAnvilWorkstationModel,
   createBarrelClusterModel,
   createCrateStackModel,
+  createCrystalCrateModel,
   createFenceSectionModel,
+  createFlowerPlanterModel,
   createHandcartModel,
   createHitchingPostModel,
   createQuestBoardModel,
@@ -13,6 +16,7 @@ import {
   createVillageBenchModel,
   createVillageWellModel,
   createWaystoneModel,
+  createWoodpileModel,
 } from './entities/props/models/index.js';
 
 const params = new URLSearchParams(location.search);
@@ -30,6 +34,10 @@ const factories = {
   hitchingPost: createHitchingPostModel,
   signpost: createSignpostModel,
   waystone: createWaystoneModel,
+  anvil: createAnvilWorkstationModel,
+  crystalCrate: createCrystalCrateModel,
+  planter: createFlowerPlanterModel,
+  woodpile: createWoodpileModel,
 };
 const factory = factories[assetId] ?? factories.well;
 

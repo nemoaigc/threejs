@@ -1,0 +1,352 @@
+{
+  "targetName": "Magic Crystal Cargo Crate",
+  "sourceImage": "docs/references/props/crystal_crate/ref_main.png",
+  "preSpecAssessment": {
+    "objectClass": {
+      "primaryType": "magic crystal cargo crate",
+      "primaryDomain": "object",
+      "formLanguage": [
+        "open reinforced oak cargo box",
+        "upright hinged plank lid",
+        "three jewel-tone crystal masses",
+        "quilted protective lining",
+        "small alchemical bottle rack"
+      ],
+      "structureKind": [
+        "planked crate shell",
+        "hinged lid with support chains",
+        "brass mineral clamps",
+        "internal padded tray",
+        "side cargo attachments"
+      ],
+      "motionPotential": [
+        "lid exposes a named hinge socket",
+        "three minerals expose independent sockets",
+        "body, lid, contents, bottles and attachments are separate groups"
+      ],
+      "materialFamilies": [
+        "aged oak",
+        "blackened iron",
+        "aged brass",
+        "wine quilted cloth",
+        "colored mineral glass",
+        "colored bottles",
+        "rope",
+        "parchment"
+      ],
+      "notes": "The cargo must read as physically restrained valuables, with visible padding and clamps instead of crystals simply placed in an empty box."
+    },
+    "complexity": {
+      "tier": "complex",
+      "scores": {
+        "silhouetteComplexity": 3,
+        "componentCount": 3,
+        "hierarchyDepth": 3,
+        "repetitionDensity": 3,
+        "materialLayerCount": 3,
+        "localDetailDensity": 3,
+        "occlusionRisk": 3,
+        "actionReadinessNeed": 3
+      },
+      "estimatedCounts": {
+        "macroComponents": 5,
+        "mesoComponents": 26,
+        "microFeatureGroups": 16,
+        "materialLayers": 8,
+        "repetitionSystems": 6
+      },
+      "reasoning": [
+        "The open-lid silhouette must frame the tall cyan crystal without merging into it.",
+        "The cyan, violet and amber minerals need different heights, cluster behavior and internal color response.",
+        "Iron corners, chains, brass clamps, quilted lining and bottle rack create the cargo-grade hierarchy around the magical focal points."
+      ]
+    },
+    "specDepthDecision": {
+      "requiredDepth": "complex",
+      "minimumComponentLevels": [
+        "macro",
+        "meso",
+        "micro"
+      ],
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
+      "needsMultipleReviewViews": true,
+      "needsActionReadyHierarchy": true,
+      "rationale": "Complex depth is required by the hinged shell, occluded padded interior, three mineral assemblies and repeated hardware systems."
+    },
+    "unknownsToResolveBeforeImplementation": [
+      "The rear outer lid face is inferred from the visible inner planking.",
+      "Mineral refraction is stylized for stable real-time sorting rather than physically exact caustics."
+    ],
+    "detailInventory": {
+      "scanMethod": "grid-3x3",
+      "targetMinDetails": 10,
+      "details": [
+        {
+          "id": "crystal-crate-open-lid",
+          "kind": "hinge",
+          "description": "Four lid planks rise behind the cargo from a rear pivot.",
+          "region": { "x": 0.2, "y": 0.06, "width": 0.58, "height": 0.38, "units": "normalized" },
+          "scale": "macro",
+          "affects": "open silhouette",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.lid.planked-pivot" },
+          "evidenceRef": "detail-zones/zone-r0c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "crystal-crate-support-chains",
+          "kind": "attachment",
+          "description": "Two sagging blackened chains limit the lid opening angle.",
+          "region": { "x": 0.2, "y": 0.23, "width": 0.58, "height": 0.28, "units": "normalized" },
+          "scale": "meso",
+          "affects": "hinge credibility",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.lid.support-chains" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.97
+        },
+        {
+          "id": "crystal-crate-iron-corners",
+          "kind": "fastener",
+          "description": "Projected iron corner blocks and rivets reinforce the shell and lid.",
+          "region": { "x": 0.14, "y": 0.2, "width": 0.72, "height": 0.65, "units": "normalized" },
+          "scale": "meso",
+          "affects": "cargo construction",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.body.riveted-corners" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "crystal-crate-front-brace",
+          "kind": "brace",
+          "description": "A diagonal iron brace crosses the front planks with independent rivets.",
+          "region": { "x": 0.18, "y": 0.62, "width": 0.62, "height": 0.25, "units": "normalized" },
+          "scale": "meso",
+          "affects": "front face identity",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.body.front-diagonal-brace" },
+          "evidenceRef": "detail-zones/zone-r2c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crystal-crate-quilted-lining",
+          "kind": "material-override",
+          "description": "Deep wine cloth forms a raised cushion punctuated by repeated dark tufts.",
+          "region": { "x": 0.24, "y": 0.42, "width": 0.5, "height": 0.3, "units": "normalized" },
+          "scale": "meso",
+          "affects": "protective interior depth",
+          "mapsTo": { "type": "material.localOverrides", "ref": "wine-cloth.quilt-and-tufts" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crystal-crate-cyan-mineral",
+          "kind": "mineral",
+          "description": "The tallest cyan heptagonal prism has a tapered point, narrow inner core and two facet glints.",
+          "region": { "x": 0.36, "y": 0.3, "width": 0.2, "height": 0.4, "units": "normalized" },
+          "scale": "macro",
+          "affects": "primary magical focal point",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.contents.cyan-mineral" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.99
+        },
+        {
+          "id": "crystal-crate-violet-cluster",
+          "kind": "cluster",
+          "description": "One violet base shard is flanked by two smaller leaning shards.",
+          "region": { "x": 0.22, "y": 0.47, "width": 0.22, "height": 0.25, "units": "normalized" },
+          "scale": "meso",
+          "affects": "asymmetric mineral grouping",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.contents.violet-cluster" },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crystal-crate-amber-mineral",
+          "kind": "mineral",
+          "description": "A shorter warm amber shard balances the violet cluster on the opposite side.",
+          "region": { "x": 0.5, "y": 0.5, "width": 0.18, "height": 0.22, "units": "normalized" },
+          "scale": "meso",
+          "affects": "color balance",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.contents.amber-mineral" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crystal-crate-brass-clamps",
+          "kind": "fastener",
+          "description": "Brass rings, upright braces and rivets restrain each mineral base.",
+          "region": { "x": 0.22, "y": 0.56, "width": 0.48, "height": 0.18, "units": "normalized" },
+          "scale": "micro",
+          "affects": "physical restraint",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.contents.mineral-clamps" },
+          "evidenceRef": "detail-zones/zone-r1c1.png",
+          "confidence": 0.97
+        },
+        {
+          "id": "crystal-crate-bottle-rack",
+          "kind": "attachment",
+          "description": "Three distinct colored bottles sit in a divided oak rack with cork stoppers.",
+          "region": { "x": 0.53, "y": 0.38, "width": 0.22, "height": 0.3, "units": "normalized" },
+          "scale": "meso",
+          "affects": "alchemical storytelling",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.bottle-rack.three-bottles" },
+          "evidenceRef": "detail-zones/zone-r1c2.png",
+          "confidence": 0.98
+        },
+        {
+          "id": "crystal-crate-side-scroll",
+          "kind": "attachment",
+          "description": "A rope handle and tied parchment scroll hang from the left side.",
+          "region": { "x": 0.08, "y": 0.5, "width": 0.2, "height": 0.36, "units": "normalized" },
+          "scale": "meso",
+          "affects": "cargo labeling",
+          "mapsTo": { "type": "component.localFeatures", "ref": "crystal-crate.attachments.rope-and-scroll" },
+          "evidenceRef": "detail-zones/zone-r1c0.png",
+          "confidence": 0.96
+        }
+      ]
+    },
+    "anatomy": {
+      "applies": false,
+      "styleHeads": 0.0,
+      "proportions": {
+        "headUnit": 0.0,
+        "torso": 0.0,
+        "legs": 0.0,
+        "shoulderWidth": 0.0,
+        "hipWidth": 0.0
+      },
+      "pose": {
+        "type": "not-applicable",
+        "jointAngles": {}
+      },
+      "faceLandmarks": {
+        "eyeLine": 0.0,
+        "eyeSpacing": 0.0,
+        "noseBase": 0.0,
+        "mouthLine": 0.0,
+        "hairline": 0.0
+      },
+      "features": [],
+      "confidence": 0.0,
+      "note": "Only meaningful when objectClass.primaryDomain is character or hybrid. Set applies=true and fill from forge/stage1_intake/extract_landmarks.py. See grimoire/character/reconstruction.md and grimoire/character/likeness_maximization.md."
+    },
+    "sourceImage": "docs/references/props/crystal_crate/ref_main.png"
+  },
+  "qualityContract": {
+    "qualityBar": "complex",
+    "definitionOfDone": [
+      "The rendered model matches the reference silhouette, primary proportions, visible component hierarchy, material response, and most recognizable local features for the selected fidelity tier."
+    ],
+    "minimumSpecDepth": {
+      "macroComponents": 3,
+      "mesoComponents": 8,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
+    },
+    "featureGroups": [
+      {
+        "id": "overall-silhouette",
+        "name": "Overall silhouette and proportions",
+        "required": true,
+        "qualityCriteria": [
+          "Bounding shape, dominant curves, negative spaces, and scale relationships are explicitly described."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model reads as a generic placeholder instead of the reference object",
+          "major proportions are guessed without evidence"
+        ]
+      },
+      {
+        "id": "primary-structure",
+        "name": "Primary structure and hierarchy",
+        "required": true,
+        "qualityCriteria": [
+          "Major parts, joints, seams, contact points, and parent-child relationships are named before code generation."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "large visible parts are merged into one mesh",
+          "component hierarchy is too shallow for the observed complexity"
+        ]
+      },
+      {
+        "id": "attachment-joint-correctness",
+        "name": "Attachment and joint correctness",
+        "required": true,
+        "qualityCriteria": [
+          "Every visible child appendage, branch, limb, handle, connector, tube, cable, horn, wing, leg, or hinged part has an attachment contract with parent socket, localStart/localEnd, contact type, embed/overlap, and gap tolerance."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "child part root floats away from the parent",
+          "branch/limb/tube is centered in space instead of pivoting from its root",
+          "parent-child transform mixes world and local coordinates"
+        ]
+      },
+      {
+        "id": "surface-material-response",
+        "name": "Surface material response",
+        "required": true,
+        "qualityCriteria": [
+          "Albedo zones, roughness, normal/bump/displacement intent, cavity dirt, edge wear, and local overrides are specified where visible.",
+          "Important materials define independent albedo, roughness, height/normal, and AO responses instead of reusing one texture for unrelated PBR channels.",
+          "Surface response is decomposed into macro, meso, and micro frequency bands with scale and amplitude tied to object scale."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "surface looks like flat plastic",
+          "local material variation is missing or not tied to image evidence"
+        ]
+      },
+      {
+        "id": "reference-lookdev",
+        "name": "Reference color, material, and lighting response",
+        "required": true,
+        "qualityCriteria": [
+          "Material-pass names the reference-derived albedo palette, roughness variation, tactile normal/bump/displacement response, and local masks.",
+          "When a source image is available, run reference PBR extraction and require confidence >= 0.7 before treating maps as implementation-ready.",
+          "Lighting-pass names key/fill/rim or environment light, exposure, tone mapping, background, and contact shadow behavior.",
+          "Neutral, grazing-angle, and reference-matched renders prove that surface relief survives relighting and is not painted into albedo."
+        ],
+        "evidenceRefs": [
+          "full-object"
+        ],
+        "failureModes": [
+          "model has acceptable shape but reads as flat shaded or plastic",
+          "colors are a generic average instead of reference-observed local color zones",
+          "lighting is evenly ambient and cannot reproduce the source value range"
+        ]
+      }
+    ],
+    "visualDeltaChecks": [
+      "silhouette and negative-space delta",
+      "component hierarchy depth delta",
+      "repetition density and distribution delta",
+      "material albedo/roughness/normal response delta",
+      "local feature placement and scale delta"
+    ],
+    "antiShallowSpecRules": [
+      "Do not proceed to code if qualityContract.qualityBar is unassessed.",
+      "Do not proceed to code if the spec only contains a root component for a moderate or complex object.",
+      "Do not proceed to code if required featureGroups are not represented by componentTree, materials, or repetitionSystems.",
+      "Do not proceed to code if visible local features are described only in prose and not attached to components/materials/evidenceRefs.",
+      "Do not proceed past structural-pass if attached child parts lack attachment.parentSocket, localStart, localEnd, embedDepth/overlap, and gapTolerance.",
+      "Do not pass material look-dev when albedo is reused as roughness, height, normal, or AO.",
+      "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
+      "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
+      "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity."
+    ]
+  },
+  "authoringInstruction": "Fill observed object class, complexity reasoning, featureGroups, visualDeltaChecks, and unknowns before generating or implementing ObjectSculptSpec."
+}

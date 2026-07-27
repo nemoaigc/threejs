@@ -3,17 +3,16 @@
  * Layout `type` keys map here. Unknown types stay off the stage (empty > junk).
  */
 import {
-  createWoodpile,
   createHayBale,
   createSackPile,
-  createPlanter,
-  createAnvilProp,
-  createCrystalCrate,
 } from './batch_p0.js';
 import {
+  createAnvilWorkstationModel,
   createBarrelClusterModel,
   createCrateStackModel,
+  createCrystalCrateModel,
   createFenceSectionModel,
+  createFlowerPlanterModel,
   createHandcartModel,
   createHitchingPostModel,
   createQuestBoardModel,
@@ -22,6 +21,7 @@ import {
   createVillageBenchModel,
   createVillageWellModel,
   createWaystoneModel,
+  createWoodpileModel,
 } from './models/index.js';
 
 /** @type {Record<string, () => import('three').Group>} */
@@ -34,7 +34,7 @@ export const PROP_BUILDERS = {
   bench: createVillageBenchModel,
   signpost: createSignpostModel,
   waystone: createWaystoneModel,
-  planter: createPlanter,
+  planter: createFlowerPlanterModel,
 
   // cargo / market
   crateStack: createCrateStackModel,
@@ -44,11 +44,11 @@ export const PROP_BUILDERS = {
   hayBale: createHayBale,
 
   // craft / structure
-  woodpile: createWoodpile,
+  woodpile: createWoodpileModel,
   fenceSection: createFenceSectionModel,
   hitchingPost: createHitchingPostModel,
-  anvilProp: createAnvilProp,
-  crystalCrate: createCrystalCrate,
+  anvilProp: createAnvilWorkstationModel,
+  crystalCrate: createCrystalCrateModel,
 };
 
 export function createProp(type) {

@@ -52,6 +52,17 @@ Batch 02 参考采用单主体 3D 产品渲染。`ref_source.png` 保留生成�
 
 Batch 03 延续单主体 3D 产品参考，并在浏览器对照中完成了三次可见返工：栅栏默认白材质错位、路牌侧边化遮挡、界碑符文过曝/供奉币方向。实现数据与评分见 `src/entities/props/models/BATCH03_RUN_LOG.md`。
 
+## Batch 04
+
+| ID | 场景类型 | 层级 | 材质/装配覆盖 | 状态 |
+|---|---|---|---|---|
+| `props.anvil_workstation.v1-pbr` | `anvilProp` | Supporting | 自定义椭圆渐缩铁砧角、凹腰与四脚、裂木墩、单道铆钉铁箍、石垫、皮革缠柄锤与长钳 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.crystal_crate.v1-pbr` | `crystalCrate` | Supporting | 铰接开盖、支撑链、铁角/斜撑、酒红绗缝垫、三色矿晶与黄铜固定环、三瓶药剂及侧挂卷轴 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.flower_planter.v1-pbr` | `planter` | Supporting | 长比例三层木板箱、铁角/石脚、36 片定向锯齿叶、三套花型、双层花瓣/花粉、垂挂常春藤与黄铜浇水徽 | intake + detail inventory + 主/侧视图验收通过 |
+| `props.woodpile.v1-pbr` | `woodpile` | Supporting | 外撇四柱架、22 根半圆劈柴、端面年轮/裂纹、深色卷布与绳结、外露皮套短斧 | intake + detail inventory + 主/侧视图验收通过 |
+
+Batch 04 的首次对照仍暴露出“默认几何/玩具感”：铁砧圆锥角、乳白晶体、方短花箱与稀疏柴堆。四件均完成第二轮本体雕刻后才准入；生产场景保持原 catalog key 和既有稀疏布置。实现数据与评分见 `src/entities/props/models/BATCH04_RUN_LOG.md`。
+
 ## 验收闸门
 
 1. intake：单主体、完整轮廓、主体占比合理、无裁切；
